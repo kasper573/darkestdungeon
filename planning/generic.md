@@ -1,15 +1,15 @@
 # Tech
-Keyframe animations
-Property tweens
-Sound effects
-Ambient sound
-Music
-Fonts
-Keyboard/Gamepad input
+- Keyframe animations
+- Property tweens
+- Sound effects
+- Ambient sound
+- Music
+- Fonts
+- Keyboard/Gamepad input
 
-Stretch goal: Record story audio / Auto generate
-Stretch goal: Cutscenes
-Stretch goal: Bone animations
+- Stretch goal: Record story audio / Auto generate
+- Stretch goal: Cutscenes
+- Stretch goal: Bone animations
 
 # Screens
 - [Start](screens/start.md)
