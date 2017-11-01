@@ -1,17 +1,33 @@
-# Tech
+# Planning
+The following lists and documents are a breakdown of the tech, concepts,
+mechanics, essentially all things that build up the darkest dungeon game.
+
+The purpose of this plan is to the be used for the initial project time
+and task estimate and as a reference during development.
+
+The plan is split into four sections: Tech, Screens, Popups and Components
+
+> The plan is rough and does not fully cover all details,
+> but will provide a full overview.
+
+## Tech
+Technologies required that extends the basic web platform.
+
+> Will require a third party or custom implementation
+
 - Keyframe animations
 - Property tweens
-- Sound effects
-- Ambient sound
-- Music
-- Fonts
+- Sound effects, ambient sound, music
 - Keyboard/Gamepad input
-
-- Stretch goal: Record story audio / Auto generate
-- Stretch goal: Cutscenes
-- Stretch goal: Bone animations
+- Stretch goals:
+    - Story audio (Record original / Auto generate)
+    - Cutscenes
+    - Bone animations
 
 # Screens
+A screen is a section of the game with its own specific purpose and design.
+Only one screen is active at a time, but transitions between screens may require multiple screens to be rendered simultaneously.
+
 - [Start](screens/start.md)
 - [Loading](screens/loading.md)
 - [Dungeon](screens/dungeon.md)
@@ -21,6 +37,8 @@
 - [Estate Provisioning](screens/estate_provisioning.md)
 
 # Popups/Prompts
+Popups are temporary modal pages that are rendered on top of the current screen. A prompt is a popup that also requires a player choice before being dismissed.
+
 - [Main menu](popups/mainMenu.md)
     - [Help](popups/help.md)
     - [Controls](popups/controls.md)
@@ -36,8 +54,7 @@
 - [Quest complete](popups/questComplete.md)
 
 # Components
-
-## Generic
+Common design elements used throughout the game, across multiple screens and popups.
 
 - Tooltip box (specific location / relative to mouse)
 - Icon
@@ -63,10 +80,8 @@
 - Event list item rectangle (yellow/red/gray background)
 - Red Rectangle Thing
 - Text
-- - Input visualizers
-- - Highlighted text
-
-## Generic (character related)
+    - Input visualizers
+    - Highlighted text
 - Quirk reveal faces
 - Skill box (locked, unlocked, selected)
 - Preferred position/target

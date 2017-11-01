@@ -1,4 +1,4 @@
 # Darkest Dungeon
-A Darkest Dungeon clone built with web technology
+A Darkest Dungeon clone built with web technology.
 
-[Project Plan](planning/generic.md)
+[Project Plan](planning/overview.md)
