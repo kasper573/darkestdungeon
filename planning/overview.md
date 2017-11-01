@@ -24,34 +24,12 @@ Technologies required that extends the basic web platform.
     - Cutscenes
     - Bone animations
 
-# Screens
+# [Screens](screens)
 A screen is a section of the game with its own specific purpose and design.
 Only one screen is active at a time, but transitions between screens may require multiple screens to be rendered simultaneously.
 
-- [Start](screens/start.md)
-- [Loading](screens/loading.md)
-- [Dungeon](screens/dungeon.md)
-- [Dungeon Result](screens/dungeon_result.md)
-- [Estate](screens/estate.md)
-- [Estate Map](screens/estate_map.md)
-- [Estate Provisioning](screens/estate_provisioning.md)
-
-# Popups/Prompts
+# [Popups/Prompts](popups)
 Popups are temporary modal pages that are rendered on top of the current screen. A prompt is a popup that also requires a player choice before being dismissed.
-
-- [Main menu](popups/mainMenu.md)
-    - [Help](popups/help.md)
-    - [Controls](popups/controls.md)
-    - [Credits](popups/credits.md)
-    - [Glossary](popups/glossary.md)
-    - [Options](popups/options.md)
-- [Character info](popups/characterInfo.md)
-- [Trinkets](popups/trinkets.md)
-- [Activity Log](popups/activityLog.md)
-- [Embark Danger](popups/embarkDanger.md)
-- [Item pickup](popups/itemPickup.md)
-- [Dungeon Interaction](popups/dungeonInteraction.md)
-- [Quest complete](popups/questComplete.md)
 
 # Components
 Common design elements used throughout the game, across multiple screens and popups.
@@ -67,7 +45,7 @@ Common design elements used throughout the game, across multiple screens and pop
 - ??? Header (found in victory screen, 2nd to top)
 - Scarf Header
 - Estate name header
-- Huge Header (with images and/or text)
+- Estate feature header
 - Huge header with inner purple box and text (inner purple box should be own component)
 - Huge aligned header (with one image and text)
 - Huge aligned header 2 (image, topic, description)
@@ -90,3 +68,10 @@ Common design elements used throughout the game, across multiple screens and pop
 - Level/Experience indicator
 - Level/Experience container
 - Character picture/container
+
+# Other
+
+## Fonts used
+
+- New rocker
+- Dwarvenaxe
