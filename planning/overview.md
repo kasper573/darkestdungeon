@@ -21,6 +21,7 @@ Technologies required that extends the basic web platform.
 - Keyboard/Gamepad input
 - Stretch goals:
     - Story audio (Record original / Auto generate)
+    - Bark text microsoft sam autogeneration
     - Cutscenes
     - Bone animations
 
@@ -75,6 +76,8 @@ Common design elements used throughout the game, across multiple screens and pop
 - Character picture/container
 
 # Other
+
+- Storyline text is visible during screen transitions
 
 ## Fonts used
 

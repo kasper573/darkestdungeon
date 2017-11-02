@@ -6,4 +6,5 @@
 - Rename
 - Equip trinkets
 - Select skills
+- Lists character data
 
