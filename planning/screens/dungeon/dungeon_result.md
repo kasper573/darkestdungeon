@@ -1,7 +1,20 @@
 # Dungeon Result
 
-## States
+- Displays Victory/escape/defeat
+- Displays Quest name
 
-- Victory
-- Escape
-- Defeat
+## Stage 1
+
+- Displays rewards
+- Displays treasures
+- Displays heirlooms
+
+## Stage 2: On quest completed
+
+- List party members
+- Shows character progression (experience/level)
+- Shows new quirks
+
+## Stage 2: On escape/defeat
+
+- List party members

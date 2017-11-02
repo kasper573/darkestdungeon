@@ -12,6 +12,7 @@
 - affliction
 - stress
 - hp
+- skills + levels
 - equipment slots + levels
 - trinket slots
 - activity
