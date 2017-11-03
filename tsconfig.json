@@ -1,0 +1,19 @@
+{
+  "exclude": [
+    "node_modules",
+    "**/*.test.*"
+  ],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "types": [
+      "webpack-env",
+      "node"
+    ]
+  }
+}
