@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = function (env = {}) {
@@ -18,7 +19,13 @@ module.exports = function (env = {}) {
     plugins: compact([
       new HtmlWebpackPlugin({title: "Darkest Dungeon"}),
       env.hmr && new webpack.NamedModulesPlugin(),
-      env.hmr && new webpack.HotModuleReplacementPlugin()
+      env.hmr && new webpack.HotModuleReplacementPlugin(),
+      env.minify && new MinifyPlugin(),
+      env.prod && new webpack.DefinePlugin({
+        "process.env": {
+          "NODE_ENV": JSON.stringify("production")
+        }
+      })
     ]),
     module: {
       loaders: [{
