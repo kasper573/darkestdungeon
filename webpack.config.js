@@ -6,6 +6,7 @@ const webpack = require("webpack");
 module.exports = function (env = {}) {
   return {
     entry: compact([
+      path.join(__dirname, "polyfills", "index.js"),
       env.hmr && "react-hot-loader/patch",
       path.join(__dirname, "src", "main.tsx"),
     ]),
