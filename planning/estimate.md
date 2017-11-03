@@ -45,4 +45,4 @@
 
 # UI Components x 33 x 1.5 hour = 6 days
 
-Sum = 17 hours
+Sum = 17 days
