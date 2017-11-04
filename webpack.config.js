@@ -15,7 +15,10 @@ module.exports = function (env = {}) {
       filename: "bundle.js"
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js"],
+      alias: {
+        "aphrodite": "aphrodite/no-important"
+      }
     },
     plugins: compact([
       new HtmlWebpackPlugin({title: "Darkest Dungeon"}),
@@ -29,14 +32,21 @@ module.exports = function (env = {}) {
       })
     ]),
     module: {
-      loaders: [{
-        test: /\.tsx?/,
-        include: path.join(__dirname, "src"),
-        loaders: compact([
-          env.hmr && "react-hot-loader/webpack",
-          "awesome-typescript-loader"
-        ])
-      }]
+      loaders: [
+        {
+          test: /\.tsx?/,
+          include: path.join(__dirname, "src"),
+          loaders: compact([
+            env.hmr && "react-hot-loader/webpack",
+            "awesome-typescript-loader"
+          ])
+        },
+        {
+          test: /\.css$/,
+          include: path.join(__dirname, "src"),
+          loaders: ["style-loader", "css-loader"]
+        }
+      ]
     },
     devServer: {
       hot: env.hmr
