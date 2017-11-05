@@ -8,9 +8,9 @@ export class TitleHeader extends React.Component {
   render () {
     return (
       <div className={css(styles.container)}>
-        <span className={css(styles.textLeft)}>Dankest</span>
+        <span className={css(styles.textLeft, styles.text)}>Dankest</span>
         <Sprite {...smoke} className={css(styles.torch)}/>
-        <span className={css(styles.textRight)}>Dungeon</span>
+        <span className={css(styles.textRight, styles.text)}>Dungeon</span>
       </div>
     );
   }
@@ -18,10 +18,15 @@ export class TitleHeader extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    color: "red",
+    color: "black",
     flexDirection: "row",
     fontFamily: fonts.Darkest,
     fontSize: "10vw"
+  },
+
+  text: {
+    textShadow: "0px 0px 1vw red",
+    transition: "text-shadow 0.5s",
   },
 
   textLeft: {
