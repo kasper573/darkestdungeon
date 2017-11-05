@@ -6,31 +6,38 @@
   "repository": "https://github.com/Kasu/twitterview",
   "dependencies": {
     "aphrodite": "^1.2.5",
+    "mobx": "3.3.1",
+    "mobx-react": "4.3.4",
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-hot-loader": "3.1.1",
+    "resize-observer-polyfill": "1.4.2",
+    "stats.js": "^0.17.0",
+    "tween.js": "^16.6.0",
     "webfontloader": "1.6.28"
   },
   "devDependencies": {
     "@types/aphrodite": "0.5.6",
     "@types/react": "16.0.19",
     "@types/react-dom": "16.0.2",
+    "@types/webfontloader": "1.6.29",
     "@types/webpack": "3.0.14",
     "@types/webpack-env": "1.13.2",
-    "@types/webfontloader": "1.6.29",
     "awesome-typescript-loader": "3.3.0",
     "babel-minify-webpack-plugin": "0.2.0",
     "css-loader": "0.28.7",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "2.30.1",
     "jest": "21.2.1",
     "style-loader": "0.19.0",
     "tslint": "5.8.0",
     "typescript": "2.6.1",
+    "file-loader": "1.1.5",
+    "image-size-loader": "0.7.0",
     "webpack": "3.8.1",
     "webpack-dev-server": "2.9.4"
   },
   "scripts": {
-    "dev-server": "webpack-dev-server --host 0.0.0.0 --env.hmr",
+    "dev-server": "webpack-dev-server --host 0.0.0.0 --env.hmr --env.sourceMaps",
     "test": "jest"
   }
 }

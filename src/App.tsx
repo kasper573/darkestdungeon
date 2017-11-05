@@ -7,9 +7,6 @@ export class App extends React.Component {
     return (
       <div className={css(styles.base)}>
         <TitleHeader/>
-        <div>
-          Hello World
-        </div>
       </div>
     );
   }
@@ -17,6 +14,12 @@ export class App extends React.Component {
 
 const styles = StyleSheet.create({
   base: {
-    fontFamily: "Ubuntu"
+    fontFamily: "Ubuntu",
+    width: "100%",
+    height: "100%",
+    background: "black",
+    color: "white",
+    overflow: "hidden",
+    padding: "1vw 1vh"
   }
 });
