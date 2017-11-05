@@ -21,6 +21,11 @@
     "jsx-self-close": true,
     "jsx-wrap-multiline": true,
 
+    "no-implicit-dependencies": false,
+    "no-empty": false,
+    "comment-format": false,
+    "interface-name": false,
+    "member-ordering": false,
     "indent": [true, "spaces", 4],
     "trailing-comma": false,
     "member-access": false,

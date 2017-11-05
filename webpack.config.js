@@ -14,6 +14,7 @@ module.exports = function (env = {}) {
       path: path.join(__dirname, "dist"),
       filename: "bundle.js"
     },
+    devtool: env.sourceMaps ? "source-map" : undefined,
     resolve: {
       extensions: [".ts", ".tsx", ".js"],
       alias: {
@@ -35,7 +36,7 @@ module.exports = function (env = {}) {
       loaders: [
         {
           test: /\.tsx?/,
-          include: path.join(__dirname, "src"),
+          exclude: /node_modules/,
           loaders: compact([
             env.hmr && "react-hot-loader/webpack",
             "awesome-typescript-loader"
@@ -43,8 +44,18 @@ module.exports = function (env = {}) {
         },
         {
           test: /\.css$/,
-          include: path.join(__dirname, "src"),
+          exclude: /node_modules/,
           loaders: ["style-loader", "css-loader"]
+        },
+        {
+          test: /\.png$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: "file-loader",
+              options: {}
+            }
+          ]
         }
       ]
     },
