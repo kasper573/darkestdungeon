@@ -16,3 +16,12 @@ Because of it's simplistic design style, making it a perfect candidate for a web
 ### Legal issues?
 
 This project is purely for fun and educational purposes, not to create a competitor to Darkest Dungeon. If it would turn out Red Hook Studios has an issue with this project however, I'll shut it down.
+
+
+## Getting started
+
+- Install [npm](https://www.npmjs.com) on your machine
+- Clone this repository
+- Run `npm install` in the project root folder
+- Run `npm run dev-server` in the project root folder
+- Visit `localhost:8080` in your browser
