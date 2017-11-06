@@ -1,6 +1,14 @@
 const fs = require("fs");
 const path = require("path");
-const {split_fsb, extract_fsb} = require("darkest_dungeon_tools");
+const {split_fsb, extract_fsb, clean_audio_names} = require("darkest_dungeon_tools");
+
+if (process.argv.length < 3)
+{
+  console.log("Too few arguments!");
+  console.log("Usage:", process.argv.join(" "), "STEAM_FOLDER");
+
+  process.exit(1);
+}
 
 const fsbExtractBinaryPath = path.join(__dirname, "../bin/extract_fsb.exe");
 const folders = {
@@ -45,7 +53,7 @@ function importAudio (audioToImport) {
   ensureFolderExists(folders.localDDAudio);
   removeFilesFromFolder(folders.localDDAudio);
   return extractAudioFromDD(audioToImport)
-    .then(() => cleanAudioNames(folders.localDDAudio));
+    .then(() => clean_audio_names.clean_directory.sync(folders.localDDAudio));
 }
 
 function extractAudioFromDD (audioToImport) {
@@ -102,24 +110,4 @@ function removeFilesFromFolder (folderPath) {
     const filePath = path.join(folderPath, file);
     fs.unlinkSync(filePath);
   });
-}
-
-/**
- * Removes {...} from the end of the names of the audio files imported from Darkest Dungeon
- */
-function cleanAudioNames (audioDir) {
-  const files = fs.readdirSync(audioDir);
-  for (let i = 0; i < files.length; i++) {
-    const f = files[i];
-    const p = path.join(audioDir, f);
-    const stats = fs.statSync(p);
-
-    if (stats.isFile()) {
-      fs.rename(p, p.replace(/\s{.*}(\.\w+)$/, "$1"), (err) => {
-          if (err) {
-          throw new Error(err);
-        }
-      });
-    }
-  }
 }
