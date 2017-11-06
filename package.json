@@ -25,6 +25,7 @@
     "@types/webfontloader": "1.6.29",
     "@types/webpack": "3.0.14",
     "@types/webpack-env": "1.13.2",
+    "@types/jest": "21.1.5",
     "awesome-typescript-loader": "3.3.0",
     "babel-minify-webpack-plugin": "0.2.0",
     "css-loader": "0.28.7",
