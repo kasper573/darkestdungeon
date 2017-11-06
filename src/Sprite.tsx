@@ -1,11 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import ResizeObserver from "resize-observer-polyfill";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {SpriteInfo} from "../assets/SpriteInfo";
 import {Bounds} from "./Bounds";
 const {Tween} = require("tween.js");
+
+// HACK we must use this method to make this work in nodejs for jest.
+// Using traditional import makes ResizeObserver become undefined some reason.
+let ResizeObserver = require("resize-observer-polyfill");
+if (typeof ResizeObserver !== "function") {
+  ResizeObserver = ResizeObserver.default;
+}
 
 @observer
 export class Sprite extends React.Component<
@@ -22,7 +28,7 @@ export class Sprite extends React.Component<
   };
 
   private domNode: Element;
-  private resizeObserver: ResizeObserver;
+  private resizeObserver: any;
   private tween: any;
   private isPlaying: boolean;
 
@@ -90,8 +96,8 @@ export class Sprite extends React.Component<
 
   private calculateStyle () {
     const sheetSizeScaled = this.scaledSpriteBounds.scale(this.props.columns, this.props.rows);
-    const rowIndex = Math.floor(this.frame / this.props.columns);
-    const columnIndex = this.frame % this.props.columns;
+    const rowIndex = Math.floor(this.frame / this.props.columns) || 0;
+    const columnIndex = this.frame % this.props.columns || 0;
 
     return {
       ...(this.props.debug && {backgroundColor: "rgba(0, 10, 128, 0.63)"}),

@@ -10,7 +10,7 @@ export class SpriteInfo {
     public sheetSize: {width: number, height: number},
     public parts: {[key: string]: [number, number]} = {}
   ) {
-    this.columns = Math.floor(sheetSize.width / frameSize.width);
-    this.rows = Math.floor(sheetSize.height / frameSize.height);
+    this.columns = Math.floor(sheetSize.width / frameSize.width) || 0;
+    this.rows = Math.floor(sheetSize.height / frameSize.height) || 0;
   }
 }

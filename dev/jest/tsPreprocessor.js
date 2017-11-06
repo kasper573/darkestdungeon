@@ -1,5 +1,5 @@
 const tsc = require('typescript');
-const tsConfig = require('../tsconfig.json');
+const tsConfig = require('../../tsconfig.json');
 
 // Transpiles typescript to javascript for jest
 module.exports = {
