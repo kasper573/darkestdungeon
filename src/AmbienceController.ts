@@ -1,3 +1,5 @@
+import {autorun, IReactionDisposer, observable} from "mobx";
+
 export class AmbienceController {
   private player: AmbiencePlayer;
   private positions: {[key: string]: number} = {};
@@ -40,8 +42,8 @@ export class AmbienceController {
     }
   }
 
-  setVolume (volume?: number) {
-    this.player.fadeTo(volume);
+  muffle (isMuffled: boolean) {
+    this.player.muffle(isMuffled);
   }
 
   private performLookup (id: string) {
@@ -75,7 +77,11 @@ export class AmbiencePlayer {
 
   private baseSound: Howl;
   private osSounds: Howl[] = [];
-  private isPlaying: boolean;
+
+  private disposeReaction: IReactionDisposer;
+  @observable private isOSOnCooldown: boolean = true;
+  @observable private isPlaying: boolean;
+  @observable private isMuffled: boolean;
 
   constructor (
     private definition: AmbienceDefinition
@@ -94,10 +100,60 @@ export class AmbiencePlayer {
     this.baseSound.seek(startPosition);
     this.baseSound.play();
     this.baseSound.fade(0, definedOr(this.definition.base.volume, 1), AmbiencePlayer.fadeTime);
-    this.queueNextOS();
+
+    this.disposeReaction = autorun(() => {
+      if (this.isPlaying && !this.isMuffled && !this.isOSOnCooldown) {
+        this.playNextOS();
+      }
+    });
+
+    this.queueOSCooldownReset();
   }
 
-  fadeTo (targetVolume?: number) {
+  muffle (isMuffled: boolean): any {
+    const baseVolume = definedOr(this.definition.base.volume, 1);
+    this.isMuffled = isMuffled;
+    this.fadeTo(isMuffled ? baseVolume * 0.5 : undefined);
+  }
+
+  playNextOS () {
+    this.isOSOnCooldown = true;
+    const index = Math.floor(Math.random() * this.osSounds.length);
+    const os = this.osSounds[index];
+    return new Promise((resolve) => {
+      os.once("end", () => {
+        this.queueOSCooldownReset();
+        resolve();
+      });
+      os.play();
+    });
+  }
+
+  queueOSCooldownReset () {
+    const timeout = 3000 + Math.random() * 10000;
+    setTimeout(() => this.isOSOnCooldown = false, timeout);
+  }
+
+  stop () {
+    if (!this.isPlaying) {
+      return Promise.resolve();
+    }
+
+    // Set as not playing immediately to avoid OS timeouts
+    // to trigger asynchronously while we're fading out
+    this.isPlaying = false;
+    this.disposeReaction();
+
+    // After all sounds have faded out we stop playing and unload
+    return this.fadeTo(0).then((sounds) => {
+      sounds.forEach((sound) => {
+        sound.stop();
+        sound.unload();
+      });
+    });
+  }
+
+  private fadeTo (targetVolume?: number) {
     const sounds = [this.baseSound, ...this.osSounds];
     const initialVolumes = [this.definition.base, ...this.definition.os].map((def) => definedOr(def.volume, 1));
     const promises = sounds.map((sound, index) => {
@@ -109,36 +165,6 @@ export class AmbiencePlayer {
     });
 
     return Promise.all(promises).then(() => sounds);
-  }
-
-  queueNextOS () {
-    const timeout = 5000 + Math.random() * 10000;
-    setTimeout(() => this.isPlaying && this.playNextOS(), timeout);
-  }
-
-  playNextOS () {
-    const index = Math.floor(Math.random() * this.osSounds.length);
-    const os = this.osSounds[index];
-    os.once("end", () => this.isPlaying && this.queueNextOS());
-    os.play();
-  }
-
-  stop () {
-    if (!this.isPlaying) {
-      return Promise.resolve();
-    }
-
-    // Set as not playing immediately to avoid OS timeouts
-    // to trigger asynchronously while we're fading out
-    this.isPlaying = false;
-
-    // After all sounds have faded out we stop playing and unload
-    return this.fadeTo(0).then((sounds) => {
-      sounds.forEach((sound) => {
-        sound.stop();
-        sound.unload();
-      });
-    });
   }
 }
 

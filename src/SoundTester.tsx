@@ -78,7 +78,7 @@ export class SoundTester extends React.Component {
       ),
       reaction(
         () => this.isAmbienceVolumeLowered,
-        (isVolumeLowered) => ambienceController.setVolume(isVolumeLowered ? 0.5 : undefined),
+        (isVolumeLowered) => ambienceController.muffle(isVolumeLowered),
         true
       )
     ];
