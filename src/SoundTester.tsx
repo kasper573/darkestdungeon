@@ -86,6 +86,7 @@ export class SoundTester extends React.Component {
 
   componentWillUnmount () {
     this.reactionDisposers.forEach((dispose) => dispose());
+    ambienceController.deactivate();
   }
 
   render () {
