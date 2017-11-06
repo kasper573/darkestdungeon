@@ -1,39 +1,26 @@
 {
-  "extends": "tslint:latest",
+  "extends": ["tslint:latest", "tslint-react"],
   "rules": {
-    "no-var-requires": false,
     "no-submodule-imports": false,
+    "no-var-requires": false,
     "no-default-export": true,
-    "restrict-plus-operands": true,
-    "strict-boolean-expressions": true,
-    "no-trailing-whitespace": false,
-    "object-literal-key-quotes": false,
-
-    "jsx-alignment": true,
-    "jsx-boolean-value": true,
-    "jsx-curly-spacing": [true, "never"],
-    "jsx-equals-spacing": [true, "never"],
-    "jsx-key": true,
-    "jsx-no-bind": true,
-    "jsx-no-lambda": true,
-    "jsx-no-multiline-js": true,
-    "jsx-no-string-ref": true,
-    "jsx-self-close": true,
-    "jsx-wrap-multiline": true,
-
-    "no-implicit-dependencies": false,
-    "no-empty": false,
-    "comment-format": false,
-    "interface-name": false,
-    "member-ordering": false,
-    "indent": [true, "spaces", 4],
-    "trailing-comma": false,
-    "member-access": false,
-    "space-before-function-paren": true,
     "ordered-imports": false,
-    "object-literal-sort-keys": false,
+    
     "max-classes-per-file": false,
     "no-console": false,
-    "forin": false
+    "restrict-plus-operands": true,
+    "strict-boolean-expressions": true,
+    "member-access": false,
+    "member-ordering": false,
+
+    "space-before-function-paren": true,
+    "trailing-comma": false,
+    "no-empty": false,
+    "comment-format": false,
+    "indent": [true, "spaces", 4],
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": false,
+
+    "jsx-no-lambda": false
   }
 }

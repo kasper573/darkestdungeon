@@ -20,8 +20,11 @@ This project is purely for fun and educational purposes, not to create a competi
 
 ## Getting started
 
+> You need to own and have a local installation of Darkest Dungeon on your device. This is because this project relies on assets imported from Darkest Dungeon. If you do not own Darkest Dungeon you will need to modify this project with your own assets.
+
 - Install [npm](https://www.npmjs.com) on your machine
 - Clone this repository
 - Run `npm install` in the project root folder
+- Run `node .\dev\importAssetsFromDD.js <path-to-steam-directory>`
 - Run `npm run dev-server` in the project root folder
 - Visit `localhost:8080` in your browser
