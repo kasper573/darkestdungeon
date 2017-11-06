@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {Howl} from "howler";
-import {AmbienceController, AmbienceDefinition} from "./AmbienceController";
+import {AmbienceState, AmbienceDefinition} from "./AmbienceState";
 
 class BuildingInfo {
   constructor (
@@ -30,7 +30,7 @@ const barks = [
   "+++Divide By Cucumber Error. Please Reinstall Universe And Reboot +++"
 ];
 
-const ambienceController = new AmbienceController({
+const ambienceController = new AmbienceState({
   "town": new AmbienceDefinition(
     {src: require("../assets/dd/audio/amb_town_gen_base.wav")},
     [
@@ -158,7 +158,7 @@ class BarkBubble extends React.Component {
   static fadeTime = 250;
   static finishWaitTimePerWord = 250;
   static letterInterval = 70;
-  static letterSound = new Howl({src: [require("../assets/dd/audio/ui_shr_text_loop.wav")], volume: 0.25});
+  static letterSound = new Howl({src: [require("../assets/dd/audio/ui_shr_text_loop.wav")]});
   static popupSound = new Howl({src: [require("../assets/dd/audio/ui_shr_text_popup.wav")]});
 
   bark (text: string) {
