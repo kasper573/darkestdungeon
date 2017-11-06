@@ -1,1 +1,2 @@
 require("./rAF");
+require("./howlerVolumePatch");

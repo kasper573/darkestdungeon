@@ -1,12 +1,16 @@
 import * as React from "react";
 import {TitleHeader} from "./TitleHeader";
 import {css, StyleSheet} from "aphrodite";
+import {SoundTester} from "./SoundTester";
 
 export class App extends React.Component {
   render () {
     return (
       <div className={css(styles.base)}>
         <TitleHeader/>
+        <div className={css(styles.content)}>
+          <SoundTester/>
+        </div>
       </div>
     );
   }
@@ -21,5 +25,9 @@ const styles = StyleSheet.create({
     color: "white",
     overflow: "hidden",
     padding: "1vw 1vh"
+  },
+
+  content: {
+    flex: 1
   }
 });
