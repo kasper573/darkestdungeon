@@ -1,6 +1,6 @@
 import {autorun, IReactionDisposer, observable} from "mobx";
 
-export class AmbienceController {
+export class AmbienceState {
   private player: AmbiencePlayer;
   private positions: {[key: string]: number} = {};
   private currentId: string;
