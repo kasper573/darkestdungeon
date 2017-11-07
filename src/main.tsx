@@ -1,15 +1,19 @@
+import "./reset.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as WebFontLoader from "webfontloader";
 import {css, StyleSheet} from "aphrodite";
-import {App} from "./App";
-const TWEEN = require("tween.js");
+import {Router} from "./Router";
+import {fonts} from "../assets/fonts";
+import {AppState} from "./AppState";
 const {AppContainer} = require("react-hot-loader");
+const TWEEN = require("tween.js");
 const Stats = require("stats.js");
 
+// Set up application state
+const state = new AppState();
+
 // Set up basic styling
-import "./reset.css";
-import {fonts} from "../assets/fonts";
 WebFontLoader.load({google: {families: Object.values(fonts)}});
 
 // Set up TWEEN
@@ -46,21 +50,21 @@ stats.dom.style.left = "";
 function render (Component: any) {
   ReactDOM.render(
     <AppContainer>
-      <Component />
+      <Component state={state}/>
     </AppContainer>,
     rootEl
   );
 }
 
+render(Router);
+
 document.body.appendChild(rootEl);
 document.body.appendChild(stats.dom);
 
-render(App);
-
 // Set up HMR
 if ((module as any).hot) {
-  (module as any).hot.accept("./App", () => {
-    const NextApp = require<{App: typeof App}>("./App").App;
+  (module as any).hot.accept("./Router", () => {
+    const NextApp = require<{Router: typeof Router}>("./Router").Router;
     render(NextApp);
   });
 }
