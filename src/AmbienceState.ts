@@ -1,7 +1,7 @@
 import {autorun, IReactionDisposer, observable} from "mobx";
 
 export class AmbienceState {
-  private player: AmbiencePlayer;
+  private player?: AmbiencePlayer;
   private positions: {[key: string]: number} = {};
   private currentId: string;
 
@@ -21,7 +21,7 @@ export class AmbienceState {
 
     // Ignore recurring activations of the same ambience
     id = lookupResult.id;
-    if (id === this.currentId) {
+    if (id === this.currentId && this.player) {
       console.log("Ignoring ambience activation: ", id);
       return;
     }
@@ -43,7 +43,9 @@ export class AmbienceState {
   }
 
   muffle (isMuffled: boolean) {
-    this.player.muffle(isMuffled);
+    if (this.player) {
+      this.player.muffle(isMuffled);
+    }
   }
 
   private performLookup (id: string) {
