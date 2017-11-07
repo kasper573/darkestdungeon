@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
-import {IReactionDisposer, observable, reaction} from "mobx";
+import {autorun, IReactionDisposer, observable} from "mobx";
 import {Howl} from "howler";
 import {AmbienceState, AmbienceDefinition} from "./AmbienceState";
 
@@ -69,18 +69,12 @@ export class SoundTester extends React.Component {
   }
 
   componentWillMount () {
-    // Change to ambience of activeBuildingId whenever it changes
+    // Change ambience or muffle state whenever we need to
     this.reactionDisposers = [
-      reaction(
-        () => this.activeBuildingId,
-        (buildingId) => ambienceController.activate(buildingId),
-        true
-      ),
-      reaction(
-        () => this.isAmbienceVolumeLowered,
-        (isVolumeLowered) => ambienceController.muffle(isVolumeLowered),
-        true
-      )
+      autorun(() => {
+        ambienceController.activate(this.activeBuildingId);
+        ambienceController.muffle(this.isAmbienceVolumeLowered);
+      })
     ];
   }
 
