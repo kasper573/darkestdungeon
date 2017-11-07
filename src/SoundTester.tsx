@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
 import {autorun, IReactionDisposer, observable} from "mobx";
 import {Howl} from "howler";
-import {AmbienceState, AmbienceDefinition} from "./AmbienceState";
+import {AppState} from "./AppState";
 
 class BuildingInfo {
   constructor (
@@ -30,31 +30,8 @@ const barks = [
   "+++Divide By Cucumber Error. Please Reinstall Universe And Reboot +++"
 ];
 
-const ambienceController = new AmbienceState({
-  "town": new AmbienceDefinition(
-    {src: require("../assets/dd/audio/amb_town_gen_base.wav")},
-    [
-      {src: require("../assets/dd/audio/amb_town_gen_base_os_01.wav")},
-      {src: require("../assets/dd/audio/amb_town_gen_base_os_02.wav")},
-      {src: require("../assets/dd/audio/amb_town_gen_base_os_03.wav")}
-    ]
-  ),
-  "coach": "town",
-  "tavern": new AmbienceDefinition(
-    {src: require("../assets/dd/audio/amb_town_tavern.wav")},
-    [
-      {src: require("../assets/dd/audio/amb_town_tavern_os_bar_01.wav")},
-      {src: require("../assets/dd/audio/amb_town_tavern_os_bar_02.wav")},
-      {src: require("../assets/dd/audio/amb_town_tavern_os_bar_03.wav")},
-      {src: require("../assets/dd/audio/amb_town_tavern_os_chair_01.wav")},
-      {src: require("../assets/dd/audio/amb_town_tavern_os_chair_02.wav")},
-      {src: require("../assets/dd/audio/amb_town_tavern_os_chair_03.wav")}
-    ]
-  ),
-});
-
 @observer
-export class SoundTester extends React.Component {
+export class SoundTester extends React.Component<{state: AppState}> {
   static defaultBuildingId = "town";
 
   @observable private activeBuildingId = SoundTester.defaultBuildingId;
@@ -72,15 +49,15 @@ export class SoundTester extends React.Component {
     // Change ambience or muffle state whenever we need to
     this.reactionDisposers = [
       autorun(() => {
-        ambienceController.activate(this.activeBuildingId);
-        ambienceController.muffle(this.isAmbienceVolumeLowered);
+        this.props.state.ambience.activate(this.activeBuildingId);
+        this.props.state.ambience.muffle(this.isAmbienceVolumeLowered);
       })
     ];
   }
 
   componentWillUnmount () {
     this.reactionDisposers.forEach((dispose) => dispose());
-    ambienceController.deactivate();
+    this.props.state.ambience.deactivate();
   }
 
   render () {
