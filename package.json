@@ -43,6 +43,7 @@
   },
   "scripts": {
     "dev-server": "webpack-dev-server --host 0.0.0.0 --env.hmr --env.sourceMaps",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint --project tsconfig.json --config tslint.json"
   }
 }
