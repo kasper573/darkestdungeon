@@ -8,6 +8,7 @@ import {DevTools} from "./DevTools";
 import {ambienceDefinitions, routes} from "./config";
 import {AmbienceState} from "./AmbienceState";
 import {RouterState} from "./RouterState";
+import {MusicState} from "./MusicState";
 
 @observer
 export class Router extends React.Component<{state: AppState}> {
@@ -15,7 +16,8 @@ export class Router extends React.Component<{state: AppState}> {
     // HACK This will make testing problematic
     this.props.state.initialize(
       new RouterState(routes, "start"),
-      new AmbienceState(ambienceDefinitions)
+      new AmbienceState(ambienceDefinitions),
+      new MusicState()
     );
   }
 

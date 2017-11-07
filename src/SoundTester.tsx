@@ -30,6 +30,14 @@ const barks = [
   "+++Divide By Cucumber Error. Please Reinstall Universe And Reboot +++"
 ];
 
+const estateTrack = {
+  src: require("../assets/dd/audio/mus_town_stemmed.wav")
+};
+
+const dungeonTrack = {
+  src: require("../assets/dd/audio/Explore_Vaults_Level_1_Loop.wav")
+};
+
 @observer
 export class SoundTester extends React.Component<{state: AppState}> {
   static defaultBuildingId = "town";
@@ -58,6 +66,7 @@ export class SoundTester extends React.Component<{state: AppState}> {
   componentWillUnmount () {
     this.reactionDisposers.forEach((dispose) => dispose());
     this.props.state.ambience.deactivate();
+    this.props.state.music.stop();
   }
 
   render () {
@@ -77,6 +86,12 @@ export class SoundTester extends React.Component<{state: AppState}> {
         <ul className={css(styles.buildingRow)}>
           {buildingElements}
         </ul>
+        <div style={{flexDirection: "row"}}>
+          <span>Music: </span>
+          <button onClick={() => this.props.state.music.play(estateTrack)}>Estate</button>
+          <button onClick={() => this.props.state.music.play(dungeonTrack)}>Vaults</button>
+          <button onClick={() => this.props.state.music.stop()}>None</button>
+        </div>
         <button onClick={() => this.isAmbienceVolumeLowered = !this.isAmbienceVolumeLowered}>
           Toggle ambience volume
         </button>
