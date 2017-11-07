@@ -9,6 +9,10 @@ import {ambienceDefinitions, routes} from "./config";
 import {AmbienceState} from "./AmbienceState";
 import {RouterState} from "./RouterState";
 import {MusicState} from "./MusicState";
+import {TransitionGroup} from "react-transition-group";
+import Transition from "react-transition-group/Transition";
+
+const transitionDuration = 500;
 
 @observer
 export class Router extends React.Component<{state: AppState}> {
@@ -23,16 +27,38 @@ export class Router extends React.Component<{state: AppState}> {
 
   render () {
     const state = this.props.state;
-    const routeElement = React.createElement(state.router.component, {state});
+    const content = React.createElement(state.router.component, {state});
 
     return (
       <div className={css(styles.base)}>
-        {routeElement}
+        <TransitionGroup className={css(styles.transitionGroup)}>
+          {[
+            <Screen key={state.router.location}>
+              {content}
+            </Screen>
+          ]}
+        </TransitionGroup>
         <DevTools router={state.router}/>
       </div>
     );
   }
 }
+
+const screenStates: {[key: string]: number} = {
+  entering: 0,
+  entered: 1
+};
+
+const Screen = ({children, ...props}: any) => (
+  <Transition {...props} timeout={transitionDuration}>
+    {(state: string) => (
+      <div className={css(styles.screen)}
+           style={{opacity: screenStates[state] || 0}}>
+        {children}
+      </div>
+    )}
+  </Transition>
+);
 
 const styles = StyleSheet.create({
   base: {
@@ -42,5 +68,16 @@ const styles = StyleSheet.create({
     background: "black",
     color: "white",
     overflow: "hidden"
+  },
+
+  transitionGroup: {
+    flex: 1,
+    position: "relative",
+  },
+
+  screen: {
+    position: "absolute",
+    top: 0, right: 0, bottom: 0, left: 0,
+    transition: `opacity ${transitionDuration}ms ease-in-out`
   }
 });
