@@ -12,15 +12,19 @@
     "strict-boolean-expressions": true,
     "member-access": false,
     "member-ordering": false,
+    "forin": false,
 
     "space-before-function-paren": true,
     "trailing-comma": false,
     "no-empty": false,
     "comment-format": false,
-    "indent": [true, "spaces", 4],
+    "indent": [true, "spaces", 2],
+    "max-line-length": [true, 120],
     "object-literal-sort-keys": false,
     "object-literal-key-quotes": false,
 
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "jsx-alignment": false,
+    "jsx-no-multiline-js": false
   }
 }
