@@ -2,8 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const {split_fsb, extract_fsb, clean_audio_names} = require("darkest_dungeon_tools");
 
-if (process.argv.length < 3)
-{
+if (process.argv.length < 3) {
   console.log("Too few arguments!");
   console.log("Usage:", process.argv.join(" "), "STEAM_FOLDER");
 
@@ -27,7 +26,7 @@ if (!fs.existsSync(folders.dd)) {
 
 importAudio(
   getAudioBankNames({
-    secondary_banks: ["ambience", "town", "ui_shared", "ui_town"]
+    secondary_banks: ["ambience", "town", "ui_shared", "ui_town", "music"]
   })
 );
 
