@@ -35,6 +35,9 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     min-width: 0;
+
+    user-select: none;
+    cursor: default;
 }
 
 html, body {
