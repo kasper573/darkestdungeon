@@ -12,13 +12,16 @@ const transitionDuration = 500;
 export class Router extends React.Component<{state: AppState}> {
   render () {
     const state = this.props.state;
-    const content = React.createElement(state.router.component, {state});
+    const content = React.createElement(
+      state.router.component,
+      {state, ...state.router.location.args}
+    );
 
     return (
       <div className={css(styles.container)}>
         <TransitionGroup className={css(styles.transitionGroup)}>
           {[
-            <Screen key={state.router.location}>
+            <Screen key={state.router.location.path}>
               {content}
             </Screen>
           ]}
