@@ -22,7 +22,6 @@ export class AmbienceState {
     // Ignore recurring activations of the same ambience
     id = lookupResult.id;
     if (id === this.currentId && this.player) {
-      console.log("Ignoring ambience activation: ", id);
       return;
     }
 
@@ -31,7 +30,6 @@ export class AmbienceState {
     this.currentId = id;
     this.player = new AmbiencePlayer(lookupResult.definition);
     this.player.play(this.positions[id] || 0);
-    console.log("Ambience changed to: ", id);
   }
 
   deactivate () {
