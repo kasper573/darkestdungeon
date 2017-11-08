@@ -1,38 +1,48 @@
 import * as React from "react";
-import {RouterState} from "./RouterState";
 import {css, StyleSheet} from "aphrodite";
+import {AppState} from "./AppState";
+import {Stats} from "./Stats";
 
-export class DevTools extends React.Component<{router: RouterState}> {
+export class DevTools extends React.Component<{state: AppState}> {
   render () {
-    const router = this.props.router;
-    const links = [];
+    const state = this.props.state;
+    const router = state.router;
+    const pathOptions = [];
     for (const path of router.routes.keys()) {
-      links.push(
-        <li key={path}
-            onClick={() => router.goto(path)}
-            className={css(styles.link)}>
-          {path}
-        </li>
+      pathOptions.push(
+        <option key={path} value={path}>{path}</option>
       );
     }
 
     return (
-      <ul className={css(styles.container)}>
-        {links}
-      </ul>
+      <div className={css(styles.container)}>
+        <select className={css(styles.paths)} onChange={(e) => this.onPathChanged(e)}>
+          {pathOptions}
+        </select>
+        {!state.isRunningJest && <Stats/>}
+      </div>
     );
+  }
+
+  onPathChanged (e: React.ChangeEvent<HTMLSelectElement>) {
+    this.props.state.router.goto(e.target.value);
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    bottom: "1vw",
-    left: "1vw",
+    height: 48,
     flexDirection: "row"
   },
 
-  link: {
-    marginRight: "1vw"
+  paths: {
+    flex: 1,
+    flexDirection: "row"
+  },
+
+  path: {
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

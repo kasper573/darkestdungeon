@@ -14,6 +14,8 @@ describe("Router", () => {
   for (const path in routes) {
     it (`renders "${path}" without errors`, () => {
       const state = new AppState();
+
+      state.isRunningJest = true;
       state.initialize(new RouterState(routes), null, null, new PopupState());
       state.router.goto(path);
 

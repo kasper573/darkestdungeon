@@ -8,7 +8,6 @@ import {AppState} from "./AppState";
 import {App} from "./App";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
-const Stats = require("stats.js");
 
 // Set up application state
 const state = new AppState();
@@ -17,12 +16,9 @@ const state = new AppState();
 WebFontLoader.load({google: {families: Object.values(fonts)}});
 
 // Set up TWEEN
-const stats = new Stats();
 requestAnimationFrame(animate);
 function animate (time: number) {
-  stats.begin();
   TWEEN.update(time);
-  stats.end();
   requestAnimationFrame(animate);
 }
 
@@ -41,12 +37,6 @@ const styles = StyleSheet.create({
 const rootEl = document.createElement("div");
 rootEl.className = css(styles.root);
 
-// Set up stats.js panel in the lower right
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-stats.dom.className = css(styles.stats);
-stats.dom.style.top = "";
-stats.dom.style.left = "";
-
 function render (Component: any) {
   ReactDOM.render(
     <AppContainer>
@@ -59,7 +49,6 @@ function render (Component: any) {
 render(App);
 
 document.body.appendChild(rootEl);
-document.body.appendChild(stats.dom);
 
 // Set up HMR
 if ((module as any).hot) {
