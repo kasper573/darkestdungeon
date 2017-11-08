@@ -6,14 +6,18 @@ import {computed, observable, transaction} from "mobx";
 import {observer} from "mobx-react";
 import {SizeObserver} from "./SizeObserver";
 import {Size} from "./Bounds";
+import {UIState} from "./UIState";
 
 @observer
-export class Popup extends React.Component<{handle: PopupHandle}> {
+export class Popup extends React.Component<{
+  handle: PopupHandle,
+  uiState: UIState
+}> {
   @observable private contentWidth: number = 0;
   @observable private contentHeight: number = 0;
 
   @computed get alignedPosition () {
-    const p = this.props.handle.position;
+    const p = this.props.handle.position || this.props.uiState.centerPosition;
     switch (this.props.handle.align) {
       case PopupAlign.Top:
         return {
@@ -75,6 +79,7 @@ export class Popup extends React.Component<{handle: PopupHandle}> {
 
 const styles = StyleSheet.create({
   container: {
-    position: "fixed"
+    position: "fixed",
+    pointerEvents: "all"
   }
 });

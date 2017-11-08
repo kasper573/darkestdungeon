@@ -10,8 +10,8 @@ export class PopupState {
 
   show <P> (
     content: PopupContent<P>,
-    align: PopupAlign,
-    position: Point
+    align?: PopupAlign,
+    position?: Point
   ): PopupHandle<P> {
     const popup = new PopupHandle<P>(content, align, position, this);
     this.map.set(popup.id, popup);
@@ -30,11 +30,11 @@ export class PopupState {
 let idCounter = 0;
 export class PopupHandle<P = {}> {
   public id: PopupId;
-  @observable public position: Point;
+  @observable public position?: Point;
 
   constructor (
     public content: PopupContent<P>,
-    public align: PopupAlign,
+    public align: PopupAlign = PopupAlign.Center,
     position: Point,
     private state: PopupState
   ) {

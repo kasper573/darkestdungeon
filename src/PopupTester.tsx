@@ -12,7 +12,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
 
   render () {
     const placementInfo = this.popupQueue.length > 0 && (
-      "Click to place popup"
+      "Click to place popup. Ctrl+click for default position."
     );
 
     const placementButtons = Object.values(PopupAlign)
@@ -62,7 +62,8 @@ export class PopupTester extends React.Component<{state: AppState}> {
   pop (e: React.MouseEvent<HTMLDivElement>) {
     if (this.popupQueue.length > 0) {
       const [content, align] = this.popupQueue.shift();
-      this.props.state.popups.show(content, align, {x: e.clientX, y: e.clientY});
+      const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
+      this.props.state.popups.show(content, align, position);
     }
   }
 }
