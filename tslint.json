@@ -24,6 +24,7 @@
     "max-line-length": [true, 120],
     "object-literal-sort-keys": false,
     "object-literal-key-quotes": false,
+    "no-trailing-whitespace": false,
 
     "jsx-no-lambda": false,
     "jsx-alignment": false,
