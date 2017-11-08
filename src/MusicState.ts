@@ -5,7 +5,6 @@ export class MusicState {
     const id = MusicState.getHowlId(track);
 
     if (this.fader && this.fader.id === id) {
-      console.log("Ignoring music track (Same track received)");
       return;
     }
 
@@ -13,7 +12,6 @@ export class MusicState {
 
     this.fader = new Fader(track);
     this.fader.play();
-    console.log("Playing new music track: ", id);
   }
 
   stop () {
