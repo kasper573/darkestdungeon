@@ -1,5 +1,7 @@
 import {computed, observable, transaction} from "mobx";
 
+export type PathTypes = Path | string;
+
 export class RouterState  {
   @observable private history: Path[] = [];
   @observable private currentIndex: number = -1;
@@ -35,15 +37,9 @@ export class RouterState  {
     this.routes.delete(name);
   }
 
-  goto (path: Path | string) {
-    if (typeof path === "string") {
-      path = new Path(path);
-    }
-    if (!path) {
-      path = new Path("");
-    }
-
-    if ((path as Path).equals(this.path)) {
+  goto (possiblePath: PathTypes) {
+    const path = ensurePath(possiblePath);
+    if (path.equals(this.path)) {
       return;
     }
 
@@ -83,7 +79,8 @@ export class Path {
     public args: any = {}
   ) {}
 
-  equals (other: Path) {
+  equals (possibleOther: PathTypes) {
+    const other = ensurePath(possibleOther);
     return other && other.value === this.value &&
       JSON.stringify(other.args) === JSON.stringify(this.args);
   }
@@ -91,4 +88,14 @@ export class Path {
   toString () {
     return this.value;
   }
+}
+
+function ensurePath (path: PathTypes): Path {
+  if (typeof path === "string") {
+    return new Path(path);
+  }
+  if (!path) {
+    return new Path("");
+  }
+  return path as Path;
 }
