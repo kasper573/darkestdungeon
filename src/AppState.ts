@@ -12,6 +12,8 @@ export class AppState {
   public music: MusicState;
   public popups: PopupState;
 
+  public isRunningJest: boolean; // HACK ugly workaround
+
   initialize (
     router: RouterState,
     ambience: AmbienceState,

@@ -2,7 +2,6 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {AppState} from "./AppState";
 import {observer} from "mobx-react";
-import {DevTools} from "./DevTools";
 import {TransitionGroup} from "react-transition-group";
 import Transition from "react-transition-group/Transition";
 
@@ -26,7 +25,6 @@ export class Router extends React.Component<{state: AppState}> {
             </Screen>
           ]}
         </TransitionGroup>
-        <DevTools router={state.router}/>
       </div>
     );
   }

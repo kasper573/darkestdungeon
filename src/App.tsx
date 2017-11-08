@@ -9,6 +9,7 @@ import {RouterState} from "./RouterState";
 import {ambienceDefinitions, routes} from "./config";
 import {PopupState} from "./PopupState";
 import {observer} from "mobx-react";
+import {DevTools} from "./DevTools";
 
 @observer
 export class App extends React.Component<{state: AppState}> {
@@ -24,21 +25,30 @@ export class App extends React.Component<{state: AppState}> {
 
   render () {
     return (
-      <div className={css(styles.container)}>
-        <Router state={this.props.state}/>
-        <Popups state={this.props.state.popups}/>
+      <div className={css(styles.app)}>
+        <div className={css(styles.game)}>
+          <Router state={this.props.state}/>
+          <Popups state={this.props.state.popups}/>
+        </div>
+        <DevTools state={this.props.state}/>
       </div>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     fontFamily: "Ubuntu",
     width: "100%",
     height: "100%",
-    background: "black",
-    color: "white",
+    background: "#999",
     overflow: "hidden"
+  },
+
+  game: {
+    flex: 1,
+    overflow: "hidden",
+    background: "black",
+    color: "white"
   }
 });
