@@ -2,12 +2,14 @@ import {Start} from "./Start";
 import {Loading} from "./Loading";
 import {SoundTester} from "./SoundTester";
 import {AmbienceDefinition} from "./AmbienceState";
+import {PopupTester} from "./PopupTester";
 
 // The map of all screens available in the game, mapped to their route name.
 export const routes = {
   "start": Start,
   "loading": Loading,
-  "soundTester": SoundTester
+  "soundTester": SoundTester,
+  "popupTester": PopupTester
 };
 
 export const ambienceDefinitions = {

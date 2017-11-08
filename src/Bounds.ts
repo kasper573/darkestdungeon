@@ -1,3 +1,13 @@
+export type Point = {
+  x: number,
+  y: number
+};
+
+export type Size = {
+  width: number,
+  height: number
+};
+
 export class Bounds {
   constructor (
     public x = 0,
