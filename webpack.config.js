@@ -48,7 +48,7 @@ module.exports = function (env = {}) {
           loaders: ["style-loader", "css-loader"]
         },
         {
-          test: /\.(png|wav)$/,
+          test: /\.(png|jpe?g|wav)$/,
           exclude: /node_modules/,
           use: [
             {
