@@ -1,30 +1,28 @@
 import {computed, observable, transaction} from "mobx";
 
-type RoutePath = string;
-
 export class RouterState  {
-  @observable private history: Location[] = [];
+  @observable private history: Path[] = [];
   @observable private currentIndex: number = -1;
 
-  @observable public routes = new Map<RoutePath, any>();
+  @observable public routes = new Map<string, any>();
 
-  @computed get location () {
+  @computed get path () {
     return this.history.length > 0 ?
       this.history[this.currentIndex] :
       undefined;
   }
 
   @computed get component () {
-    return this.routes.get(this.location.path) || (() => `No route exists for location "${this.location}"`);
+    return this.routes.get(this.path.value) || (() => `No route exists for path "${this.path}"`);
   }
 
-  constructor (routes: {[key: string]: any}, startLocation?: string) {
+  constructor (routes: {[key: string]: any}, startPath?: string) {
     transaction(() => {
       for (const key in routes) {
         this.addRoute(key, routes[key]);
       }
-      if (startLocation) {
-        this.gotoLocation(startLocation);
+      if (startPath) {
+        this.goto(startPath);
       }
     });
   }
@@ -37,12 +35,15 @@ export class RouterState  {
     this.routes.delete(name);
   }
 
-  gotoLocation (location: Location | string) {
-    if (typeof location === "string") {
-      location = new Location(location);
+  goto (path: Path | string) {
+    if (typeof path === "string") {
+      path = new Path(path);
+    }
+    if (!path) {
+      path = new Path("");
     }
 
-    if ((location as Location).equals(this.location)) {
+    if ((path as Path).equals(this.path)) {
       return;
     }
 
@@ -53,8 +54,8 @@ export class RouterState  {
         this.history.splice(this.currentIndex + 1);
       }
 
-      // Add new location and move to it
-      this.history.push(location as Location);
+      // Add new path and move to it
+      this.history.push(path as Path);
       this.currentIndex++;
     });
   }
@@ -76,18 +77,18 @@ export class RouterState  {
   }
 }
 
-export class Location {
+export class Path {
   constructor (
-    public path: RoutePath,
+    public value: string,
     public args: any = {}
   ) {}
 
-  equals (other: Location) {
-    return other && other.path === this.path &&
+  equals (other: Path) {
+    return other && other.value === this.value &&
       JSON.stringify(other.args) === JSON.stringify(this.args);
   }
 
   toString () {
-    return this.path;
+    return this.value;
   }
 }

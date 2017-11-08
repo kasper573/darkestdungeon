@@ -14,14 +14,14 @@ export class Router extends React.Component<{state: AppState}> {
     const state = this.props.state;
     const content = React.createElement(
       state.router.component,
-      {state, ...state.router.location.args}
+      {state, ...state.router.path.args}
     );
 
     return (
       <div className={css(styles.container)}>
         <TransitionGroup className={css(styles.transitionGroup)}>
           {[
-            <Screen key={state.router.location.path}>
+            <Screen key={state.router.path.value}>
               {content}
             </Screen>
           ]}

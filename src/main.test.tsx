@@ -11,11 +11,11 @@ describe("Router", () => {
   beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
   afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
 
-  for (const location in routes) {
-    it (`renders "${location}" without errors`, () => {
+  for (const path in routes) {
+    it (`renders "${path}" without errors`, () => {
       const state = new AppState();
       state.initialize(new RouterState(routes), null, null, new PopupState());
-      state.router.gotoLocation(location);
+      state.router.goto(path);
 
       TestUtils.renderIntoDocument(<App state={state} />);
       state.dispose();
