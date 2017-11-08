@@ -3,11 +3,21 @@ import {Loading} from "./Loading";
 import {SoundTester} from "./SoundTester";
 import {AmbienceDefinition} from "./AmbienceState";
 import {PopupTester} from "./PopupTester";
+import {EstateOverview} from "./EstateOverview";
+import {EstateDungeons} from "./EstateDungeons";
+import {EstateProvision} from "./EstateProvision";
+import {Dungeon} from "./Dungeon";
+import {DungeonResult} from "./DungeonResult";
 
 // The map of all screens available in the game, mapped to their route name.
 export const routes = {
   "start": Start,
   "loading": Loading,
+  "estateOverview": EstateOverview,
+  "estateDungeons": EstateDungeons,
+  "estateProvision": EstateProvision,
+  "dungeon": Dungeon,
+  "dungeonResult": DungeonResult,
   "soundTester": SoundTester,
   "popupTester": PopupTester
 };

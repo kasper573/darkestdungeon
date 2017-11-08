@@ -11,10 +11,11 @@ const transitionDuration = 500;
 export class Router extends React.Component<{state: AppState}> {
   render () {
     const state = this.props.state;
-    const content = React.createElement(
-      state.router.component,
-      {state, ...state.router.path.args}
-    );
+    const content = React.createElement(state.router.component, {
+      state,
+      path: state.router.path,
+      ...state.router.path.args
+    });
 
     return (
       <div className={css(styles.container)}>
