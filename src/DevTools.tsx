@@ -4,6 +4,8 @@ import {AppState} from "./AppState";
 import {Stats} from "./Stats";
 
 export class DevTools extends React.Component<{state: AppState}> {
+  pathSelect: HTMLSelectElement;
+
   render () {
     const state = this.props.state;
     const router = state.router;
@@ -16,16 +18,21 @@ export class DevTools extends React.Component<{state: AppState}> {
 
     return (
       <div className={css(styles.container)}>
-        <select className={css(styles.paths)} onChange={(e) => this.onPathChanged(e)}>
+        <select ref={(node) => this.pathSelect = node}
+                className={css(styles.paths)}
+                onChange={() => this.gotoSelectedPath()}>
           {pathOptions}
         </select>
+        <button style={{width: 50}} onClick={() => this.gotoSelectedPath()}>
+          Go
+        </button>
         {!state.isRunningJest && <Stats/>}
       </div>
     );
   }
 
-  onPathChanged (e: React.ChangeEvent<HTMLSelectElement>) {
-    this.props.state.router.goto(e.target.value);
+  gotoSelectedPath () {
+    this.props.state.router.goto(this.pathSelect.value);
   }
 }
 
