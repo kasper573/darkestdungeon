@@ -6,12 +6,12 @@ export class DevTools extends React.Component<{router: RouterState}> {
   render () {
     const router = this.props.router;
     const links = [];
-    for (const location of router.routes.keys()) {
+    for (const path of router.routes.keys()) {
       links.push(
-        <li key={location}
-            onClick={() => router.gotoLocation(location)}
+        <li key={path}
+            onClick={() => router.goto(path)}
             className={css(styles.link)}>
-          {location}
+          {path}
         </li>
       );
     }

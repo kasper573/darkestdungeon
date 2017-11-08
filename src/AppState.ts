@@ -24,10 +24,10 @@ export class AppState {
     this.music = this.music || music;
     this.popups = this.popups || popups;
 
-    // Close all popups as soon as the location changes.
+    // Close all popups as soon as the path changes.
     // This avoids popups staying visible during screen transitions.
     this.reactionDisposers = [
-      reaction(() => this.router.location, () => this.popups.closeAll())
+      reaction(() => this.router.path, () => this.popups.closeAll())
     ];
   }
 
