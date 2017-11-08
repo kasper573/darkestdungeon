@@ -1,17 +1,10 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {SpriteInfo} from "../assets/SpriteInfo";
-import {Bounds} from "./Bounds";
+import {Bounds, Size} from "./Bounds";
+import {SizeObserver} from "./SizeObserver";
 const {Tween} = require("tween.js");
-
-// HACK we must use this method to make this work in nodejs for jest.
-// Using traditional import makes ResizeObserver become undefined some reason.
-let ResizeObserver = require("resize-observer-polyfill");
-if (typeof ResizeObserver !== "function") {
-  ResizeObserver = ResizeObserver.default;
-}
 
 @observer
 export class Sprite extends React.Component<
@@ -27,8 +20,6 @@ export class Sprite extends React.Component<
     autoPlay: true
   };
 
-  private domNode: Element;
-  private resizeObserver: any;
   private tween: any;
   private isPlaying: boolean;
 
@@ -36,11 +27,6 @@ export class Sprite extends React.Component<
   @observable private scaledSpriteBounds = new Bounds();
 
   componentDidMount () {
-    this.domNode = ReactDOM.findDOMNode(this);
-    this.updateBounds();
-    this.resizeObserver = new ResizeObserver(() => this.updateBounds());
-    this.resizeObserver.observe(this.domNode);
-
     if (this.props.autoPlay) {
       this.play();
     }
@@ -55,7 +41,6 @@ export class Sprite extends React.Component<
 
   componentWillUnmount () {
     this.tween.stop();
-    this.resizeObserver.unobserve(this.domNode);
   }
 
   stop () {
@@ -88,8 +73,8 @@ export class Sprite extends React.Component<
     });
   }
 
-  private updateBounds () {
-    const container = new Bounds(0, 0, this.domNode.clientWidth, this.domNode.clientHeight);
+  private updateBounds (size: Size) {
+    const container = new Bounds(0, 0, size.width, size.height);
     const spriteAspectRatio = this.props.frameSize.width / this.props.frameSize.height;
     this.scaledSpriteBounds = Bounds.fitRatio(container, spriteAspectRatio);
   }
@@ -122,6 +107,7 @@ export class Sprite extends React.Component<
         ...this.props.style
       }}>
         <div style={this.calculateStyle()}/>
+        <SizeObserver onSizeChanged={(size) => this.updateBounds(size)} />
       </div>
     );
   }

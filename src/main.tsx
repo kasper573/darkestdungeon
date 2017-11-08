@@ -3,9 +3,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as WebFontLoader from "webfontloader";
 import {css, StyleSheet} from "aphrodite";
-import {Router} from "./Router";
 import {fonts} from "../assets/fonts";
 import {AppState} from "./AppState";
+import {App} from "./App";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
 const Stats = require("stats.js");
@@ -56,15 +56,15 @@ function render (Component: any) {
   );
 }
 
-render(Router);
+render(App);
 
 document.body.appendChild(rootEl);
 document.body.appendChild(stats.dom);
 
 // Set up HMR
 if ((module as any).hot) {
-  (module as any).hot.accept("./Router", () => {
-    const NextApp = require<{Router: typeof Router}>("./Router").Router;
+  (module as any).hot.accept("./App", () => {
+    const NextApp = require<{App: typeof App}>("./App").App;
     render(NextApp);
   });
 }

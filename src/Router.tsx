@@ -3,12 +3,6 @@ import {css, StyleSheet} from "aphrodite";
 import {AppState} from "./AppState";
 import {observer} from "mobx-react";
 import {DevTools} from "./DevTools";
-
-// NOTE I'm not sure about this structure
-import {ambienceDefinitions, routes} from "./config";
-import {AmbienceState} from "./AmbienceState";
-import {RouterState} from "./RouterState";
-import {MusicState} from "./MusicState";
 import {TransitionGroup} from "react-transition-group";
 import Transition from "react-transition-group/Transition";
 
@@ -16,21 +10,12 @@ const transitionDuration = 500;
 
 @observer
 export class Router extends React.Component<{state: AppState}> {
-  componentWillMount () {
-    // HACK This will make testing problematic
-    this.props.state.initialize(
-      new RouterState(routes, "start"),
-      new AmbienceState(ambienceDefinitions),
-      new MusicState()
-    );
-  }
-
   render () {
     const state = this.props.state;
     const content = React.createElement(state.router.component, {state});
 
     return (
-      <div className={css(styles.base)}>
+      <div className={css(styles.container)}>
         <TransitionGroup className={css(styles.transitionGroup)}>
           {[
             <Screen key={state.router.location}>
@@ -44,11 +29,6 @@ export class Router extends React.Component<{state: AppState}> {
   }
 }
 
-const screenStates: {[key: string]: number} = {
-  entering: 0,
-  entered: 1
-};
-
 const Screen = ({children, ...props}: any) => (
   <Transition {...props} timeout={transitionDuration}>
     {(state: string) => (
@@ -60,14 +40,14 @@ const Screen = ({children, ...props}: any) => (
   </Transition>
 );
 
+const screenStates: {[key: string]: number} = {
+  entering: 0,
+  entered: 1
+};
+
 const styles = StyleSheet.create({
-  base: {
-    fontFamily: "Ubuntu",
-    width: "100%",
-    height: "100%",
-    background: "black",
-    color: "white",
-    overflow: "hidden"
+  container: {
+    flex: 1
   },
 
   transitionGroup: {
