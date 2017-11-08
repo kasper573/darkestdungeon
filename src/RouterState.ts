@@ -1,10 +1,12 @@
 import {computed, observable, transaction} from "mobx";
 
+type RoutePath = string;
+
 export class RouterState  {
-  @observable private history: string[] = [];
+  @observable private history: Location[] = [];
   @observable private currentIndex: number = -1;
 
-  @observable public routes = new Map<string, any>();
+  @observable public routes = new Map<RoutePath, any>();
 
   @computed get location () {
     return this.history.length > 0 ?
@@ -13,7 +15,7 @@ export class RouterState  {
   }
 
   @computed get component () {
-    return this.routes.get(this.location) || (() => `No route exists for location "${this.location}"`);
+    return this.routes.get(this.location.path) || (() => `No route exists for location "${this.location}"`);
   }
 
   constructor (routes: {[key: string]: any}, startLocation?: string) {
@@ -35,8 +37,12 @@ export class RouterState  {
     this.routes.delete(name);
   }
 
-  gotoLocation (location: string) {
-    if (this.location === location) {
+  gotoLocation (location: Location | string) {
+    if (typeof location === "string") {
+      location = new Location(location);
+    }
+
+    if ((location as Location).equals(this.location)) {
       return;
     }
 
@@ -48,7 +54,7 @@ export class RouterState  {
       }
 
       // Add new location and move to it
-      this.history.push(location);
+      this.history.push(location as Location);
       this.currentIndex++;
     });
   }
@@ -67,5 +73,21 @@ export class RouterState  {
     if (nextIndex >= 0 && lastIndex <= lastIndex) {
       this.currentIndex = nextIndex;
     }
+  }
+}
+
+export class Location {
+  constructor (
+    public path: RoutePath,
+    public args: any = {}
+  ) {}
+
+  equals (other: Location) {
+    return other && other.path === this.path &&
+      JSON.stringify(other.args) === JSON.stringify(this.args);
+  }
+
+  toString () {
+    return this.path;
   }
 }
