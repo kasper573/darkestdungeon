@@ -11,7 +11,7 @@ const transitionDuration = 500;
 export class Router extends React.Component<{state: AppState}> {
   render () {
     const state = this.props.state;
-    const content = React.createElement(state.router.component, {
+    const content = React.createElement(state.router.route.component, {
       state,
       path: state.router.path,
       ...state.router.path.args

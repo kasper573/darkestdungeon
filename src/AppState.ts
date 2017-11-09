@@ -1,4 +1,4 @@
-import {RouterState} from "./RouterState";
+import {Path, Route, RouterState} from "./RouterState";
 import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
@@ -32,16 +32,19 @@ export class AppState {
 
     // Composite state behavior
     this.reactionDisposers = [
-      reaction(() => this.router.path, (path) => {
-        // Close all popups as soon as the path changes.
-        // This avoids popups staying visible during screen transitions.
-        this.popups.closeAll();
+      reaction(
+        () => [this.router.path, this.router.route],
+        ([path, route]: [Path, Route]) => {
+          // Close all popups as soon as the path changes.
+          // This avoids popups staying visible during screen transitions.
+          this.popups.closeAll();
 
-        // Update memorized path for active profile
-        if (this.router.isRouteMemorable(path) && this.profiles.activeProfile) {
-          this.profiles.activeProfile.path = path;
+          // Update memorized path for active profile
+          if (route.isMemorable) {
+            this.profiles.activeProfile.path = path;
+          }
         }
-      })
+      )
     ];
   }
 

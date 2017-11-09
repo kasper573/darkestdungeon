@@ -6,7 +6,7 @@ export class RouterState  {
   @observable private history: Path[] = [];
   @observable private currentIndex: number = -1;
 
-  @observable public routes = new Map<string, any>();
+  @observable public routes = new Map<string, Route>();
 
   @computed get path () {
     return this.history.length > 0 ?
@@ -14,8 +14,8 @@ export class RouterState  {
       undefined;
   }
 
-  @computed get component () {
-    return this.routes.get(this.path.value) || (() => `No route exists for path "${this.path}"`);
+  @computed get route () {
+    return this.routes.get(this.path.value) || route404;
   }
 
   constructor (routes: {[key: string]: any}, startPath?: string) {
@@ -27,11 +27,6 @@ export class RouterState  {
         this.goto(startPath);
       }
     });
-  }
-
-  isRouteMemorable (path: Path) {
-    // TODO look up for route of path
-    return !(path.equals("start") || path.equals("loading"));
   }
 
   addRoute (name: string, component: any) {
@@ -78,6 +73,13 @@ export class RouterState  {
   }
 }
 
+export class Route {
+  constructor (
+    public component: any,
+    public isMemorable: boolean = true
+  ) {}
+}
+
 export class Path {
   constructor (
     public value: string,
@@ -104,3 +106,8 @@ function ensurePath (path: PathTypes): Path {
   }
   return path as Path;
 }
+
+const route404 = new Route(
+  ({path}: any) => `No route exists for path "${path}"`,
+  false
+);
