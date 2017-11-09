@@ -8,18 +8,19 @@ import {EstateDungeons} from "./EstateDungeons";
 import {EstateProvision} from "./EstateProvision";
 import {Dungeon} from "./Dungeon";
 import {DungeonResult} from "./DungeonResult";
+import {Route} from "./RouterState";
 
 // The map of all screens available in the game, mapped to their route name.
 export const routes = {
-  "start": Start,
-  "loading": Loading,
-  "estateOverview": EstateOverview,
-  "estateDungeons": EstateDungeons,
-  "estateProvision": EstateProvision,
-  "dungeon": Dungeon,
-  "dungeonResult": DungeonResult,
-  "soundTester": SoundTester,
-  "popupTester": PopupTester
+  "start": new Route(Start, false),
+  "loading": new Route(Loading, false),
+  "estateOverview": new Route(EstateOverview),
+  "estateDungeons": new Route(EstateDungeons),
+  "estateProvision": new Route(EstateProvision),
+  "dungeon": new Route(Dungeon),
+  "dungeonResult": new Route(DungeonResult),
+  "soundTester": new Route(SoundTester, false),
+  "popupTester": new Route(PopupTester, false)
 };
 
 export const ambienceDefinitions = {
