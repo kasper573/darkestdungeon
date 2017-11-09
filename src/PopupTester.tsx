@@ -1,6 +1,6 @@
 import * as React from "react";
 import {AppState} from "./AppState";
-import {PopupHandle, PopupAlign, PopupContent} from "./PopupState";
+import {PopupHandle, PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {css, StyleSheet} from "aphrodite";
 import {observable, transaction} from "mobx";
@@ -8,20 +8,25 @@ import {observer} from "mobx-react";
 
 @observer
 export class PopupTester extends React.Component<{state: AppState}> {
-  @observable popupQueue: Array<[PopupContent, PopupAlign]> = [];
+  @observable popupQueue: Array<[PopupContent, PopupAlign, ModalState]> = [];
 
-  render () {
-    const placementInfo = this.popupQueue.length > 0 && (
-      "Click to place popup. Ctrl+click for default position."
-    );
-
-    const placementButtons = Object.values(PopupAlign)
+  renderPlacementButtons (modalState: ModalState) {
+    return Object.values(PopupAlign)
       .filter((key) => typeof key === "string")
       .map((key) => (
-        <button key={key} onClick={() => this.push(<Anything/>, (PopupAlign as any)[key])}>
+        <button key={key} onClick={
+          (e: any) => {
+            e.stopPropagation();
+            this.push(<Anything/>, (PopupAlign as any)[key], modalState);
+          }
+        }>
           {key}
         </button>
       ));
+  }
+
+  render () {
+    const popups = this.props.state.popups;
 
     const tooltipAreas = Object.values(TooltipSide)
       .filter((key) => typeof key === "string")
@@ -29,41 +34,64 @@ export class PopupTester extends React.Component<{state: AppState}> {
         <TooltipArea
           key={key}
           className={css(styles.tooltipAreas)} side={(TooltipSide as any)[key]}
-          popups={this.props.state.popups} tip={<Anything/>}>
+          popups={popups} tip={<Anything/>}>
           {key}
         </TooltipArea>
       ));
 
     return (
-      <div className={css(styles.fill)}>
-        <h1>Popup Tester</h1>
+      <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
+        <div style={{flexDirection: "row"}}>
+          <TooltipArea
+            popups={popups} mouse={false} side={TooltipSide.Right}
+            show={this.popupQueue.length > 0}
+            tip="Click to place popup. Ctrl+click for default position.">
+            Modal Popups
+          </TooltipArea>
+          <div style={{flex: 1}}/>
+        </div>
         <br/>
         <div style={{flexDirection: "row"}}>
           <span>Align: </span>
-          {placementButtons}
-          {placementInfo}
+          {this.renderPlacementButtons(ModalState.Modal)}
         </div>
         <br/>
-        <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
-          <h1>Tooltips</h1>
-          <br/>
-          <div style={{flexDirection: "row"}}>
-            {tooltipAreas}
-          </div>
+
+        <h1>Modal Popups (dismissable)</h1>
+        <br/>
+        <div style={{flexDirection: "row"}}>
+          <span>Align: </span>
+          {this.renderPlacementButtons(ModalState.ModalDismiss)}
         </div>
+        <br/>
+
+        <h1>Opaque Popups</h1>
+        <br/>
+        <div style={{flexDirection: "row"}}>
+          <span>Align: </span>
+          {this.renderPlacementButtons(ModalState.Opaque)}
+        </div>
+        <br/>
+
+        <h1>Tooltips</h1>
+        <br/>
+        <div style={{flexDirection: "row"}}>
+          {tooltipAreas}
+        </div>
+        <br/>
       </div>
     );
   }
 
-  push<P> (content: PopupContent<P>, align: PopupAlign) {
-    this.popupQueue.push([content, align]);
+  push<P> (content: PopupContent<P>, align: PopupAlign, modalState: ModalState) {
+    this.popupQueue.push([content, align, modalState]);
   }
 
   pop (e: React.MouseEvent<HTMLDivElement>) {
     if (this.popupQueue.length > 0) {
-      const [content, align] = this.popupQueue.shift();
+      const [content, align, modalState] = this.popupQueue.shift();
       const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
-      this.props.state.popups.show(content, align, position);
+      this.props.state.popups.show(content, align, position, modalState);
     }
   }
 }
@@ -107,7 +135,8 @@ class Anything extends React.Component<{handle?: PopupHandle}> {
 
 const styles = StyleSheet.create({
   fill: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#999"
   },
 
   anything: {

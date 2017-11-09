@@ -11,9 +11,11 @@ export class PopupState {
   show <P> (
     content: PopupContent<P>,
     align?: PopupAlign,
-    position?: Point
+    position?: Point,
+    modalState?: ModalState,
+    animate?: boolean
   ): PopupHandle<P> {
-    const popup = new PopupHandle<P>(content, align, position, this);
+    const popup = new PopupHandle<P>(content, align, position, modalState, animate, this);
     this.map.set(popup.id, popup);
     return popup;
   }
@@ -36,7 +38,9 @@ export class PopupHandle<P = {}> {
     public content: PopupContent<P>,
     public align: PopupAlign = PopupAlign.Center,
     position: Point,
-    private state: PopupState
+    public modalState: ModalState = ModalState.Opaque,
+    public animate: boolean = true,
+    private state: PopupState,
   ) {
     this.id = idCounter++;
     this.position = position;
@@ -58,4 +62,10 @@ export enum PopupAlign {
   Left,
   Center,
   TopLeft
+}
+
+export enum ModalState {
+  Opaque,
+  Modal,
+  ModalDismiss
 }

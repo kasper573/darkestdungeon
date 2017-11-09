@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {PopupAlign, PopupHandle} from "./PopupState";
+import {ModalState, PopupAlign, PopupHandle} from "./PopupState";
 import {ReactElement} from "react";
 import {computed, observable, transaction} from "mobx";
 import {observer} from "mobx-react";
@@ -11,8 +11,11 @@ import {UIState} from "./UIState";
 @observer
 export class Popup extends React.Component<{
   handle: PopupHandle,
-  uiState: UIState
+  uiState: UIState,
+  transitionState: string
 }> {
+  static animateDuration = 250;
+
   @observable private contentWidth: number = 0;
   @observable private contentHeight: number = 0;
 
@@ -50,21 +53,50 @@ export class Popup extends React.Component<{
   }
 
   render () {
-    let content = this.props.handle.content;
+    const handle = this.props.handle;
+
+    const transformStyle = handle.animate && transformStyles[this.props.transitionState];
+    const opacityStyle = handle.animate && opacityStyles[this.props.transitionState];
+
+    // Pass on handle to popup content
+    let content = handle.content;
     if (typeof content !== "string") {
       content = React.cloneElement(
         content as ReactElement<{handle: PopupHandle}>,
-        {handle: this.props.handle}
+        {handle}
       );
     }
 
-    return (
-      <div className={css(styles.container)} style={{
+    // Create the popup
+    const popup = (
+      <div className={css(styles.popup, styles.animator)} style={{
         left: this.alignedPosition.x,
-        top: this.alignedPosition.y
+        top: this.alignedPosition.y,
+        ...transformStyle,
+        ...opacityStyle
       }}>
         {content}
         <SizeObserver onSizeChanged={(size) => this.updateContentSize(size)}/>
+      </div>
+    );
+
+    // If it doesn't need to be modal we can return it as is
+    if (handle.modalState === ModalState.Opaque) {
+      return popup;
+    }
+    
+    const onBackgroundClicked = 
+      handle.modalState === ModalState.ModalDismiss ?
+        () => handle.close() :
+        undefined;
+
+    // To make it modal we wrap it in a container containing the modal design
+    return (
+      <div className={css(styles.modalContainer, styles.animator)}
+           style={opacityStyle}>
+        <div className={css(styles.modalBackground)}
+             onClick={onBackgroundClicked}/>
+        {popup}
       </div>
     );
   }
@@ -77,9 +109,42 @@ export class Popup extends React.Component<{
   }
 }
 
+const transformStyles: {[key: string]: any} = {
+  entering: {transform: "scale(0)"},
+  entered: {transform: "scale(1)"},
+  exiting: {transform: "scale(0)"},
+  exited: {transform: "scale(0)"},
+};
+
+const opacityStyles: {[key: string]: any} = {
+  entering: {opacity: 0},
+  entered: {opacity: 1},
+  exiting: {opacity: 0},
+  exited: {opacity: 0},
+};
+
 const styles = StyleSheet.create({
-  container: {
-    position: "fixed",
+  modalContainer: {
+    position: "absolute",
+    top: 0, right: 0, bottom: 0, left: 0,
+  },
+
+  modalBackground: {
+    position: "absolute",
+    top: 0, right: 0, bottom: 0, left: 0,
+    background: "rgba(0, 0, 0, 0.5)",
     pointerEvents: "all"
+  },
+
+  popup: {
+    position: "absolute",
+    pointerEvents: "all"
+  },
+
+  animator: {
+    transition: [
+      `transform ${Popup.animateDuration}ms ease-out`,
+      `opacity ${Popup.animateDuration}ms ease-out`
+    ].join(",")
   }
 });
