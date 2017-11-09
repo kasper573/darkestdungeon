@@ -43,13 +43,6 @@ export class ProfileList extends React.Component<{
       });
   }
 
-  selectProfile (profile: Profile) {
-    if (profile.isNameFinalized) {
-      this.props.state.profiles.setActiveProfile(profile.id);
-      this.props.state.router.goto(profile.path || "dungeon");
-    }
-  }
-
   render () {
     const entries = [];
     for (const profile of this.props.state.profiles.map.values()) {
@@ -58,7 +51,7 @@ export class ProfileList extends React.Component<{
           ref={(entry) => this.entryMap.set(profile.id, entry)}
           key={"profile-" + profile.id}
           profile={profile}
-          onSelect={() => this.selectProfile(profile)}
+          onSelect={() => this.props.onProfileSelected(profile)}
           onDelete={() => this.promptDelete(profile)}
         />
       );

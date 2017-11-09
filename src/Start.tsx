@@ -4,6 +4,7 @@ import {AppState} from "./AppState";
 import {Path} from "./RouterState";
 import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
+import {Profile} from "./ProfileState";
 
 export class Start extends React.Component<{state: AppState}> {
   transitionOut () {
@@ -19,17 +20,23 @@ export class Start extends React.Component<{state: AppState}> {
         </div>
         <ProfileList
           state={this.props.state}
-          onProfileSelected={() => this.onProfileSelected()}
+          onProfileSelected={(profile) => this.onProfileSelected(profile)}
         />
       </div>
     );
   }
 
-  onProfileSelected () {
-    this.transitionOut().then(() =>
-      this.props.state.router.goto(
-        new Path("loading", {target: "estateOverview"})
-      )
+  async onProfileSelected (profile: Profile) {
+    if (!profile.isNameFinalized) {
+      return;
+    }
+
+    await this.transitionOut();
+    this.props.state.profiles.setActiveProfile(profile.id);
+    this.props.state.router.goto(
+      new Path("loading", {
+        target: profile.path || "dungeon"
+      })
     );
   }
 }
