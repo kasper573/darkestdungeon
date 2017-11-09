@@ -6,6 +6,8 @@ import {Popup} from "./Popup";
 import {UIState} from "./UIState";
 import {SizeObserver} from "./SizeObserver";
 import {Size} from "./Bounds";
+import * as TransitionGroup from "react-transition-group/TransitionGroup";
+import Transition from "react-transition-group/Transition";
 
 @observer
 export class Popups extends React.Component<{state: PopupState}> {
@@ -18,15 +20,29 @@ export class Popups extends React.Component<{state: PopupState}> {
     };
   }
 
-  render () {
+  renderPopups () {
     const elements: JSX.Element[] = [];
-    this.props.state.map.forEach((handle, id) => {
-      elements.push(<Popup key={id} handle={handle} uiState={this.uiState}/>);
-    });
+    for (const handle of this.props.state.map.values()) {
+      elements.push(
+        <Transition
+          key={handle.id}
+          timeout={handle.animate ? Popup.animateDuration : 0}
+          className={css(styles.container)}>
+          {(state: string) => (
+            <Popup handle={handle} uiState={this.uiState} transitionState={state}/>
+          )}
+        </Transition>
+      );
+    }
+    return elements;
+  }
 
+  render () {
     return (
-      <div className={css(styles.container)}>
-        {elements}
+      <div className={css(styles.container, styles.container)}>
+        <TransitionGroup className={css(styles.container)}>
+          {this.renderPopups()}
+        </TransitionGroup>
         <SizeObserver onSizeChanged={(size) => this.updateUIState(size)}/>
       </div>
     );

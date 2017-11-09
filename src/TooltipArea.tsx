@@ -1,5 +1,5 @@
 import * as React from "react";
-import {PopupHandle, PopupAlign, PopupContent, PopupState} from "./PopupState";
+import {PopupHandle, PopupAlign, PopupContent, PopupState, ModalState} from "./PopupState";
 import {computed, IReactionDisposer, observable, reaction} from "mobx";
 import {Tooltip} from "./Tooltip";
 import {BoundsObserver, ElementBounds} from "./BoundsObserver";
@@ -18,6 +18,16 @@ const sideAlignMap = {
   [TooltipSide.Left]: PopupAlign.Right,
 };
 
+type TooltipAreaProps = {
+  popups: PopupState,
+  tip: PopupContent,
+  side?: TooltipSide,
+  className?: string,
+  style?: any,
+  mouse?: boolean,
+  show?: boolean
+};
+
 /**
  * Opens a tooltip next to the area.
  * - Triggered when the mouse hovers the area
@@ -26,14 +36,7 @@ const sideAlignMap = {
  * NOTE: Manually showing a tooltip disables mouse
  * triggers until you manually hide it again.
  */
-export class TooltipArea extends React.Component<{
-  popups: PopupState,
-  tip: PopupContent,
-  side?: TooltipSide,
-  className?: string,
-  style?: any,
-  mouse?: boolean
-}> {
+export class TooltipArea extends React.Component<TooltipAreaProps> {
   static defaultProps = {
     side: TooltipSide.Below,
     mouse: true
@@ -74,6 +77,20 @@ export class TooltipArea extends React.Component<{
     }
   }
 
+  componentDidMount () {
+    if (this.props.show) {
+      this.show();
+    }
+  }
+
+  componentWillUpdate (nextProps: TooltipAreaProps) {
+    if (!this.props.show && nextProps.show) {
+      this.show();
+    } else if (this.props.show && !nextProps.show) {
+      this.hide();
+    }
+  }
+
   componentWillUnmount () {
     this.hide();
   }
@@ -84,7 +101,9 @@ export class TooltipArea extends React.Component<{
     this.popup = this.props.popups.show(
       <Tooltip>{tip}</Tooltip>,
       sideAlignMap[this.props.side],
-      this.popupPosition
+      this.popupPosition,
+      ModalState.Opaque,
+      false
     );
 
     this.disposeReaction = reaction(
@@ -107,8 +126,8 @@ export class TooltipArea extends React.Component<{
       <div
         className={this.props.className}
         style={this.props.style}
-        onMouseEnter={() => this.onMouseEnter()}
-        onMouseLeave={() => this.onMouseLeave()}>
+        onMouseEnter={this.props.mouse ? () => this.onMouseEnter() : undefined}
+        onMouseLeave={this.props.mouse ? () => this.onMouseLeave() : undefined}>
         {this.props.children}
         <BoundsObserver onBoundsChanged={(bounds) => this.bounds = bounds}/>
       </div>
@@ -117,14 +136,14 @@ export class TooltipArea extends React.Component<{
 
   onMouseEnter () {
     // Ignore mouse trigger if tooltip has been opened externally
-    if (!this.popup && this.props.mouse) {
+    if (!this.popup) {
       this.isOpenedByMouse = true;
       this.show();
     }
   }
 
   onMouseLeave () {
-    if (this.props.mouse && this.isOpenedByMouse) {
+    if (this.isOpenedByMouse) {
       this.isOpenedByMouse = false;
       this.hide();
     }
