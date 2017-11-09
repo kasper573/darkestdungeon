@@ -1,3 +1,4 @@
+import * as React from "react";
 import {ReactElement} from "react";
 import {observable, reaction} from "mobx";
 import {Point} from "./Bounds";
@@ -5,30 +6,36 @@ import {Point} from "./Bounds";
 export type PopupId = number;
 export type PopupContent<P = {}> = ReactElement<P> | string;
 
+type PopupProps<P> = {
+  content: PopupContent<P>,
+  align?: PopupAlign,
+  position?: Point,
+  modalState?: ModalState,
+  animate?: boolean
+};
+
+type PopupPropsOrContent<P> = PopupProps<P> | PopupContent<P>;
+
+function ensurePopupProps<P> (arg: PopupPropsOrContent<P>): PopupProps<P> {
+  if (typeof arg === "string" || React.isValidElement(arg)) {
+    return {content: arg};
+  }
+  return arg;
+}
+
 export class PopupState {
   @observable map = new Map<PopupId, PopupHandle>();
 
-  show <P> (
-    content: PopupContent<P>,
-    align?: PopupAlign,
-    position?: Point,
-    modalState?: ModalState,
-    animate?: boolean
-  ): PopupHandle<P> {
-    const popup = new PopupHandle<P>(content, align, position, modalState, animate, this);
+  show <P> (arg: PopupPropsOrContent<P>): PopupHandle<P> {
+    const popup = new PopupHandle<P>(ensurePopupProps(arg), this);
     this.map.set(popup.id, popup);
     return popup;
   }
 
-  prompt <P> (
-    content: PopupContent<P>,
-    align?: PopupAlign,
-    position?: Point,
-    modalState?: ModalState,
-    animate?: boolean
-  ) {
+  prompt <P> (arg: PopupPropsOrContent<P>) {
     return new Promise ((resolve) => {
-      const popup = this.show(content, align, position, modalState, animate);
+      const props = ensurePopupProps(arg);
+      const popup = this.show({...props, modalState: ModalState.Modal});
       const disposeReaction = reaction(
         () => this.map.has(popup.id),
         (popupExists: boolean) => {
@@ -51,21 +58,24 @@ export class PopupState {
 }
 
 let idCounter = 0;
-export class PopupHandle<P = {}> {
-  public resolution: any;
+export class PopupHandle<P = {}> implements PopupProps<P> {
   public id: PopupId;
+  public content: PopupContent<P>;
+  public align: PopupAlign = PopupAlign.Center;
+  public modalState: ModalState = ModalState.ModalDismiss;
+  public animate: boolean = true;
+  public resolution: any;
+
   @observable public position?: Point;
 
   constructor (
-    public content: PopupContent<P>,
-    public align: PopupAlign = PopupAlign.Center,
-    position: Point,
-    public modalState: ModalState = ModalState.Opaque,
-    public animate: boolean = true,
+    props: PopupProps<P>,
     private state: PopupState,
   ) {
+    for (const key in props) {
+      (this as any)[key] = (props as any)[key];
+    }
     this.id = idCounter++;
-    this.position = position;
   }
 
   reposition (position: Point) {

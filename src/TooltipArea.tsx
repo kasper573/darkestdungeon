@@ -98,13 +98,13 @@ export class TooltipArea extends React.Component<TooltipAreaProps> {
   show (tip = this.props.tip) {
     this.hide();
 
-    this.popup = this.props.popups.show(
-      <Tooltip>{tip}</Tooltip>,
-      sideAlignMap[this.props.side],
-      this.popupPosition,
-      ModalState.Opaque,
-      false
-    );
+    this.popup = this.props.popups.show({
+      content: <Tooltip>{tip}</Tooltip>,
+      align: sideAlignMap[this.props.side],
+      position: this.popupPosition,
+      modalState: ModalState.Opaque,
+      animate: false
+    });
 
     this.disposeReaction = reaction(
       () => this.popupPosition,

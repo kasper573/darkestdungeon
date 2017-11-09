@@ -85,7 +85,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
     );
   }
 
-  prompt () {
+  async prompt () {
     const Pop = ({handle}: {handle?: PopupHandle}) => (
       <div>
         Do you?
@@ -96,12 +96,9 @@ export class PopupTester extends React.Component<{state: AppState}> {
       </div>
     );
 
-    this.props.state.popups.prompt(<Pop/>, PopupAlign.Center, null, ModalState.Modal)
-      .then((answer: any) =>
-        this.props.state.popups.show(
-          "You chose: " + answer, PopupAlign.Center, null, ModalState.ModalDismiss
-        )
-      );
+    const popups = this.props.state.popups;
+    const answer = await popups.prompt(<Pop/>);
+    popups.show("You chose: " + answer);
   }
 
   push<P> (content: PopupContent<P>, align: PopupAlign, modalState: ModalState) {
@@ -112,7 +109,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
     if (this.popupQueue.length > 0) {
       const [content, align, modalState] = this.popupQueue.shift();
       const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
-      this.props.state.popups.show(content, align, position, modalState);
+      this.props.state.popups.show({content, align, position, modalState});
     }
   }
 }
