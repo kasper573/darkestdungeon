@@ -29,11 +29,16 @@ export class RouterState  {
     });
   }
 
+  isRouteMemorable (path: Path) {
+    // TODO look up for route of path
+    return !(path.equals("start") || path.equals("loading"));
+  }
+
   addRoute (name: string, component: any) {
     this.routes.set(name, component);
   }
 
-  removeRoute (name: string) {
+  deleteRoute (name: string) {
     this.routes.delete(name);
   }
 

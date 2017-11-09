@@ -6,6 +6,7 @@ import {App} from "./App";
 import {routes} from "./config";
 import {PopupState} from "./PopupState";
 import {RouterState} from "./RouterState";
+import {ProfileState} from "./ProfileState";
 
 describe("Router", () => {
   beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -16,7 +17,7 @@ describe("Router", () => {
       const state = new AppState();
 
       state.isRunningJest = true;
-      state.initialize(new RouterState(routes), null, null, new PopupState());
+      state.initialize(new RouterState(routes), null, null, new PopupState(), new ProfileState());
       state.router.goto(path);
 
       TestUtils.renderIntoDocument(<App state={state} />);
