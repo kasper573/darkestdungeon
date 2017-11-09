@@ -10,6 +10,7 @@ import {ambienceDefinitions, routes} from "./config";
 import {PopupState} from "./PopupState";
 import {observer} from "mobx-react";
 import {DevTools} from "./DevTools";
+import {ProfileState} from "./ProfileState";
 
 @observer
 export class App extends React.Component<{state: AppState}> {
@@ -19,7 +20,8 @@ export class App extends React.Component<{state: AppState}> {
       new RouterState(routes, "start"),
       new AmbienceState(ambienceDefinitions),
       new MusicState(),
-      new PopupState()
+      new PopupState(),
+      new ProfileState()
     );
   }
 

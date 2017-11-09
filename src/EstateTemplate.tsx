@@ -24,7 +24,7 @@ export class EstateTemplate extends React.Component<{
       <div className={css(styles.container)}>
         <div className={css(styles.header)}>
           {this.mayGoBack && <span onClick={() => this.onBack()}>[BACK]</span>}
-          Your Estate
+          {this.props.state.profiles.activeProfile.name} Estate
         </div>
         <div className={css(styles.content)}>
           {this.props.children}

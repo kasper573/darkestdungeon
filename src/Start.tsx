@@ -2,16 +2,10 @@ import * as React from "react";
 import {TitleHeader} from "./TitleHeader";
 import {AppState} from "./AppState";
 import {Path} from "./RouterState";
+import {ProfileList} from "./ProfileList";
+import {css, StyleSheet} from "aphrodite";
 
 export class Start extends React.Component<{state: AppState}> {
-  selectProfile () {
-    this.transitionOut().then(() =>
-      this.props.state.router.goto(
-        new Path("loading", {target: "estateOverview"})
-      )
-    );
-  }
-
   transitionOut () {
     console.warn("Not implemented");
     return Promise.resolve();
@@ -19,13 +13,35 @@ export class Start extends React.Component<{state: AppState}> {
 
   render () {
     return (
-      <div>
-        <TitleHeader/>
-
-        <button onClick={() => this.selectProfile()}>
-          Start
-        </button>
+      <div className={css(styles.container)}>
+        <div className={css(styles.topArea)}>
+          <TitleHeader/>
+        </div>
+        <ProfileList
+          state={this.props.state}
+          onProfileSelected={() => this.onProfileSelected()}
+        />
       </div>
     );
   }
+
+  onProfileSelected () {
+    this.transitionOut().then(() =>
+      this.props.state.router.goto(
+        new Path("loading", {target: "estateOverview"})
+      )
+    );
+  }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    paddingBottom: 40
+  },
+
+  topArea: {
+    flex: 1
+  }
+});
