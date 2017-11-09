@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import {observable} from "mobx";
+import {observable, reaction} from "mobx";
 import {Point} from "./Bounds";
 
 export type PopupId = number;
@@ -20,6 +20,27 @@ export class PopupState {
     return popup;
   }
 
+  prompt <P> (
+    content: PopupContent<P>,
+    align?: PopupAlign,
+    position?: Point,
+    modalState?: ModalState,
+    animate?: boolean
+  ) {
+    return new Promise ((resolve) => {
+      const popup = this.show(content, align, position, modalState, animate);
+      const disposeReaction = reaction(
+        () => this.map.has(popup.id),
+        (popupExists: boolean) => {
+          if (!popupExists) {
+            disposeReaction();
+            resolve(popup.resolution);
+          }
+        }
+      );
+    });
+  }
+
   close (id: PopupId) {
     this.map.delete(id);
   }
@@ -31,6 +52,7 @@ export class PopupState {
 
 let idCounter = 0;
 export class PopupHandle<P = {}> {
+  public resolution: any;
   public id: PopupId;
   @observable public position?: Point;
 
@@ -50,7 +72,8 @@ export class PopupHandle<P = {}> {
     this.position = position;
   }
 
-  close () {
+  close (resolution?: any) {
+    this.resolution = resolution;
     this.state.close(this.id);
   }
 }
