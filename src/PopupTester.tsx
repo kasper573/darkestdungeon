@@ -79,8 +79,29 @@ export class PopupTester extends React.Component<{state: AppState}> {
           {tooltipAreas}
         </div>
         <br/>
+
+        <button onClick={() => this.prompt()}>Prompt</button>
       </div>
     );
+  }
+
+  prompt () {
+    const Pop = ({handle}: {handle?: PopupHandle}) => (
+      <div>
+        Do you?
+        <div style={{flexDirection: "row"}}>
+          <span onClick={() => handle.close("yes")}>Yes</span>
+          <span onClick={() => handle.close("no")}>No</span>
+        </div>
+      </div>
+    );
+
+    this.props.state.popups.prompt(<Pop/>, PopupAlign.Center, null, ModalState.Modal)
+      .then((answer: any) =>
+        this.props.state.popups.show(
+          "You chose: " + answer, PopupAlign.Center, null, ModalState.ModalDismiss
+        )
+      );
   }
 
   push<P> (content: PopupContent<P>, align: PopupAlign, modalState: ModalState) {
