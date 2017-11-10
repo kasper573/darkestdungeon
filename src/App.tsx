@@ -2,7 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {AppState} from "./AppState";
 import {Router} from "./Router";
-import {Popups} from "./Popups";
+import {PopupList} from "./PopupList";
 import {observer} from "mobx-react";
 import {DevTools} from "./DevTools";
 import {ambience, routes} from "./config";
@@ -30,7 +30,7 @@ export class App extends React.Component<{
       <div className={css(styles.app)}>
         <div className={css(styles.game)}>
           <Router state={this.props.state}/>
-          <Popups state={this.props.state.popups}/>
+          <PopupList state={this.props.state.popups}/>
         </div>
         <DevTools state={this.props.state}/>
       </div>
