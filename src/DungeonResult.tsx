@@ -2,11 +2,11 @@ import * as React from "react";
 import {AppState} from "./AppState";
 import {Path} from "./RouterState";
 
-export class DungeonResult extends React.Component<{state: AppState, status: string}> {
+export class DungeonResult extends React.Component<{state: AppState}> {
   render () {
     return (
       <div>
-        Dungeon Result: {this.props.status}
+        Dungeon Result: {this.props.state.profiles.activeProfile.adventure.status}
 
         <button onClick={() => this.returnToEstate()}>
           Return to Town
