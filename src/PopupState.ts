@@ -6,7 +6,7 @@ import {Point} from "./Bounds";
 export type PopupId = number;
 export type PopupContent<P = {}> = ReactElement<P> | string;
 
-type PopupProps<P> = {
+type PopupHandleProps<P> = {
   content: PopupContent<P>,
   align?: PopupAlign,
   position?: Point,
@@ -14,9 +14,9 @@ type PopupProps<P> = {
   animate?: boolean
 };
 
-type PopupPropsOrContent<P> = PopupProps<P> | PopupContent<P>;
+type PopupHandlePropsOrContent<P> = PopupHandleProps<P> | PopupContent<P>;
 
-function ensurePopupProps<P> (arg: PopupPropsOrContent<P>): PopupProps<P> {
+function ensureProps<P> (arg: PopupHandlePropsOrContent<P>): PopupHandleProps<P> {
   if (typeof arg === "string" || React.isValidElement(arg)) {
     return {content: arg};
   }
@@ -26,15 +26,15 @@ function ensurePopupProps<P> (arg: PopupPropsOrContent<P>): PopupProps<P> {
 export class PopupState {
   @observable map = new Map<PopupId, PopupHandle>();
 
-  show <P> (arg: PopupPropsOrContent<P>): PopupHandle<P> {
-    const popup = new PopupHandle<P>(ensurePopupProps(arg), this);
+  show <P> (arg: PopupHandlePropsOrContent<P>): PopupHandle<P> {
+    const popup = new PopupHandle<P>(ensureProps(arg), this);
     this.map.set(popup.id, popup);
     return popup;
   }
 
-  prompt <P> (arg: PopupPropsOrContent<P>) {
+  prompt <P> (arg: PopupHandlePropsOrContent<P>) {
     return new Promise ((resolve) => {
-      const props = ensurePopupProps(arg);
+      const props = ensureProps(arg);
       const popup = this.show({...props, modalState: ModalState.Modal});
       const disposeReaction = reaction(
         () => this.map.has(popup.id),
@@ -58,7 +58,7 @@ export class PopupState {
 }
 
 let idCounter = 0;
-export class PopupHandle<P = {}> implements PopupProps<P> {
+export class PopupHandle<P = {}> implements PopupHandleProps<P> {
   public id: PopupId;
   public content: PopupContent<P>;
   public align: PopupAlign = PopupAlign.Center;
@@ -69,7 +69,7 @@ export class PopupHandle<P = {}> implements PopupProps<P> {
   @observable public position?: Point;
 
   constructor (
-    props: PopupProps<P>,
+    props: PopupHandleProps<P>,
     private state: PopupState,
   ) {
     for (const key in props) {
