@@ -12,7 +12,7 @@ export type PopupProps = {
 
 export class Popup extends React.Component<PopupProps> {
   render () {
-    const isDismissable = this.props.handle.modalState === ModalState.ModalDismiss;
+    const isDismissable = this.props.handle.modalState !== ModalState.Modal;
     const hasCloseButton = this.props.closeable || isDismissable;
     const closeButton = hasCloseButton && (
       <span
