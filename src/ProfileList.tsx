@@ -6,6 +6,7 @@ import {AppState} from "./AppState";
 import {PopupHandle} from "./PopupState";
 import {observer} from "mobx-react";
 import {transaction} from "mobx";
+import {Prompt} from "./Popups";
 
 @observer
 export class ProfileList extends React.Component<{
@@ -17,14 +18,20 @@ export class ProfileList extends React.Component<{
 
   promptDelete (profile: Profile) {
     this.props.state.popups.prompt(<DeletePrompt/>)
-      .then((isAccepted) =>
-        this.props.state.profiles.deleteProfile(profile.id)
-      );
+      .then((isAccepted) => {
+        if (isAccepted) {
+          this.props.state.profiles.deleteProfile(profile.id);
+        }
+      });
   }
 
   promptCreate () {
     this.props.state.popups.prompt(<CreatePrompt/>)
-      .then((difficulty: Difficulty) => {
+      .then((difficulty?: Difficulty) => {
+        if (difficulty === undefined) {
+          return;
+        }
+
         const profile = this.props.state.profiles.createProfile(difficulty);
 
         // Scroll to bottom
@@ -73,29 +80,37 @@ export class ProfileList extends React.Component<{
 class DeletePrompt extends React.Component<{handle?: PopupHandle}> {
   render () {
     return (
-      <div>
-        <h1>Are you sure you want to delete this save file?</h1>
-        <div style={{flexDirection: "row"}}>
-          <button onClick={() => this.props.handle.close(true)}>Yes</button>
-          <button onClick={() => this.props.handle.close(false)}>No</button>
-        </div>
-      </div>
+      <Prompt
+        handle={this.props.handle}
+        query="Are you sure you want to delete this save file?"
+        responses={[
+          {label: "Yes", value: true},
+          {label: "No", value: false}
+        ]}
+      />
     );
   }
 }
 
 class CreatePrompt extends React.Component<{handle?: PopupHandle}> {
   render () {
-    const handle = this.props.handle;
+    const responses =
+      Object.values(Difficulty)
+        .filter((key) => typeof key === "string")
+        .map((difficultyName: string) => {
+          return {
+            label: difficultyName,
+            value: (Difficulty as any)[difficultyName]
+          };
+        });
+
     return (
-      <div>
-        <h1>Select campaign</h1>
-        <div style={{flexDirection: "row"}}>
-          <button onClick={() => handle.close(Difficulty.Radiant)}>Radiant</button>
-          <button onClick={() => handle.close(Difficulty.Darkest)}>Darkest</button>
-          <button onClick={() => handle.close(Difficulty.Stygian)}>Stygian</button>
-        </div>
-      </div>
+      <Prompt
+        closeable
+        handle={this.props.handle}
+        query="Select campaign"
+        responses={responses}
+      />
     );
   }
 }
