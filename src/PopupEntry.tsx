@@ -9,7 +9,7 @@ import {Size} from "./Bounds";
 import {UIState} from "./UIState";
 
 @observer
-export class Popup extends React.Component<{
+export class PopupEntry extends React.Component<{
   handle: PopupHandle,
   uiState: UIState,
   transitionState: string
@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
 
   animator: {
     transition: [
-      `transform ${Popup.animateDuration}ms ease-out`,
-      `opacity ${Popup.animateDuration}ms ease-out`
+      `transform ${PopupEntry.animateDuration}ms ease-out`,
+      `opacity ${PopupEntry.animateDuration}ms ease-out`
     ].join(",")
   }
 });

@@ -2,7 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {PopupState} from "./PopupState";
 import {observer} from "mobx-react";
-import {Popup} from "./Popup";
+import {PopupEntry} from "./PopupEntry";
 import {UIState} from "./UIState";
 import {SizeObserver} from "./SizeObserver";
 import {Size} from "./Bounds";
@@ -10,7 +10,7 @@ import * as TransitionGroup from "react-transition-group/TransitionGroup";
 import Transition from "react-transition-group/Transition";
 
 @observer
-export class Popups extends React.Component<{state: PopupState}> {
+export class PopupList extends React.Component<{state: PopupState}> {
   private uiState = new UIState();
 
   updateUIState (containerSize: Size): any {
@@ -26,10 +26,10 @@ export class Popups extends React.Component<{state: PopupState}> {
       elements.push(
         <Transition
           key={handle.id}
-          timeout={handle.animate ? Popup.animateDuration : 0}
+          timeout={handle.animate ? PopupEntry.animateDuration : 0}
           className={css(styles.container)}>
           {(state: string) => (
-            <Popup handle={handle} uiState={this.uiState} transitionState={state}/>
+            <PopupEntry handle={handle} uiState={this.uiState} transitionState={state}/>
           )}
         </Transition>
       );
