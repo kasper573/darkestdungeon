@@ -23,7 +23,7 @@ export const routes = {
   "popupTester": new Route(PopupTester, false)
 };
 
-export const ambienceDefinitions = {
+export const ambience = {
   "town": new AmbienceDefinition(
     {src: require("../assets/dd/audio/amb_town_gen_base.wav")},
     [

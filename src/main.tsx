@@ -9,7 +9,7 @@ import {App} from "./App";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
 
-// Set up application state
+// Initialize application state
 const state = new AppState();
 
 // Set up basic styling
@@ -40,7 +40,7 @@ rootEl.className = css(styles.root);
 function render (Component: any) {
   ReactDOM.render(
     <AppContainer>
-      <Component state={state}/>
+      <Component state={state} setupState/>
     </AppContainer>,
     rootEl
   );

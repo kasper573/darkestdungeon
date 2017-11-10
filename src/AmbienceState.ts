@@ -1,13 +1,26 @@
 import {autorun, IReactionDisposer, observable} from "mobx";
 
+type DefinitionOrLink = AmbienceDefinition | string;
+
 export class AmbienceState {
   private player?: AmbiencePlayer;
   private positions: {[key: string]: number} = {};
   private currentId: string;
+  private definitions = new Map<string, DefinitionOrLink>();
 
-  constructor (
-    private lookup: { [key: string]: AmbienceDefinition | string }
-  ) {}
+  addDefinitions (defs: {[key: string]: DefinitionOrLink}) {
+    for (const key in defs) {
+      this.addDefinition(key, defs[key]);
+    }
+  }
+
+  addDefinition (name: string, def: DefinitionOrLink) {
+    this.definitions.set(name, def);
+  }
+
+  deleteDefinition (name: string) {
+    this.definitions.delete(name);
+  }
 
   activate (id: string) {
     // Check if requested ambience exists and possibly route to a linked id
@@ -49,7 +62,7 @@ export class AmbienceState {
   private performLookup (id: string) {
     let definition;
     while (true) {
-      definition = this.lookup[id];
+      definition = this.definitions.get(id);
       if (!definition) {
         return;
       }
