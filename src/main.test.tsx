@@ -3,7 +3,8 @@ import * as TestUtils from "react-dom/test-utils";
 import {StyleSheetTestUtils} from "aphrodite";
 import {AppState} from "./AppState";
 import {App} from "./App";
-import {ambience, routes} from "./config";
+import {ambience, characterClasses, characterNames} from "./config/general";
+import {routes} from "./config/routes";
 
 describe("Router", () => {
   beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -14,9 +15,11 @@ describe("Router", () => {
       const state = new AppState();
 
       state.isRunningJest = true;
+      state.characterGenerator.configure(characterNames, characterClasses);
       state.router.addRoutes(routes);
       state.ambience.addDefinitions(ambience);
       state.router.goto(path);
+      state.initialize();
 
       TestUtils.renderIntoDocument(<App state={state} />);
       state.dispose();

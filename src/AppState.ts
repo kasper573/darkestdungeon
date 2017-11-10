@@ -6,21 +6,25 @@ import {IReactionDisposer, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {AdventureStatus, EstateEvent} from "./ProfileData";
+import {CharacterGenerator} from "./CharacterGenerator";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
+  public characterGenerator = new CharacterGenerator();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
   public music: MusicState = new MusicState();
   public popups: PopupState = new PopupState();
-  public profiles: ProfileState = new ProfileState();
+  public profiles: ProfileState = new ProfileState(this.characterGenerator);
   public options: OptionsState = new OptionsState();
 
   public isRunningJest: boolean; // HACK ugly workaround
 
-  constructor () {
-    // Composite state behavior
+  /**
+   * Starts composite state behavior
+   */
+  initialize () {
     this.reactionDisposers = [
       // Path changes
       reaction(
@@ -54,6 +58,9 @@ export class AppState {
     ];
   }
 
+  /**
+   * Ends composite state behavior
+   */
   dispose () {
     this.reactionDisposers.forEach((dispose) => dispose());
   }
