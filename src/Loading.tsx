@@ -36,7 +36,9 @@ export class Loading extends React.Component<{
     return (
       <div className={css(styles.container)}
            style={{backgroundImage: `url(${this.backgroundUrl})`}}>
-        <div className={css(styles.box)}>{this.props.target || "Loading"}</div>
+        <div className={css(styles.box)}>
+          {this.props.target ? this.props.target.toString() : "Loading"}
+        </div>
         <div style={{flex: 1}}/>
         <div className={css(styles.box, styles.footer)}>
           <p>Lorem ipsum dolor sit amet.</p>
