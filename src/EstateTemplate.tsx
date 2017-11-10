@@ -58,7 +58,7 @@ export class EstateTemplate extends React.Component<{
   onContinueSelected () {
     this.props.continueCheck()
       .then((okToContinue) => {
-        if (okToContinue) {
+        if (okToContinue === undefined || okToContinue) {
           this.props.state.router.goto(this.props.continuePath);
         }
       });
