@@ -24,7 +24,7 @@ export const routes = {
 };
 
 export const ambience = {
-  "town": new AmbienceDefinition(
+  "estate": new AmbienceDefinition(
     {src: require("../assets/dd/audio/amb_town_gen_base.wav")},
     [
       {src: require("../assets/dd/audio/amb_town_gen_base_os_01.wav")},
@@ -32,7 +32,7 @@ export const ambience = {
       {src: require("../assets/dd/audio/amb_town_gen_base_os_03.wav")}
     ]
   ),
-  "coach": "town",
+  "coach": "estate",
   "tavern": new AmbienceDefinition(
     {src: require("../assets/dd/audio/amb_town_tavern.wav")},
     [

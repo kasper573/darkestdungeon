@@ -19,7 +19,7 @@ const buildings = [
   new BuildingInfo("tavern"),
   new BuildingInfo("guild"),
   new BuildingInfo("coach"),
-  new BuildingInfo("town")
+  new BuildingInfo("estate")
 ];
 
 const barks = [
@@ -40,7 +40,7 @@ const dungeonTrack = {
 
 @observer
 export class SoundTester extends React.Component<{state: AppState}> {
-  static defaultBuildingId = "town";
+  static defaultBuildingId = "estate";
 
   @observable private activeBuildingId = SoundTester.defaultBuildingId;
   @observable private isAmbienceVolumeLowered: boolean;
