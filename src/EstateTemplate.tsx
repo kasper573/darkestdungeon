@@ -7,7 +7,7 @@ import {Path, PathTypes} from "./RouterState";
 export class EstateTemplate extends React.Component<{
   state: AppState,
   path: Path,
-  continueCheck?: () => Promise<void>,
+  continueCheck?: () => Promise<any>,
   continueLabel: string,
   continuePath: PathTypes
 }> {
@@ -48,8 +48,11 @@ export class EstateTemplate extends React.Component<{
 
   onContinueSelected () {
     this.props.continueCheck()
-      .then(() => this.props.state.router.goto(this.props.continuePath))
-      .catch((e: any) => this.props.state.popups.show(e));
+      .then((okToContinue) => {
+        if (okToContinue) {
+          this.props.state.router.goto(this.props.continuePath);
+        }
+      });
   }
 }
 
