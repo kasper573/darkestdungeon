@@ -21,6 +21,7 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
       <EstateTemplate
         state={this.props.state}
         path={this.props.path}
+        backPath="estateOverview"
         continueCheck={() => this.checkPartyBeforeContinue()}
         continueLabel="Provision"
         continuePath="estateProvision">

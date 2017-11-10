@@ -19,6 +19,7 @@ export class EstateProvision extends React.Component<{state: AppState, path: Pat
       <EstateTemplate
         state={this.props.state}
         path={this.props.path}
+        backPath="estateDungeons"
         continueCheck={() => this.checkItemsBeforeContinue()}
         continueLabel="Embark"
         continuePath={new Path("loading", {target: "dungeon"})}>

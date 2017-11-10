@@ -1,7 +1,6 @@
 import * as React from "react";
 import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
-import {computed} from "mobx";
 import {Path, PathTypes} from "./RouterState";
 import {PauseMenu} from "./PauseMenu";
 import {Trinkets} from "./Trinkets";
@@ -11,6 +10,7 @@ import {ModalState} from "./PopupState";
 export class EstateTemplate extends React.Component<{
   state: AppState,
   path: Path,
+  backPath?: PathTypes,
   continueCheck?: () => Promise<any>,
   continueLabel: string,
   continuePath: PathTypes
@@ -19,8 +19,12 @@ export class EstateTemplate extends React.Component<{
     continueCheck: () => Promise.resolve()
   };
 
-  @computed get mayGoBack () {
-    return !this.props.path.equals("estateOverview");
+  get mayGoBack () {
+    return this.props.backPath;
+  }
+
+  goBack () {
+    this.props.state.router.goto(this.props.backPath);
   }
 
   render () {
@@ -28,7 +32,7 @@ export class EstateTemplate extends React.Component<{
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.header)}>
-          {this.mayGoBack && <span onClick={() => this.onBack()}>[BACK]</span>}
+          {this.mayGoBack && <span onClick={() => this.goBack()}>[BACK]</span>}
           {this.props.state.profiles.activeProfile.name} Estate
         </div>
 
@@ -59,10 +63,6 @@ export class EstateTemplate extends React.Component<{
         <EstateRoster state={this.props.state}/>
       </div>
     );
-  }
-
-  onBack () {
-    this.props.state.router.goBack();
   }
 
   onContinueSelected () {
