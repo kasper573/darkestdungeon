@@ -6,11 +6,16 @@ import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../assets/fonts";
 import {AppState} from "./AppState";
 import {App} from "./App";
+import {ambience, characterClasses, characterNames} from "./config/general";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
 
 // Initialize application state
 const state = new AppState();
+state.characterGenerator.configure(characterNames, characterClasses);
+state.router.goto("estateOverview");
+state.ambience.addDefinitions(ambience);
+state.initialize();
 
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});
@@ -40,7 +45,7 @@ rootEl.className = css(styles.root);
 function render (Component: any) {
   ReactDOM.render(
     <AppContainer>
-      <Component state={state} setupState/>
+      <Component state={state} setupRoutes/>
     </AppContainer>,
     rootEl
   );
