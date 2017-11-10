@@ -4,6 +4,9 @@ import {css, StyleSheet} from "aphrodite";
 import {computed} from "mobx";
 import {Path, PathTypes} from "./RouterState";
 import {PauseMenu} from "./PauseMenu";
+import {Trinkets} from "./Trinkets";
+import {EstateRoster} from "./EstateRoster";
+import {ModalState} from "./PopupState";
 
 export class EstateTemplate extends React.Component<{
   state: AppState,
@@ -21,15 +24,18 @@ export class EstateTemplate extends React.Component<{
   }
 
   render () {
+    const state = this.props.state;
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.header)}>
           {this.mayGoBack && <span onClick={() => this.onBack()}>[BACK]</span>}
           {this.props.state.profiles.activeProfile.name} Estate
         </div>
+
         <div className={css(styles.content)}>
           {this.props.children}
         </div>
+
         <div className={css(styles.footer)}>
           <div className={css(styles.footerLeft)}>Left</div>
           <div className={css(styles.footerCenter)}>
@@ -38,15 +44,19 @@ export class EstateTemplate extends React.Component<{
             </button>
           </div>
           <div className={css(styles.footerRight)}>
-            <span onClick={() =>
-              this.props.state.popups.show(
-                <PauseMenu state={this.props.state}/>
-              )
-            }>
+            <span onClick={() => state.popups.show({
+              content: <Trinkets state={state}/>,
+              modalState: ModalState.Opaque
+            })}>
+              [TRINKETS]
+            </span>
+            <span onClick={() => state.popups.show(<PauseMenu state={state}/>)}>
               [PAUSE MENU]
             </span>
           </div>
         </div>
+
+        <EstateRoster state={this.props.state}/>
       </div>
     );
   }
@@ -105,6 +115,7 @@ const styles = StyleSheet.create({
 
   footerRight: {
     flex: 1,
-    alignItems: "flex-end"
+    justifyContent: "flex-end",
+    flexDirection: "row"
   }
 });
