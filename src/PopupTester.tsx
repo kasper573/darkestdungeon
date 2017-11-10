@@ -1,10 +1,11 @@
 import * as React from "react";
 import {AppState} from "./AppState";
-import {PopupHandle, PopupAlign, PopupContent, ModalState} from "./PopupState";
+import {PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {css, StyleSheet} from "aphrodite";
 import {observable, transaction} from "mobx";
 import {observer} from "mobx-react";
+import {Popup, Prompt} from "./Popups";
 
 @observer
 export class PopupTester extends React.Component<{state: AppState}> {
@@ -17,7 +18,12 @@ export class PopupTester extends React.Component<{state: AppState}> {
         <button key={key} onClick={
           (e: any) => {
             e.stopPropagation();
-            this.push(<Anything/>, (PopupAlign as any)[key], modalState);
+            const align = (PopupAlign as any)[key];
+            this.push(
+              <Popup closeable><pre>{JSON.stringify({align, modalState}, null, 2)}</pre></Popup>,
+              align,
+              modalState
+            );
           }
         }>
           {key}
@@ -34,7 +40,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
         <TooltipArea
           key={key}
           className={css(styles.tooltipAreas)} side={(TooltipSide as any)[key]}
-          popups={popups} tip={<Anything/>}>
+          popups={popups} tip="Tip">
           {key}
         </TooltipArea>
       ));
@@ -86,19 +92,9 @@ export class PopupTester extends React.Component<{state: AppState}> {
   }
 
   async prompt () {
-    const Pop = ({handle}: {handle?: PopupHandle}) => (
-      <div>
-        Do you?
-        <div style={{flexDirection: "row"}}>
-          <span onClick={() => handle.close("yes")}>Yes</span>
-          <span onClick={() => handle.close("no")}>No</span>
-        </div>
-      </div>
-    );
-
     const popups = this.props.state.popups;
-    const answer = await popups.prompt(<Pop/>);
-    popups.show("You chose: " + answer);
+    const answer = await popups.prompt(<Prompt query="Do you?"/>);
+    popups.show(<Popup>You chose: {JSON.stringify(answer)}</Popup>);
   }
 
   push<P> (content: PopupContent<P>, align: PopupAlign, modalState: ModalState) {
@@ -111,43 +107,6 @@ export class PopupTester extends React.Component<{state: AppState}> {
       const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
       this.props.state.popups.show({content, align, position, modalState});
     }
-  }
-}
-
-@observer
-class Anything extends React.Component<{handle?: PopupHandle}> {
-  private intervalId: any;
-
-  @observable items: number[] = [];
-
-  componentWillMount () {
-    this.intervalId = setInterval(() => this.randomizeItems(), 500);
-  }
-
-  componentWillUnmount () {
-    clearInterval(this.intervalId);
-  }
-
-  private randomizeItems () {
-    transaction(() => {
-      this.items = [];
-      const numItems = Math.floor(Math.random() * 3);
-      for (let i = 0; i < numItems; i++) {
-        this.items.push(i);
-      }
-    });
-  }
-
-  render () {
-    return (
-      <div className={css(styles.anything)}>
-        <h1>Anything</h1>
-        <ul>
-          {this.items.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-        <span onClick={() => this.props.handle.close()}>Close me!</span>
-      </div>
-    );
   }
 }
 
