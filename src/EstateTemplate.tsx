@@ -3,6 +3,7 @@ import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
 import {computed} from "mobx";
 import {Path, PathTypes} from "./RouterState";
+import {PauseMenu} from "./PauseMenu";
 
 export class EstateTemplate extends React.Component<{
   state: AppState,
@@ -36,7 +37,15 @@ export class EstateTemplate extends React.Component<{
               {this.props.continueLabel}
             </button>
           </div>
-          <div className={css(styles.footerRight)}>Right</div>
+          <div className={css(styles.footerRight)}>
+            <span onClick={() =>
+              this.props.state.popups.show(
+                <PauseMenu state={this.props.state}/>
+              )
+            }>
+              [PAUSE MENU]
+            </span>
+          </div>
         </div>
       </div>
     );
