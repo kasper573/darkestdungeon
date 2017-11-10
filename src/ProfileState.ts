@@ -1,15 +1,23 @@
-import {computed, observable} from "mobx";
+import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
-import {Adventure, EstateEvent} from "./ProfileData";
+import {Adventure, Character, EstateEvent} from "./ProfileData";
+import {CharacterGenerator} from "./CharacterGenerator";
 
 export type ProfileId = number;
 
 export class ProfileState {
+  private characterGenerator: CharacterGenerator;
+
   @observable private activeProfileId: ProfileId;
   @observable map = new Map<ProfileId, Profile>();
 
   @computed get activeProfile () {
-    return this.map.get(this.activeProfileId) || nullProfile;
+    return this.map.get(this.activeProfileId) ||
+      (nullProfile = this.createProfile(Difficulty.Radiant));
+  }
+
+  constructor (characterGenerator: CharacterGenerator) {
+    this.characterGenerator = characterGenerator;
   }
 
   createProfile (difficulty: Difficulty) {
@@ -17,6 +25,11 @@ export class ProfileState {
       undefined, difficulty.toString(), false,
       difficulty, undefined, 0, new Date()
     );
+
+    profile.characters = [
+      this.characterGenerator.next(),
+      this.characterGenerator.next()
+    ];
 
     this.addProfile(profile);
     return profile;
@@ -45,9 +58,23 @@ export class Profile {
 
   @observable public estateEvent = new EstateEvent("Null", true);
   @observable public adventure = new Adventure();
+  @observable public characters: Character[] = [];
+
+  get rosterSize () {
+    return 9; // TODO should derive from upgrades
+  }
 
   @computed get hasBegun () {
     return !!this.path;
+  }
+
+  sortCharacters (compareFn: (a: Character, b: Character) => number) {
+    transaction(() => {
+      this.characters = this.characters.sort(compareFn);
+      this.characters.forEach((character, index) => {
+        character.rosterIndex = index;
+      });
+    });
   }
 
   constructor (
@@ -76,7 +103,4 @@ export enum Difficulty {
   Stygian = "Stygian"
 }
 
-const nullProfile = new Profile(
-  undefined, "Null", true,
-  Difficulty.Darkest, undefined, 0, new Date()
-);
+let nullProfile;
