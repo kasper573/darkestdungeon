@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Popup, PopupProps, Prompt} from "./Popups";
-import {Trinket} from "./ProfileData";
+import {Trinket} from "./ProfileState";
 import {observer} from "mobx-react";
 import {BannerHeader} from "./BannerHeader";
 import {CompareFunction, SortOptions} from "./SortOptions";

@@ -2,7 +2,7 @@ import * as React from "react";
 import {AppState} from "./AppState";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "./RouterState";
-import {EstateEvent} from "./ProfileData";
+import {EstateEvent} from "./ProfileState";
 import {Popup, PopupProps} from "./Popups";
 
 export class EstateOverview extends React.Component<{state: AppState, path: Path}> {

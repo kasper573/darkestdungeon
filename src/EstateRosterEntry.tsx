@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Character} from "./ProfileData";
+import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 
 @observer
