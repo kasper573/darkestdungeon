@@ -5,6 +5,7 @@ import {Path} from "./RouterState";
 import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
 import {Profile} from "./ProfileState";
+import {PauseMenu} from "./PauseMenu";
 
 export class Start extends React.Component<{state: AppState}> {
   transitionOut () {
@@ -22,6 +23,16 @@ export class Start extends React.Component<{state: AppState}> {
           state={this.props.state}
           onProfileSelected={(profile) => this.onProfileSelected(profile)}
         />
+        <span
+          className={css(styles.bottomRightIcons)}
+          onClick={() =>
+            this.props.state.popups.show(
+              <PauseMenu state={this.props.state} mainMenu={false}/>
+            )
+          }
+        >
+          [PAUSE MENU]
+        </span>
       </div>
     );
   }
@@ -50,5 +61,10 @@ const styles = StyleSheet.create({
 
   topArea: {
     flex: 1
+  },
+
+  bottomRightIcons: {
+    position: "absolute",
+    bottom: 0, right: 0
   }
 });

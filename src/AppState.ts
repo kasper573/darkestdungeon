@@ -4,6 +4,7 @@ import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
+import {OptionsState} from "./OptionsState";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -13,6 +14,7 @@ export class AppState {
   public music: MusicState = new MusicState();
   public popups: PopupState = new PopupState();
   public profiles: ProfileState = new ProfileState();
+  public options: OptionsState = new OptionsState();
 
   public isRunningJest: boolean; // HACK ugly workaround
 
