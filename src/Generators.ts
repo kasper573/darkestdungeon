@@ -1,5 +1,4 @@
-import {Character, CharacterClass, Trinket} from "./ProfileData";
-import {Profile} from "./ProfileState";
+import {Profile, Character, CharacterClass, Trinket} from "./ProfileState";
 
 export class CharacterGenerator {
   private names: string[] = [];

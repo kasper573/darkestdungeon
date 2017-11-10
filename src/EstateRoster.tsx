@@ -2,7 +2,7 @@ import * as React from "react";
 import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
 import {EstateRosterEntry} from "./EstateRosterEntry";
-import {Character} from "./ProfileData";
+import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 import {SortOptions} from "./SortOptions";
 import {CharacterInfo} from "./CharacterInfo";

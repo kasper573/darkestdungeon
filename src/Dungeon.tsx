@@ -1,6 +1,6 @@
 import * as React from "react";
 import {AppState} from "./AppState";
-import {AdventureStatus} from "./ProfileData";
+import {AdventureStatus} from "./ProfileState";
 
 export class Dungeon extends React.Component<{state: AppState}> {
   render () {

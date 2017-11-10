@@ -3,9 +3,8 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {ProfileState} from "./ProfileState";
+import {AdventureStatus, EstateEvent, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
-import {AdventureStatus, EstateEvent} from "./ProfileData";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
 
 export class AppState {

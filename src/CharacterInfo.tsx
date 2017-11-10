@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Character} from "./ProfileData";
+import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 

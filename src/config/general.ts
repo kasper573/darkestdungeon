@@ -1,5 +1,5 @@
 import {AmbienceDefinition} from "../AmbienceState";
-import {CharacterClass} from "../ProfileData";
+import {CharacterClass} from "../ProfileState";
 
 export const ambience = {
   "estate": new AmbienceDefinition(
