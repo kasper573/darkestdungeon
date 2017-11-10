@@ -3,7 +3,7 @@ import * as TestUtils from "react-dom/test-utils";
 import {StyleSheetTestUtils} from "aphrodite";
 import {AppState} from "./AppState";
 import {App} from "./App";
-import {ambience, characterClasses, characterNames} from "./config/general";
+import {ambience, characterClasses, characterNames, itemNames} from "./config/general";
 import {routes} from "./config/routes";
 
 describe("Router", () => {
@@ -15,6 +15,7 @@ describe("Router", () => {
       const state = new AppState();
 
       state.isRunningJest = true;
+      state.itemGenerator.configure(itemNames);
       state.characterGenerator.configure(characterNames, characterClasses);
       state.router.addRoutes(routes);
       state.ambience.addDefinitions(ambience);

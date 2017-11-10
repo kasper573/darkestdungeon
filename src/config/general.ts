@@ -24,6 +24,8 @@ export const ambience = {
   ),
 };
 
+export const itemNames = ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"];
+
 export const characterNames = ["Foo", "Bar", "Baz", "LoL", "OMG"];
 
 export const characterClasses = [

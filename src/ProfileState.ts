@@ -1,37 +1,70 @@
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
-import {Adventure, Character, EstateEvent} from "./ProfileData";
-import {CharacterGenerator} from "./CharacterGenerator";
+import {CharacterGenerator, ItemGenerator} from "./Generators";
+import {Adventure, Character, EstateEvent, Trinket} from "./ProfileData";
+
+let nullProfile: Profile;
+let profileIdCounter = 0;
 
 export type ProfileId = number;
+export type CharacterId = number;
+export type TrinketId = number;
 
 export class ProfileState {
   private characterGenerator: CharacterGenerator;
+  private itemGenerator: ItemGenerator;
 
   @observable private activeProfileId: ProfileId;
   @observable map = new Map<ProfileId, Profile>();
 
   @computed get activeProfile () {
-    return this.map.get(this.activeProfileId) ||
-      (nullProfile = this.createProfile(Difficulty.Radiant));
+    return this.map.get(this.activeProfileId) || this.pullNullProfile();
   }
 
-  constructor (characterGenerator: CharacterGenerator) {
+  constructor (
+    characterGenerator: CharacterGenerator,
+    itemGenerator: ItemGenerator
+  ) {
     this.characterGenerator = characterGenerator;
+    this.itemGenerator = itemGenerator;
   }
 
-  createProfile (difficulty: Difficulty) {
+  private pullNullProfile () {
+    if (nullProfile) {
+      return nullProfile;
+    }
+
+    nullProfile = this.createProfile(Difficulty.Radiant, false);
+    nullProfile.name = "Null";
+    nullProfile.isNameFinalized = true;
+    return nullProfile;
+  }
+
+  createProfile (difficulty: Difficulty, add: boolean = true) {
     const profile = new Profile(
       undefined, difficulty.toString(), false,
       difficulty, undefined, 0, new Date()
     );
 
     profile.characters = [
-      this.characterGenerator.next(),
-      this.characterGenerator.next()
+      this.characterGenerator.next(profile),
+      this.characterGenerator.next(profile)
     ];
 
-    this.addProfile(profile);
+    profile.trinkets = [
+      this.itemGenerator.nextTrinket(),
+      this.itemGenerator.nextTrinket(),
+      this.itemGenerator.nextTrinket(),
+      this.itemGenerator.nextTrinket()
+    ];
+
+    profile.trinkets[0].characterId = profile.characters[0].id;
+    profile.trinkets[1].characterId = profile.characters[1].id;
+
+    if (add) {
+      this.addProfile(profile);
+    }
+
     return profile;
   }
 
@@ -48,7 +81,6 @@ export class ProfileState {
   }
 }
 
-let idCounter = 0;
 export class Profile {
   @observable public isNameFinalized: boolean;
   @observable public name: string;
@@ -59,6 +91,13 @@ export class Profile {
   @observable public estateEvent = new EstateEvent("Null", true);
   @observable public adventure = new Adventure();
   @observable public characters: Character[] = [];
+  @observable public trinkets: Trinket[] = [];
+
+  @computed get unassignedTrinkets () {
+    return this.trinkets.filter((trinket) =>
+      !trinket.isOnAdventure && trinket.characterId === undefined
+    );
+  }
 
   get rosterSize () {
     return 9; // TODO should derive from upgrades
@@ -77,6 +116,14 @@ export class Profile {
     });
   }
 
+  unequipAllTrinkets () {
+    transaction(() => {
+      this.trinkets.forEach((trinket) =>
+        trinket.characterId = undefined
+      );
+    });
+  }
+
   constructor (
     public id: ProfileId,
     name: string,
@@ -87,7 +134,7 @@ export class Profile {
     dateOfLastSave: Date
   ) {
     if (id === undefined) {
-      this.id = idCounter++;
+      this.id = profileIdCounter++;
     }
     this.name = name;
     this.isNameFinalized = isNameFinalized;
@@ -102,5 +149,3 @@ export enum Difficulty {
   Darkest = "Darkest",
   Stygian = "Stygian"
 }
-
-let nullProfile;

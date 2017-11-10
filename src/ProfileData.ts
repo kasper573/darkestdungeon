@@ -1,6 +1,8 @@
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
+import {CharacterId, TrinketId} from "./ProfileState";
 
-// Temporary structure/filename, may need to be renamed/moved elsewhere
+let characterIdCounter = 0;
+let trinketIdCounter = 0;
 
 export class EstateEvent {
   @observable public shown: boolean;
@@ -17,17 +19,25 @@ export class Adventure {
   @observable status = AdventureStatus.Pending;
 }
 
-let idCounter = 0;
 export class Character {
-  public id: number;
+  public id: CharacterId;
+
   @observable rosterIndex: number = 0;
   @observable name: string;
 
+  @computed get trinkets (): Trinket[] {
+    return this.profile.trinkets.filter(
+      (trinket: Trinket) => trinket.characterId === this.id
+    );
+  }
+
   constructor (
+    id: CharacterId,
     name: string,
-    public classInfo: CharacterClass
+    public classInfo: CharacterClass,
+    private profile: any
   ) {
-    this.id = idCounter++;
+    this.id = id !== undefined ? id : characterIdCounter++;
     this.name = name;
   }
 
@@ -59,6 +69,30 @@ export class CharacterClass {
   constructor (
     public name: string
   ) {}
+}
+
+export class Trinket {
+  @observable public isOnAdventure: boolean;
+  @observable public characterId?: CharacterId;
+
+  constructor (
+    public id: TrinketId,
+    public name: string,
+    isOnAdventure: boolean = false,
+    characterId?: number
+  ) {
+    if (this.id === undefined) {
+      this.id = trinketIdCounter++;
+    }
+    this.isOnAdventure = isOnAdventure;
+    this.characterId = characterId;
+  }
+
+  public static comparers = {
+    name (a: Trinket, b: Trinket) {
+      return a.name.localeCompare(b.name);
+    }
+  };
 }
 
 export enum AdventureStatus {
