@@ -1,5 +1,6 @@
 import {computed, observable} from "mobx";
 import {Path} from "./RouterState";
+import {Adventure, EstateEvent} from "./ProfileData";
 
 export type ProfileId = number;
 
@@ -41,6 +42,9 @@ export class Profile {
   @observable public path: Path;
   @observable public week: number;
   @observable public dateOfLastSave: Date;
+
+  @observable public estateEvent = new EstateEvent("Null", true);
+  @observable public adventure = new Adventure();
 
   @computed get hasBegun () {
     return !!this.path;

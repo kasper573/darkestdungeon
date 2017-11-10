@@ -5,6 +5,7 @@ import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
+import {AdventureStatus, EstateEvent} from "./ProfileData";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -21,6 +22,7 @@ export class AppState {
   constructor () {
     // Composite state behavior
     this.reactionDisposers = [
+      // Path changes
       reaction(
         () => [this.router.path, this.router.route],
         ([path, route]: [Path, Route]) => {
@@ -31,6 +33,21 @@ export class AppState {
           // Update memorized path for active profile
           if (route.isMemorable) {
             this.profiles.activeProfile.path = path;
+          }
+        }
+      ),
+      // Adventure status changes
+      reaction(
+        () => {
+          return this.profiles.activeProfile.adventure ?
+            this.profiles.activeProfile.adventure.status :
+            AdventureStatus.Pending;
+        },
+        (status) => {
+          // Randomize estate event every time an adventure is finished
+          if (status !== AdventureStatus.Pending) {
+            const eventIndex = Math.floor(100 * Math.random());
+            this.profiles.activeProfile.estateEvent = new EstateEvent("Event " + eventIndex);
           }
         }
       )
