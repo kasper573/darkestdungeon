@@ -3,8 +3,8 @@ import {computed, observable, transaction} from "mobx";
 export type PathTypes = Path | string;
 
 export class RouterState  {
-  @observable private history: Path[] = [];
-  @observable private currentIndex: number = -1;
+  @observable private history: Path[] = [new Path("")];
+  @observable private currentIndex: number = 0;
 
   @observable public routes = new Map<string, Route>();
 
@@ -18,19 +18,16 @@ export class RouterState  {
     return this.routes.get(this.path.value) || route404;
   }
 
-  constructor (routes: {[key: string]: any}, startPath?: string) {
+  addRoutes (routes: {[key: string]: Route}) {
     transaction(() => {
       for (const key in routes) {
         this.addRoute(key, routes[key]);
       }
-      if (startPath) {
-        this.goto(startPath);
-      }
     });
   }
 
-  addRoute (name: string, component: any) {
-    this.routes.set(name, component);
+  addRoute (name: string, route: Route) {
+    this.routes.set(name, route);
   }
 
   deleteRoute (name: string) {

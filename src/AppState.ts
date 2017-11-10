@@ -8,28 +8,15 @@ import {ProfileState} from "./ProfileState";
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
-  public router: RouterState;
-  public ambience: AmbienceState;
-  public music: MusicState;
-  public popups: PopupState;
-  public profiles: ProfileState;
+  public router: RouterState = new RouterState();
+  public ambience: AmbienceState = new AmbienceState();
+  public music: MusicState = new MusicState();
+  public popups: PopupState = new PopupState();
+  public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
 
-  initialize (
-    router: RouterState,
-    ambience: AmbienceState,
-    music: MusicState,
-    popups: PopupState,
-    profiles: ProfileState
-  ) {
-    // Don't allow overriding state
-    this.router = this.router || router;
-    this.ambience = this.ambience || ambience;
-    this.music = this.music || music;
-    this.popups = this.popups || popups;
-    this.profiles = this.profiles || profiles;
-
+  constructor () {
     // Composite state behavior
     this.reactionDisposers = [
       reaction(
