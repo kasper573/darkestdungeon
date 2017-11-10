@@ -6,18 +6,22 @@ import {IReactionDisposer, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {AdventureStatus, EstateEvent} from "./ProfileData";
-import {CharacterGenerator} from "./CharacterGenerator";
+import {CharacterGenerator, ItemGenerator} from "./Generators";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
   public characterGenerator = new CharacterGenerator();
+  public itemGenerator = new ItemGenerator();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
   public music: MusicState = new MusicState();
   public popups: PopupState = new PopupState();
-  public profiles: ProfileState = new ProfileState(this.characterGenerator);
   public options: OptionsState = new OptionsState();
+  public profiles: ProfileState = new ProfileState(
+    this.characterGenerator,
+    this.itemGenerator
+  );
 
   public isRunningJest: boolean; // HACK ugly workaround
 
