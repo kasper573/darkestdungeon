@@ -1,11 +1,13 @@
 import {Character, Trinket} from "./ProfileState";
-import {CharacterClassInfo, characterNames, ItemInfo} from "./config/general";
+import {AfflictionInfo, CharacterClassInfo, characterNames, ItemInfo} from "./config/general";
 
 export class CharacterGenerator {
   next (): Character {
     const c = new Character();
     c.name = randomizeItem(characterNames);
     c.classInfo = randomizeItem(Array.from(CharacterClassInfo.lookup.values()));
+    c.affliction = randomizeItem(Array.from(AfflictionInfo.lookup.values()));
+    c.stress = Math.floor(Math.random() * c.stressMax);
     return c;
   }
 }
