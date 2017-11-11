@@ -50,7 +50,8 @@ export class EstateTemplate extends React.Component<{
           <div className={css(styles.footerRight)}>
             <span onClick={() => state.popups.show({
               content: <Trinkets state={state}/>,
-              modalState: ModalState.Opaque
+              modalState: ModalState.Opaque,
+              group: "trinkets"
             })}>
               [TRINKETS]
             </span>

@@ -6,27 +6,16 @@ import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 import {SortOptions} from "./SortOptions";
 import {CharacterInfo} from "./CharacterInfo";
-import {ModalState, PopupAlign, PopupHandle} from "./PopupState";
+import {ModalState, PopupAlign} from "./PopupState";
 
 @observer
 export class EstateRoster extends React.Component<{state: AppState}> {
-  characterInfoPopup?: PopupHandle;
-
-  componentWillUnmount () {
-    if (this.characterInfoPopup) {
-      this.characterInfoPopup.close();
-    }
-  }
-
   showCharacterInfo (character: Character) {
-    if (this.characterInfoPopup) {
-      this.characterInfoPopup.close();
-    }
-
-    this.characterInfoPopup = this.props.state.popups.show({
+    this.props.state.popups.show({
       align: PopupAlign.TopLeft,
       position: {x: 50, y: 50},
       modalState: ModalState.Opaque,
+      group: "characterInfo",
       content: (
         <CharacterInfo
           profile={this.props.state.profiles.activeProfile}
