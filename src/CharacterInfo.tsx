@@ -25,7 +25,7 @@ export class CharacterInfo extends React.Component<
         <h1>Trinkets:</h1>
         <ul>
           {this.characterTrinkets.map((trinket) => (
-            <li key={trinket.id}>{trinket.name}</li>
+            <li key={trinket.id}>{trinket.itemInfo.name}</li>
           ))}
         </ul>
       </Popup>

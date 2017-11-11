@@ -1,8 +1,9 @@
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
-import {serializable, object, identifier, date, list} from "serializr";
+import {serializable, object, identifier, date, list, reference} from "serializr";
 import uuid = require("uuid");
+import {CharacterClassInfo, ItemInfo} from "./config/general";
 
 let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
@@ -95,9 +96,16 @@ export class Character {
   @serializable @observable rosterIndex: number = 0;
   @serializable @observable name: string;
 
+  @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
+  classInfo: CharacterClassInfo;
+
   static comparers = {
     name (a: Character, b: Character) {
       return a.name.localeCompare(b.name);
+    },
+
+    className (a: Character, b: Character) {
+      return a.classInfo.name.localeCompare(b.classInfo.name);
     },
 
     rosterIndex (a: Character, b: Character) {
@@ -117,13 +125,15 @@ export class Character {
 
 export class Trinket {
   @serializable(identifier()) id: TrinketId = uuid();
-  @serializable name: string;
   @serializable @observable isOnAdventure: boolean;
   @serializable @observable characterId?: CharacterId;
 
+  @serializable(reference(ItemInfo, ItemInfo.lookupFn))
+  itemInfo: ItemInfo;
+
   static comparers = {
     name (a: Trinket, b: Trinket) {
-      return a.name.localeCompare(b.name);
+      return a.itemInfo.name.localeCompare(b.itemInfo.name);
     }
   };
 }
