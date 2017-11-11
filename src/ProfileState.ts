@@ -1,15 +1,15 @@
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
+import {serializable, object, identifier, date, list} from "serializr";
+import uuid = require("uuid");
 
+let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
-let profileIdCounter = 0;
-let characterIdCounter = 0;
-let trinketIdCounter = 0;
 
-export type ProfileId = number;
-export type CharacterId = number;
-export type TrinketId = number;
+export type ProfileId = string;
+export type CharacterId = string;
+export type TrinketId = string;
 
 export class ProfileState {
   private characterGenerator: CharacterGenerator;
@@ -42,14 +42,13 @@ export class ProfileState {
   }
 
   createProfile (difficulty: Difficulty, add: boolean = true) {
-    const profile = new Profile(
-      undefined, difficulty.toString(), false,
-      difficulty, undefined, 0, new Date()
-    );
+    const profile = new Profile();
+    profile.difficulty = difficulty;
+    profile.name = difficulty.toString();
 
     profile.characters = [
-      this.characterGenerator.next(profile),
-      this.characterGenerator.next(profile)
+      this.characterGenerator.next(),
+      this.characterGenerator.next()
     ];
 
     profile.trinkets = [
@@ -82,17 +81,77 @@ export class ProfileState {
   }
 }
 
-export class Profile {
-  @observable public isNameFinalized: boolean;
-  @observable public name: string;
-  @observable public path: Path;
-  @observable public week: number;
-  @observable public dateOfLastSave: Date;
+export class EstateEvent {
+  @serializable @observable message: string;
+  @serializable @observable shown: boolean;
+}
 
-  @observable public estateEvent = new EstateEvent("Null", true);
-  @observable public adventure = new Adventure();
-  @observable public characters: Character[] = [];
-  @observable public trinkets: Trinket[] = [];
+export class Adventure {
+  @serializable @observable status = AdventureStatus.Pending;
+}
+
+export class Character {
+  @serializable(identifier()) id: CharacterId = uuid();
+  @serializable @observable rosterIndex: number = 0;
+  @serializable @observable name: string;
+
+  static comparers = {
+    name (a: Character, b: Character) {
+      return a.name.localeCompare(b.name);
+    },
+
+    rosterIndex (a: Character, b: Character) {
+      if (a.rosterIndex === b.rosterIndex) {
+        return 0;
+      }
+      return a.rosterIndex < b.rosterIndex ? - 1 : 1;
+    }
+  };
+
+  static visibleComparers = (() => {
+    const dict = {...Character.comparers};
+    delete dict.rosterIndex;
+    return dict;
+  })();
+}
+
+export class Trinket {
+  @serializable(identifier()) id: TrinketId = uuid();
+  @serializable name: string;
+  @serializable @observable isOnAdventure: boolean;
+  @serializable @observable characterId?: CharacterId;
+
+  static comparers = {
+    name (a: Trinket, b: Trinket) {
+      return a.name.localeCompare(b.name);
+    }
+  };
+}
+
+export class Profile {
+  @serializable(identifier()) id: ProfileId = uuid();
+  @serializable difficulty: Difficulty;
+  @serializable @observable isNameFinalized: boolean;
+  @serializable @observable name: string;
+  @serializable(object(Path)) @observable path: Path;
+  @serializable @observable week: number = 0;
+  @serializable(date()) @observable dateOfLastSave: Date = new Date();
+
+  @serializable(object(EstateEvent))
+  @observable
+  estateEvent = nullEstateEvent;
+
+  @serializable(object(Adventure))
+  @observable
+  adventure = new Adventure();
+
+  @serializable(list(object(Character)))
+  @observable
+  characters: Character[] = [];
+
+  @serializable(list(object(Trinket)))
+  @observable
+  trinkets: Trinket[] = [];
 
   @computed get unassignedTrinkets () {
     return this.trinkets.filter((trinket) =>
@@ -124,116 +183,6 @@ export class Profile {
       );
     });
   }
-
-  constructor (
-    public id: ProfileId,
-    name: string,
-    isNameFinalized: boolean,
-    public difficulty: Difficulty,
-    path: Path,
-    week: number,
-    dateOfLastSave: Date
-  ) {
-    if (id === undefined) {
-      this.id = profileIdCounter++;
-    }
-    this.name = name;
-    this.isNameFinalized = isNameFinalized;
-    this.path = path;
-    this.week = week;
-    this.dateOfLastSave = dateOfLastSave;
-  }
-}
-
-export class EstateEvent {
-  @observable public shown: boolean;
-
-  constructor (
-    public message: string,
-    shown: boolean = false
-  ) {
-    this.shown = shown;
-  }
-}
-
-export class Adventure {
-  @observable status = AdventureStatus.Pending;
-}
-
-export class Character {
-  public id: CharacterId;
-
-  @observable rosterIndex: number = 0;
-  @observable name: string;
-
-  @computed get trinkets (): Trinket[] {
-    return this.profile.trinkets.filter(
-      (trinket: Trinket) => trinket.characterId === this.id
-    );
-  }
-
-  constructor (
-    id: CharacterId,
-    name: string,
-    public classInfo: CharacterClass,
-    private profile: Profile
-  ) {
-    this.id = id !== undefined ? id : characterIdCounter++;
-    this.name = name;
-  }
-
-  public static comparers = {
-    name (a: Character, b: Character) {
-      return a.name.localeCompare(b.name);
-    },
-
-    className (a: Character, b: Character) {
-      return a.classInfo.name.localeCompare(b.classInfo.name);
-    },
-
-    rosterIndex (a: Character, b: Character) {
-      if (a.rosterIndex === b.rosterIndex) {
-        return 0;
-      }
-      return a.rosterIndex < b.rosterIndex ? - 1 : 1;
-    }
-  };
-
-  public static visibleComparers = (() => {
-    const dict = {...Character.comparers};
-    delete dict.rosterIndex;
-    return dict;
-  })();
-}
-
-export class CharacterClass {
-  constructor (
-    public name: string
-  ) {}
-}
-
-export class Trinket {
-  @observable public isOnAdventure: boolean;
-  @observable public characterId?: CharacterId;
-
-  constructor (
-    public id: TrinketId,
-    public name: string,
-    isOnAdventure: boolean = false,
-    characterId?: number
-  ) {
-    if (this.id === undefined) {
-      this.id = trinketIdCounter++;
-    }
-    this.isOnAdventure = isOnAdventure;
-    this.characterId = characterId;
-  }
-
-  public static comparers = {
-    name (a: Trinket, b: Trinket) {
-      return a.name.localeCompare(b.name);
-    }
-  };
 }
 
 export enum AdventureStatus {
@@ -248,3 +197,6 @@ export enum Difficulty {
   Darkest = "Darkest",
   Stygian = "Stygian"
 }
+
+nullEstateEvent = new EstateEvent();
+nullEstateEvent.shown = true;

@@ -1,4 +1,5 @@
 import {computed, observable, transaction} from "mobx";
+import {serializable} from "serializr";
 
 export type PathTypes = Path | string;
 
@@ -78,10 +79,16 @@ export class Route {
 }
 
 export class Path {
+  @serializable public value: string;
+  public args: any;
+
   constructor (
-    public value: string,
-    public args: any = {}
-  ) {}
+    value: string = "",
+    args: any = {}
+  ) {
+    this.value = value;
+    this.args = args;
+  }
 
   equals (possibleOther: PathTypes) {
     const other = ensurePath(possibleOther);
