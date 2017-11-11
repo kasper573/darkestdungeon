@@ -1,5 +1,4 @@
 import {AmbienceDefinition} from "../AmbienceState";
-import {CharacterClass} from "../ProfileState";
 
 export const ambience = {
   "estate": new AmbienceDefinition(
@@ -27,8 +26,3 @@ export const ambience = {
 export const itemNames = ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"];
 
 export const characterNames = ["Foo", "Bar", "Baz", "LoL", "OMG"];
-
-export const characterClasses = [
-  new CharacterClass("Mod"),
-  new CharacterClass("Pleb")
-];

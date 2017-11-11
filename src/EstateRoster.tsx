@@ -24,10 +24,15 @@ export class EstateRoster extends React.Component<{state: AppState}> {
     }
 
     this.characterInfoPopup = this.props.state.popups.show({
-      content: <CharacterInfo character={character}/>,
       align: PopupAlign.TopLeft,
       position: {x: 50, y: 50},
-      modalState: ModalState.Opaque
+      modalState: ModalState.Opaque,
+      content: (
+        <CharacterInfo
+          profile={this.props.state.profiles.activeProfile}
+          character={character}
+        />
+      )
     });
   }
 
