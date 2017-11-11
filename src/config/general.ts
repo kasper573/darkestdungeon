@@ -1,4 +1,5 @@
 import {AmbienceDefinition} from "../AmbienceState";
+import {identifier, serializable} from "serializr";
 
 export const ambience = {
   "estate": new AmbienceDefinition(
@@ -23,6 +24,38 @@ export const ambience = {
   ),
 };
 
-export const itemNames = ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"];
+export const characterNames = ["CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"];
 
-export const characterNames = ["Foo", "Bar", "Baz", "LoL", "OMG"];
+export class ItemInfo {
+  @serializable(identifier()) id: string;
+  static lookup = new Map<string, ItemInfo>();
+  static lookupFn = lookupFn.bind(null, ItemInfo.lookup);
+
+  name: string;
+}
+
+export class CharacterClassInfo {
+  @serializable(identifier()) id: string;
+  static lookup = new Map<string, CharacterClassInfo>();
+  static lookupFn = lookupFn.bind(null, CharacterClassInfo.lookup);
+
+  name: string;
+}
+
+["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name) => {
+  const info = new ItemInfo();
+  info.id = name;
+  info.name = name;
+  ItemInfo.lookup.set(info.id, info);
+});
+
+["Ninja", "Superhero", "Magician", "Bowling Baller", "Chad"].forEach((name) => {
+  const info = new CharacterClassInfo();
+  info.id = name;
+  info.name = name;
+  CharacterClassInfo.lookup.set(info.id, info);
+});
+
+function lookupFn <T> (lookup: Map<string, T>, id: string, resolve: (e: any, r: any) => void) {
+  resolve(null, lookup.get(id));
+}

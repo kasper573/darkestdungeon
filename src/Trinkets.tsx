@@ -45,7 +45,7 @@ export class Trinkets extends React.Component<
         <ul>
           {sortedTrinkets.map((trinket) => (
             <li key={trinket.id}>
-              [{trinket.name}]
+              [{trinket.itemInfo.name}]
             </li>
           ))}
         </ul>

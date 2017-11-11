@@ -11,7 +11,7 @@ export class EstateRosterEntry extends React.Component<{
   render () {
     return (
       <li className={css(styles.entry)} onClick={this.props.onSelect}>
-        {this.props.character.name}
+        {this.props.character.name} : {this.props.character.classInfo.name}
       </li>
     );
   }

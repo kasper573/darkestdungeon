@@ -1,29 +1,19 @@
 import {Character, Trinket} from "./ProfileState";
+import {CharacterClassInfo, characterNames, ItemInfo} from "./config/general";
 
 export class CharacterGenerator {
-  private names: string[] = [];
-
-  configure (names: string[]) {
-    this.names = names;
-  }
-
   next (): Character {
     const c = new Character();
-    c.name = randomizeItem(this.names);
+    c.name = randomizeItem(characterNames);
+    c.classInfo = randomizeItem(Array.from(CharacterClassInfo.lookup.values()));
     return c;
   }
 }
 
 export class ItemGenerator {
-  private names: string[] = [];
-
-  configure (names: string[]) {
-    this.names = names;
-  }
-
   nextTrinket (): Trinket {
     const t = new Trinket();
-    t.name = randomizeItem(this.names);
+    t.itemInfo = randomizeItem(Array.from(ItemInfo.lookup.values()));
     return t;
   }
 }
