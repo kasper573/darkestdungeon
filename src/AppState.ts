@@ -3,9 +3,10 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {AdventureStatus, EstateEvent, ProfileState} from "./ProfileState";
+import {AdventureStatus, EstateEvent, Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
+import {deserialize, serialize} from "serializr";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -28,6 +29,7 @@ export class AppState {
    * Starts composite state behavior
    */
   initialize () {
+    this.load();
     this.reactionDisposers = [
       // Path changes
       reaction(
@@ -54,17 +56,62 @@ export class AppState {
           // Randomize estate event every time an adventure is finished
           if (status !== AdventureStatus.Pending) {
             const eventIndex = Math.floor(100 * Math.random());
-            this.profiles.activeProfile.estateEvent = new EstateEvent("Event " + eventIndex);
+            const newEvent = new EstateEvent();
+            newEvent.message = "Event " + eventIndex;
+            this.profiles.activeProfile.estateEvent = newEvent;
           }
         }
+      ),
+      // Save whenever interesting data changes
+      reaction(
+        () => {
+          return JSON.stringify({
+            path: this.router.path.value,
+            numProfiles: this.profiles.map.size
+          });
+        },
+        () => this.save()
       )
     ];
+  }
+
+  save () {
+    console.log("Saving profiles", Array.from(this.profiles.map.values()));
+
+    const jsProfileList = [];
+    for (const profile of this.profiles.map.values()) {
+      jsProfileList.push(serialize(profile));
+    }
+
+    localStorage.setItem("profileList", JSON.stringify(jsProfileList));
+    console.log("Saved profileList");
+  }
+
+  load () {
+    const rawProfileList = localStorage.getItem("profileList");
+    if (rawProfileList) {
+      try {
+        const jsProfileList = JSON.parse(rawProfileList);
+        console.log("Parsed localStorage data", jsProfileList);
+
+        const profileList = [];
+        for (const jsProfile of jsProfileList) {
+          const profile = deserialize(Profile, jsProfile);
+          profileList.push(profile);
+          this.profiles.addProfile(profile);
+        }
+        console.log("Parsed raw object into typed object", profileList);
+      } catch (e) {
+        console.warn("Unable to parse localStorage data: " + e);
+      }
+    }
   }
 
   /**
    * Ends composite state behavior
    */
   dispose () {
+    this.save();
     this.reactionDisposers.forEach((dispose) => dispose());
   }
 }

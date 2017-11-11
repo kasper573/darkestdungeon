@@ -26,6 +26,12 @@ export class DevTools extends React.Component<{state: AppState}> {
         <button style={{width: 50}} onClick={() => this.gotoSelectedPath()}>
           Go
         </button>
+        <button style={{width: 50}} onClick={() => this.props.state.save()}>
+          Save
+        </button>
+        <button style={{width: 50}} onClick={() => this.props.state.load()}>
+          Load
+        </button>
         {!state.isRunningJest && <Stats/>}
       </div>
     );
