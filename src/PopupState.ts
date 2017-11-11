@@ -11,7 +11,8 @@ type PopupHandleProps<P> = {
   align?: PopupAlign,
   position?: Point,
   modalState?: ModalState,
-  animate?: boolean
+  animate?: boolean,
+  group?: string
 };
 
 type PopupHandlePropsOrContent<P> = PopupHandleProps<P> | PopupContent<P>;
@@ -28,6 +29,14 @@ export class PopupState {
 
   show <P> (arg: PopupHandlePropsOrContent<P>): PopupHandle<P> {
     const popup = new PopupHandle<P>(ensureProps(arg), this);
+
+    // Close other popups assigned to the same group
+    if (popup.group) {
+      const groupPopups = Array.from(this.map.values())
+        .filter((p) => p.group === popup.group);
+      groupPopups.forEach((p) => this.map.delete(p.id));
+    }
+
     this.map.set(popup.id, popup);
     return popup;
   }
@@ -65,6 +74,7 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
   public modalState: ModalState = ModalState.ModalDismiss;
   public animate: boolean = true;
   public resolution: any;
+  public group?: string;
 
   @observable public position?: Point;
 
