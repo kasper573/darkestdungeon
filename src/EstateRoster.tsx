@@ -45,6 +45,7 @@ export class EstateRoster extends React.Component<{state: AppState}> {
             <EstateRosterEntry
               key={character.id}
               character={character}
+              popups={this.props.state.popups}
               onSelect={() => this.showCharacterInfo(character)}
             />
           ))}
