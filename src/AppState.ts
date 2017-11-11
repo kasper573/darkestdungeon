@@ -76,15 +76,12 @@ export class AppState {
   }
 
   save () {
-    console.log("Saving profiles", Array.from(this.profiles.map.values()));
-
     const jsProfileList = [];
     for (const profile of this.profiles.map.values()) {
       jsProfileList.push(serialize(profile));
     }
 
     localStorage.setItem("profileList", JSON.stringify(jsProfileList));
-    console.log("Saved profileList");
   }
 
   load () {
@@ -92,7 +89,6 @@ export class AppState {
     if (rawProfileList) {
       try {
         const jsProfileList = JSON.parse(rawProfileList);
-        console.log("Parsed localStorage data", jsProfileList);
 
         const profileList = [];
         for (const jsProfile of jsProfileList) {
@@ -100,9 +96,8 @@ export class AppState {
           profileList.push(profile);
           this.profiles.addProfile(profile);
         }
-        console.log("Parsed raw object into typed object", profileList);
       } catch (e) {
-        console.warn("Unable to parse localStorage data: " + e);
+        console.error("Unable to parse localStorage data: " + e);
       }
     }
   }
