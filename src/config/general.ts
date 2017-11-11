@@ -26,6 +26,11 @@ export const ambience = {
 
 export const characterNames = ["CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"];
 
+export enum EquipmentType {
+  Weapon = "W",
+  Armor = "A"
+}
+
 export class ItemInfo {
   @serializable(identifier()) id: string;
   static lookup = new Map<string, ItemInfo>();
@@ -40,6 +45,34 @@ export class CharacterClassInfo {
   static lookupFn = lookupFn.bind(null, CharacterClassInfo.lookup);
 
   name: string;
+  avatarUrl: string = require("../../assets/images/hero.png");
+}
+
+export class AfflictionInfo {
+  @serializable(identifier()) id: string;
+  static lookup = new Map<string, AfflictionInfo>();
+  static lookupFn = lookupFn.bind(null, AfflictionInfo.lookup);
+
+  name: string;
+}
+
+export class LevelInfo {
+  @serializable(identifier()) id: number;
+  static lookup = new Map<number, LevelInfo>();
+  static lookupFn = lookupFn.bind(null, LevelInfo.lookup);
+
+  name: string;
+  number: number;
+  experience: number;
+
+  get previous () { return LevelInfo.lookup.get(this.id - 1); }
+  get next () { return LevelInfo.lookup.get(this.id + 1); }
+  get isMax () { return !this.next; }
+
+  get relativeExperience () {
+    const from = this.previous ? this.previous.experience : 0;
+    return this.experience - from;
+  }
 }
 
 ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name) => {
@@ -49,12 +82,29 @@ export class CharacterClassInfo {
   ItemInfo.lookup.set(info.id, info);
 });
 
-["Ninja", "Superhero", "Magician", "Bowling Baller", "Chad"].forEach((name) => {
+["Ninja", "Superhero", "Magician", "Baller", "Chad"].forEach((className) => {
   const info = new CharacterClassInfo();
-  info.id = name;
-  info.name = name;
+  info.id = className;
+  info.name = className;
   CharacterClassInfo.lookup.set(info.id, info);
 });
+
+["Hopeless", "Paranoid", "Gullible", "Ignorant"].forEach((name) => {
+  const info = new AfflictionInfo();
+  info.id = name;
+  info.name = name;
+  AfflictionInfo.lookup.set(info.id, info);
+});
+
+["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]
+  .forEach((name, level) => {
+    const info = new LevelInfo();
+    info.id = level;
+    info.number = level;
+    info.name = name;
+    info.experience = Math.pow(level, 2) * 1000;
+    LevelInfo.lookup.set(info.id, info);
+  });
 
 function lookupFn <T> (lookup: Map<string, T>, id: string, resolve: (e: any, r: any) => void) {
   resolve(null, lookup.get(id));

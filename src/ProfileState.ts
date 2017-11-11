@@ -3,7 +3,7 @@ import {Path} from "./RouterState";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
 import {serializable, object, identifier, date, list, reference} from "serializr";
 import uuid = require("uuid");
-import {CharacterClassInfo, ItemInfo} from "./config/general";
+import {AfflictionInfo, CharacterClassInfo, ItemInfo, LevelInfo} from "./config/general";
 
 let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
@@ -98,6 +98,39 @@ export class Character {
 
   @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
   classInfo: CharacterClassInfo;
+
+  @serializable(reference(AfflictionInfo, AfflictionInfo.lookupFn))
+  affliction: AfflictionInfo;
+
+  @serializable @observable stress: number = 0;
+  @serializable @observable experience: number = 0;
+
+  @computed get relativeExperience () {
+    return this.experience - this.level.experience;
+  }
+
+  @computed get level () {
+    return Array.from(LevelInfo.lookup.values())
+      .find((level) =>
+        this.experience >= level.experience &&
+        (level.isMax || this.experience < level.next.experience)
+      );
+  }
+
+  @computed get levelProgress () {
+    if (this.level.isMax) {
+      return 1;
+    }
+    return this.relativeExperience / this.level.next.relativeExperience;
+  }
+
+  @computed get stressPercentage () {
+    return this.stress / this.stressMax;
+  }
+
+  get stressMax (): number {
+    return 200;
+  }
 
   static comparers = {
     name (a: Character, b: Character) {
