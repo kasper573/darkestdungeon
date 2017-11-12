@@ -1,6 +1,6 @@
 import * as React from "react";
 import {ReactElement} from "react";
-import {observable, reaction} from "mobx";
+import {observable, reaction, transaction} from "mobx";
 import {Point} from "./Bounds";
 
 export type PopupId = number;
@@ -12,7 +12,8 @@ type PopupHandleProps<P> = {
   position?: Point,
   modalState?: ModalState,
   animate?: boolean,
-  group?: string
+  group?: string,
+  onClose?: () => void
 };
 
 type PopupHandlePropsOrContent<P> = PopupHandleProps<P> | PopupContent<P>;
@@ -58,11 +59,22 @@ export class PopupState {
   }
 
   close (id: PopupId) {
-    this.map.delete(id);
+    const popup = this.map.get(id);
+    if (popup) {
+      this.map.delete(id);
+      if (popup.onClose) {
+        popup.onClose();
+      }
+    }
   }
 
   closeAll () {
-    this.map.clear();
+    transaction(() => {
+      const popupIds = Array.from(this.map.keys());
+      for (const id of popupIds) {
+        this.close(id);
+      }
+    });
   }
 }
 
@@ -75,6 +87,7 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
   public animate: boolean = true;
   public resolution: any;
   public group?: string;
+  public onClose?: () => void;
 
   @observable public position?: Point;
 
