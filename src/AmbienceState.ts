@@ -81,7 +81,7 @@ export class AmbienceState {
 export class AmbienceDefinition {
   constructor (
     public base: IHowlProperties,
-    public os: IHowlProperties[]
+    public os: IHowlProperties[] = []
   ) {}
 }
 
