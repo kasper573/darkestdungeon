@@ -26,9 +26,11 @@ export const ambience = {
 
 export const characterNames = ["CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"];
 
-export enum EquipmentType {
+export enum ItemType {
   Weapon = "W",
-  Armor = "A"
+  Armor = "A",
+  Trinket = "T",
+  Usable = "T"
 }
 
 export class ItemInfo {
@@ -36,7 +38,10 @@ export class ItemInfo {
   static lookup = new Map<string, ItemInfo>();
   static lookupFn = lookupFn.bind(null, ItemInfo.lookup);
 
-  name: string;
+  constructor (
+    public name: string = "",
+    public type: ItemType = ItemType.Usable
+  ) {}
 }
 
 export class CharacterClassInfo {
@@ -75,6 +80,8 @@ export class LevelInfo {
   }
 }
 
+export const todo = "?todo?";
+
 ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name) => {
   const info = new ItemInfo();
   info.id = name;
@@ -108,4 +115,30 @@ export class LevelInfo {
 
 function lookupFn <T> (lookup: Map<string, T>, id: string, resolve: (e: any, r: any) => void) {
   resolve(null, lookup.get(id));
+}
+
+export enum StatsModSource {
+  Affliction = "Affliction",
+  Trinket = "Trinket",
+  Quirk = "Quirk"
+}
+
+export type StatsValue = number[] | number;
+export type StatsMod  = {units?: number, percentages?: number, source: StatsModSource};
+
+export class StatsInfo {
+  constructor (
+    public shortName: string,
+    public longName: string,
+    public value: StatsValue,
+    public mods: StatsMod[] = [],
+    public isPercentage: boolean = false
+  ) {}
+}
+
+export class QuirkInfo {
+  constructor (
+    public name: string,
+    public isPositive: boolean = true
+  ) {}
 }

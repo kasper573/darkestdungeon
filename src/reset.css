@@ -42,6 +42,7 @@ time, mark, audio, video, input {
 
 input {
     user-select: text;
+    flex-shrink: 1;
 }
 
 html, body {

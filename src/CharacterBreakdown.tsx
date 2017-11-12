@@ -5,7 +5,7 @@ import {css, StyleSheet} from "aphrodite";
 import {commonStyles} from "./config/styles";
 
 @observer
-export class CharacterInfoSmall extends React.Component<{character: Character}> {
+export class CharacterBreakdown extends React.Component<{character: Character}> {
   render () {
     const c = this.props.character;
 

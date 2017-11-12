@@ -3,14 +3,14 @@ import {css, StyleSheet} from "aphrodite";
 import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 import {CharacterLevel} from "./CharacterLevel";
-import {EquipmentLevel} from "./EquipmentLevel";
+import {ItemLevel} from "./ItemLevel";
 import {StressMeter} from "./StressMeter";
 import {CharacterAvatar} from "./CharacterAvatar";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
-import {CharacterInfoSmall} from "./CharacterInfoSmall";
+import {CharacterBreakdown} from "./CharacterBreakdown";
 import {PopupState} from "./PopupState";
-import {EquipmentType} from "./config/general";
+import {ItemType} from "./config/general";
 
 @observer
 export class EstateRosterEntry extends React.Component<{
@@ -32,14 +32,14 @@ export class EstateRosterEntry extends React.Component<{
             percentage={character.stressPercentage}
           />
           <div className={css(styles.equipment)}>
-            <EquipmentLevel type={EquipmentType.Armor} level={1}/>
-            <EquipmentLevel type={EquipmentType.Weapon} level={1}/>
+            <ItemLevel type={ItemType.Armor} level={1}/>
+            <ItemLevel type={ItemType.Weapon} level={1}/>
           </div>
         </div>
         <TooltipArea
           popups={this.props.popups}
           side={TooltipSide.Left}
-          tip={<CharacterInfoSmall character={this.props.character}/>}
+          tip={<CharacterBreakdown character={this.props.character}/>}
         >
           <CharacterLevel character={character}/>
         </TooltipArea>

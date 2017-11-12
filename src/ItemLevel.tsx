@@ -1,14 +1,15 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {EquipmentType} from "./config/general";
+import {ItemType} from "./config/general";
 
-export class EquipmentLevel extends React.Component<{
-  type: EquipmentType,
-  level: number
+export class ItemLevel extends React.Component<{
+  type: ItemType,
+  level: number,
+  classStyle?: any
 }> {
   render () {
     return (
-      <div className={css(styles.equipmentLevel)}>
+      <div className={css(styles.itemLevel, this.props.classStyle)}>
         <span>[{this.props.type}]</span>
         <span>{this.props.level}</span>
       </div>
@@ -17,8 +18,8 @@ export class EquipmentLevel extends React.Component<{
 }
 
 const styles = StyleSheet.create({
-  equipmentLevel: {
-    background: "gray",
+  itemLevel: {
+    background: "rgb(0, 0, 60)",
     padding: 5,
     flexDirection: "row"
   }
