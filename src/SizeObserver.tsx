@@ -14,6 +14,9 @@ export class SizeObserver extends React.Component<{
     this.domNode = ReactDOM.findDOMNode(this);
     this.resizeObserver = new ResizeObserver(() => this.onSizeChanged());
     this.resizeObserver.observe(this.domNode);
+
+    // Report initial size
+    this.onSizeChanged();
   }
 
   componentWillUnmount () {
