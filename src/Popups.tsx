@@ -7,10 +7,15 @@ import {BannerHeader} from "./BannerHeader";
 
 export type PopupProps = {
   handle?: PopupHandle,
-  closeable?: boolean
+  closeable?: boolean,
+  padding?: boolean;
 };
 
 export class Popup extends React.Component<PopupProps> {
+  static defaultProps = {
+    padding: true
+  };
+
   render () {
     const isDismissable = this.props.handle.modalState !== ModalState.Modal;
     const hasCloseButton = this.props.closeable || isDismissable;
@@ -22,8 +27,12 @@ export class Popup extends React.Component<PopupProps> {
       </span>
     );
 
+    const dynamicStyle = !this.props.padding ? {
+      padding: 0
+    } : undefined;
+
     return (
-      <div className={css(styles.popup)}>
+      <div className={css(styles.popup)} style={dynamicStyle}>
         {this.props.children}
         {closeButton}
       </div>
