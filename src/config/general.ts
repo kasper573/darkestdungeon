@@ -11,6 +11,14 @@ export const ambience = {
     ]
   ),
   "coach": "estate",
+  "graveyard": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_graveyard.wav")},
+    [
+      {src: require("../../assets/dd/audio/amb_town_graveyard_os_01.wav")},
+      {src: require("../../assets/dd/audio/amb_town_graveyard_os_02.wav")},
+      {src: require("../../assets/dd/audio/amb_town_graveyard_os_03.wav")}
+    ]
+  ),
   "tavern": new AmbienceDefinition(
     {src: require("../../assets/dd/audio/amb_town_tavern.wav")},
     [
@@ -21,6 +29,35 @@ export const ambience = {
       {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_02.wav")},
       {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_03.wav")}
     ]
+  ),
+  "sanitarium": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_sanitarium.wav")},
+    [
+      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_01.wav")},
+      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_02.wav")},
+      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_03.wav")}
+    ]
+  ),
+  "abbey": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_abbey.wav")},
+    [
+      {src: require("../../assets/dd/audio/amb_town_abbey_os_chants.wav")},
+      {src: require("../../assets/dd/audio/amb_town_abbey_os_whispers.wav")}
+    ]
+  ),
+  "guild": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_guild.wav")}
+  ),
+  "blacksmith": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_blacksmith.wav")},
+    [
+      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_01.wav")},
+      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_02.wav")},
+      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")}
+    ]
+  ),
+  "memoirs": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town_tavern.wav")}
   ),
 };
 
