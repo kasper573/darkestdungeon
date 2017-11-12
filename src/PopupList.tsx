@@ -4,22 +4,14 @@ import {PopupState} from "./PopupState";
 import {observer} from "mobx-react";
 import {PopupEntry} from "./PopupEntry";
 import {UIState} from "./UIState";
-import {SizeObserver} from "./SizeObserver";
-import {Size} from "./Bounds";
 import * as TransitionGroup from "react-transition-group/TransitionGroup";
 import Transition from "react-transition-group/Transition";
 
 @observer
-export class PopupList extends React.Component<{state: PopupState}> {
-  private uiState = new UIState();
-
-  updateUIState (containerSize: Size): any {
-    this.uiState.centerPosition = {
-      x: containerSize.width / 2,
-      y: containerSize.height / 2
-    };
-  }
-
+export class PopupList extends React.Component<{
+  state: PopupState,
+  uiState: UIState
+}> {
   renderPopups () {
     const elements: JSX.Element[] = [];
     for (const handle of this.props.state.map.values()) {
@@ -29,7 +21,11 @@ export class PopupList extends React.Component<{state: PopupState}> {
           timeout={handle.animate ? PopupEntry.animateDuration : 0}
           className={css(styles.container)}>
           {(state: string) => (
-            <PopupEntry handle={handle} uiState={this.uiState} transitionState={state}/>
+            <PopupEntry
+              handle={handle}
+              transitionState={state}
+              uiState={this.props.uiState}
+            />
           )}
         </Transition>
       );
@@ -43,7 +39,6 @@ export class PopupList extends React.Component<{state: PopupState}> {
         <TransitionGroup className={css(styles.container)}>
           {this.renderPopups()}
         </TransitionGroup>
-        <SizeObserver onSizeChanged={(size) => this.updateUIState(size)}/>
       </div>
     );
   }
