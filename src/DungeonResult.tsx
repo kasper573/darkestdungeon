@@ -3,6 +3,10 @@ import {AppState} from "./AppState";
 import {Path} from "./RouterState";
 
 export class DungeonResult extends React.Component<{state: AppState}> {
+  componentWillMount () {
+    this.props.state.ambience.activate("dungeonResult");
+  }
+
   render () {
     return (
       <div>

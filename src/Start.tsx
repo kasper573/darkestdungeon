@@ -8,6 +8,10 @@ import {Profile} from "./ProfileState";
 import {PauseMenu} from "./PauseMenu";
 
 export class Start extends React.Component<{state: AppState}> {
+  componentWillMount () {
+    this.props.state.ambience.activate("start");
+  }
+
   transitionOut () {
     console.warn("Not implemented");
     return Promise.resolve();

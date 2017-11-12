@@ -3,6 +3,10 @@ import {AppState} from "./AppState";
 import {AdventureStatus} from "./ProfileState";
 
 export class Dungeon extends React.Component<{state: AppState}> {
+  componentWillMount () {
+    this.props.state.ambience.activate("dungeon");
+  }
+
   render () {
     return (
       <div>
