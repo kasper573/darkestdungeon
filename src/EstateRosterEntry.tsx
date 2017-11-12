@@ -24,7 +24,7 @@ export class EstateRosterEntry extends React.Component<{
       <li className={css(styles.entry)} onClick={this.props.onSelect}>
         <CharacterAvatar src={character.classInfo.avatarUrl}/>
         <div className={css(styles.info)}>
-          <span className={css(styles.name, commonStyles.characterName)}>
+          <span className={css(commonStyles.characterName)}>
             {character.name}
           </span>
           <StressMeter
@@ -66,10 +66,6 @@ const styles = StyleSheet.create({
   stress: {
     marginTop: 3,
     marginBottom: 3
-  },
-
-  name: {
-    fontWeight: "bold"
   },
 
   equipment: {
