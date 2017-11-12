@@ -7,12 +7,14 @@ import {AdventureStatus, EstateEvent, Profile, ProfileState} from "./ProfileStat
 import {OptionsState} from "./OptionsState";
 import {CharacterGenerator, ItemGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
+import {UIState} from "./UIState";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
   public characterGenerator = new CharacterGenerator();
   public itemGenerator = new ItemGenerator();
+  public ui: UIState = new UIState();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
   public music: MusicState = new MusicState();
