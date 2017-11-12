@@ -67,10 +67,11 @@ export class AppState {
       // Save whenever interesting data changes
       reaction(
         () => {
-          return JSON.stringify({
+          return {
             path: this.router.path.value,
-            numProfiles: this.profiles.map.size
-          });
+            profiles: Array.from(this.profiles.map.values())
+              .map((p) => serialize(p))
+          };
         },
         () => this.save()
       )
