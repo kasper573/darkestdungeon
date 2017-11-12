@@ -5,7 +5,7 @@ import {EstateRosterEntry} from "./EstateRosterEntry";
 import {Character} from "./ProfileState";
 import {observer} from "mobx-react";
 import {SortOptions} from "./SortOptions";
-import {CharacterInfo} from "./CharacterInfo";
+import {CharacterOverview} from "./CharacterOverview";
 import {ModalState, PopupAlign} from "./PopupState";
 
 @observer
@@ -13,11 +13,12 @@ export class EstateRoster extends React.Component<{state: AppState}> {
   showCharacterInfo (character: Character) {
     this.props.state.popups.show({
       align: PopupAlign.TopLeft,
-      position: {x: 50, y: 50},
+      position: {x: 0, y: 0},
       modalState: ModalState.Opaque,
       group: "characterInfo",
       content: (
-        <CharacterInfo
+        <CharacterOverview
+          popups={this.props.state.popups}
           profile={this.props.state.profiles.activeProfile}
           character={character}
         />

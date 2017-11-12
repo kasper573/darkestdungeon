@@ -20,7 +20,7 @@ const sideAlignMap = {
 
 type TooltipAreaProps = {
   popups: PopupState,
-  tip: PopupContent,
+  tip?: PopupContent,
   side?: TooltipSide,
   className?: string,
   style?: any,
@@ -97,6 +97,10 @@ export class TooltipArea extends React.Component<TooltipAreaProps> {
 
   show (tip = this.props.tip) {
     this.hide();
+
+    if (!tip) {
+      return;
+    }
 
     this.popup = this.props.popups.show({
       content: <Tooltip>{tip}</Tooltip>,
