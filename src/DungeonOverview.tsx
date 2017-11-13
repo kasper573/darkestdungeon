@@ -2,9 +2,9 @@ import * as React from "react";
 import {AppState} from "./AppState";
 import {AdventureStatus} from "./ProfileState";
 
-export class Dungeon extends React.Component<{state: AppState}> {
+export class DungeonOverview extends React.Component<{state: AppState}> {
   componentWillMount () {
-    this.props.state.ambience.activate("dungeon");
+    this.props.state.ambience.activate("dungeonOverview");
   }
 
   render () {
