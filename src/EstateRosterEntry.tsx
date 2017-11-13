@@ -23,9 +23,12 @@ export class EstateRosterEntry extends React.Component<{
   render () {
     const character = this.props.character;
 
+    let extraStyle;
     let partyElement;
+
     if (this.props.partyFeatures) {
       if (character.inParty) {
+        extraStyle = styles.entryInParty;
         partyElement = <div className={css(styles.partyIcon)}/>;
       } else if (this.props.canJoinParty) {
         partyElement = (
@@ -38,7 +41,7 @@ export class EstateRosterEntry extends React.Component<{
     }
 
     return (
-      <li className={css(styles.entry, character.inParty && styles.entryInParty)}
+      <li className={css(styles.entry, extraStyle)}
           onClick={this.props.onSelect}>
         <Avatar src={character.classInfo.avatarUrl}>
           {partyElement}
