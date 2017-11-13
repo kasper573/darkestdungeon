@@ -12,6 +12,16 @@ export const commonStyles = StyleSheet.create({
     color: "rgb(200, 180, 110)"
   },
 
+  dungeonName: {
+    fontWeight: "bold",
+    color: "rgb(200, 180, 110)"
+  },
+
+  commonName: {
+    fontWeight: "bold",
+    color: "rgb(200, 180, 110)"
+  },
+
   boxBorder: {
     border: "2px solid gray"
   },
