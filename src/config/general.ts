@@ -61,6 +61,16 @@ export const ambience = {
   ),
 };
 
+// Lower all os to 0.25 volume
+for (const key in ambience) {
+  const def = (ambience as any)[key] as AmbienceDefinition;
+  if (def.os) {
+    def.os.forEach(
+      (o: IHowlProperties) => o.volume = 0.25
+    );
+  }
+}
+
 export const characterNames = ["CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"];
 
 export enum ItemType {
