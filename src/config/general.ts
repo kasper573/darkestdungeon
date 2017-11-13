@@ -113,7 +113,8 @@ export class ItemInfo {
 
   constructor (
     public name: string = "",
-    public type: ItemType = ItemType.Usable
+    public type: ItemType = ItemType.Usable,
+    public goldCost: number = 0
   ) {}
 }
 
@@ -163,10 +164,11 @@ export class DungeonInfo {
 
 export const todo = "?todo?";
 
-["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name) => {
+["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name, index) => {
   const info = new ItemInfo();
   info.id = name;
   info.name = name;
+  info.goldCost = 25 + 50 * index;
   ItemInfo.lookup.set(info.id, info);
 });
 
