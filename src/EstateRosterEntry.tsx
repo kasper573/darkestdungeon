@@ -5,7 +5,7 @@ import {observer} from "mobx-react";
 import {CharacterLevel} from "./CharacterLevel";
 import {ItemLevel} from "./ItemLevel";
 import {StressMeter} from "./StressMeter";
-import {CharacterAvatar} from "./CharacterAvatar";
+import {Avatar} from "./Avatar";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {CharacterBreakdown} from "./CharacterBreakdown";
@@ -22,7 +22,7 @@ export class EstateRosterEntry extends React.Component<{
     const character = this.props.character;
     return (
       <li className={css(styles.entry)} onClick={this.props.onSelect}>
-        <CharacterAvatar src={character.classInfo.avatarUrl}/>
+        <Avatar src={character.classInfo.avatarUrl}/>
         <div className={css(styles.info)}>
           <span className={css(commonStyles.characterName)}>
             {character.name}
