@@ -2,7 +2,7 @@ import * as React from "react";
 import {AppState} from "./AppState";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "./RouterState";
-import {Prompt} from "./Popups";
+import {Alert, Prompt} from "./Popups";
 import {Quest} from "./ProfileState";
 import {observer} from "mobx-react";
 import {EstateDungeonBreakdown} from "./EstateDungeonBreakdown";
@@ -29,7 +29,19 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
   checkPartyBeforeContinue () {
     const profile = this.props.state.profiles.activeProfile;
     if (profile.party.length === profile.maxPartySize) {
-      return Promise.resolve();
+      return Promise.resolve(true);
+    }
+
+    if (profile.party.length === 0) {
+      return this.props.state.popups.prompt(
+        <Alert message="Please form a party before adventuring"/>
+      );
+    }
+
+    if (!profile.selectedQuest) {
+      return this.props.state.popups.prompt(
+        <Alert message="Please select a quest for your adventure"/>
+      );
     }
 
     return this.props.state.popups.prompt(
