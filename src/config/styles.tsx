@@ -7,6 +7,11 @@ export const commonStyles = StyleSheet.create({
     color: "rgb(200, 180, 110)"
   },
 
+  upgradeName: {
+    fontWeight: "bold",
+    color: "rgb(200, 180, 110)"
+  },
+
   boxBorder: {
     border: "2px solid gray"
   },
