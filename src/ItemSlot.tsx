@@ -8,7 +8,9 @@ import {ItemBreakdown} from "./ItemBreakdown";
 
 export class ItemSlot extends React.Component<{
   popups: PopupState,
-  item?: ItemInfo
+  item?: ItemInfo,
+  onClick?: () => void,
+  style?: any
 }> {
   render () {
     const breakdown = this.props.item && (
@@ -20,8 +22,11 @@ export class ItemSlot extends React.Component<{
         popups={this.props.popups}
         side={TooltipSide.Above}
         tip={breakdown}
-        className={css(styles.itemSlot, commonStyles.boxBorder)}>
-        {this.props.item ? this.props.item.name : undefined}
+        className={css(styles.itemSlot, commonStyles.boxBorder)}
+        style={this.props.style}>
+        <span style={{flex: 1}} onClick={this.props.onClick}>
+          {this.props.item ? this.props.item.name : undefined}
+        </span>
       </TooltipArea>
     );
   }

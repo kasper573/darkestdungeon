@@ -11,7 +11,8 @@ import {PopupState} from "./PopupState";
 export class BuildingOverview extends React.Component<{
   popups: PopupState,
   header: string,
-  backgroundUrl: string
+  backgroundUrl: string,
+  classStyle?: any
 }> {
   @observable areUpgradesVisible = false;
   @observable areUpgradesAvailable = true;
@@ -29,7 +30,7 @@ export class BuildingOverview extends React.Component<{
 
     return (
       <Row
-        className={css(styles.container)}
+        className={css(styles.container, this.props.classStyle)}
         style={{backgroundImage: `url(${this.props.backgroundUrl})`}}>
         <Column>
           <Row>
@@ -46,7 +47,6 @@ export class BuildingOverview extends React.Component<{
           {this.areUpgradesVisible && <BuildingUpgrades popups={this.props.popups}/>}
         </Column>
         <Column>
-          Content
           {this.props.children}
         </Column>
       </Row>
