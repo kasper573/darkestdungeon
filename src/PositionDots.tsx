@@ -40,7 +40,7 @@ class PositionDot extends React.Component<{
 
     return (
       <li className={className}>
-        <li className={css(styles.dot)} style={{
+        <div className={css(styles.dot)} style={{
           backgroundColor: this.props.color,
           transform: `scale(${scales[this.props.innerValue]})`
         }}/>
