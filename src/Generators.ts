@@ -1,4 +1,4 @@
-import {Character, Item} from "./ProfileState";
+import {Character, Dungeon, Item, MapSize, Quest, QuestObjective} from "./ProfileState";
 import {AfflictionInfo, CharacterClassInfo, characterNames, ItemInfo} from "./config/general";
 
 export class CharacterGenerator {
@@ -17,6 +17,35 @@ export class ItemGenerator {
     const t = new Item();
     t.itemInfo = randomizeItem(Array.from(ItemInfo.lookup.values()));
     return t;
+  }
+}
+
+export class QuestGenerator {
+  next (dungeons: Dungeon[]): Quest {
+    const itemPool = Array.from(ItemInfo.lookup.values());
+
+    const q = new Quest();
+    const dungeon = randomizeItem(dungeons);
+    q.dungeonId = dungeon.id;
+    q.level = dungeon.level.number;
+    q.bonfires = Math.round(Math.random() * 2);
+    q.mapSize = randomizeItem(Object.values(MapSize)) as MapSize;
+
+    q.rewards = [
+      Item.fromInfo(randomizeItem(itemPool)),
+      Item.fromInfo(randomizeItem(itemPool)),
+      Item.fromInfo(randomizeItem(itemPool))
+    ];
+
+    const o = new QuestObjective();
+    if (Math.random() > 0.5) {
+      o.monsterPercentage = 0.1 + Math.random() * 0.9;
+      o.explorePercentage = 0.1 + Math.random() * 0.9;
+    } else {
+      o.monsterPercentage = 0.1 + Math.random() * 0.9;
+    }
+    q.objective = o;
+    return q;
   }
 }
 

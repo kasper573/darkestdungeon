@@ -1,9 +1,9 @@
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
-import {CharacterGenerator, ItemGenerator} from "./Generators";
+import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {serializable, object, identifier, date, list, reference} from "serializr";
 import uuid = require("uuid");
-import {AfflictionInfo, CharacterClassInfo, ItemInfo, LevelInfo} from "./config/general";
+import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, QuestInfo} from "./config/general";
 
 let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
@@ -11,11 +11,10 @@ let nullProfile: Profile;
 export type ProfileId = string;
 export type CharacterId = string;
 export type ItemId = string;
+export type QuestId = string;
+export type DungeonId = string;
 
 export class ProfileState {
-  private characterGenerator: CharacterGenerator;
-  private itemGenerator: ItemGenerator;
-
   @observable private activeProfileId: ProfileId;
   @observable map = new Map<ProfileId, Profile>();
 
@@ -24,12 +23,10 @@ export class ProfileState {
   }
 
   constructor (
-    characterGenerator: CharacterGenerator,
-    itemGenerator: ItemGenerator
-  ) {
-    this.characterGenerator = characterGenerator;
-    this.itemGenerator = itemGenerator;
-  }
+    private characterGenerator: CharacterGenerator,
+    private itemGenerator: ItemGenerator,
+    private questGenerator: QuestGenerator
+  ) {}
 
   private pullNullProfile () {
     if (nullProfile) {
@@ -59,8 +56,15 @@ export class ProfileState {
       this.itemGenerator.next()
     ];
 
+    // Assign one item to each character
     profile.items[0].characterId = profile.characters[0].id;
     profile.items[1].characterId = profile.characters[1].id;
+
+    // Add all dungeons to profile
+    profile.dungeons = Array.from(DungeonInfo.lookup.values())
+      .map(Dungeon.fromInfo);
+
+    profile.gotoNextWeek(this.questGenerator);
 
     if (add) {
       this.addProfile(profile);
@@ -91,18 +95,7 @@ export class Adventure {
   @serializable @observable status = AdventureStatus.Pending;
 }
 
-export class Character {
-  @serializable(identifier()) id: CharacterId = uuid();
-  @serializable @observable rosterIndex: number = 0;
-  @serializable @observable name: string;
-
-  @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
-  classInfo: CharacterClassInfo;
-
-  @serializable(reference(AfflictionInfo, AfflictionInfo.lookupFn))
-  affliction: AfflictionInfo;
-
-  @serializable @observable stress: number = 0;
+class Experienced {
   @serializable @observable experience: number = 0;
 
   @computed get relativeExperience () {
@@ -123,6 +116,20 @@ export class Character {
     }
     return this.relativeExperience / this.level.next.relativeExperience;
   }
+}
+
+export class Character extends Experienced {
+  @serializable(identifier()) id: CharacterId = uuid();
+  @serializable @observable rosterIndex: number = 0;
+  @serializable @observable name: string;
+
+  @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
+  classInfo: CharacterClassInfo;
+
+  @serializable(reference(AfflictionInfo, AfflictionInfo.lookupFn))
+  affliction: AfflictionInfo;
+
+  @serializable @observable stress: number = 0;
 
   @computed get stressPercentage () {
     return this.stress / this.stressMax;
@@ -170,6 +177,53 @@ export class Item {
       return a.itemInfo.name.localeCompare(b.itemInfo.name);
     }
   };
+
+  static fromInfo (info: ItemInfo) {
+    const item = new Item();
+    item.itemInfo = info;
+    return item;
+  }
+}
+
+export class QuestObjective {
+  @serializable explorePercentage: number = 0;
+  @serializable monsterPercentage: number = 0;
+}
+
+export class Quest {
+  @serializable(identifier()) id: QuestId = uuid();
+  @serializable bonfires: number = 0;
+  @serializable level: number = 0;
+  @serializable mapSize: MapSize = MapSize.Short;
+  @serializable dungeonId: DungeonId;
+
+  @serializable(object(QuestObjective))
+  objective: QuestObjective = new QuestObjective();
+
+  @serializable(list(object(Item)))
+  rewards: Item[] = [];
+
+  get info (): QuestInfo {
+    if (this.objective.monsterPercentage) {
+      return QuestInfo.hunt;
+    } else if (this.objective.explorePercentage) {
+      return QuestInfo.explore;
+    }
+    return QuestInfo.free;
+  }
+}
+
+export class Dungeon extends Experienced {
+  @serializable(identifier()) id: ItemId = uuid();
+
+  @serializable(reference(DungeonInfo, DungeonInfo.lookupFn))
+  dungeonInfo: DungeonInfo;
+
+  static fromInfo (info: DungeonInfo) {
+    const dungeon = new Dungeon();
+    dungeon.dungeonInfo = info;
+    return dungeon;
+  }
 }
 
 export class Profile {
@@ -178,7 +232,7 @@ export class Profile {
   @serializable @observable isNameFinalized: boolean;
   @serializable @observable name: string;
   @serializable(object(Path)) @observable path: Path;
-  @serializable @observable week: number = 0;
+  @serializable @observable week: number = -1;
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
 
   @serializable(object(EstateEvent))
@@ -193,9 +247,17 @@ export class Profile {
   @observable
   characters: Character[] = [];
 
+  @serializable(list(object(Quest)))
+  @observable
+  quests: Quest[] = [];
+
   @serializable(list(object(Item)))
   @observable
   items: Item[] = [];
+
+  @serializable(list(object(Dungeon)))
+  @observable
+  dungeons: Dungeon[] = [];
 
   @computed get unassignedItems () {
     return this.items.filter((item) =>
@@ -227,6 +289,23 @@ export class Profile {
       );
     });
   }
+
+  gotoNextWeek (questGenerator: QuestGenerator) {
+    this.week++;
+
+    // Randomize estate event
+    const eventIndex = Math.floor(100 * Math.random());
+    const newEvent = new EstateEvent();
+    newEvent.message = "Event " + eventIndex;
+    this.estateEvent = newEvent;
+
+    // Randomize quests
+    this.quests = [
+      questGenerator.next(this.dungeons),
+      questGenerator.next(this.dungeons),
+      questGenerator.next(this.dungeons)
+    ];
+  }
 }
 
 export enum AdventureStatus {
@@ -240,6 +319,12 @@ export enum Difficulty {
   Radiant = "Radiant",
   Darkest = "Darkest",
   Stygian = "Stygian"
+}
+
+export enum MapSize {
+  Short = "Short",
+  Medium = "Medium",
+  Long = "Long"
 }
 
 nullEstateEvent = new EstateEvent();
