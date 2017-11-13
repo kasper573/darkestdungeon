@@ -16,13 +16,33 @@ import {ItemType} from "./config/general";
 export class EstateRosterEntry extends React.Component<{
   character: Character,
   popups: PopupState,
+  partyFeatures?: boolean,
+  canJoinParty?: boolean,
   onSelect?: () => void
 }> {
   render () {
     const character = this.props.character;
+
+    let partyElement;
+    if (this.props.partyFeatures) {
+      if (character.inParty) {
+        partyElement = <div className={css(styles.partyIcon)}/>;
+      } else if (this.props.canJoinParty) {
+        partyElement = (
+          <button
+            onClick={(e) => e.stopPropagation() || (character.inParty = true)}>
+            JOIN
+          </button>
+        );
+      }
+    }
+
     return (
-      <li className={css(styles.entry)} onClick={this.props.onSelect}>
-        <Avatar src={character.classInfo.avatarUrl}/>
+      <li className={css(styles.entry, character.inParty && styles.entryInParty)}
+          onClick={this.props.onSelect}>
+        <Avatar src={character.classInfo.avatarUrl}>
+          {partyElement}
+        </Avatar>
         <div className={css(styles.info)}>
           <span className={css(commonStyles.characterName)}>
             {character.name}
@@ -56,6 +76,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     overflow: "hidden",
     padding: 2
+  },
+
+  entryInParty: {
+    opacity: 0.5
+  },
+
+  partyIcon: {
+    width: 10,
+    height: 20,
+    background: "red"
   },
 
   info: {

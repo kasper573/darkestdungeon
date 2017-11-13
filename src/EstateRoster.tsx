@@ -9,7 +9,10 @@ import {CharacterOverview} from "./CharacterOverview";
 import {ModalState, PopupAlign} from "./PopupState";
 
 @observer
-export class EstateRoster extends React.Component<{state: AppState}> {
+export class EstateRoster extends React.Component<{
+  state: AppState,
+  partyFeatures?: boolean
+}> {
   showCharacterInfo (character: Character) {
     this.props.state.popups.show({
       align: PopupAlign.TopLeft,
@@ -45,6 +48,8 @@ export class EstateRoster extends React.Component<{state: AppState}> {
           {sortedCharacters.map((character) => (
             <EstateRosterEntry
               key={character.id}
+              partyFeatures={this.props.partyFeatures}
+              canJoinParty={!profile.isPartyFull}
               character={character}
               popups={this.props.state.popups}
               onSelect={() => this.showCharacterInfo(character)}
