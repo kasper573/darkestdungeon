@@ -6,7 +6,11 @@ import {observable} from "mobx";
 import {commonStyles} from "./config/styles";
 
 @observer
-export class CharacterAvatar extends React.Component<{src: string}> {
+export class Avatar extends React.Component<{
+  src: string,
+  classStyle?: any,
+  onClick?: () => void
+}> {
   @observable private width: number;
 
   render () {
@@ -17,22 +21,19 @@ export class CharacterAvatar extends React.Component<{src: string}> {
 
     return (
       <div
-        className={css(styles.avatar, commonStyles.boxBorder)}
+        className={css(styles.avatar, commonStyles.boxBorder, this.props.classStyle)}
         style={dynamicStyle}
-        onClick={this.onClick}>
+        onClick={this.props.onClick}>
         <SizeObserver onSizeChanged={(size) => this.width = size.height}/>
+        {this.props.children}
       </div>
     );
-  }
-
-  onClick = () => {
-
   }
 }
 
 const styles = StyleSheet.create({
   avatar: {
-    flex: 1,
+    flex: "1 auto",
     backgroundSize: "cover",
     backgroundPosition: "50% 50%"
   }
