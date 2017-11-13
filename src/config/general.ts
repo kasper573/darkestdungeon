@@ -89,6 +89,23 @@ export enum ItemType {
   Usable = "T"
 }
 
+export enum QuestType {
+  Hunt = "Hunt",
+  Explore = "Explore",
+  Free = "Free"
+}
+
+export class QuestInfo {
+  private constructor (
+    public type: QuestType = QuestType.Free,
+    public description: string = ""
+  ) {}
+
+  static hunt = new QuestInfo(QuestType.Hunt, "Hunt monsters");
+  static explore = new QuestInfo(QuestType.Explore, "Explore rooms");
+  static free = new QuestInfo(QuestType.Free, "Free roaming");
+}
+
 export class ItemInfo {
   @serializable(identifier()) id: string;
   static lookup = new Map<string, ItemInfo>();
@@ -136,6 +153,14 @@ export class LevelInfo {
   }
 }
 
+export class DungeonInfo {
+  @serializable(identifier()) id: string;
+  static lookup = new Map<string, DungeonInfo>();
+  static lookupFn = lookupFn.bind(null, DungeonInfo.lookup);
+
+  name: string;
+}
+
 export const todo = "?todo?";
 
 ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name) => {
@@ -168,6 +193,13 @@ export const todo = "?todo?";
     info.experience = Math.pow(level, 2) * 1000;
     LevelInfo.lookup.set(info.id, info);
   });
+
+["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
+  const info = new DungeonInfo();
+  info.id = name;
+  info.name = name;
+  DungeonInfo.lookup.set(info.id, info);
+});
 
 function lookupFn <T> (lookup: Map<string, T>, id: string, resolve: (e: any, r: any) => void) {
   resolve(null, lookup.get(id));

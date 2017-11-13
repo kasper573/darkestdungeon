@@ -5,7 +5,7 @@ import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
 import {AdventureStatus, EstateEvent, Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
-import {CharacterGenerator, ItemGenerator} from "./Generators";
+import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {UIState} from "./UIState";
 
@@ -14,6 +14,8 @@ export class AppState {
 
   public characterGenerator = new CharacterGenerator();
   public itemGenerator = new ItemGenerator();
+  public questGenerator = new QuestGenerator();
+
   public ui: UIState = new UIState();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
@@ -22,7 +24,8 @@ export class AppState {
   public options: OptionsState = new OptionsState();
   public profiles: ProfileState = new ProfileState(
     this.characterGenerator,
-    this.itemGenerator
+    this.itemGenerator,
+    this.questGenerator
   );
 
   public isRunningJest: boolean; // HACK ugly workaround
@@ -57,10 +60,9 @@ export class AppState {
         (status) => {
           // Randomize estate event every time an adventure is finished
           if (status !== AdventureStatus.Pending) {
-            const eventIndex = Math.floor(100 * Math.random());
-            const newEvent = new EstateEvent();
-            newEvent.message = "Event " + eventIndex;
-            this.profiles.activeProfile.estateEvent = newEvent;
+            this.profiles.activeProfile.gotoNextWeek(
+              this.questGenerator
+            );
           }
         }
       ),
@@ -69,8 +71,10 @@ export class AppState {
         () => {
           return {
             path: this.router.path.value,
-            profiles: Array.from(this.profiles.map.values())
-              .map((p) => serialize(p))
+            profiles: Array.from(this.profiles.map.values()).map((p) => [
+              p.name,
+              p.isNameFinalized
+            ])
           };
         },
         () => this.save()
