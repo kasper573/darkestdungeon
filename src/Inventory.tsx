@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Popup, PopupProps, Prompt} from "./Popups";
-import {Trinket} from "./ProfileState";
+import {Item} from "./ProfileState";
 import {observer} from "mobx-react";
 import {BannerHeader} from "./BannerHeader";
 import {CompareFunction, SortOptions} from "./SortOptions";
@@ -9,43 +9,43 @@ import {css, StyleSheet} from "aphrodite";
 import {AppState} from "./AppState";
 
 @observer
-export class Trinkets extends React.Component<
+export class Inventory extends React.Component<
   PopupProps & {
   state: AppState,
 }> {
-  @observable compareFn: CompareFunction<Trinket>;
+  @observable compareFn: CompareFunction<Item>;
 
   promptUnequipAll () {
     this.props.state.popups.prompt(
-      <Prompt query="Unequip all trinkets on all heroes?"/>
+      <Prompt query="Unequip all items on all heroes?"/>
     ).then((unequip) => {
       if (unequip) {
-        this.props.state.profiles.activeProfile.unequipAllTrinkets();
+        this.props.state.profiles.activeProfile.unequipAllItems();
       }
     });
   }
 
   render () {
     const profile = this.props.state.profiles.activeProfile;
-    const sortedTrinkets = profile.unassignedTrinkets.sort(this.compareFn);
+    const sortedItems = profile.unassignedItems.sort(this.compareFn);
     return (
       <Popup {...this.props}>
         <BannerHeader>
-          Trinket Inventory
+          Inventory
         </BannerHeader>
         <div className={css(styles.buttonBar)}>
           <span onClick={() => this.promptUnequipAll()}>
             [UNEQUIP]
           </span>
           <SortOptions
-            comparers={Trinket.comparers}
+            comparers={Item.comparers}
             onChange={(compareFn) => this.compareFn = compareFn}
           />
         </div>
         <ul>
-          {sortedTrinkets.map((trinket) => (
-            <li key={trinket.id}>
-              [{trinket.itemInfo.name}]
+          {sortedItems.map((item) => (
+            <li key={item.id}>
+              [{item.itemInfo.name}]
             </li>
           ))}
         </ul>

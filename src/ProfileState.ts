@@ -10,7 +10,7 @@ let nullProfile: Profile;
 
 export type ProfileId = string;
 export type CharacterId = string;
-export type TrinketId = string;
+export type ItemId = string;
 
 export class ProfileState {
   private characterGenerator: CharacterGenerator;
@@ -52,15 +52,15 @@ export class ProfileState {
       this.characterGenerator.next()
     ];
 
-    profile.trinkets = [
-      this.itemGenerator.nextTrinket(),
-      this.itemGenerator.nextTrinket(),
-      this.itemGenerator.nextTrinket(),
-      this.itemGenerator.nextTrinket()
+    profile.items = [
+      this.itemGenerator.next(),
+      this.itemGenerator.next(),
+      this.itemGenerator.next(),
+      this.itemGenerator.next()
     ];
 
-    profile.trinkets[0].characterId = profile.characters[0].id;
-    profile.trinkets[1].characterId = profile.characters[1].id;
+    profile.items[0].characterId = profile.characters[0].id;
+    profile.items[1].characterId = profile.characters[1].id;
 
     if (add) {
       this.addProfile(profile);
@@ -156,16 +156,17 @@ export class Character {
   })();
 }
 
-export class Trinket {
-  @serializable(identifier()) id: TrinketId = uuid();
+export class Item {
+  @serializable(identifier()) id: ItemId = uuid();
   @serializable @observable isOnAdventure: boolean;
   @serializable @observable characterId?: CharacterId;
+  @serializable @observable level: number = 0;
 
   @serializable(reference(ItemInfo, ItemInfo.lookupFn))
   itemInfo: ItemInfo;
 
   static comparers = {
-    name (a: Trinket, b: Trinket) {
+    name (a: Item, b: Item) {
       return a.itemInfo.name.localeCompare(b.itemInfo.name);
     }
   };
@@ -192,13 +193,13 @@ export class Profile {
   @observable
   characters: Character[] = [];
 
-  @serializable(list(object(Trinket)))
+  @serializable(list(object(Item)))
   @observable
-  trinkets: Trinket[] = [];
+  items: Item[] = [];
 
-  @computed get unassignedTrinkets () {
-    return this.trinkets.filter((trinket) =>
-      !trinket.isOnAdventure && trinket.characterId === undefined
+  @computed get unassignedItems () {
+    return this.items.filter((item) =>
+      !item.isOnAdventure && item.characterId === undefined
     );
   }
 
@@ -219,10 +220,10 @@ export class Profile {
     });
   }
 
-  unequipAllTrinkets () {
+  unequipAllItems () {
     transaction(() => {
-      this.trinkets.forEach((trinket) =>
-        trinket.characterId = undefined
+      this.items.forEach((item) =>
+        item.characterId = undefined
       );
     });
   }

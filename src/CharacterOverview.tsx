@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Character, Profile, Trinket} from "./ProfileState";
+import {Character, Profile, Item} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
@@ -22,9 +22,9 @@ export class CharacterOverview extends React.Component<
   profile: Profile,
   character: Character
 }> {
-  @computed get characterTrinkets () {
-    return this.props.profile.trinkets.filter(
-      (trinket: Trinket) => trinket.characterId === this.props.character.id
+  @computed get characterItems () {
+    return this.props.profile.items.filter(
+      (item: Item) => item.characterId === this.props.character.id
     );
   }
 
@@ -73,10 +73,10 @@ export class CharacterOverview extends React.Component<
                     <StatsText popups={popups} stats={
                       new StatsInfo("HP", "MAX HEALTH POINTS", 23, [
                         {percentages: -0.1, source: StatsModSource.Affliction},
-                        {percentages: 0.05, source: StatsModSource.Trinket},
+                        {percentages: 0.05, source: StatsModSource.Item},
                         {units: -10, source: StatsModSource.Quirk},
                         {units: 5, source: StatsModSource.Quirk},
-                        {units: -1, source: StatsModSource.Trinket}
+                        {units: -1, source: StatsModSource.Item}
                       ])}
                     />
                     <StatsText popups={popups} stats={new StatsInfo("DGE", "DODGE", 10)}/>
@@ -88,7 +88,7 @@ export class CharacterOverview extends React.Component<
                     <StatsText popups={popups} stats={
                       new StatsInfo("CRIT", "CRITICAL CHANCE", 0.025, [
                         {percentages: -0.1, source: StatsModSource.Affliction},
-                        {percentages: 0.15, source: StatsModSource.Trinket},
+                        {percentages: 0.15, source: StatsModSource.Item},
                         {units: 0.05, source: StatsModSource.Quirk}
                       ], true)
                     }/>
@@ -154,10 +154,10 @@ export class CharacterOverview extends React.Component<
                 <StatsText popups={popups} stats={
                   new StatsInfo("Stun", "Stun", 0.5, [
                     {percentages: -0.1, source: StatsModSource.Affliction},
-                    {percentages: 0.05, source: StatsModSource.Trinket},
+                    {percentages: 0.05, source: StatsModSource.Item},
                     {units: -0.1, source: StatsModSource.Quirk},
                     {units: 0.2, source: StatsModSource.Quirk},
-                    {units: -0.05, source: StatsModSource.Trinket}
+                    {units: -0.05, source: StatsModSource.Item}
                   ], true)}
                 />
                 <StatsText popups={popups} stats={new StatsInfo("Blight", "Blight", 0.5, [], true)}/>
