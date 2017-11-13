@@ -80,6 +80,28 @@ export class Prompt extends React.Component<
   }
 }
 
+export class Alert extends React.Component<
+  PopupProps & {
+  message: string,
+  dismissLabel?: string
+  dismissValue?: any
+}> {
+  static defaultProps = {
+    dismissLabel: "Ok",
+    dismissValue: false
+  };
+
+  render () {
+    const {message, dismissLabel, dismissValue, ...rest} = this.props;
+    return (
+      <Prompt {...rest}
+        query={message}
+        responses={[{label: dismissLabel, value: dismissValue}]}
+      />
+    );
+  }
+}
+
 type PromptResponse = {
   label: string,
   value: any
