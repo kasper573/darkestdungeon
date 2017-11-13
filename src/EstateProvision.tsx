@@ -5,6 +5,10 @@ import {Path} from "./RouterState";
 import {Prompt} from "./Popups";
 
 export class EstateProvision extends React.Component<{state: AppState, path: Path}> {
+  componentWillMount () {
+    this.props.state.ambience.activate("estateProvision");
+  }
+
   checkItemsBeforeContinue () {
     return this.props.state.popups.prompt(
       <Prompt

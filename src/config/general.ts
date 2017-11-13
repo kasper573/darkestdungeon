@@ -2,7 +2,7 @@ import {AmbienceDefinition} from "../AmbienceState";
 import {identifier, serializable} from "serializr";
 
 export const ambience = {
-  "estate": new AmbienceDefinition(
+  "estateOverview": new AmbienceDefinition(
     {src: require("../../assets/dd/audio/amb_town_gen_base.wav")},
     [
       {src: require("../../assets/dd/audio/amb_town_gen_base_os_01.wav")},
@@ -10,7 +10,16 @@ export const ambience = {
       {src: require("../../assets/dd/audio/amb_town_gen_base_os_03.wav")}
     ]
   ),
-  "coach": "estate",
+  "estateDungeons": new AmbienceDefinition(
+    {src: require("../../assets/dd/audio/amb_town2_gen_base.wav")},
+    [
+      {src: require("../../assets/dd/audio/amb_town2_gen_base_os_01.wav")},
+      {src: require("../../assets/dd/audio/amb_town2_gen_base_os_02.wav")},
+      {src: require("../../assets/dd/audio/amb_town2_gen_base_os_03.wav")}
+    ]
+  ),
+  "estateProvision": "estateDungeons",
+  "coach": "estateOverview",
   "graveyard": new AmbienceDefinition(
     {src: require("../../assets/dd/audio/amb_town_graveyard.wav")},
     [

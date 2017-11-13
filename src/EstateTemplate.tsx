@@ -23,10 +23,6 @@ export class EstateTemplate extends React.Component<{
     return this.props.backPath;
   }
 
-  componentWillMount () {
-    this.props.state.ambience.activate("estate");
-  }
-
   goBack () {
     this.props.state.router.goto(this.props.backPath);
   }
