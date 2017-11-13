@@ -6,7 +6,9 @@ import {PauseMenu} from "./PauseMenu";
 import {Inventory} from "./Inventory";
 import {EstateRoster} from "./EstateRoster";
 import {ModalState} from "./PopupState";
+import {observer} from "mobx-react";
 
+@observer
 export class EstateTemplate extends React.Component<{
   state: AppState,
   path: Path,
@@ -14,9 +16,11 @@ export class EstateTemplate extends React.Component<{
   continueCheck?: () => Promise<any>,
   continueLabel: string,
   continuePath: PathTypes,
+  roster?: boolean,
   partyFeaturesInRoster?: boolean
 }> {
   static defaultProps = {
+    roster: true,
     continueCheck: () => Promise.resolve()
   };
 
@@ -42,7 +46,9 @@ export class EstateTemplate extends React.Component<{
         </div>
 
         <div className={css(styles.footer)}>
-          <div className={css(styles.footerLeft)}>Left</div>
+          <div className={css(styles.footerLeft)}>
+            Gold: {state.profiles.activeProfile.gold}
+          </div>
           <div className={css(styles.footerCenter)}>
             <button onClick={() => this.onContinueSelected()}>
               {this.props.continueLabel}
@@ -62,10 +68,12 @@ export class EstateTemplate extends React.Component<{
           </div>
         </div>
 
-        <EstateRoster
-          state={this.props.state}
-          partyFeatures={this.props.partyFeaturesInRoster}
-        />
+        {this.props.roster && (
+          <EstateRoster
+            state={this.props.state}
+            partyFeatures={this.props.partyFeaturesInRoster}
+          />
+        )}
       </div>
     );
   }
@@ -82,7 +90,8 @@ export class EstateTemplate extends React.Component<{
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingTop: 30,
   },
 
   header: {

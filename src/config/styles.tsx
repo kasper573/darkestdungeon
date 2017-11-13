@@ -48,7 +48,15 @@ export const commonStyles = StyleSheet.create({
   }
 });
 
-export const Cell = ({baseClassStyle, children, classStyle, className, style}: any) => {
+type CellProps = {
+  baseClassStyle?: any,
+  classStyle?: any,
+  className?: string,
+  style?: any,
+  children?: any
+};
+
+export const Cell = ({baseClassStyle, children, classStyle, className, style}: CellProps) => {
   const fullClassName = className ?
     css(baseClassStyle, classStyle) + " " + className :
     css(baseClassStyle, classStyle);
@@ -60,10 +68,10 @@ export const Cell = ({baseClassStyle, children, classStyle, className, style}: a
   );
 };
 
-export const Row = (props: any) => {
+export const Row = (props: CellProps) => {
   return <Cell {...props} baseClassStyle={commonStyles.row}/>;
 };
 
-export const Column = (props: any) => {
+export const Column = (props: CellProps) => {
   return <Cell {...props} baseClassStyle={commonStyles.column}/>;
 };
