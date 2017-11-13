@@ -4,13 +4,18 @@ import {Character} from "./ProfileState";
 import {Avatar} from "./Avatar";
 import {Row} from "./config/styles";
 
-export class PartyDropbox extends React.Component<{members: Character[]}> {
+export class PartyDropbox extends React.Component<{
+  members: Character[],
+  lock?: boolean
+}> {
   render () {
     return (
       <Row classStyle={styles.party}>
         {this.props.members.map((member) => (
           <Avatar key={member.id} src={member.classInfo.avatarUrl}>
-            <button onClick={() => member.inParty = false}>Leave</button>
+            {!this.props.lock && (
+              <button onClick={() => member.inParty = false}>Leave</button>
+            )}
           </Avatar>
         ))}
       </Row>
