@@ -5,17 +5,12 @@ import {Path} from "./RouterState";
 import {Prompt} from "./Popups";
 import {Quest} from "./ProfileState";
 import {observer} from "mobx-react";
-import {observable} from "mobx";
 import {EstateDungeonBreakdown} from "./EstateDungeonBreakdown";
 import {QuestBreakdown} from "./QuestBreakdown";
 import {PartyDropbox} from "./PartyDropbox";
 
 @observer
 export class EstateDungeons extends React.Component<{state: AppState, path: Path}> {
-  @observable selectedQuest: Quest = Array.from(
-    this.props.state.profiles.activeProfile.quests
-  )[0];
-
   componentWillMount () {
     this.props.state.ambience.activate("estateDungeons");
   }
@@ -66,13 +61,13 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
             level={d.level.number}
             progress={d.levelProgress}
             quests={questLookup[d.id]}
-            selectedQuestId={this.selectedQuest && this.selectedQuest.id}
-            onQuestSelected={(quest) => this.selectedQuest = quest}
+            selectedQuestId={profile.selectedQuestId}
+            onQuestSelected={(quest) => profile.selectedQuestId = quest.id}
           />
         )}
-        {this.selectedQuest && (
+        {profile.selectedQuest && (
           <QuestBreakdown
-            quest={this.selectedQuest}
+            quest={profile.selectedQuest}
             popups={this.props.state.popups}
           />
         )}
