@@ -19,6 +19,8 @@ export class EstateOverview extends React.Component<{
   path: Path
 }> {
   componentWillMount () {
+    this.props.state.ambience.activate("estateOverview");
+
     // Show estate event popup if there's a new event pending
     const estateEvent = this.props.state.profiles.activeProfile.estateEvent;
     if (!estateEvent.shown) {
@@ -34,7 +36,7 @@ export class EstateOverview extends React.Component<{
       position: {x: 25, y: 25},
       group: "building",
       content: <Popup padding={false}>{component}</Popup>,
-      onClose: () => this.props.state.ambience.activate("estate")
+      onClose: () => this.props.state.ambience.activate("estateOverview")
     });
   }
 
