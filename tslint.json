@@ -7,6 +7,7 @@
     "ordered-imports": false,
     "no-duplicate-imports": false,
 
+    "no-object-literal-type-assertion": false,
     "interface-over-type-literal": false,
     "max-classes-per-file": false,
     "no-console": false,
