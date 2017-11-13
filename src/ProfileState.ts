@@ -43,6 +43,7 @@ export class ProfileState {
     const profile = new Profile();
     profile.difficulty = difficulty;
     profile.name = difficulty.toString();
+    profile.gold = 250;
 
     profile.characters = [
       this.characterGenerator.next(),
@@ -236,6 +237,7 @@ export class Profile {
   @serializable @observable week: number = -1;
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
   @serializable @observable selectedQuestId?: QuestId;
+  @serializable @observable gold: number = 0;
 
   @serializable(object(EstateEvent))
   @observable
@@ -300,12 +302,26 @@ export class Profile {
     });
   }
 
+  generateStoreItems (itemGenerator: ItemGenerator) {
+    return [
+      itemGenerator.next(),
+      itemGenerator.next(),
+      itemGenerator.next()
+    ];
+  }
+
   unequipAllItems () {
     transaction(() => {
       this.items.forEach((item) =>
         item.characterId = undefined
       );
     });
+  }
+
+  newAdventure () {
+    this.adventure = new Adventure();
+    this.adventure.status = AdventureStatus.Pending;
+    // TODO what else do we do here? do we even need this?
   }
 
   gotoNextWeek (questGenerator: QuestGenerator) {
