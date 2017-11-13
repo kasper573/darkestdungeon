@@ -4,7 +4,7 @@ import {Loading} from "../Loading";
 import {EstateOverview} from "../EstateOverview";
 import {EstateDungeons} from "../EstateDungeons";
 import {EstateProvision} from "../EstateProvision";
-import {Dungeon} from "../Dungeon";
+import {DungeonOverview} from "../DungeonOverview";
 import {DungeonResult} from "../DungeonResult";
 import {SoundTester} from "../SoundTester";
 import {PopupTester} from "../PopupTester";
@@ -15,7 +15,7 @@ export const routes = {
   "estateOverview": new Route(EstateOverview),
   "estateDungeons": new Route(EstateDungeons),
   "estateProvision": new Route(EstateProvision),
-  "dungeon": new Route(Dungeon),
+  "dungeon": new Route(DungeonOverview),
   "dungeonResult": new Route(DungeonResult),
   "soundTester": new Route(SoundTester, false),
   "popupTester": new Route(PopupTester, false)
