@@ -122,6 +122,7 @@ export class Character extends Experienced {
   @serializable(identifier()) id: CharacterId = uuid();
   @serializable @observable rosterIndex: number = 0;
   @serializable @observable name: string;
+  @serializable @observable inParty: boolean;
 
   @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
   classInfo: CharacterClassInfo;
@@ -259,6 +260,14 @@ export class Profile {
   @observable
   dungeons: Dungeon[] = [];
 
+  @computed get party () {
+    return this.characters.filter((c) => c.inParty);
+  }
+
+  @computed get isPartyFull () {
+    return this.party.length === this.maxPartySize;
+  }
+
   @computed get unassignedItems () {
     return this.items.filter((item) =>
       !item.isOnAdventure && item.characterId === undefined
@@ -267,6 +276,10 @@ export class Profile {
 
   get rosterSize () {
     return 9; // TODO should derive from upgrades
+  }
+
+  get maxPartySize () {
+    return 4; // TODO should derive from upgrades
   }
 
   @computed get hasBegun () {

@@ -13,7 +13,8 @@ export class EstateTemplate extends React.Component<{
   backPath?: PathTypes,
   continueCheck?: () => Promise<any>,
   continueLabel: string,
-  continuePath: PathTypes
+  continuePath: PathTypes,
+  partyFeaturesInRoster?: boolean
 }> {
   static defaultProps = {
     continueCheck: () => Promise.resolve()
@@ -61,7 +62,10 @@ export class EstateTemplate extends React.Component<{
           </div>
         </div>
 
-        <EstateRoster state={this.props.state}/>
+        <EstateRoster
+          state={this.props.state}
+          partyFeatures={this.props.partyFeaturesInRoster}
+        />
       </div>
     );
   }

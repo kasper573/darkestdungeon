@@ -8,6 +8,7 @@ import {observer} from "mobx-react";
 import {observable} from "mobx";
 import {EstateDungeonBreakdown} from "./EstateDungeonBreakdown";
 import {QuestBreakdown} from "./QuestBreakdown";
+import {PartyDropbox} from "./PartyDropbox";
 
 @observer
 export class EstateDungeons extends React.Component<{state: AppState, path: Path}> {
@@ -31,6 +32,11 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
   }
 
   checkPartyBeforeContinue () {
+    const profile = this.props.state.profiles.activeProfile;
+    if (profile.party.length === profile.maxPartySize) {
+      return Promise.resolve();
+    }
+
     return this.props.state.popups.prompt(
       <Prompt
         query={"Grave danger awaits the underprepared. " +
@@ -44,9 +50,9 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
   render () {
     const profile = this.props.state.profiles.activeProfile;
     const questLookup = this.groupQuestsByDungeon(profile.quests);
-
     return (
       <EstateTemplate
+        partyFeaturesInRoster={true}
         state={this.props.state}
         path={this.props.path}
         backPath="estateOverview"
@@ -70,6 +76,7 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
             popups={this.props.state.popups}
           />
         )}
+        <PartyDropbox members={profile.party}/>
       </EstateTemplate>
     );
   }
