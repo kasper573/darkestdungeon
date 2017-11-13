@@ -235,6 +235,7 @@ export class Profile {
   @serializable(object(Path)) @observable path: Path;
   @serializable @observable week: number = -1;
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
+  @serializable @observable selectedQuestId?: QuestId;
 
   @serializable(object(EstateEvent))
   @observable
@@ -266,6 +267,10 @@ export class Profile {
 
   @computed get isPartyFull () {
     return this.party.length === this.maxPartySize;
+  }
+
+  @computed get selectedQuest () {
+    return this.quests.find((q) => q.id === this.selectedQuestId);
   }
 
   @computed get unassignedItems () {
