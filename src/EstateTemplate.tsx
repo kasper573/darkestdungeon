@@ -3,7 +3,7 @@ import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
 import {Path, PathTypes} from "./RouterState";
 import {PauseMenu} from "./PauseMenu";
-import {Trinkets} from "./Trinkets";
+import {Inventory} from "./Inventory";
 import {EstateRoster} from "./EstateRoster";
 import {ModalState} from "./PopupState";
 
@@ -53,11 +53,11 @@ export class EstateTemplate extends React.Component<{
           </div>
           <div className={css(styles.footerRight)}>
             <span onClick={() => state.popups.show({
-              content: <Trinkets state={state}/>,
+              content: <Inventory state={state}/>,
               modalState: ModalState.Opaque,
-              group: "trinkets"
+              group: "inventory"
             })}>
-              [TRINKETS]
+              [INVENTORY]
             </span>
             <span onClick={() => state.popups.show(<PauseMenu state={state}/>)}>
               [PAUSE MENU]

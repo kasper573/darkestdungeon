@@ -156,7 +156,7 @@ function lookupFn <T> (lookup: Map<string, T>, id: string, resolve: (e: any, r: 
 
 export enum StatsModSource {
   Affliction = "Affliction",
-  Trinket = "Trinket",
+  Item = "Item",
   Quirk = "Quirk"
 }
 
