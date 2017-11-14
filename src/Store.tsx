@@ -59,7 +59,11 @@ export class Store extends React.Component<{
               popups={popups}
               item={item.info}
               style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
-              onClick={this.canAffordItem(item) && (() => this.buyItem(item))}
+              onClick={
+                this.canAffordItem(item) ?
+                  () => this.buyItem(item) :
+                  undefined
+              }
             />
           )}
         </div>

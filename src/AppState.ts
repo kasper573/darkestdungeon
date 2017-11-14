@@ -3,7 +3,7 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {QuestStatus, Profile, ProfileState} from "./ProfileState";
+import {Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
@@ -36,7 +36,6 @@ export class AppState {
   initialize () {
     this.load();
 
-    let previousQuestStatus: QuestStatus = QuestStatus.Idle;
     this.reactionDisposers = [
       // Path changes
       reaction(
@@ -50,26 +49,6 @@ export class AppState {
           if (route.isMemorable) {
             this.profiles.activeProfile.path = path;
           }
-        }
-      ),
-      // Quest status changes
-      reaction(
-        () => {
-          const q = this.profiles.activeProfile.selectedQuest;
-          return {
-            status: q ? q.status : QuestStatus.Idle,
-            quest: q
-          };
-        },
-        ({quest, status}) => {
-          // When a started quest is finished
-          const isQuestFinished = quest ? quest.isFinished : false;
-          if (previousQuestStatus === QuestStatus.Started && isQuestFinished) {
-            this.profiles.activeProfile.gotoNextWeek(
-              this.questGenerator
-            );
-          }
-          previousQuestStatus = status;
         }
       ),
       // Save whenever interesting data changes

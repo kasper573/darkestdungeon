@@ -7,6 +7,7 @@ import {Inventory} from "./Inventory";
 import {EstateRoster} from "./EstateRoster";
 import {ModalState} from "./PopupState";
 import {observer} from "mobx-react";
+import {Popup} from "./Popups";
 
 @observer
 export class EstateTemplate extends React.Component<{
@@ -56,7 +57,7 @@ export class EstateTemplate extends React.Component<{
           </div>
           <div className={css(styles.footerRight)}>
             <span onClick={() => state.popups.show({
-              content: <Inventory state={state}/>,
+              content: <Popup><Inventory state={state}/></Popup>,
               modalState: ModalState.Opaque,
               group: "inventory"
             })}>

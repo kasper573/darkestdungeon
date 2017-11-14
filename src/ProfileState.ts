@@ -7,6 +7,7 @@ import {
   AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, QuestInfo,
   StaticState
 } from "./StaticState";
+import {Bounds} from "./Bounds";
 
 let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
@@ -16,6 +17,29 @@ export type CharacterId = string;
 export type ItemId = string;
 export type QuestId = string;
 export type DungeonId = string;
+export type CurioId = string;
+export type MapLocationId = string;
+
+export class Vector {
+  @serializable x: number = 0;
+  @serializable y: number = 0;
+
+  get id () {
+    return this.x + "_" + this.y;
+  }
+
+  constructor (x: number = 0, y: number = 0) {
+    this.x = x;
+    this.y = y;
+  }
+
+  add (other: Vector) {
+    return new Vector(
+      this.x + other.x,
+      this.y + other.y
+    );
+  }
+}
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;
@@ -95,7 +119,7 @@ export class EstateEvent {
   @serializable @observable shown: boolean;
 }
 
-class Experienced {
+export class Experienced {
   @serializable @observable experience: number = 0;
 
   @computed get relativeExperience () {
@@ -203,19 +227,98 @@ export class QuestObjective {
   }
 }
 
+export class Curio {
+  @serializable(identifier()) id: CurioId = uuid();
+  @serializable name: string;
+}
+
+export class MapLocation {
+  @serializable(identifier()) id: MapLocationId = uuid();
+  @serializable(list(object(Curio))) curios: Curio[] = [];
+}
+
+export class Room extends MapLocation {
+  @serializable(object(Vector))
+  coordinates: Vector;
+
+  static walk (
+    memory: Map<string, Room> = new Map<string, Room>(),
+    stepsLeft: number = 10,
+    coordinates: Vector = new Vector()
+  ) {
+    const roomId = coordinates.id;
+    const room = memory.get(roomId) || new Room();
+    room.coordinates = coordinates;
+    memory.set(roomId, room);
+
+    if (stepsLeft <= 0) {
+      return room;
+    }
+
+    const direction: Vector = Math.random() > 0.5 ?
+      new Vector(Math.random() ? -1 : 1, 0) :
+      new Vector(0, Math.random() ? -1 : 1);
+
+    const nextCoordinate = coordinates.add(direction);
+
+    Room.walk(memory, stepsLeft - 1, nextCoordinate);
+
+    return room;
+  }
+}
+
+export class QuestMap {
+  @serializable(list(object(Room))) rooms: Room[];
+  @serializable(object(Room)) entrance: Room;
+  @serializable size: MapSize = MapSize.Short;
+
+  get bounds () {
+    return QuestMap.findBoundingBox(this.rooms);
+  }
+
+  static generate (size: MapSize) {
+    const memory = new Map<string, Room>();
+    const m = new QuestMap();
+    m.size = size;
+    m.entrance = Room.walk(memory, 16);
+    m.rooms = Array.from(memory.values());
+    return m;
+  }
+
+  static findBoundingBox (rooms: Room[]) {
+    let minX = Number.MAX_VALUE;
+    let minY = Number.MAX_VALUE;
+    let maxX = Number.MIN_VALUE;
+    let maxY = Number.MIN_VALUE;
+    rooms.forEach((room) => {
+      if (room.coordinates.x < minX) { minX = room.coordinates.x; }
+      if (room.coordinates.x > maxX) { maxX = room.coordinates.x; }
+      if (room.coordinates.y < minY) { minY = room.coordinates.y; }
+      if (room.coordinates.y > maxY) { maxY = room.coordinates.y; }
+    });
+    return new Bounds(0, 0, maxX - minX, maxY - minY);
+  }
+}
+
 export class Quest {
   @serializable(identifier()) id: QuestId = uuid();
   @serializable bonfires: number = 0;
   @serializable level: number = 0;
-  @serializable mapSize: MapSize = MapSize.Short;
   @serializable dungeonId: DungeonId;
-  @serializable status: QuestStatus = QuestStatus.Idle;
+
+  @serializable(object(QuestMap))
+  map: QuestMap;
 
   @serializable(object(QuestObjective))
   objective: QuestObjective = new QuestObjective();
 
   @serializable(list(object(Item)))
   rewards: Item[] = [];
+
+  // Data that changes throughout a quest
+  @serializable @observable status: QuestStatus = QuestStatus.Idle;
+  @serializable @observable light: number = 1;
+  @serializable @observable battle?: Battle;
 
   get isFinished () {
     return this.status === QuestStatus.Victory ||
@@ -231,6 +334,10 @@ export class Quest {
     }
     return QuestInfo.free;
   }
+}
+
+export class Battle {
+  @serializable @observable round: number = 0;
 }
 
 export class Dungeon extends Experienced {

@@ -1,10 +1,20 @@
 import * as React from "react";
 import {AppState} from "./AppState";
-import {QuestStatus} from "./ProfileState";
+import {Hero, QuestStatus} from "./ProfileState";
 import {observer} from "mobx-react";
+import {observable} from "mobx";
+import {css, StyleSheet} from "aphrodite";
+import {DungeonControlPanel} from "./DungeonControlPanel";
+import {Torch} from "./Torch";
+import {QuestHeader} from "./QuestHeader";
+import {DungeonScene} from "./DungeonScene";
 
 @observer
 export class DungeonOverview extends React.Component<{state: AppState}> {
+  @observable selectedHero: Hero = Array.from(
+    this.props.state.profiles.activeProfile.party
+  )[0];
+
   componentWillMount () {
     this.props.state.ambience.activate("dungeonOverview");
   }
@@ -13,23 +23,17 @@ export class DungeonOverview extends React.Component<{state: AppState}> {
     const profile = this.props.state.profiles.activeProfile;
     const quest = profile.selectedQuest;
     return (
-      <div>
-        Dungeon
-
-        <p>
-          {quest.objective.description}
-        </p>
-        <div style={{flexDirection: "row"}}>
-          <button onClick={() => this.finish(QuestStatus.Victory)}>
-            Finish Dungeon
-          </button>
-          <button onClick={() => this.finish(QuestStatus.Escape)}>
-            Escape Dungeon
-          </button>
-          <button onClick={() => this.finish(QuestStatus.Defeat)}>
-            Dungeon Defeat
-          </button>
+      <div className={css(styles.container)}>
+        <div className={css(styles.scene)}>
+          <QuestHeader quest={quest} onLeaveRequested={(status) => this.finish(status)}/>
+          <Torch popups={this.props.state.popups} quest={quest}/>
+          <DungeonScene profile={profile} popups={this.props.state.popups}/>
         </div>
+
+        <DungeonControlPanel
+          selectedHero={this.selectedHero}
+          state={this.props.state}
+        />
       </div>
     );
   }
@@ -39,3 +43,13 @@ export class DungeonOverview extends React.Component<{state: AppState}> {
     this.props.state.router.goto("dungeonResult");
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+
+  scene: {
+    flex: 1
+  }
+});
