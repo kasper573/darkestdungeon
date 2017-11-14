@@ -1,6 +1,6 @@
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./RouterState";
-import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
+import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {serializable, object, identifier, date, list, reference} from "serializr";
 import uuid = require("uuid");
 import {
@@ -26,7 +26,7 @@ export class ProfileState {
   }
 
   constructor (
-    private characterGenerator: CharacterGenerator,
+    private heroGenerator: HeroGenerator,
     private itemGenerator: ItemGenerator,
     private questGenerator: QuestGenerator
   ) {}
@@ -48,9 +48,9 @@ export class ProfileState {
     profile.name = difficulty.toString();
     profile.gold = 250;
 
-    profile.characters = [
-      this.characterGenerator.next(),
-      this.characterGenerator.next()
+    profile.heroes = [
+      this.heroGenerator.next(),
+      this.heroGenerator.next()
     ];
 
     profile.items = [
@@ -60,9 +60,9 @@ export class ProfileState {
       this.itemGenerator.next()
     ];
 
-    // Assign one item to each character
-    profile.items[0].characterId = profile.characters[0].id;
-    profile.items[1].characterId = profile.characters[1].id;
+    // Assign one item to each hero
+    profile.items[0].heroId = profile.heroes[0].id;
+    profile.items[1].heroId = profile.heroes[1].id;
 
     // Add all dungeons to profile
     profile.dungeons = Array.from(StaticState.instance.dungeons.values())
@@ -124,17 +124,14 @@ class Experienced {
 
 export class Character extends Experienced {
   @serializable(identifier()) id: CharacterId = uuid();
-  @serializable @observable rosterIndex: number = 0;
   @serializable @observable name: string;
-  @serializable @observable inParty: boolean;
+  @serializable @observable stress: number = 0;
 
-  @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.characterClasses)))
+  @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.heroClasses)))
   classInfo: CharacterClassInfo;
 
   @serializable(reference(AfflictionInfo, StaticState.lookup((i) => i.afflictions)))
   affliction: AfflictionInfo;
-
-  @serializable @observable stress: number = 0;
 
   @computed get stressPercentage () {
     return this.stress / this.stressMax;
@@ -143,17 +140,22 @@ export class Character extends Experienced {
   get stressMax (): number {
     return 200;
   }
+}
+
+export class Hero extends Character {
+  @serializable @observable rosterIndex: number = 0;
+  @serializable @observable inParty: boolean;
 
   static comparers = {
-    name (a: Character, b: Character) {
+    name (a: Hero, b: Hero) {
       return a.name.localeCompare(b.name);
     },
 
-    className (a: Character, b: Character) {
+    className (a: Hero, b: Hero) {
       return a.classInfo.name.localeCompare(b.classInfo.name);
     },
 
-    rosterIndex (a: Character, b: Character) {
+    rosterIndex (a: Hero, b: Hero) {
       if (a.rosterIndex === b.rosterIndex) {
         return 0;
       }
@@ -162,7 +164,7 @@ export class Character extends Experienced {
   };
 
   static visibleComparers = (() => {
-    const dict = {...Character.comparers};
+    const dict = {...Hero.comparers};
     delete dict.rosterIndex;
     return dict;
   })();
@@ -171,7 +173,7 @@ export class Character extends Experienced {
 export class Item {
   @serializable(identifier()) id: ItemId = uuid();
   @serializable @observable isOnAdventure: boolean;
-  @serializable @observable characterId?: CharacterId;
+  @serializable @observable heroId?: CharacterId;
   @serializable @observable level: number = 0;
 
   @serializable(reference(ItemInfo, StaticState.lookup((i) => i.items)))
@@ -250,9 +252,9 @@ export class Profile {
   @observable
   adventure = new Adventure();
 
-  @serializable(list(object(Character)))
+  @serializable(list(object(Hero)))
   @observable
-  characters: Character[] = [];
+  heroes: Hero[] = [];
 
   @serializable(list(object(Quest)))
   @observable
@@ -267,7 +269,7 @@ export class Profile {
   dungeons: Dungeon[] = [];
 
   @computed get party () {
-    return this.characters.filter((c) => c.inParty);
+    return this.heroes.filter((c) => c.inParty);
   }
 
   @computed get isPartyFull () {
@@ -280,7 +282,7 @@ export class Profile {
 
   @computed get unassignedItems () {
     return this.items.filter((item) =>
-      !item.isOnAdventure && item.characterId === undefined
+      !item.isOnAdventure && item.heroId === undefined
     );
   }
 
@@ -296,11 +298,11 @@ export class Profile {
     return !!this.path;
   }
 
-  sortCharacters (compareFn: (a: Character, b: Character) => number) {
+  sortHeroes (compareFn: (a: Hero, b: Hero) => number) {
     transaction(() => {
-      this.characters = this.characters.sort(compareFn);
-      this.characters.forEach((character, index) => {
-        character.rosterIndex = index;
+      this.heroes = this.heroes.sort(compareFn);
+      this.heroes.forEach((hero, index) => {
+        hero.rosterIndex = index;
       });
     });
   }
@@ -316,7 +318,7 @@ export class Profile {
   unequipAllItems () {
     transaction(() => {
       this.items.forEach((item) =>
-        item.characterId = undefined
+        item.heroId = undefined
       );
     });
   }

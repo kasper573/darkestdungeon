@@ -83,7 +83,7 @@ for (const key in ambience) {
 export const todo = "?todo?";
 
 export function addStaticState () {
-  StaticState.instance.characterNames = [
+  StaticState.instance.heroNames = [
     "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"
   ];
 
@@ -99,7 +99,7 @@ export function addStaticState () {
     const info = new CharacterClassInfo();
     info.id = className;
     info.name = className;
-    StaticState.instance.characterClasses.set(info.id, info);
+    StaticState.instance.heroClasses.set(info.id, info);
   });
 
   ["Hopeless", "Paranoid", "Gullible", "Ignorant"].forEach((name) => {

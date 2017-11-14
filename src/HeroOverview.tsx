@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Character, Profile, Item} from "./ProfileState";
+import {Hero, Profile, Item} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
@@ -16,27 +16,27 @@ import {PositionDots} from "./PositionDots";
 import {SkillIcon} from "./SkillIcon";
 
 @observer
-export class CharacterOverview extends React.Component<
+export class HeroOverview extends React.Component<
   PopupProps & {
   popups: PopupState,
   profile: Profile,
-  character: Character
+  hero: Hero
 }> {
-  @computed get characterItems () {
+  @computed get heroItems () {
     return this.props.profile.items.filter(
-      (item: Item) => item.characterId === this.props.character.id
+      (item: Item) => item.heroId === this.props.hero.id
     );
   }
 
   render () {
-    const {character, popups, ...rest} = this.props;
+    const {hero, popups, ...rest} = this.props;
     return (
       <Popup {...rest}>
-        <Row classStyle={styles.characterInfo}>
+        <Row classStyle={styles.heroInfo}>
           <Column>
             <Row>
               <button>EDIT</button>
-              <input defaultValue={character.name} size={0} onChange={() => null}/>
+              <input defaultValue={hero.name} size={0} onChange={() => null}/>
             </Row>
 
             <Row>
@@ -46,8 +46,8 @@ export class CharacterOverview extends React.Component<
 
             <Row>
               <Column classStyle={styles.modelColumn}>
-                <CharacterInfoFlag/>
-                <CharacterModel className={css(styles.model)}/>
+                <HeroInfoFlag/>
+                <HeroModel className={css(styles.model)}/>
               </Column>
               <Column>
                 <CommonHeader label="Quirks"/>
@@ -181,11 +181,11 @@ export class CharacterOverview extends React.Component<
   }
 }
 
-const CharacterInfoFlag = () => <div>Flag</div>;
-const CharacterModel = ({className}: any) => <div className={className}>Model</div>;
+const HeroInfoFlag = () => <div>Flag</div>;
+const HeroModel = ({className}: any) => <div className={className}>Model</div>;
 
 const styles = StyleSheet.create({
-  characterInfo: {
+  heroInfo: {
     minWidth: 450
   },
 

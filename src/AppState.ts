@@ -5,14 +5,14 @@ import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
 import {AdventureStatus, Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
-import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
+import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {UIState} from "./UIState";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
-  public characterGenerator = new CharacterGenerator();
+  public heroGenerator = new HeroGenerator();
   public itemGenerator = new ItemGenerator();
   public questGenerator = new QuestGenerator();
 
@@ -23,7 +23,7 @@ export class AppState {
   public popups: PopupState = new PopupState();
   public options: OptionsState = new OptionsState();
   public profiles: ProfileState = new ProfileState(
-    this.characterGenerator,
+    this.heroGenerator,
     this.itemGenerator,
     this.questGenerator
   );
