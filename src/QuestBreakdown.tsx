@@ -15,7 +15,7 @@ export class QuestBreakdown extends React.Component<{
     const quest = this.props.quest;
     return (
       <div className={css(styles.container)}>
-        <Row className={css(styles.header)}>
+        <Row classStyle={styles.header}>
           <Avatar src={require("../assets/images/avatar.jpg")}/>
           <div className={css(styles.headerLabel)}>Estate Map</div>
         </Row>

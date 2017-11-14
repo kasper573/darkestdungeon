@@ -3,6 +3,7 @@ import {PopupHandle, PopupAlign, PopupContent, PopupState, ModalState} from "./P
 import {computed, IReactionDisposer, observable, reaction} from "mobx";
 import {Tooltip} from "./Tooltip";
 import {BoundsObserver, ElementBounds} from "./BoundsObserver";
+import {css} from "aphrodite";
 
 export enum TooltipSide {
   Above,
@@ -22,7 +23,7 @@ type TooltipAreaProps = {
   popups: PopupState,
   tip?: PopupContent,
   side?: TooltipSide,
-  className?: string,
+  classStyle?: any,
   style?: any,
   mouse?: boolean,
   show?: boolean
@@ -128,7 +129,7 @@ export class TooltipArea extends React.Component<TooltipAreaProps> {
   render () {
     return (
       <div
-        className={this.props.className}
+        className={css(this.props.classStyle)}
         style={this.props.style}
         onMouseEnter={this.props.mouse ? () => this.onMouseEnter() : undefined}
         onMouseLeave={this.props.mouse ? () => this.onMouseLeave() : undefined}>

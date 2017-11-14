@@ -29,7 +29,7 @@ export class SkillIcon extends React.Component<{
       <TooltipArea
         tip={todo}
         popups={this.props.popups}
-        className={css(styles.container)}>
+        classStyle={styles.container}>
         {lockSymbol}
         {levelIndicator}
         {selectionIndicator}

@@ -1,6 +1,5 @@
 import * as React from "react";
 import {commonStyles} from "./config/styles";
-import {css} from "aphrodite";
 import {QuirkInfo} from "./StaticState";
 import {TooltipArea} from "./TooltipArea";
 import {PopupState} from "./PopupState";
@@ -11,14 +10,12 @@ export class QuirkText extends React.Component<{
   quirk: QuirkInfo
 }> {
   render () {
-    const className = css(
-      this.props.quirk.isPositive ?
-        commonStyles.positiveText :
-        commonStyles.negativeText
-    );
+    const classStyle = this.props.quirk.isPositive ?
+      commonStyles.positiveText :
+      commonStyles.negativeText;
 
     return (
-      <TooltipArea tip={todo} popups={this.props.popups} className={className}>
+      <TooltipArea tip={todo} popups={this.props.popups} classStyle={classStyle}>
         {this.props.quirk.name}
       </TooltipArea>
     );

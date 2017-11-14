@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Column, commonStyles} from "./config/styles";
-import {css} from "aphrodite";
 import {PopupState} from "./PopupState";
 import {StatsInfo} from "./StaticState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
@@ -31,11 +30,11 @@ export class StatsText extends React.Component<{
       (value, index) => value + deltaValues[index]
     );
 
-    let className;
+    let classStyle;
     if (deltaValues[0] > 0) {
-      className = css(commonStyles.positiveText);
+      classStyle = commonStyles.positiveText;
     } else if (deltaValues[0] < 0) {
-      className = css(commonStyles.negativeText);
+      classStyle = commonStyles.negativeText;
     }
 
     return (
@@ -44,7 +43,7 @@ export class StatsText extends React.Component<{
         side={TooltipSide.Above}
         popups={popups}
         style={{flexDirection: "row"}}
-        className={className}
+        classStyle={classStyle}
       >
         <Column style={{whiteSpace: "nowrap"}}>{stats.shortName}</Column>
         <Column style={{flex: "inherit"}}>

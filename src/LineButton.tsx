@@ -3,12 +3,13 @@ import {css, StyleSheet} from "aphrodite";
 
 export class LineButton extends React.Component<{
   label: string,
-  className?: string,
+  classStyle?: any,
   onClick?: () => void
 }> {
   render () {
     return (
-      <span className={css(styles.lineButton) + " " + this.props.className} onClick={this.props.onClick}>
+      <span className={css(styles.lineButton, this.props.classStyle)}
+            onClick={this.props.onClick}>
         {this.props.label}
       </span>
     );

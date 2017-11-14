@@ -30,7 +30,7 @@ export class BuildingOverview extends React.Component<{
 
     return (
       <Row
-        className={css(styles.container, this.props.classStyle)}
+        classStyle={[styles.container, this.props.classStyle]}
         style={{backgroundImage: `url(${this.props.backgroundUrl})`}}>
         <Column>
           <Row>

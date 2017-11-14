@@ -9,7 +9,7 @@ export class TitleHeader extends React.Component {
     return (
       <div className={css(styles.container)}>
         <span className={css(styles.textLeft, styles.text)}>Dankest</span>
-        <Sprite {...smoke} className={css(styles.torch)}/>
+        <Sprite {...smoke} classStyle={styles.torch}/>
         <span className={css(styles.textRight, styles.text)}>Dungeon</span>
       </div>
     );

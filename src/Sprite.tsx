@@ -4,12 +4,13 @@ import {observer} from "mobx-react";
 import {SpriteInfo} from "../assets/SpriteInfo";
 import {Bounds, Size} from "./Bounds";
 import {SizeObserver} from "./SizeObserver";
+import {css} from "aphrodite";
 const {Tween} = require("tween.js");
 
 @observer
 export class Sprite extends React.Component<
   SpriteInfo & {
-  className?: string,
+  classStyle?: any,
   style?: any,
   loop?: boolean,
   autoPlay?: boolean,
@@ -102,7 +103,7 @@ export class Sprite extends React.Component<
 
   render () {
     return (
-      <div className={this.props.className} style={{
+      <div className={css(this.props.classStyle)} style={{
         ...(this.props.debug && {backgroundColor: "rgba(0, 128, 0, 0.63)"}),
         ...this.props.style
       }}>

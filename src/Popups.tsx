@@ -71,7 +71,7 @@ export class Prompt extends React.Component<
         {responses.map((response) => (
           <LineButton
             key={response.label}
-            className={css(styles.promptButton)}
+            classStyle={styles.promptButton}
             onClick={() => this.props.handle.close(response.value)}
             label={response.label}/>
         ))}
