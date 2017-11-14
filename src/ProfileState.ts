@@ -342,6 +342,7 @@ export class Profile {
       questGenerator.next(this.dungeons),
       questGenerator.next(this.dungeons)
     ];
+    this.selectedQuestId = this.quests[0].id;
   }
 }
 
