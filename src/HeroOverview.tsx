@@ -3,17 +3,19 @@ import {Hero, Profile, Item} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {Column, Row} from "./config/styles";
 import {PopupState} from "./PopupState";
-import {ItemInfo, ItemType, QuirkInfo, StatsInfo, StatsModSource} from "./StaticState";
+import {QuirkInfo, StatsInfo, StatsModSource} from "./StaticState";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {StatsText} from "./StatsText";
-import {ItemSlot} from "./ItemSlot";
-import {ItemLevel} from "./ItemLevel";
 import {PositionDots} from "./PositionDots";
 import {SkillIcon} from "./SkillIcon";
+import {HeroEquipment} from "./HeroEquipment";
+import {HeroSkills} from "./HeroSkills";
+import {HeroFlag} from "./HeroFlag";
+import {CharacterModel} from "./CharacterModel";
 
 @observer
 export class HeroOverview extends React.Component<
@@ -46,8 +48,12 @@ export class HeroOverview extends React.Component<
 
             <Row>
               <Column classStyle={styles.modelColumn}>
-                <HeroInfoFlag/>
-                <HeroModel className={css(styles.model)}/>
+                <HeroFlag popups={popups} hero={hero}/>
+                <CharacterModel
+                  popups={popups}
+                  character={hero}
+                  classStyle={styles.model}
+                />
               </Column>
               <Column>
                 <CommonHeader label="Quirks"/>
@@ -99,18 +105,7 @@ export class HeroOverview extends React.Component<
                 </Row>
 
                 <CommonHeader label="Equipment"/>
-                <Row>
-                  <ItemLevel type={ItemType.Armor} level={1}/>
-                  <ItemLevel type={ItemType.Weapon} level={1}/>
-                  <div style={{flex: 1}}/>
-                  <div style={{flex: 1}}/>
-                </Row>
-                <Row>
-                  <ItemSlot popups={popups} item={new ItemInfo("Club", ItemType.Weapon)}/>
-                  <ItemSlot popups={popups} item={new ItemInfo("Robe", ItemType.Armor)}/>
-                  <ItemSlot popups={popups}/>
-                  <ItemSlot popups={popups}/>
-                </Row>
+                <HeroEquipment popups={popups} hero={hero}/>
               </Column>
             </Row>
           </Column>
@@ -127,15 +122,7 @@ export class HeroOverview extends React.Component<
                 <PositionDots color="red" innerValues={[0, 1, 2, 3]}/>
               </Column>
             </Row>
-            <Row>
-              <SkillIcon popups={popups} level={1} unlocked/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups} level={1} selected unlocked/>
-              <SkillIcon popups={popups} level={1} selected unlocked/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups} level={1} selected unlocked/>
-            </Row>
+            <HeroSkills popups={popups}/>
 
             <CommonHeader label="Camping Skills"/>
             <Row>
@@ -180,9 +167,6 @@ export class HeroOverview extends React.Component<
     );
   }
 }
-
-const HeroInfoFlag = () => <div>Flag</div>;
-const HeroModel = ({className}: any) => <div className={className}>Model</div>;
 
 const styles = StyleSheet.create({
   heroInfo: {

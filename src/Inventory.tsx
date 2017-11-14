@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Popup, PopupProps, Prompt} from "./Popups";
+import {Prompt} from "./Popups";
 import {Item} from "./ProfileState";
 import {observer} from "mobx-react";
 import {BannerHeader} from "./BannerHeader";
@@ -9,8 +9,7 @@ import {css, StyleSheet} from "aphrodite";
 import {AppState} from "./AppState";
 
 @observer
-export class Inventory extends React.Component<
-  PopupProps & {
+export class Inventory extends React.Component<{
   state: AppState,
 }> {
   @observable compareFn: CompareFunction<Item>;
@@ -29,7 +28,7 @@ export class Inventory extends React.Component<
     const profile = this.props.state.profiles.activeProfile;
     const sortedItems = profile.unassignedItems.sort(this.compareFn);
     return (
-      <Popup {...this.props}>
+      <div>
         <BannerHeader>
           Inventory
         </BannerHeader>
@@ -49,7 +48,7 @@ export class Inventory extends React.Component<
             </li>
           ))}
         </ul>
-      </Popup>
+      </div>
     );
   }
 }

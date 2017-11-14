@@ -1,4 +1,4 @@
-import {Hero, Dungeon, Item, MapSize, Quest, QuestObjective} from "./ProfileState";
+import {Hero, Dungeon, Item, MapSize, Quest, QuestObjective, QuestMap} from "./ProfileState";
 import {StaticState} from "./StaticState";
 
 export class HeroGenerator {
@@ -29,7 +29,9 @@ export class QuestGenerator {
     q.dungeonId = dungeon.id;
     q.level = dungeon.level.number;
     q.bonfires = Math.round(Math.random() * 2);
-    q.mapSize = randomizeItem(Object.values(MapSize)) as MapSize;
+    q.map = QuestMap.generate(
+      randomizeItem(Object.values(MapSize)) as MapSize
+    );
 
     q.rewards = [
       Item.fromInfo(randomizeItem(itemPool)),
@@ -49,7 +51,7 @@ export class QuestGenerator {
   }
 }
 
-function randomizeItem<T> (items: T[]): T {
+export function randomizeItem<T> (items: T[]): T {
   const index = Math.floor(items.length * Math.random());
   return items[index];
 }

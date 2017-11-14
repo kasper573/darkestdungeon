@@ -25,7 +25,7 @@ export class QuestBreakdown extends React.Component<{
         </p>
         <Row>
           <span>Bonfires: {quest.bonfires}</span>
-          <span>{quest.mapSize}</span>
+          <span>{quest.map.size}</span>
           <span>Level {quest.level}</span>
         </Row>
 
