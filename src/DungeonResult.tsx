@@ -10,7 +10,7 @@ export class DungeonResult extends React.Component<{state: AppState}> {
   render () {
     return (
       <div>
-        Dungeon Result: {this.props.state.profiles.activeProfile.adventure.status}
+        Dungeon Result: {this.props.state.profiles.activeProfile.selectedQuest.status}
 
         <button onClick={() => this.returnToEstate()}>
           Return to Town

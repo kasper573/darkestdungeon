@@ -34,13 +34,13 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
 
     if (profile.party.length === 0) {
       return this.props.state.popups.prompt(
-        <Alert message="Please form a party before adventuring"/>
+        <Alert message="Please form a party before embarking"/>
       );
     }
 
     if (!profile.selectedQuest) {
       return this.props.state.popups.prompt(
-        <Alert message="Please select a quest for your adventure"/>
+        <Alert message="Please select a quest before embarking"/>
       );
     }
 

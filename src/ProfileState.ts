@@ -95,10 +95,6 @@ export class EstateEvent {
   @serializable @observable shown: boolean;
 }
 
-export class Adventure {
-  @serializable @observable status = AdventureStatus.Pending;
-}
-
 class Experienced {
   @serializable @observable experience: number = 0;
 
@@ -172,7 +168,6 @@ export class Hero extends Character {
 
 export class Item {
   @serializable(identifier()) id: ItemId = uuid();
-  @serializable @observable isOnAdventure: boolean;
   @serializable @observable heroId?: CharacterId;
   @serializable @observable level: number = 0;
 
@@ -214,12 +209,19 @@ export class Quest {
   @serializable level: number = 0;
   @serializable mapSize: MapSize = MapSize.Short;
   @serializable dungeonId: DungeonId;
+  @serializable status: QuestStatus = QuestStatus.Idle;
 
   @serializable(object(QuestObjective))
   objective: QuestObjective = new QuestObjective();
 
   @serializable(list(object(Item)))
   rewards: Item[] = [];
+
+  get isFinished () {
+    return this.status === QuestStatus.Victory ||
+      this.status === QuestStatus.Escape ||
+      this.status === QuestStatus.Defeat;
+  }
 
   get info (): QuestInfo {
     if (this.objective.monsterPercentage) {
@@ -259,10 +261,6 @@ export class Profile {
   @observable
   estateEvent = nullEstateEvent;
 
-  @serializable(object(Adventure))
-  @observable
-  adventure = new Adventure();
-
   @serializable(list(object(Hero)))
   @observable
   heroes: Hero[] = [];
@@ -292,9 +290,7 @@ export class Profile {
   }
 
   @computed get unassignedItems () {
-    return this.items.filter((item) =>
-      !item.isOnAdventure && item.heroId === undefined
-    );
+    return this.items.filter((item) => item.heroId === undefined);
   }
 
   get rosterSize () {
@@ -334,12 +330,6 @@ export class Profile {
     });
   }
 
-  newAdventure () {
-    this.adventure = new Adventure();
-    this.adventure.status = AdventureStatus.Pending;
-    // TODO what else do we do here? do we even need this?
-  }
-
   gotoNextWeek (questGenerator: QuestGenerator) {
     this.week++;
 
@@ -359,8 +349,9 @@ export class Profile {
   }
 }
 
-export enum AdventureStatus {
-  Pending = "Pending",
+export enum QuestStatus {
+  Idle = "Idle",
+  Started = "Started",
   Defeat = "Defeat",
   Escape = "Escape",
   Victory = "Victory"
