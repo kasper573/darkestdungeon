@@ -18,6 +18,7 @@ describe("Router", () => {
       state.router.addRoutes(routes);
       state.ambience.addDefinitions(ambience);
       state.router.goto(path);
+      state.profiles.activeProfile.heroes[0].inParty = true;
       state.initialize();
 
       TestUtils.renderIntoDocument(<App state={state} />);
