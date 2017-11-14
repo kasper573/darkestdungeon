@@ -2,10 +2,8 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {TooltipArea} from "./TooltipArea";
 import {todo} from "./config/general";
-import {PopupState} from "./PopupState";
 
 export class SkillIcon extends React.Component<{
-  popups: PopupState,
   unlocked?: boolean,
   selected?: boolean,
   level?: number
@@ -28,7 +26,6 @@ export class SkillIcon extends React.Component<{
     return (
       <TooltipArea
         tip={todo}
-        popups={this.props.popups}
         classStyle={styles.container}>
         {lockSymbol}
         {levelIndicator}

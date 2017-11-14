@@ -1,16 +1,14 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {AppState} from "./AppState";
 import {Stats} from "./Stats";
+import {AppStateComponent} from "./AppStateComponent";
 
-export class DevTools extends React.Component<{state: AppState}> {
+export class DevTools extends AppStateComponent {
   pathSelect: HTMLSelectElement;
 
   render () {
-    const state = this.props.state;
-    const router = state.router;
     const pathOptions = [];
-    for (const path of router.routes.keys()) {
+    for (const path of this.appState.router.routes.keys()) {
       pathOptions.push(
         <option key={path} value={path}>{path}</option>
       );
@@ -26,19 +24,19 @@ export class DevTools extends React.Component<{state: AppState}> {
         <button style={{width: 50}} onClick={() => this.gotoSelectedPath()}>
           Go
         </button>
-        <button style={{width: 50}} onClick={() => this.props.state.save()}>
+        <button style={{width: 50}} onClick={() => this.appState.save()}>
           Save
         </button>
-        <button style={{width: 50}} onClick={() => this.props.state.load()}>
+        <button style={{width: 50}} onClick={() => this.appState.load()}>
           Load
         </button>
-        {!state.isRunningJest && <Stats/>}
+        {!this.appState.isRunningJest && <Stats/>}
       </div>
     );
   }
 
   gotoSelectedPath () {
-    this.props.state.router.goto(this.pathSelect.value);
+    this.appState.router.goto(this.pathSelect.value);
   }
 }
 

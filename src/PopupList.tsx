@@ -9,12 +9,12 @@ import Transition from "react-transition-group/Transition";
 
 @observer
 export class PopupList extends React.Component<{
-  state: PopupState,
+  popups: PopupState,
   uiState: UIState
 }> {
   renderPopups () {
     const elements: JSX.Element[] = [];
-    for (const handle of this.props.state.map.values()) {
+    for (const handle of this.props.popups.map.values()) {
       elements.push(
         <Transition
           key={handle.id}

@@ -13,7 +13,7 @@ const TWEEN = require("tween.js");
 // Initialize application state
 const state = new AppState();
 addStaticState();
-state.router.goto("dungeonOverview");
+state.router.goto("start");
 state.ambience.addDefinitions(ambience);
 state.initialize();
 

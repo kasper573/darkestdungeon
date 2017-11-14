@@ -2,11 +2,9 @@ import * as React from "react";
 import {commonStyles} from "./config/styles";
 import {QuirkInfo} from "./StaticState";
 import {TooltipArea} from "./TooltipArea";
-import {PopupState} from "./PopupState";
 import {todo} from "./config/general";
 
 export class QuirkText extends React.Component<{
-  popups: PopupState,
   quirk: QuirkInfo
 }> {
   render () {
@@ -15,7 +13,7 @@ export class QuirkText extends React.Component<{
       commonStyles.negativeText;
 
     return (
-      <TooltipArea tip={todo} popups={this.props.popups} classStyle={classStyle}>
+      <TooltipArea tip={todo} classStyle={classStyle}>
         {this.props.quirk.name}
       </TooltipArea>
     );

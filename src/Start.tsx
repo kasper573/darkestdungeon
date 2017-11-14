@@ -1,15 +1,15 @@
 import * as React from "react";
 import {TitleHeader} from "./TitleHeader";
-import {AppState} from "./AppState";
 import {Path} from "./RouterState";
 import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
 import {Profile} from "./ProfileState";
 import {PauseMenu} from "./PauseMenu";
+import {AppStateComponent} from "./AppStateComponent";
 
-export class Start extends React.Component<{state: AppState}> {
+export class Start extends AppStateComponent {
   componentWillMount () {
-    this.props.state.ambience.activate("start");
+    this.appState.ambience.activate("start");
   }
 
   transitionOut () {
@@ -24,14 +24,13 @@ export class Start extends React.Component<{state: AppState}> {
           <TitleHeader/>
         </div>
         <ProfileList
-          state={this.props.state}
           onProfileSelected={(profile) => this.onProfileSelected(profile)}
         />
         <span
           className={css(styles.bottomRightIcons)}
           onClick={() =>
-            this.props.state.popups.show(
-              <PauseMenu state={this.props.state} mainMenu={false}/>
+            this.appState.popups.show(
+              <PauseMenu mainMenu={false}/>
             )
           }
         >
@@ -47,8 +46,8 @@ export class Start extends React.Component<{state: AppState}> {
     }
 
     await this.transitionOut();
-    this.props.state.profiles.setActiveProfile(profile.id);
-    this.props.state.router.goto(
+    this.appState.profiles.setActiveProfile(profile.id);
+    this.appState.router.goto(
       new Path("loading", {
         target: profile.path || "dungeonOverview"
       })

@@ -8,12 +8,20 @@ import {DevTools} from "./DevTools";
 import {routes} from "./config/routes";
 import {SizeObserver} from "./SizeObserver";
 import {computed} from "mobx";
+import {appStateContext} from "./AppStateComponent";
 
 @observer
 export class App extends React.Component<{
   state: AppState,
   setupRoutes?: boolean
 }> {
+  static childContextTypes = appStateContext;
+  getChildContext () {
+    return {
+      state: this.props.state
+    };
+  }
+
   /**
    * The style required to create the black borders around
    * the game to enforce the aspect ratio configured in UIState.
@@ -44,9 +52,9 @@ export class App extends React.Component<{
       <div className={css(styles.app)}>
         <div className={css(styles.arc)} style={this.arcStyle}>
           <div className={css(styles.game)}>
-            <Router state={this.props.state}/>
+            <Router router={this.props.state.router}/>
             <PopupList
-              state={this.props.state.popups}
+              popups={this.props.state.popups}
               uiState={this.props.state.ui}
             />
           </div>
@@ -54,7 +62,7 @@ export class App extends React.Component<{
             onSizeChanged={(size) => this.props.state.ui.appSize = size}
           />
         </div>
-        <DevTools state={this.props.state}/>
+        <DevTools />
       </div>
     );
   }

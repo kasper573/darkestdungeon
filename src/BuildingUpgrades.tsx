@@ -4,9 +4,8 @@ import {BannerHeader} from "./BannerHeader";
 import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
 import {TooltipArea} from "./TooltipArea";
-import {PopupState} from "./PopupState";
 
-export class BuildingUpgrades extends React.Component<{popups: PopupState}> {
+export class BuildingUpgrades extends React.Component {
   render () {
     return (
       <div>
@@ -19,39 +18,37 @@ export class BuildingUpgrades extends React.Component<{popups: PopupState}> {
             </BannerHeader>
           </Column>
         </Row>
-        <BuildingUpgrade popups={this.props.popups}/>
-        <BuildingUpgrade popups={this.props.popups}/>
-        <BuildingUpgrade popups={this.props.popups}/>
+        <BuildingUpgrade />
+        <BuildingUpgrade />
+        <BuildingUpgrade />
       </div>
     );
   }
 }
 
-class BuildingUpgrade extends React.Component<{popups: PopupState}> {
+class BuildingUpgrade extends React.Component {
   render () {
-    const popups = this.props.popups;
     return (
       <div className={css(styles.upgrade)}>
         <h1 className={css(commonStyles.upgradeName)}>Weaponsmithing</h1>
         <Row classStyle={styles.upgradeSequence}>
           <TooltipArea
             tip={"Tip"}
-            popups={this.props.popups}
             classStyle={styles.upgradeAvatar}>
             <Avatar src={require("../assets/images/avatar.jpg")}/>
           </TooltipArea>
           <Line/>
-          <UpgradeStep popups={popups} upgraded/>
+          <UpgradeStep upgraded/>
           <Line/>
-          <UpgradeStep popups={popups} upgraded/>
+          <UpgradeStep upgraded/>
           <Line/>
-          <UpgradeStep popups={popups} />
+          <UpgradeStep />
           <Line/>
-          <UpgradeStep popups={popups} />
+          <UpgradeStep />
           <Line/>
-          <UpgradeStep popups={popups} />
+          <UpgradeStep />
           <Line/>
-          <UpgradeStep popups={popups} />
+          <UpgradeStep />
         </Row>
       </div>
     );
@@ -59,7 +56,6 @@ class BuildingUpgrade extends React.Component<{popups: PopupState}> {
 }
 
 class UpgradeStep extends React.Component<{
-  popups: PopupState,
   upgraded?: boolean
 }> {
   render () {
@@ -68,7 +64,6 @@ class UpgradeStep extends React.Component<{
       <div>
         <TooltipArea
           tip={"Tip"}
-          popups={this.props.popups}
           classStyle={[styles.step, dynStyle]}
         />
       </div>

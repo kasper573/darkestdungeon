@@ -1,23 +1,20 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {observable} from "mobx";
 import {Path} from "./RouterState";
 import {observer} from "mobx-react";
 import {Sprite} from "./Sprite";
 import {smoke} from "../assets/sprites";
 import {css, StyleSheet} from "aphrodite";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class Loading extends React.Component<{
-  state: AppState,
-  target: Path
-}> {
+export class Loading extends AppStateComponent<{target: Path}> {
   private allowNavigation: boolean;
   @observable private isLoading: boolean;
   @observable private backgroundUrl: any = require("../assets/images/loading-bg.jpg");
 
   async componentWillMount () {
-    this.props.state.ambience.activate("loading");
+    this.appState.ambience.activate("loading");
 
     this.allowNavigation = true;
 
@@ -26,7 +23,7 @@ export class Loading extends React.Component<{
     this.isLoading = false;
 
     if (this.allowNavigation) {
-      this.props.state.router.goto(this.props.target);
+      this.appState.router.goto(this.props.target);
     }
   }
 

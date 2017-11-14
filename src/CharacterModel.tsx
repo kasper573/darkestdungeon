@@ -4,12 +4,10 @@ import {Character, Hero} from "./ProfileState";
 import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
-import {PopupState} from "./PopupState";
 import {todo} from "./config/general";
 
 export class CharacterModel extends React.Component<{
   character: Character,
-  popups: PopupState,
   classStyle?: any
 }> {
   get isHero () {
@@ -25,7 +23,6 @@ export class CharacterModel extends React.Component<{
         )}
         <TooltipArea
           tip={this.isHero && <HPAndStress character={this.props.character}/>}
-          popups={this.props.popups}
           side={TooltipSide.Above}>
           <HealthMeter percentage={0.5}/>
           {this.isHero && (

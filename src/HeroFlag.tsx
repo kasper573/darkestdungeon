@@ -2,13 +2,11 @@ import * as React from "react";
 import {Hero} from "./ProfileState";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
-import {PopupState} from "./PopupState";
 import {HeroLevel} from "./HeroLevel";
 import {StressMeter} from "./StressMeter";
 
 @observer
 export class HeroFlag extends React.Component<{
-  popups: PopupState
   hero: Hero
 }> {
   render () {

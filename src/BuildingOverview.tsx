@@ -5,11 +5,9 @@ import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {BuildingUpgrades} from "./BuildingUpgrades";
 import {Avatar} from "./Avatar";
-import {PopupState} from "./PopupState";
 
 @observer
 export class BuildingOverview extends React.Component<{
-  popups: PopupState,
   header: string,
   backgroundUrl: string,
   classStyle?: any
@@ -44,7 +42,7 @@ export class BuildingOverview extends React.Component<{
               {this.props.header}
             </h1>
           </Row>
-          {this.areUpgradesVisible && <BuildingUpgrades popups={this.props.popups}/>}
+          {this.areUpgradesVisible && <BuildingUpgrades />}
         </Column>
         <Column>
           {this.props.children}

@@ -1,14 +1,14 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {css, StyleSheet} from "aphrodite";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {Popup, Prompt} from "./Popups";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class PopupTester extends React.Component<{state: AppState}> {
+export class PopupTester extends AppStateComponent {
   @observable popupQueue: Array<[PopupContent, PopupAlign, ModalState]> = [];
 
   renderPlacementButtons (modalState: ModalState) {
@@ -32,15 +32,14 @@ export class PopupTester extends React.Component<{state: AppState}> {
   }
 
   render () {
-    const popups = this.props.state.popups;
-
     const tooltipAreas = Object.values(TooltipSide)
       .filter((key) => typeof key === "string")
       .map((key) => (
         <TooltipArea
           key={key}
-          classStyle={styles.tooltipAreas} side={(TooltipSide as any)[key]}
-          popups={popups} tip="Tip">
+          classStyle={styles.tooltipAreas}
+          side={(TooltipSide as any)[key]}
+          tip="Tip">
           {key}
         </TooltipArea>
       ));
@@ -49,7 +48,8 @@ export class PopupTester extends React.Component<{state: AppState}> {
       <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
         <div style={{flexDirection: "row"}}>
           <TooltipArea
-            popups={popups} mouse={false} side={TooltipSide.Right}
+            mouse={false}
+            side={TooltipSide.Right}
             show={this.popupQueue.length > 0}
             tip="Click to place popup. Ctrl+click for default position.">
             Modal Popups
@@ -92,7 +92,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
   }
 
   async prompt () {
-    const popups = this.props.state.popups;
+    const popups = this.appState.popups;
     const answer = await popups.prompt(<Prompt query="Do you?"/>);
     popups.show(<Popup>You chose: {JSON.stringify(answer)}</Popup>);
   }
@@ -105,7 +105,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
     if (this.popupQueue.length > 0) {
       const [content, align, modalState] = this.popupQueue.shift();
       const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
-      this.props.state.popups.show({content, align, position, modalState});
+      this.appState.popups.show({content, align, position, modalState});
     }
   }
 }

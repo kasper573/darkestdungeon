@@ -4,22 +4,21 @@ import {HeroOverviewSmall} from "./HeroOverviewSmall";
 import {css, StyleSheet} from "aphrodite";
 import {Inventory} from "./Inventory";
 import {observable} from "mobx";
-import {Hero} from "./ProfileState";
-import {AppState} from "./AppState";
+import {Hero, QuestMap} from "./ProfileState";
 import {observer} from "mobx-react";
 import {DungeonMap} from "./DungeonMap";
 
 @observer
 export class DungeonControlPanel extends React.Component<{
-  state: AppState,
+  questMap: QuestMap,
   selectedHero: Hero
 }> {
   @observable isMapVisible = false;
 
   render () {
     const dynamicContent = this.isMapVisible ?
-      <DungeonMap quest={this.props.state.profiles.activeProfile.selectedQuest}/> :
-      <Inventory state={this.props.state}/>;
+      <DungeonMap map={this.props.questMap}/> :
+      <Inventory/>;
 
     return (
       <div className={css(styles.controlPanel)}>
@@ -27,7 +26,6 @@ export class DungeonControlPanel extends React.Component<{
           <Column classStyle={styles.controlPanelBox}>
             {this.props.selectedHero && (
               <HeroOverviewSmall
-                popups={this.props.state.popups}
                 hero={this.props.selectedHero}
               />
             )}

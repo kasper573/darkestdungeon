@@ -6,10 +6,8 @@ import {StyleSheet} from "aphrodite";
 import {CharacterModel} from "./CharacterModel";
 import {Row} from "./config/styles";
 import {CurioModel} from "./CurioModel";
-import {PopupState} from "./PopupState";
 
 export class DungeonScene extends React.Component<{
-  popups: PopupState,
   profile: Profile
 }> {
   monsters: Character[];
@@ -37,15 +35,15 @@ export class DungeonScene extends React.Component<{
       <Row classStyle={styles.scene}>
         <Row classStyle={styles.party}>
           {this.props.profile.party.map((member) => (
-            <CharacterModel key={member.id} popups={this.props.popups} character={member}/>
+            <CharacterModel key={member.id} character={member}/>
           ))}
         </Row>
 
-        <CurioModel popups={this.props.popups}/>
+        <CurioModel />
 
         <Row classStyle={styles.monsters}>
           {this.monsters.map((monster) => (
-            <CharacterModel key={monster.id} popups={this.props.popups} character={monster}/>
+            <CharacterModel key={monster.id} character={monster}/>
           ))}
         </Row>
       </Row>

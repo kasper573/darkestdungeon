@@ -4,14 +4,11 @@ import {Row} from "./config/styles";
 import {ItemLevel} from "./ItemLevel";
 import {ItemInfo, ItemType} from "./StaticState";
 import {ItemSlot} from "./ItemSlot";
-import {PopupState} from "./PopupState";
 
 export class HeroEquipment extends React.Component<{
-  popups: PopupState,
   hero: Hero
 }> {
   render () {
-    const popups = this.props.popups;
     return (
       <div>
         <Row>
@@ -21,10 +18,10 @@ export class HeroEquipment extends React.Component<{
           <div style={{flex: 1}}/>
         </Row>
         <Row>
-          <ItemSlot popups={popups} item={new ItemInfo("Club", ItemType.Weapon)}/>
-          <ItemSlot popups={popups} item={new ItemInfo("Robe", ItemType.Armor)}/>
-          <ItemSlot popups={popups}/>
-          <ItemSlot popups={popups}/>
+          <ItemSlot item={new ItemInfo("Club", ItemType.Weapon)}/>
+          <ItemSlot item={new ItemInfo("Robe", ItemType.Armor)}/>
+          <ItemSlot />
+          <ItemSlot />
         </Row>
       </div>
     );

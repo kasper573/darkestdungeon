@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "./RouterState";
 import {Alert, Prompt} from "./Popups";
@@ -8,11 +7,12 @@ import {observer} from "mobx-react";
 import {EstateDungeonBreakdown} from "./EstateDungeonBreakdown";
 import {QuestBreakdown} from "./QuestBreakdown";
 import {PartyDropbox} from "./PartyDropbox";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class EstateDungeons extends React.Component<{state: AppState, path: Path}> {
+export class EstateDungeons extends AppStateComponent<{path: Path}> {
   componentWillMount () {
-    this.props.state.ambience.activate("estateDungeons");
+    this.appState.ambience.activate("estateDungeons");
   }
 
   groupQuestsByDungeon (quests: Quest[]) {
@@ -27,24 +27,24 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
   }
 
   checkPartyBeforeContinue () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     if (profile.party.length === profile.maxPartySize) {
       return Promise.resolve(true);
     }
 
     if (profile.party.length === 0) {
-      return this.props.state.popups.prompt(
+      return this.appState.popups.prompt(
         <Alert message="Please form a party before embarking"/>
       );
     }
 
     if (!profile.selectedQuest) {
-      return this.props.state.popups.prompt(
+      return this.appState.popups.prompt(
         <Alert message="Please select a quest before embarking"/>
       );
     }
 
-    return this.props.state.popups.prompt(
+    return this.appState.popups.prompt(
       <Prompt
         query={"Grave danger awaits the underprepared. " +
         "Do you wish to continue without a full contingent?"}
@@ -55,12 +55,11 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
   }
 
   render () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     const questLookup = this.groupQuestsByDungeon(profile.quests);
     return (
       <EstateTemplate
         partyFeaturesInRoster={true}
-        state={this.props.state}
         path={this.props.path}
         backPath="estateOverview"
         continueCheck={() => this.checkPartyBeforeContinue()}
@@ -80,7 +79,6 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
         {profile.selectedQuest && (
           <QuestBreakdown
             quest={profile.selectedQuest}
-            popups={this.props.state.popups}
           />
         )}
         <PartyDropbox members={profile.party}/>

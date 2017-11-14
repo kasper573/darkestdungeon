@@ -3,11 +3,9 @@ import { StyleSheet} from "aphrodite";
 import {ItemInfo} from "./StaticState";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
-import {PopupState} from "./PopupState";
 import {ItemBreakdown} from "./ItemBreakdown";
 
 export class ItemSlot extends React.Component<{
-  popups: PopupState,
   item?: ItemInfo,
   onClick?: () => void,
   style?: any
@@ -19,7 +17,6 @@ export class ItemSlot extends React.Component<{
 
     return (
       <TooltipArea
-        popups={this.props.popups}
         side={TooltipSide.Above}
         tip={breakdown}
         classStyle={[styles.itemSlot, commonStyles.boxBorder]}
