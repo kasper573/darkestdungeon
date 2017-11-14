@@ -11,7 +11,6 @@ export class StaticState  {
   private constructor () {}
 
   heroNames: string[] = [];
-  quests = new Map<string, QuestInfo>();
   items = new Map<string, ItemInfo>();
   heroClasses = new Map<string, CharacterClassInfo>();
   afflictions = new Map<string, AfflictionInfo>();
