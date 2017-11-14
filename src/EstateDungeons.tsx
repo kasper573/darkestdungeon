@@ -69,7 +69,7 @@ export class EstateDungeons extends React.Component<{state: AppState, path: Path
         {profile.dungeons.map((d) =>
           <EstateDungeonBreakdown
             key={d.id}
-            name={d.dungeonInfo.name}
+            name={d.info.name}
             level={d.level.number}
             progress={d.levelProgress}
             quests={questLookup[d.id]}

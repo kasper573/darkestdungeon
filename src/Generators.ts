@@ -15,7 +15,7 @@ export class HeroGenerator {
 export class ItemGenerator {
   next (): Item {
     const t = new Item();
-    t.itemInfo = randomizeItem(Array.from(StaticState.instance.items.values()));
+    t.info = randomizeItem(Array.from(StaticState.instance.items.values()));
     return t;
   }
 }

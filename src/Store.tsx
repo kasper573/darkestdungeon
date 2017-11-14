@@ -26,18 +26,18 @@ export class Store extends React.Component<{
     const itemIndex = this.store.indexOf(item);
     this.store.splice(itemIndex, 1);
     this.cart.push(item);
-    this.props.profile.gold -= item.itemInfo.goldCost;
+    this.props.profile.gold -= item.info.goldCost;
   }
 
   returnItem (item: Item) {
     const itemIndex = this.store.indexOf(item);
     this.cart.splice(itemIndex, 1);
     this.store.push(item);
-    this.props.profile.gold += item.itemInfo.goldCost;
+    this.props.profile.gold += item.info.goldCost;
   }
 
   canAffordItem (item: Item) {
-    return this.props.profile.gold >= item.itemInfo.goldCost;
+    return this.props.profile.gold >= item.info.goldCost;
   }
 
   checkout () {
@@ -57,7 +57,7 @@ export class Store extends React.Component<{
             <ItemSlot
               key={item.id}
               popups={popups}
-              item={item.itemInfo}
+              item={item.info}
               style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
               onClick={this.canAffordItem(item) && (() => this.buyItem(item))}
             />
@@ -70,7 +70,7 @@ export class Store extends React.Component<{
             <ItemSlot
               key={item.id}
               popups={popups}
-              item={item.itemInfo}
+              item={item.info}
               onClick={() => this.returnItem(item)}
             />
           )}

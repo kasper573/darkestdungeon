@@ -40,7 +40,7 @@ export class QuestBreakdown extends React.Component<{
             <ItemSlot
               key={item.id}
               popups={this.props.popups}
-              item={item.itemInfo}
+              item={item.info}
             />
           )}
         </Row>
