@@ -49,7 +49,7 @@ export class EstateTemplate extends React.Component<{
         </div>
 
         <div className={css(styles.footer)}>
-          <Row className={css(styles.footerLeft)}>
+          <Row classStyle={styles.footerLeft}>
             <span>Gold: {state.profiles.activeProfile.gold}</span>
             <span onClick={() => state.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,

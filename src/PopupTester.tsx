@@ -3,7 +3,7 @@ import {AppState} from "./AppState";
 import {PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {css, StyleSheet} from "aphrodite";
-import {observable, transaction} from "mobx";
+import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {Popup, Prompt} from "./Popups";
 
@@ -39,7 +39,7 @@ export class PopupTester extends React.Component<{state: AppState}> {
       .map((key) => (
         <TooltipArea
           key={key}
-          className={css(styles.tooltipAreas)} side={(TooltipSide as any)[key]}
+          classStyle={styles.tooltipAreas} side={(TooltipSide as any)[key]}
           popups={popups} tip="Tip">
           {key}
         </TooltipArea>

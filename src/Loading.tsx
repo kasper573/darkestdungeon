@@ -44,7 +44,7 @@ export class Loading extends React.Component<{
         <div style={{flex: 1}}/>
         <div className={css(styles.box, styles.footer)}>
           <p>Lorem ipsum dolor sit amet.</p>
-          <Sprite {...smoke} className={css(styles.torch)}/>
+          <Sprite {...smoke} classStyle={styles.torch}/>
         </div>
       </div>
     );

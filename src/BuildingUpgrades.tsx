@@ -5,7 +5,6 @@ import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
 import {TooltipArea} from "./TooltipArea";
 import {PopupState} from "./PopupState";
-import {AppState} from "./AppState";
 
 export class BuildingUpgrades extends React.Component<{popups: PopupState}> {
   render () {
@@ -34,11 +33,11 @@ class BuildingUpgrade extends React.Component<{popups: PopupState}> {
     return (
       <div className={css(styles.upgrade)}>
         <h1 className={css(commonStyles.upgradeName)}>Weaponsmithing</h1>
-        <Row className={css(styles.upgradeSequence)}>
+        <Row classStyle={styles.upgradeSequence}>
           <TooltipArea
             tip={"Tip"}
             popups={this.props.popups}
-            className={css(styles.upgradeAvatar)}>
+            classStyle={styles.upgradeAvatar}>
             <Avatar src={require("../assets/images/avatar.jpg")}/>
           </TooltipArea>
           <Line/>
@@ -70,7 +69,7 @@ class UpgradeStep extends React.Component<{
         <TooltipArea
           tip={"Tip"}
           popups={this.props.popups}
-          className={css(styles.step, dynStyle)}
+          classStyle={[styles.step, dynStyle]}
         />
       </div>
     );

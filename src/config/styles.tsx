@@ -51,18 +51,13 @@ export const commonStyles = StyleSheet.create({
 type CellProps = {
   baseClassStyle?: any,
   classStyle?: any,
-  className?: string,
   style?: any,
   children?: any
 };
 
-export const Cell = ({baseClassStyle, children, classStyle, className, style}: CellProps) => {
-  const fullClassName = className ?
-    css(baseClassStyle, classStyle) + " " + className :
-    css(baseClassStyle, classStyle);
-
+export const Cell = ({baseClassStyle, children, classStyle, style}: CellProps) => {
   return (
-    <div className={fullClassName} style={style}>
+    <div className={css(baseClassStyle, classStyle)} style={style}>
       {children}
     </div>
   );

@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 
 export class StressMeter extends React.Component<{
   percentage: number,
-  className?: string
+  classStyle?: any
 }> {
   getStressLevels () {
     const levels = [];
@@ -25,7 +25,7 @@ export class StressMeter extends React.Component<{
 
   render () {
     return (
-      <div className={css(styles.stressMeter) + " " + this.props.className}>
+      <div className={css(styles.stressMeter, this.props.classStyle)}>
         {this.getStressLevels().map((level, index) =>
           <StressBox key={index} level={level}/>)
         }

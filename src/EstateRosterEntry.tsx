@@ -51,7 +51,7 @@ export class EstateRosterEntry extends React.Component<{
             {hero.name}
           </span>
           <StressMeter
-            className={css(styles.stress)}
+            classStyle={styles.stress}
             percentage={hero.stressPercentage}
           />
           <div className={css(styles.equipment)}>
