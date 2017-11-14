@@ -29,11 +29,10 @@ export class QuestBreakdown extends React.Component<{
           <span>Level {quest.level}</span>
         </Row>
 
-        <CommonHeader label="Objectives"/>
-        <ul>
-          <li>Hunt: {(quest.objective.monsterPercentage * 100).toFixed(1)}%</li>
-          <li>Explore: {(quest.objective.explorePercentage * 100).toFixed(1)}%</li>
-        </ul>
+        <CommonHeader label="Objective"/>
+        <p>
+          {quest.objective.description}
+        </p>
 
         <CommonHeader label="Rewards"/>
         <Row>
