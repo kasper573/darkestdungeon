@@ -45,7 +45,7 @@ export class Inventory extends React.Component<
         <ul>
           {sortedItems.map((item) => (
             <li key={item.id}>
-              [{item.itemInfo.name}]
+              [{item.info.name}]
             </li>
           ))}
         </ul>

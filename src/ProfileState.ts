@@ -172,17 +172,17 @@ export class Item {
   @serializable @observable level: number = 0;
 
   @serializable(reference(ItemInfo, StaticState.lookup((i) => i.items)))
-  itemInfo: ItemInfo;
+  info: ItemInfo;
 
   static comparers = {
     name (a: Item, b: Item) {
-      return a.itemInfo.name.localeCompare(b.itemInfo.name);
+      return a.info.name.localeCompare(b.info.name);
     }
   };
 
   static fromInfo (info: ItemInfo) {
     const item = new Item();
-    item.itemInfo = info;
+    item.info = info;
     return item;
   }
 }
@@ -237,11 +237,11 @@ export class Dungeon extends Experienced {
   @serializable(identifier()) id: ItemId = uuid();
 
   @serializable(reference(DungeonInfo, StaticState.lookup((i) => i.dungeons)))
-  dungeonInfo: DungeonInfo;
+  info: DungeonInfo;
 
   static fromInfo (info: DungeonInfo) {
     const dungeon = new Dungeon();
-    dungeon.dungeonInfo = info;
+    dungeon.info = info;
     return dungeon;
   }
 }
