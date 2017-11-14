@@ -1,39 +1,39 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Character} from "./ProfileState";
+import {Hero} from "./ProfileState";
 import {observer} from "mobx-react";
-import {CharacterLevel} from "./CharacterLevel";
+import {HeroLevel} from "./HeroLevel";
 import {ItemLevel} from "./ItemLevel";
 import {StressMeter} from "./StressMeter";
 import {Avatar} from "./Avatar";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
-import {CharacterBreakdown} from "./CharacterBreakdown";
+import {HeroBreakdown} from "./HeroBreakdown";
 import {PopupState} from "./PopupState";
 import {ItemType} from "./StaticState";
 
 @observer
 export class EstateRosterEntry extends React.Component<{
-  character: Character,
+  hero: Hero,
   popups: PopupState,
   partyFeatures?: boolean,
   canJoinParty?: boolean,
   onSelect?: () => void
 }> {
   render () {
-    const character = this.props.character;
+    const hero = this.props.hero;
 
     let extraStyle;
     let partyElement;
 
     if (this.props.partyFeatures) {
-      if (character.inParty) {
+      if (hero.inParty) {
         extraStyle = styles.entryInParty;
         partyElement = <div className={css(styles.partyIcon)}/>;
       } else if (this.props.canJoinParty) {
         partyElement = (
           <button
-            onClick={(e) => e.stopPropagation() || (character.inParty = true)}>
+            onClick={(e) => e.stopPropagation() || (hero.inParty = true)}>
             JOIN
           </button>
         );
@@ -43,16 +43,16 @@ export class EstateRosterEntry extends React.Component<{
     return (
       <li className={css(styles.entry, extraStyle)}
           onClick={this.props.onSelect}>
-        <Avatar src={character.classInfo.avatarUrl}>
+        <Avatar src={hero.classInfo.avatarUrl}>
           {partyElement}
         </Avatar>
         <div className={css(styles.info)}>
-          <span className={css(commonStyles.characterName)}>
-            {character.name}
+          <span className={css(commonStyles.heroName)}>
+            {hero.name}
           </span>
           <StressMeter
             className={css(styles.stress)}
-            percentage={character.stressPercentage}
+            percentage={hero.stressPercentage}
           />
           <div className={css(styles.equipment)}>
             <ItemLevel type={ItemType.Armor} level={1}/>
@@ -62,9 +62,9 @@ export class EstateRosterEntry extends React.Component<{
         <TooltipArea
           popups={this.props.popups}
           side={TooltipSide.Left}
-          tip={<CharacterBreakdown character={this.props.character}/>}
+          tip={<HeroBreakdown hero={this.props.hero}/>}
         >
-          <CharacterLevel character={character}/>
+          <HeroLevel hero={hero}/>
         </TooltipArea>
       </li>
     );

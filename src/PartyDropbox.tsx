@@ -1,11 +1,11 @@
 import * as React from "react";
 import {StyleSheet} from "aphrodite";
-import {Character} from "./ProfileState";
+import {Hero} from "./ProfileState";
 import {Avatar} from "./Avatar";
 import {Row} from "./config/styles";
 
 export class PartyDropbox extends React.Component<{
-  members: Character[],
+  members: Hero[],
   lock?: boolean
 }> {
   render () {

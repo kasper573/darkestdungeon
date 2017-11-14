@@ -2,7 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 
 export const commonStyles = StyleSheet.create({
-  characterName: {
+  heroName: {
     fontWeight: "bold",
     color: "rgb(200, 180, 110)"
   },

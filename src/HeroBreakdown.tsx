@@ -1,13 +1,13 @@
 import * as React from "react";
-import {Character} from "./ProfileState";
+import {Hero} from "./ProfileState";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
 import {commonStyles} from "./config/styles";
 
 @observer
-export class CharacterBreakdown extends React.Component<{character: Character}> {
+export class HeroBreakdown extends React.Component<{hero: Hero}> {
   render () {
-    const c = this.props.character;
+    const c = this.props.hero;
 
     const afflictionItem = c.affliction && (
       <li className={css(commonStyles.afflictionText)}>

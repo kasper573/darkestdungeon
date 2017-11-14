@@ -10,10 +10,10 @@ export class StaticState  {
 
   private constructor () {}
 
-  characterNames: string[] = [];
+  heroNames: string[] = [];
   quests = new Map<string, QuestInfo>();
   items = new Map<string, ItemInfo>();
-  characterClasses = new Map<string, CharacterClassInfo>();
+  heroClasses = new Map<string, CharacterClassInfo>();
   afflictions = new Map<string, AfflictionInfo>();
   levels = new Map<number, LevelInfo>();
   dungeons = new Map<string, DungeonInfo>();

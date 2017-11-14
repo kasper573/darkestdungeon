@@ -1,11 +1,11 @@
-import {Character, Dungeon, Item, MapSize, Quest, QuestObjective} from "./ProfileState";
+import {Hero, Dungeon, Item, MapSize, Quest, QuestObjective} from "./ProfileState";
 import {StaticState} from "./StaticState";
 
-export class CharacterGenerator {
-  next (): Character {
-    const c = new Character();
-    c.name = randomizeItem(StaticState.instance.characterNames);
-    c.classInfo = randomizeItem(Array.from(StaticState.instance.characterClasses.values()));
+export class HeroGenerator {
+  next (): Hero {
+    const c = new Hero();
+    c.name = randomizeItem(StaticState.instance.heroNames);
+    c.classInfo = randomizeItem(Array.from(StaticState.instance.heroClasses.values()));
     c.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
     c.stress = Math.floor(Math.random() * c.stressMax);
     return c;
