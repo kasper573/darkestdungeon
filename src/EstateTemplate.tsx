@@ -8,6 +8,8 @@ import {EstateRoster} from "./EstateRoster";
 import {ModalState} from "./PopupState";
 import {observer} from "mobx-react";
 import {Popup} from "./Popups";
+import {HeirloomTrader} from "./HeirloomTrader";
+import {Row} from "./config/styles";
 
 @observer
 export class EstateTemplate extends React.Component<{
@@ -47,9 +49,16 @@ export class EstateTemplate extends React.Component<{
         </div>
 
         <div className={css(styles.footer)}>
-          <div className={css(styles.footerLeft)}>
-            Gold: {state.profiles.activeProfile.gold}
-          </div>
+          <Row className={css(styles.footerLeft)}>
+            <span>Gold: {state.profiles.activeProfile.gold}</span>
+            <span onClick={() => state.popups.show({
+              content: <Popup><HeirloomTrader/></Popup>,
+              modalState: ModalState.Opaque,
+              group: "heirloomTrader"
+            })}>
+              [TRADE HEIRLOOMS]
+            </span>
+          </Row>
           <div className={css(styles.footerCenter)}>
             <button onClick={() => this.onContinueSelected()}>
               {this.props.continueLabel}
