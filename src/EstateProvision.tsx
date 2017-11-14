@@ -50,7 +50,7 @@ export class EstateProvision extends React.Component<{
         roster={false}
         continueCheck={() => this.checkItemsBeforeContinue()}
         continueLabel="Embark"
-        continuePath={new Path("loading", {target: "dungeon"})}>
+        continuePath={new Path("loading", {target: "dungeonOverview"})}>
         <BuildingOverview
           classStyle={styles.container}
           popups={this.props.state.popups}
