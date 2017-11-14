@@ -3,7 +3,7 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {AdventureStatus, EstateEvent, Profile, ProfileState} from "./ProfileState";
+import {AdventureStatus, Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {ItemType} from "./config/general";
+import {ItemType} from "./StaticState";
 
 export class ItemLevel extends React.Component<{
   type: ItemType,

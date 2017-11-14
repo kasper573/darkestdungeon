@@ -1,6 +1,7 @@
 import * as React from "react";
-import {StatsInfo, todo} from "./config/general";
+import {StatsInfo} from "./StaticState";
 import {StatsText} from "./StatsText";
+import {todo} from "./config/general";
 
 export class ItemBreakdown extends React.Component {
   render () {

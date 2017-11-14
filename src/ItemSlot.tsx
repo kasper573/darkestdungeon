@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {ItemInfo} from "./config/general";
+import {ItemInfo} from "./StaticState";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {PopupState} from "./PopupState";

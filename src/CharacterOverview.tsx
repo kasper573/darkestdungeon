@@ -6,7 +6,7 @@ import {computed} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {Column, Row} from "./config/styles";
 import {PopupState} from "./PopupState";
-import {ItemInfo, ItemType, QuirkInfo, StatsInfo, StatsModSource} from "./config/general";
+import {ItemInfo, ItemType, QuirkInfo, StatsInfo, StatsModSource} from "./StaticState";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {StatsText} from "./StatsText";

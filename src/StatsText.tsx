@@ -2,7 +2,7 @@ import * as React from "react";
 import {Column, commonStyles} from "./config/styles";
 import {css} from "aphrodite";
 import {PopupState} from "./PopupState";
-import {StatsInfo} from "./config/general";
+import {StatsInfo} from "./StaticState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {StatsBreakdown} from "./StatsBreakdown";
 import {StatsValueText} from "./StatsValueText";
