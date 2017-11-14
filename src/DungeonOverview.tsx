@@ -1,6 +1,6 @@
 import * as React from "react";
 import {AppState} from "./AppState";
-import {AdventureStatus} from "./ProfileState";
+import {QuestStatus} from "./ProfileState";
 import {observer} from "mobx-react";
 
 @observer
@@ -20,13 +20,13 @@ export class DungeonOverview extends React.Component<{state: AppState}> {
           {quest.objective.description}
         </p>
         <div style={{flexDirection: "row"}}>
-          <button onClick={() => this.finish(AdventureStatus.Victory)}>
+          <button onClick={() => this.finish(QuestStatus.Victory)}>
             Finish Dungeon
           </button>
-          <button onClick={() => this.finish(AdventureStatus.Escape)}>
+          <button onClick={() => this.finish(QuestStatus.Escape)}>
             Escape Dungeon
           </button>
-          <button onClick={() => this.finish(AdventureStatus.Defeat)}>
+          <button onClick={() => this.finish(QuestStatus.Defeat)}>
             Dungeon Defeat
           </button>
         </div>
@@ -34,8 +34,8 @@ export class DungeonOverview extends React.Component<{state: AppState}> {
     );
   }
 
-  finish (status: AdventureStatus) {
-    this.props.state.profiles.activeProfile.adventure.status = status;
+  finish (status: QuestStatus) {
+    this.props.state.profiles.activeProfile.selectedQuest.status = status;
     this.props.state.router.goto("dungeonResult");
   }
 }

@@ -6,7 +6,7 @@ import {Prompt} from "./Popups";
 import {BuildingOverview} from "./BuildingOverview";
 import {StyleSheet} from "aphrodite";
 import {PartyDropbox} from "./PartyDropbox";
-import {Item} from "./ProfileState";
+import {Item, QuestStatus} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Store} from "./Store";
 
@@ -34,7 +34,7 @@ export class EstateProvision extends React.Component<{
     ).then((willEmbark) => {
       if (willEmbark) {
         this.store.checkout();
-        this.props.state.profiles.activeProfile.newAdventure();
+        this.props.state.profiles.activeProfile.selectedQuest.status = QuestStatus.Started;
         return true;
       }
     });

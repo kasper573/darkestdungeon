@@ -3,7 +3,7 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {AdventureStatus, Profile, ProfileState} from "./ProfileState";
+import {QuestStatus, Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
@@ -35,6 +35,8 @@ export class AppState {
    */
   initialize () {
     this.load();
+
+    let previousQuestStatus: QuestStatus = QuestStatus.Idle;
     this.reactionDisposers = [
       // Path changes
       reaction(
@@ -50,20 +52,24 @@ export class AppState {
           }
         }
       ),
-      // Adventure status changes
+      // Quest status changes
       reaction(
         () => {
-          return this.profiles.activeProfile.adventure ?
-            this.profiles.activeProfile.adventure.status :
-            AdventureStatus.Pending;
+          const q = this.profiles.activeProfile.selectedQuest;
+          return {
+            status: q ? q.status : QuestStatus.Idle,
+            quest: q
+          };
         },
-        (status) => {
-          // Randomize estate event every time an adventure is finished
-          if (status !== AdventureStatus.Pending) {
+        ({quest, status}) => {
+          // When a started quest is finished
+          const isQuestFinished = quest ? quest.isFinished : false;
+          if (previousQuestStatus === QuestStatus.Started && isQuestFinished) {
             this.profiles.activeProfile.gotoNextWeek(
               this.questGenerator
             );
           }
+          previousQuestStatus = status;
         }
       ),
       // Save whenever interesting data changes
