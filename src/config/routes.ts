@@ -15,7 +15,7 @@ export const routes = {
   "estateOverview": new Route(EstateOverview),
   "estateDungeons": new Route(EstateDungeons),
   "estateProvision": new Route(EstateProvision),
-  "dungeon": new Route(DungeonOverview),
+  "dungeonOverview": new Route(DungeonOverview),
   "dungeonResult": new Route(DungeonResult),
   "soundTester": new Route(SoundTester, false),
   "popupTester": new Route(PopupTester, false)

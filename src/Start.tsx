@@ -50,7 +50,7 @@ export class Start extends React.Component<{state: AppState}> {
     this.props.state.profiles.setActiveProfile(profile.id);
     this.props.state.router.goto(
       new Path("loading", {
-        target: profile.path || "dungeon"
+        target: profile.path || "dungeonOverview"
       })
     );
   }
