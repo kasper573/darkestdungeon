@@ -25,10 +25,12 @@ export class DungeonControlPanel extends React.Component<{
       <div className={css(styles.controlPanel)}>
         <Row>
           <Column classStyle={styles.controlPanelBox}>
-            <HeroOverviewSmall
-              popups={this.props.state.popups}
-              hero={this.props.selectedHero}
-            />
+            {this.props.selectedHero && (
+              <HeroOverviewSmall
+                popups={this.props.state.popups}
+                hero={this.props.selectedHero}
+              />
+            )}
           </Column>
           <Column classStyle={styles.controlPanelBox}>
             <Row style={{flex: 1}}>
