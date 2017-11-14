@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StatsInfo} from "./config/general";
+import {StatsInfo} from "./StaticState";
 import {StatsValueText} from "./StatsValueText";
 import {Column, commonStyles, Row} from "./config/styles";
 import {css} from "aphrodite";

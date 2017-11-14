@@ -1,9 +1,10 @@
 import * as React from "react";
 import {commonStyles} from "./config/styles";
 import {css} from "aphrodite";
-import {QuirkInfo, todo} from "./config/general";
+import {QuirkInfo} from "./StaticState";
 import {TooltipArea} from "./TooltipArea";
 import {PopupState} from "./PopupState";
+import {todo} from "./config/general";
 
 export class QuirkText extends React.Component<{
   popups: PopupState,

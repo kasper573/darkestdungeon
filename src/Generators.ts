@@ -1,12 +1,12 @@
 import {Character, Dungeon, Item, MapSize, Quest, QuestObjective} from "./ProfileState";
-import {AfflictionInfo, CharacterClassInfo, characterNames, ItemInfo} from "./config/general";
+import {StaticState} from "./StaticState";
 
 export class CharacterGenerator {
   next (): Character {
     const c = new Character();
-    c.name = randomizeItem(characterNames);
-    c.classInfo = randomizeItem(Array.from(CharacterClassInfo.lookup.values()));
-    c.affliction = randomizeItem(Array.from(AfflictionInfo.lookup.values()));
+    c.name = randomizeItem(StaticState.instance.characterNames);
+    c.classInfo = randomizeItem(Array.from(StaticState.instance.characterClasses.values()));
+    c.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
     c.stress = Math.floor(Math.random() * c.stressMax);
     return c;
   }
@@ -15,14 +15,14 @@ export class CharacterGenerator {
 export class ItemGenerator {
   next (): Item {
     const t = new Item();
-    t.itemInfo = randomizeItem(Array.from(ItemInfo.lookup.values()));
+    t.itemInfo = randomizeItem(Array.from(StaticState.instance.items.values()));
     return t;
   }
 }
 
 export class QuestGenerator {
   next (dungeons: Dungeon[]): Quest {
-    const itemPool = Array.from(ItemInfo.lookup.values());
+    const itemPool = Array.from(StaticState.instance.items.values());
 
     const q = new Quest();
     const dungeon = randomizeItem(dungeons);

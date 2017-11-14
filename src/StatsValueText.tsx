@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import {Column} from "./config/styles";
-import {StatsValue} from "./config/general";
+import {StatsValue} from "./StaticState";
 
 export class StatsValueText extends React.Component<{
   value: StatsValue,

@@ -6,13 +6,14 @@ import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../assets/fonts";
 import {AppState} from "./AppState";
 import {App} from "./App";
-import {ambience} from "./config/general";
+import {addStaticState, ambience} from "./config/general";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
 
 // Initialize application state
 const state = new AppState();
-state.router.goto("start");
+addStaticState();
+state.router.goto("estateDungeons");
 state.ambience.addDefinitions(ambience);
 state.initialize();
 

@@ -3,7 +3,10 @@ import {Path} from "./RouterState";
 import {CharacterGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {serializable, object, identifier, date, list, reference} from "serializr";
 import uuid = require("uuid");
-import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, QuestInfo} from "./config/general";
+import {
+  AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, QuestInfo,
+  StaticState
+} from "./StaticState";
 
 let nullEstateEvent: EstateEvent;
 let nullProfile: Profile;
@@ -62,7 +65,7 @@ export class ProfileState {
     profile.items[1].characterId = profile.characters[1].id;
 
     // Add all dungeons to profile
-    profile.dungeons = Array.from(DungeonInfo.lookup.values())
+    profile.dungeons = Array.from(StaticState.instance.dungeons.values())
       .map(Dungeon.fromInfo);
 
     profile.gotoNextWeek(this.questGenerator);
@@ -104,7 +107,7 @@ class Experienced {
   }
 
   @computed get level () {
-    return Array.from(LevelInfo.lookup.values())
+    return Array.from(StaticState.instance.levels.values())
       .find((level) =>
         this.experience >= level.experience &&
         (level.isMax || this.experience < level.next.experience)
@@ -125,10 +128,10 @@ export class Character extends Experienced {
   @serializable @observable name: string;
   @serializable @observable inParty: boolean;
 
-  @serializable(reference(CharacterClassInfo, CharacterClassInfo.lookupFn))
+  @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.characterClasses)))
   classInfo: CharacterClassInfo;
 
-  @serializable(reference(AfflictionInfo, AfflictionInfo.lookupFn))
+  @serializable(reference(AfflictionInfo, StaticState.lookup((i) => i.afflictions)))
   affliction: AfflictionInfo;
 
   @serializable @observable stress: number = 0;
@@ -171,7 +174,7 @@ export class Item {
   @serializable @observable characterId?: CharacterId;
   @serializable @observable level: number = 0;
 
-  @serializable(reference(ItemInfo, ItemInfo.lookupFn))
+  @serializable(reference(ItemInfo, StaticState.lookup((i) => i.items)))
   itemInfo: ItemInfo;
 
   static comparers = {
@@ -218,7 +221,7 @@ export class Quest {
 export class Dungeon extends Experienced {
   @serializable(identifier()) id: ItemId = uuid();
 
-  @serializable(reference(DungeonInfo, DungeonInfo.lookupFn))
+  @serializable(reference(DungeonInfo, StaticState.lookup((i) => i.dungeons)))
   dungeonInfo: DungeonInfo;
 
   static fromInfo (info: DungeonInfo) {

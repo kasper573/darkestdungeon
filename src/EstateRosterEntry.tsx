@@ -10,7 +10,7 @@ import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {CharacterBreakdown} from "./CharacterBreakdown";
 import {PopupState} from "./PopupState";
-import {ItemType} from "./config/general";
+import {ItemType} from "./StaticState";
 
 @observer
 export class EstateRosterEntry extends React.Component<{
