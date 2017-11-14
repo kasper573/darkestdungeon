@@ -1,13 +1,13 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Quest, Room} from "./ProfileState";
+import {QuestMap, Room} from "./ProfileState";
 
 export class DungeonMap extends React.Component<{
-  quest: Quest
+  map: QuestMap
 }> {
   render () {
-    const rooms = this.props.quest.map.rooms;
-    const bounds = this.props.quest.map.bounds.scale(gridSize, gridSize);
+    const rooms = this.props.map.rooms;
+    const bounds = this.props.map.bounds.scale(gridSize, gridSize);
     return (
       <div style={{width: bounds.width, height: bounds.height}}>
         <div style={{position: "absolute", left: bounds.width / 2, top: bounds.height / 2}}>

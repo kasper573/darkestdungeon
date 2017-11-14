@@ -1,14 +1,12 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {PopupState} from "./PopupState";
+import {AppStateComponent} from "./AppStateComponent";
 
-export class CurioModel extends React.Component<{
-  popups: PopupState
-}> {
+export class CurioModel extends AppStateComponent {
   render () {
     return (
       <div className={css(styles.model)}
-           onClick={() => this.props.popups.show("Curio interaction")}>
+           onClick={() => this.appState.popups.show("Curio interaction")}>
         Curio
       </div>
     );

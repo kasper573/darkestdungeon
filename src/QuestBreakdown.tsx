@@ -5,10 +5,8 @@ import {Avatar} from "./Avatar";
 import {Row} from "./config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemSlot} from "./ItemSlot";
-import {PopupState} from "./PopupState";
 
 export class QuestBreakdown extends React.Component<{
-  popups: PopupState,
   quest: Quest
 }> {
   render () {
@@ -39,7 +37,6 @@ export class QuestBreakdown extends React.Component<{
           {quest.rewards.map((item) =>
             <ItemSlot
               key={item.id}
-              popups={this.props.popups}
               item={item.info}
             />
           )}
@@ -52,7 +49,7 @@ export class QuestBreakdown extends React.Component<{
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 40, left: 0, bottom: 40,
+    top: 0, left: 0, bottom: 40,
     background: "black",
     color: "white",
     padding: 10

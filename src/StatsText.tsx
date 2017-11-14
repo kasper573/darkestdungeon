@@ -41,7 +41,6 @@ export class StatsText extends React.Component<{
       <TooltipArea
         tip={popups && <StatsBreakdown stats={stats}/>}
         side={TooltipSide.Above}
-        popups={popups}
         style={{flexDirection: "row"}}
         classStyle={classStyle}
       >

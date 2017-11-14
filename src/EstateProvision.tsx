@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "./RouterState";
 import {Prompt} from "./Popups";
@@ -9,24 +8,22 @@ import {PartyDropbox} from "./PartyDropbox";
 import {Item, QuestStatus} from "./ProfileState";
 import {observer} from "mobx-react";
 import {Store} from "./Store";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class EstateProvision extends React.Component<{
-  state: AppState,
-  path: Path
-}> {
+export class EstateProvision extends AppStateComponent<{path: Path}> {
   private store: Store;
   private initialStoreItems: Item[] =
-    this.props.state.profiles.activeProfile.generateStoreItems(
-      this.props.state.itemGenerator
+    this.appState.profiles.activeProfile.generateStoreItems(
+      this.appState.itemGenerator
     );
 
   componentWillMount () {
-    this.props.state.ambience.activate("estateProvision");
+    this.appState.ambience.activate("estateProvision");
   }
 
   checkItemsBeforeContinue () {
-    return this.props.state.popups.prompt(
+    return this.appState.popups.prompt(
       <Prompt
         query={"You haven't purchased much food for your expedition. " +
         "It's recommended to take at least 8 food for this quest. Still Embark?"}
@@ -34,17 +31,16 @@ export class EstateProvision extends React.Component<{
     ).then((willEmbark) => {
       if (willEmbark) {
         this.store.checkout();
-        this.props.state.profiles.activeProfile.selectedQuest.status = QuestStatus.Started;
+        this.appState.profiles.activeProfile.selectedQuest.status = QuestStatus.Started;
         return true;
       }
     });
   }
 
   render () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     return (
       <EstateTemplate
-        state={this.props.state}
         path={this.props.path}
         backPath="estateDungeons"
         roster={false}
@@ -53,13 +49,11 @@ export class EstateProvision extends React.Component<{
         continuePath={new Path("loading", {target: "dungeonOverview"})}>
         <BuildingOverview
           classStyle={styles.container}
-          popups={this.props.state.popups}
           header="Provision"
           backgroundUrl={require("../assets/images/provision-bg.jpg")}>
           <Store
             ref={(store) => this.store = store}
             initialStoreItems={this.initialStoreItems}
-            popups={this.props.state.popups}
             profile={profile}
           />
         </BuildingOverview>

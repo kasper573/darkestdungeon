@@ -6,26 +6,24 @@ import {BannerHeader} from "./BannerHeader";
 import {CompareFunction, SortOptions} from "./SortOptions";
 import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
-import {AppState} from "./AppState";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class Inventory extends React.Component<{
-  state: AppState,
-}> {
+export class Inventory extends AppStateComponent {
   @observable compareFn: CompareFunction<Item>;
 
   promptUnequipAll () {
-    this.props.state.popups.prompt(
+    this.appState.popups.prompt(
       <Prompt query="Unequip all items on all heroes?"/>
     ).then((unequip) => {
       if (unequip) {
-        this.props.state.profiles.activeProfile.unequipAllItems();
+        this.appState.profiles.activeProfile.unequipAllItems();
       }
     });
   }
 
   render () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     const sortedItems = profile.unassignedItems.sort(this.compareFn);
     return (
       <div>

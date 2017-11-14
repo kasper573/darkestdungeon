@@ -3,12 +3,10 @@ import {ItemSlot} from "./ItemSlot";
 import {CommonHeader} from "./CommonHeader";
 import {Item, Profile} from "./ProfileState";
 import {observer} from "mobx-react";
-import {PopupState} from "./PopupState";
 import {observable} from "mobx";
 
 @observer
 export class Store extends React.Component<{
-  popups: PopupState,
   initialStoreItems: Item[],
   profile: Profile
 }> {
@@ -48,7 +46,6 @@ export class Store extends React.Component<{
   }
 
   render () {
-    const popups = this.props.popups;
     return (
       <div>
         <CommonHeader label="Store inventory"/>
@@ -56,7 +53,6 @@ export class Store extends React.Component<{
           {this.store.map((item) =>
             <ItemSlot
               key={item.id}
-              popups={popups}
               item={item.info}
               style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
               onClick={
@@ -73,7 +69,6 @@ export class Store extends React.Component<{
           {this.cart.map((item) =>
             <ItemSlot
               key={item.id}
-              popups={popups}
               item={item.info}
               onClick={() => this.returnItem(item)}
             />

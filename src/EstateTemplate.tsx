@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
 import {Path, PathTypes} from "./RouterState";
 import {PauseMenu} from "./PauseMenu";
@@ -10,10 +9,10 @@ import {observer} from "mobx-react";
 import {Popup} from "./Popups";
 import {HeirloomTrader} from "./HeirloomTrader";
 import {Row} from "./config/styles";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class EstateTemplate extends React.Component<{
-  state: AppState,
+export class EstateTemplate extends AppStateComponent<{
   path: Path,
   backPath?: PathTypes,
   continueCheck?: () => Promise<any>,
@@ -32,16 +31,15 @@ export class EstateTemplate extends React.Component<{
   }
 
   goBack () {
-    this.props.state.router.goto(this.props.backPath);
+    this.appState.router.goto(this.props.backPath);
   }
 
   render () {
-    const state = this.props.state;
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.header)}>
           {this.mayGoBack && <span onClick={() => this.goBack()}>[BACK]</span>}
-          {this.props.state.profiles.activeProfile.name} Estate
+          {this.appState.profiles.activeProfile.name} Estate
         </div>
 
         <div className={css(styles.content)}>
@@ -50,8 +48,8 @@ export class EstateTemplate extends React.Component<{
 
         <div className={css(styles.footer)}>
           <Row classStyle={styles.footerLeft}>
-            <span>Gold: {state.profiles.activeProfile.gold}</span>
-            <span onClick={() => state.popups.show({
+            <span>Gold: {this.appState.profiles.activeProfile.gold}</span>
+            <span onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
               group: "heirloomTrader"
@@ -65,24 +63,21 @@ export class EstateTemplate extends React.Component<{
             </button>
           </div>
           <div className={css(styles.footerRight)}>
-            <span onClick={() => state.popups.show({
-              content: <Popup><Inventory state={state}/></Popup>,
+            <span onClick={() => this.appState.popups.show({
+              content: <Popup><Inventory/></Popup>,
               modalState: ModalState.Opaque,
               group: "inventory"
             })}>
               [INVENTORY]
             </span>
-            <span onClick={() => state.popups.show(<PauseMenu state={state}/>)}>
+            <span onClick={() => this.appState.popups.show(<PauseMenu/>)}>
               [PAUSE MENU]
             </span>
           </div>
         </div>
 
         {this.props.roster && (
-          <EstateRoster
-            state={this.props.state}
-            partyFeatures={this.props.partyFeaturesInRoster}
-          />
+          <EstateRoster partyFeatures={this.props.partyFeaturesInRoster}/>
         )}
       </div>
     );
@@ -92,7 +87,7 @@ export class EstateTemplate extends React.Component<{
     this.props.continueCheck()
       .then((okToContinue) => {
         if (okToContinue === undefined || okToContinue) {
-          this.props.state.router.goto(this.props.continuePath);
+          this.appState.router.goto(this.props.continuePath);
         }
       });
   }

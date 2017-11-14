@@ -1,9 +1,10 @@
 import * as React from "react";
-import {PopupHandle, PopupAlign, PopupContent, PopupState, ModalState} from "./PopupState";
+import {PopupHandle, PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {computed, IReactionDisposer, observable, reaction} from "mobx";
 import {Tooltip} from "./Tooltip";
 import {BoundsObserver, ElementBounds} from "./BoundsObserver";
 import {css} from "aphrodite";
+import {AppStateComponent} from "./AppStateComponent";
 
 export enum TooltipSide {
   Above,
@@ -20,7 +21,6 @@ const sideAlignMap = {
 };
 
 type TooltipAreaProps = {
-  popups: PopupState,
   tip?: PopupContent,
   side?: TooltipSide,
   classStyle?: any,
@@ -37,7 +37,7 @@ type TooltipAreaProps = {
  * NOTE: Manually showing a tooltip disables mouse
  * triggers until you manually hide it again.
  */
-export class TooltipArea extends React.Component<TooltipAreaProps> {
+export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   static defaultProps = {
     side: TooltipSide.Below,
     mouse: true
@@ -103,7 +103,7 @@ export class TooltipArea extends React.Component<TooltipAreaProps> {
       return;
     }
 
-    this.popup = this.props.popups.show({
+    this.popup = this.appState.popups.show({
       content: <Tooltip>{tip}</Tooltip>,
       align: sideAlignMap[this.props.side],
       position: this.popupPosition,

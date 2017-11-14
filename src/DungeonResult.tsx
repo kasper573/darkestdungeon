@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {Path} from "./RouterState";
 import {css, StyleSheet} from "aphrodite";
 import {CommonHeader} from "./CommonHeader";
@@ -7,22 +6,23 @@ import {DungeonResultHeroes} from "./DungeonResultHeroes";
 import {DungeonResultItems} from "./DungeonResultItems";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class DungeonResult extends React.Component<{state: AppState}> {
+export class DungeonResult extends AppStateComponent {
   @observable slide = Slide.Items;
 
   componentWillMount () {
-    this.props.state.ambience.activate("dungeonResult");
+    this.appState.ambience.activate("dungeonResult");
   }
 
   render () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     const quest = profile.selectedQuest;
 
     const slideContent = this.slide === Slide.Items ?
-      <DungeonResultItems popups={this.props.state.popups} quest={quest}/> :
-      <DungeonResultHeroes popups={this.props.state.popups} party={profile.party}/>;
+      <DungeonResultItems quest={quest}/> :
+      <DungeonResultHeroes party={profile.party}/>;
 
     const continueLabel = this.slide === Slide.Items ? "Next" : "Return to Town";
     const continueFn = this.slide === Slide.Items ?
@@ -44,10 +44,10 @@ export class DungeonResult extends React.Component<{state: AppState}> {
   }
 
   returnToEstate () {
-    this.props.state.profiles.activeProfile.gotoNextWeek(
-      this.props.state.questGenerator
+    this.appState.profiles.activeProfile.gotoNextWeek(
+      this.appState.questGenerator
     );
-    this.props.state.router.goto(
+    this.appState.router.goto(
       new Path("loading", {target: "estateOverview"})
     );
   }

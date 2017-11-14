@@ -5,7 +5,6 @@ import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
 import {StyleSheet} from "aphrodite";
 import {Column, Row} from "./config/styles";
-import {PopupState} from "./PopupState";
 import {QuirkInfo, StatsInfo, StatsModSource} from "./StaticState";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
@@ -20,7 +19,6 @@ import {CharacterModel} from "./CharacterModel";
 @observer
 export class HeroOverview extends React.Component<
   PopupProps & {
-  popups: PopupState,
   profile: Profile,
   hero: Hero
 }> {
@@ -31,7 +29,7 @@ export class HeroOverview extends React.Component<
   }
 
   render () {
-    const {hero, popups, ...rest} = this.props;
+    const {hero, ...rest} = this.props;
     return (
       <Popup {...rest}>
         <Row classStyle={styles.heroInfo}>
@@ -48,9 +46,8 @@ export class HeroOverview extends React.Component<
 
             <Row>
               <Column classStyle={styles.modelColumn}>
-                <HeroFlag popups={popups} hero={hero}/>
+                <HeroFlag hero={hero}/>
                 <CharacterModel
-                  popups={popups}
                   character={hero}
                   classStyle={styles.model}
                 />
@@ -59,24 +56,24 @@ export class HeroOverview extends React.Component<
                 <CommonHeader label="Quirks"/>
                 <Row>
                   <Column>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Hard Noggin")}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Balanced")}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Nymphomania")}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Quick Reflexes")}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Quickdraw")}/>
+                    <QuirkText quirk={new QuirkInfo("Hard Noggin")}/>
+                    <QuirkText quirk={new QuirkInfo("Balanced")}/>
+                    <QuirkText quirk={new QuirkInfo("Nymphomania")}/>
+                    <QuirkText quirk={new QuirkInfo("Quick Reflexes")}/>
+                    <QuirkText quirk={new QuirkInfo("Quickdraw")}/>
                   </Column>
                   <Column style={{textAlign: "right"}}>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Known Cheat", false)}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Night Blindness", false)}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Thanatophobia", false)}/>
-                    <QuirkText popups={popups} quirk={new QuirkInfo("Witness", false)}/>
+                    <QuirkText quirk={new QuirkInfo("Known Cheat", false)}/>
+                    <QuirkText quirk={new QuirkInfo("Night Blindness", false)}/>
+                    <QuirkText quirk={new QuirkInfo("Thanatophobia", false)}/>
+                    <QuirkText quirk={new QuirkInfo("Witness", false)}/>
                   </Column>
                 </Row>
 
                 <CommonHeader label="Base Stats"/>
                 <Row classStyle={styles.baseStats}>
                   <Column>
-                    <StatsText popups={popups} stats={
+                    <StatsText stats={
                       new StatsInfo("HP", "MAX HEALTH POINTS", 23, [
                         {percentages: -0.1, source: StatsModSource.Affliction},
                         {percentages: 0.05, source: StatsModSource.Item},
@@ -85,27 +82,27 @@ export class HeroOverview extends React.Component<
                         {units: -1, source: StatsModSource.Item}
                       ])}
                     />
-                    <StatsText popups={popups} stats={new StatsInfo("DGE", "DODGE", 10)}/>
-                    <StatsText popups={popups} stats={new StatsInfo("PROT", "PROTECTION POINTS", 0)}/>
-                    <StatsText popups={popups} stats={new StatsInfo("SPD", "SPEED", 6)}/>
+                    <StatsText stats={new StatsInfo("DGE", "DODGE", 10)}/>
+                    <StatsText stats={new StatsInfo("PROT", "PROTECTION POINTS", 0)}/>
+                    <StatsText stats={new StatsInfo("SPD", "SPEED", 6)}/>
                   </Column>
                   <Column>
-                    <StatsText popups={popups} stats={new StatsInfo("ACC", "ACCURACY", 0)}/>
-                    <StatsText popups={popups} stats={
+                    <StatsText stats={new StatsInfo("ACC", "ACCURACY", 0)}/>
+                    <StatsText stats={
                       new StatsInfo("CRIT", "CRITICAL CHANCE", 0.025, [
                         {percentages: -0.1, source: StatsModSource.Affliction},
                         {percentages: 0.15, source: StatsModSource.Item},
                         {units: 0.05, source: StatsModSource.Quirk}
                       ], true)
                     }/>
-                    <StatsText popups={popups} stats={
+                    <StatsText stats={
                       new StatsInfo("DMG", "DAMAGE", [3, 7])
                     }/>
                   </Column>
                 </Row>
 
                 <CommonHeader label="Equipment"/>
-                <HeroEquipment popups={popups} hero={hero}/>
+                <HeroEquipment hero={hero}/>
               </Column>
             </Row>
           </Column>
@@ -122,23 +119,23 @@ export class HeroOverview extends React.Component<
                 <PositionDots color="red" innerValues={[0, 1, 2, 3]}/>
               </Column>
             </Row>
-            <HeroSkills popups={popups}/>
+            <HeroSkills />
 
             <CommonHeader label="Camping Skills"/>
             <Row>
-              <SkillIcon popups={popups} unlocked/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups} selected unlocked/>
-              <SkillIcon popups={popups} selected unlocked/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups}/>
-              <SkillIcon popups={popups} selected unlocked/>
+              <SkillIcon unlocked/>
+              <SkillIcon />
+              <SkillIcon selected unlocked/>
+              <SkillIcon selected unlocked/>
+              <SkillIcon />
+              <SkillIcon />
+              <SkillIcon selected unlocked/>
             </Row>
 
             <CommonHeader label="Resistances"/>
             <Row classStyle={styles.baseStats}>
               <Column>
-                <StatsText popups={popups} stats={
+                <StatsText stats={
                   new StatsInfo("Stun", "Stun", 0.5, [
                     {percentages: -0.1, source: StatsModSource.Affliction},
                     {percentages: 0.05, source: StatsModSource.Item},
@@ -147,20 +144,20 @@ export class HeroOverview extends React.Component<
                     {units: -0.05, source: StatsModSource.Item}
                   ], true)}
                 />
-                <StatsText popups={popups} stats={new StatsInfo("Blight", "Blight", 0.5, [], true)}/>
-                <StatsText popups={popups} stats={new StatsInfo("Disease", "Disease", 0.5, [], true)}/>
-                <StatsText popups={popups} stats={new StatsInfo("Death Blow", "Death Blow", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Blight", "Blight", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Disease", "Disease", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Death Blow", "Death Blow", 0.5, [], true)}/>
               </Column>
               <Column>
-                <StatsText popups={popups} stats={new StatsInfo("Move", "Move", 0.5, [], true)}/>
-                <StatsText popups={popups} stats={new StatsInfo("Bleed", "Bleed", 0.5, [], true)}/>
-                <StatsText popups={popups} stats={new StatsInfo("Debuff", "Debuff", 0.5, [], true)}/>
-                <StatsText popups={popups} stats={new StatsInfo("Trap", "Trap", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Move", "Move", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Bleed", "Bleed", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Debuff", "Debuff", 0.5, [], true)}/>
+                <StatsText stats={new StatsInfo("Trap", "Trap", 0.5, [], true)}/>
               </Column>
             </Row>
 
             <CommonHeader label="Diseases"/>
-            <QuirkText popups={popups} quirk={new QuirkInfo("Death", false)}/>
+            <QuirkText quirk={new QuirkInfo("Death", false)}/>
           </Column>
         </Row>
       </Popup>

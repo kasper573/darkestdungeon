@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
 import {autorun, IReactionDisposer, observable} from "mobx";
 import {Howl} from "howler";
-import {AppState} from "./AppState";
+import {AppStateComponent} from "./AppStateComponent";
 
 class BuildingInfo {
   constructor (
@@ -39,7 +39,7 @@ const dungeonTrack = {
 };
 
 @observer
-export class SoundTester extends React.Component<{state: AppState}> {
+export class SoundTester extends AppStateComponent {
   static defaultBuildingId = "estate";
 
   @observable private activeBuildingId = SoundTester.defaultBuildingId;
@@ -57,16 +57,16 @@ export class SoundTester extends React.Component<{state: AppState}> {
     // Change ambience or muffle state whenever we need to
     this.reactionDisposers = [
       autorun(() => {
-        this.props.state.ambience.activate(this.activeBuildingId);
-        this.props.state.ambience.muffle(this.isAmbienceVolumeLowered);
+        this.appState.ambience.activate(this.activeBuildingId);
+        this.appState.ambience.muffle(this.isAmbienceVolumeLowered);
       })
     ];
   }
 
   componentWillUnmount () {
     this.reactionDisposers.forEach((dispose) => dispose());
-    this.props.state.ambience.deactivate();
-    this.props.state.music.stop();
+    this.appState.ambience.deactivate();
+    this.appState.music.stop();
   }
 
   render () {
@@ -88,9 +88,9 @@ export class SoundTester extends React.Component<{state: AppState}> {
         </ul>
         <div style={{flexDirection: "row"}}>
           <span>Music: </span>
-          <button onClick={() => this.props.state.music.play(estateTrack)}>Estate</button>
-          <button onClick={() => this.props.state.music.play(dungeonTrack)}>Vaults</button>
-          <button onClick={() => this.props.state.music.stop()}>None</button>
+          <button onClick={() => this.appState.music.play(estateTrack)}>Estate</button>
+          <button onClick={() => this.appState.music.play(dungeonTrack)}>Vaults</button>
+          <button onClick={() => this.appState.music.stop()}>None</button>
         </div>
         <button onClick={() => this.isAmbienceVolumeLowered = !this.isAmbienceVolumeLowered}>
           Toggle ambience volume

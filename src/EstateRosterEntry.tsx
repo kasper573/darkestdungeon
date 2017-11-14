@@ -9,13 +9,11 @@ import {Avatar} from "./Avatar";
 import {commonStyles} from "./config/styles";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {HeroBreakdown} from "./HeroBreakdown";
-import {PopupState} from "./PopupState";
 import {ItemType} from "./StaticState";
 
 @observer
 export class EstateRosterEntry extends React.Component<{
   hero: Hero,
-  popups: PopupState,
   partyFeatures?: boolean,
   canJoinParty?: boolean,
   onSelect?: () => void
@@ -60,7 +58,6 @@ export class EstateRosterEntry extends React.Component<{
           </div>
         </div>
         <TooltipArea
-          popups={this.props.popups}
           side={TooltipSide.Left}
           tip={<HeroBreakdown hero={this.props.hero}/>}
         >

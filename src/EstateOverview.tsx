@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "./RouterState";
 import {EstateEvent} from "./ProfileState";
@@ -13,49 +12,45 @@ import {Abbey} from "./Abbey";
 import {Blacksmith} from "./Blacksmith";
 import {Guild} from "./Guild";
 import {Memoirs} from "./Memoirs";
+import {AppStateComponent} from "./AppStateComponent";
 
-export class EstateOverview extends React.Component<{
-  state: AppState,
-  path: Path
-}> {
+export class EstateOverview extends AppStateComponent<{path: Path}> {
   componentWillMount () {
-    this.props.state.ambience.activate("estateOverview");
+    this.appState.ambience.activate("estateOverview");
 
     // Show estate event popup if there's a new event pending
-    const estateEvent = this.props.state.profiles.activeProfile.estateEvent;
+    const estateEvent = this.appState.profiles.activeProfile.estateEvent;
     if (!estateEvent.shown) {
       estateEvent.shown = true;
-      this.props.state.popups.show(<EstateEventPopup event={estateEvent}/>);
+      this.appState.popups.show(<EstateEventPopup event={estateEvent}/>);
     }
   }
 
   gotoBuilding (component: any) {
-    this.props.state.ambience.activate(component.type.id);
-    this.props.state.popups.show({
+    this.appState.ambience.activate(component.type.id);
+    this.appState.popups.show({
       align: PopupAlign.TopLeft,
       position: {x: 25, y: 25},
       group: "building",
       content: <Popup padding={false}>{component}</Popup>,
-      onClose: () => this.props.state.ambience.activate("estateOverview")
+      onClose: () => this.appState.ambience.activate("estateOverview")
     });
   }
 
   render () {
-    const popups = this.props.state.popups;
     return (
       <EstateTemplate
-        state={this.props.state}
         path={this.props.path}
         continueLabel="Embark"
         continuePath="estateDungeons">
-        <span onClick={() => this.gotoBuilding(<StageCoach popups={popups}/>)}>[STAGE COACH]</span>
-        <span onClick={() => this.gotoBuilding(<Graveyard popups={popups}/>)}>[GRAVEYARD]</span>
-        <span onClick={() => this.gotoBuilding(<Tavern popups={popups}/>)}>[TAVERN]</span>
-        <span onClick={() => this.gotoBuilding(<Sanitarium popups={popups}/>)}>[SANITARIUM]</span>
-        <span onClick={() => this.gotoBuilding(<Abbey popups={popups}/>)}>[ABBEY]</span>
-        <span onClick={() => this.gotoBuilding(<Guild popups={popups}/>)}>[GUILD]</span>
-        <span onClick={() => this.gotoBuilding(<Blacksmith popups={popups}/>)}>[BLACKSMITH]</span>
-        <span onClick={() => this.gotoBuilding(<Memoirs popups={popups}/>)}>[MEMOIRS]</span>
+        <span onClick={() => this.gotoBuilding(<StageCoach />)}>[STAGE COACH]</span>
+        <span onClick={() => this.gotoBuilding(<Graveyard />)}>[GRAVEYARD]</span>
+        <span onClick={() => this.gotoBuilding(<Tavern />)}>[TAVERN]</span>
+        <span onClick={() => this.gotoBuilding(<Sanitarium />)}>[SANITARIUM]</span>
+        <span onClick={() => this.gotoBuilding(<Abbey />)}>[ABBEY]</span>
+        <span onClick={() => this.gotoBuilding(<Guild />)}>[GUILD]</span>
+        <span onClick={() => this.gotoBuilding(<Blacksmith />)}>[BLACKSMITH]</span>
+        <span onClick={() => this.gotoBuilding(<Memoirs />)}>[MEMOIRS]</span>
       </EstateTemplate>
     );
   }

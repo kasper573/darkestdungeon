@@ -1,12 +1,10 @@
 import * as React from "react";
 import {Popup, PopupProps} from "./Popups";
 import {LineButton} from "./LineButton";
-import {AppState} from "./AppState";
-import {PopupState} from "./PopupState";
+import {AppStateComponent} from "./AppStateComponent";
 
-export class PauseMenu extends React.Component<
+export class PauseMenu extends AppStateComponent<
   PopupProps & {
-  state: AppState,
   mainMenu?: boolean
 }> {
   static defaultProps = {
@@ -14,10 +12,10 @@ export class PauseMenu extends React.Component<
   };
 
   render () {
-    const {state, mainMenu, ...rest} = this.props; // Single out Popup props
-    const router = this.props.state.router;
-    const popups = this.props.state.popups;
-    const options = this.props.state.options;
+    const {mainMenu, ...rest} = this.props; // Single out Popup props
+    const router = this.appState.router;
+    const popups = this.appState.popups;
+    const options = this.appState.options;
 
     const mainMenuButton = mainMenu && (
       <LineButton label="Return to Main Menu" onClick={() => router.goto("start")}/>
@@ -32,7 +30,7 @@ export class PauseMenu extends React.Component<
         <LineButton
           label="Options"
           onClick={() => popups.show(
-            <OptionList popups={popups} options={options}/>)
+            <OptionList options={options}/>)
           }
         />
         {mainMenuButton}
@@ -41,13 +39,12 @@ export class PauseMenu extends React.Component<
   }
 }
 
-class OptionList extends React.Component<
+class OptionList extends AppStateComponent<
   PopupProps & {
-  popups: PopupState,
   options: any
 }> {
   render () {
-    const {options, popups, ...rest} = this.props; // Single out Popup props
+    const {options, ...rest} = this.props; // Single out Popup props
 
     const optionButtons = [];
     for (const categoryName in options) {
@@ -56,7 +53,7 @@ class OptionList extends React.Component<
           key={categoryName}
           label={categoryName}
           onClick={() =>
-            popups.show(
+            this.appState.popups.show(
               <OptionEditor options={options[categoryName]}/>
             )
           }

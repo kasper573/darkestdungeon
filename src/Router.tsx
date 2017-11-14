@@ -1,27 +1,26 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {AppState} from "./AppState";
 import {observer} from "mobx-react";
 import {TransitionGroup} from "react-transition-group";
 import Transition from "react-transition-group/Transition";
+import {RouterState} from "./RouterState";
 
 const transitionDuration = 500;
 
 @observer
-export class Router extends React.Component<{state: AppState}> {
+export class Router extends React.Component<{router: RouterState}> {
   render () {
-    const state = this.props.state;
-    const content = React.createElement(state.router.route.component, {
-      state,
-      path: state.router.path,
-      ...state.router.path.args
+    const router = this.props.router;
+    const content = React.createElement(router.route.component, {
+      path: router.path,
+      ...router.path.args
     });
 
     return (
       <div className={css(styles.container)}>
         <TransitionGroup className={css(styles.transitionGroup)}>
           {[
-            <Screen key={state.router.path.value}>
+            <Screen key={router.path.value}>
               {content}
             </Screen>
           ]}

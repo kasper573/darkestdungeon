@@ -1,5 +1,4 @@
 import * as React from "react";
-import {AppState} from "./AppState";
 import {css, StyleSheet} from "aphrodite";
 import {EstateRosterEntry} from "./EstateRosterEntry";
 import {Hero} from "./ProfileState";
@@ -7,22 +6,21 @@ import {observer} from "mobx-react";
 import {SortOptions} from "./SortOptions";
 import {HeroOverview} from "./HeroOverview";
 import {ModalState, PopupAlign} from "./PopupState";
+import {AppStateComponent} from "./AppStateComponent";
 
 @observer
-export class EstateRoster extends React.Component<{
-  state: AppState,
+export class EstateRoster extends AppStateComponent<{
   partyFeatures?: boolean
 }> {
   showHeroInfo (hero: Hero) {
-    this.props.state.popups.show({
+    this.appState.popups.show({
       align: PopupAlign.TopLeft,
       position: {x: 0, y: 0},
       modalState: ModalState.Opaque,
       group: "heroInfo",
       content: (
         <HeroOverview
-          popups={this.props.state.popups}
-          profile={this.props.state.profiles.activeProfile}
+          profile={this.appState.profiles.activeProfile}
           hero={hero}
         />
       )
@@ -30,7 +28,7 @@ export class EstateRoster extends React.Component<{
   }
 
   render () {
-    const profile = this.props.state.profiles.activeProfile;
+    const profile = this.appState.profiles.activeProfile;
     const sortedHeroes = profile.heroes.slice().sort(Hero.comparers.rosterIndex);
     return (
       <div className={css(styles.roster)}>
@@ -50,7 +48,6 @@ export class EstateRoster extends React.Component<{
               partyFeatures={this.props.partyFeatures}
               canJoinParty={!profile.isPartyFull}
               hero={hero}
-              popups={this.props.state.popups}
               onSelect={() => this.showHeroInfo(hero)}
             />
           ))}
