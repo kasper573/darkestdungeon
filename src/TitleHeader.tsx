@@ -3,6 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../assets/fonts";
 import {Sprite} from "./Sprite";
 import {smoke} from "../assets/sprites";
+import {grid} from "./Grid";
 
 export class TitleHeader extends React.Component {
   render () {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     color: "black",
     flexDirection: "row",
     fontFamily: fonts.Darkest,
-    fontSize: "10vw"
+    fontSize: grid.vw(10)
   },
 
   text: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
 
   torch: {
-    width: "10vw",
-    height: "10vw"
+    width: grid.vw(10),
+    height: grid.vw(10)
   }
 });

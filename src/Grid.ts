@@ -52,6 +52,14 @@ export class Grid {
   ySpan (n: number, gutter = this.gutterHeight) {
     return this.rowHeight * n + gutter * (n - 1);
   }
+
+  vw (n: number) {
+    return this.width * (n / 100);
+  }
+
+  vh (n: number) {
+    return this.height * (n / 100);
+  }
 }
 
 export const grid: Grid = new Grid(1280, 720, 16, 16, 10);
