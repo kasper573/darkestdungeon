@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {Size} from "./Bounds";
 import {ResizeObserver} from "./ResizeObserver";
 import {css, StyleSheet} from "aphrodite";
@@ -11,7 +10,6 @@ export class SizeObserver extends React.Component<{
   private resizeObserver: ResizeObserver;
 
   componentDidMount () {
-    this.domNode = ReactDOM.findDOMNode(this);
     this.resizeObserver = new ResizeObserver(() => this.onSizeChanged());
     this.resizeObserver.observe(this.domNode);
 
@@ -25,7 +23,10 @@ export class SizeObserver extends React.Component<{
 
   render () {
     return (
-      <div className={css(styles.container)}/>
+      <div
+        ref={(node) => this.domNode = node}
+        className={css(styles.container)}
+      />
     );
   }
 
