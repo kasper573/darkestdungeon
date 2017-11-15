@@ -2,9 +2,10 @@ import * as React from "react";
 import {PopupHandle, PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {computed, IReactionDisposer, observable, reaction} from "mobx";
 import {Tooltip} from "./Tooltip";
-import {BoundsObserver, ElementBounds} from "./BoundsObserver";
+import {BoundsObserver} from "./BoundsObserver";
 import {css} from "aphrodite";
 import {AppStateComponent} from "./AppStateComponent";
+import {Bounds} from "./Bounds";
 
 export enum TooltipSide {
   Above,
@@ -47,7 +48,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   private popup: PopupHandle;
   private isOpenedByMouse: boolean;
 
-  @observable bounds: ElementBounds;
+  @observable bounds: Bounds;
 
   @computed get popupPosition () {
     if (!this.bounds) {
@@ -57,23 +58,23 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
     switch (this.props.side) {
       case TooltipSide.Above:
         return {
-          x: this.bounds.absolutePosition.x + this.bounds.size.width / 2,
-          y: this.bounds.absolutePosition.y
+          x: this.bounds.x + this.bounds.width / 2,
+          y: this.bounds.y
         };
       case TooltipSide.Right:
         return {
-          x: this.bounds.absolutePosition.x + this.bounds.size.width,
-          y: this.bounds.absolutePosition.y + this.bounds.size.height / 2
+          x: this.bounds.x + this.bounds.width,
+          y: this.bounds.y + this.bounds.height / 2
         };
       case TooltipSide.Below:
         return {
-          x: this.bounds.absolutePosition.x + this.bounds.size.width / 2,
-          y: this.bounds.absolutePosition.y + this.bounds.size.height
+          x: this.bounds.x + this.bounds.width / 2,
+          y: this.bounds.y + this.bounds.height
         };
       case TooltipSide.Left:
         return {
-          x: this.bounds.absolutePosition.x,
-          y: this.bounds.absolutePosition.y + this.bounds.size.height / 2
+          x: this.bounds.x,
+          y: this.bounds.y + this.bounds.height / 2
         };
     }
   }

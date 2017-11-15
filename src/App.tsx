@@ -10,6 +10,8 @@ import {SizeObserver} from "./SizeObserver";
 import {computed} from "mobx";
 import {appStateContext} from "./AppStateComponent";
 import {RouterPopups} from "./RouterPopups";
+import {fonts} from "../assets/fonts";
+import {grid} from "./Grid";
 
 @observer
 export class App extends React.Component<{
@@ -28,12 +30,19 @@ export class App extends React.Component<{
    * the game to enforce the aspect ratio configured in UIState.
    */
   @computed get arcStyle () {
-    const arcSize = this.props.state.ui.arcSize;
+    const arcSize = this.props.state.bounds.arcSize;
     return {
       paddingTop: arcSize.height,
       paddingRight: arcSize.width,
       paddingLeft: arcSize.width,
       paddingBottom: arcSize.height
+    };
+  }
+
+  @computed get gameStyle () {
+    return {
+      transformOrigin: "0 0",
+      transform: `scale(${this.props.state.bounds.scale})`
     };
   }
 
@@ -52,19 +61,16 @@ export class App extends React.Component<{
     return (
       <div className={css(styles.app)}>
         <div className={css(styles.arc)} style={this.arcStyle}>
-          <div className={css(styles.game)}>
+          <div className={css(styles.game)} style={this.gameStyle}>
             <Router router={this.props.state.router}/>
             <RouterPopups
               popups={this.props.state.popups}
               router={this.props.state.router}
             />
-            <PopupList
-              popups={this.props.state.popups}
-              uiState={this.props.state.ui}
-            />
+            <PopupList popups={this.props.state.popups}/>
           </div>
           <SizeObserver
-            onSizeChanged={(size) => this.props.state.ui.appSize = size}
+            onSizeChanged={(size) => this.props.state.bounds.realSize = size}
           />
         </div>
         <DevTools />
@@ -75,7 +81,7 @@ export class App extends React.Component<{
 
 const styles = StyleSheet.create({
   app: {
-    fontFamily: "Ubuntu",
+    fontFamily: fonts.Default,
     width: "100%",
     height: "100%",
     overflow: "hidden"
@@ -88,7 +94,8 @@ const styles = StyleSheet.create({
   },
 
   game: {
-    flex: 1,
+    width: grid.xSpan(grid.columns),
+    height: grid.ySpan(grid.rows),
     overflow: "hidden",
     background: "#222",
     color: "white"

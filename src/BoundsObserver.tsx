@@ -1,25 +1,20 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {Point, Size} from "./Bounds";
+import {Bounds} from "./Bounds";
 import {css, StyleSheet} from "aphrodite";
-
-export type ElementBounds = {
-  relativePosition: Point,
-  absolutePosition: Point,
-  size: Size
-};
+import {AppStateComponent} from "./AppStateComponent";
 
 // HACK this implementation is quite CPU intensive
-export class BoundsObserver extends React.Component<{
-  onBoundsChanged: (size: ElementBounds) => void
+export class BoundsObserver extends AppStateComponent<{
+  onBoundsChanged: (size: Bounds) => void
 }> {
   private domNode: Element;
   private pollIntervalId: any;
-  private lastBounds: ElementBounds;
+  private lastBounds: ClientRect;
 
   componentDidMount () {
     this.domNode = ReactDOM.findDOMNode(this);
-    this.pollIntervalId = setInterval(() => this.onSizeChanged(), 125);
+    this.pollIntervalId = setInterval(() => this.pollBounds(), 125);
   }
 
   componentWillUnmount () {
@@ -32,20 +27,28 @@ export class BoundsObserver extends React.Component<{
     );
   }
 
-  onSizeChanged () {
+  pollBounds () {
     const n = this.domNode;
     const absRect = n.getBoundingClientRect();
-    const newBounds = {
-      relativePosition: {x: n.clientLeft, y: n.clientTop},
-      absolutePosition: {x: absRect.left, y: absRect.top},
-      size: {width: n.clientWidth, height: n.clientHeight}
-    };
 
-    if (JSON.stringify(this.lastBounds) === JSON.stringify(newBounds)) {
+    if (JSON.stringify(this.lastBounds) === JSON.stringify(absRect)) {
       return;
     }
 
-    this.lastBounds = newBounds;
+    this.lastBounds = absRect;
+
+    // Get bounds ignoring transforms
+    // HACK only ignores the app transform, any other transforms will mess this up
+    const {x, y} = this.appState.bounds.transformClientPoint(
+      absRect.left, absRect.top
+    );
+
+    const newBounds = new Bounds(
+      x, y,
+      absRect.width / this.appState.bounds.scale,
+      absRect.height / this.appState.bounds.scale
+    );
+
     this.props.onBoundsChanged(newBounds);
   }
 }

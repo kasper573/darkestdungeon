@@ -7,7 +7,7 @@ import {Profile, ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
-import {UIState} from "./UIState";
+import {AppBounds} from "./AppBounds";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -16,7 +16,7 @@ export class AppState {
   public itemGenerator = new ItemGenerator();
   public questGenerator = new QuestGenerator();
 
-  public ui: UIState = new UIState();
+  public bounds: AppBounds = new AppBounds();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
   public music: MusicState = new MusicState();
