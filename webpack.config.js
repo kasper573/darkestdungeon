@@ -22,7 +22,7 @@ module.exports = function (env = {}) {
       }
     },
     plugins: compact([
-      new HtmlWebpackPlugin({title: "Darkest Dungeon"}),
+      new HtmlWebpackPlugin({title: "Dankest Dungeon"}),
       env.hmr && new webpack.NamedModulesPlugin(),
       env.hmr && new webpack.HotModuleReplacementPlugin(),
       env.minify && new MinifyPlugin(),
