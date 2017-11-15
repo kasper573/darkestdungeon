@@ -4,6 +4,7 @@ import {css, StyleSheet} from "aphrodite";
 import {LineButton} from "./LineButton";
 import {fonts} from "../assets/fonts";
 import {BannerHeader} from "./BannerHeader";
+import {grid} from "./Grid";
 
 export type PopupProps = {
   handle?: PopupHandle,
@@ -112,11 +113,11 @@ const closeButtonSize = 25;
 const styles = StyleSheet.create({
   popup: {
     background: "linear-gradient(to bottom, #352813 0%,#0e0e0e 33%,#222222 100%)",
-    padding: "2vw",
+    padding: 10,
     boxShadow: "inset 0 0 10px #000000",
     border: "2px solid " + borderColor,
-    minWidth: "25vw",
-    maxWidth: "75vw",
+    minWidth: grid.vw(25),
+    maxWidth: grid.vw(75),
     color: "#aaa"
   },
 

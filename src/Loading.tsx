@@ -6,6 +6,7 @@ import {Sprite} from "./Sprite";
 import {smoke} from "../assets/sprites";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "./AppStateComponent";
+import {grid} from "./Grid";
 
 @observer
 export class Loading extends AppStateComponent<{target: Path}> {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   },
 
   torch: {
-    width: "20vh",
-    height: "20vh"
+    width: grid.vh(20),
+    height: grid.vh(20)
   }
 });
