@@ -2,8 +2,9 @@ import * as React from "react";
 import {ReactElement} from "react";
 import {observable, reaction, transaction} from "mobx";
 import {Point} from "./Bounds";
+import uuid = require("uuid");
 
-export type PopupId = number;
+export type PopupId = string;
 export type PopupContent<P = {}> = ReactElement<P> | string;
 
 type PopupHandleProps<P> = {
@@ -12,7 +13,7 @@ type PopupHandleProps<P> = {
   position?: Point,
   modalState?: ModalState,
   animate?: boolean,
-  group?: string,
+  id?: PopupId,
   onClose?: () => void
 };
 
@@ -30,14 +31,6 @@ export class PopupState {
 
   show <P> (arg: PopupHandlePropsOrContent<P>): PopupHandle<P> {
     const popup = new PopupHandle<P>(ensureProps(arg), this);
-
-    // Close other popups assigned to the same group
-    if (popup.group) {
-      const groupPopups = Array.from(this.map.values())
-        .filter((p) => p.group === popup.group);
-      groupPopups.forEach((p) => this.map.delete(p.id));
-    }
-
     this.map.set(popup.id, popup);
     return popup;
   }
@@ -78,15 +71,13 @@ export class PopupState {
   }
 }
 
-let idCounter = 0;
 export class PopupHandle<P = {}> implements PopupHandleProps<P> {
-  public id: PopupId;
+  public id: PopupId = uuid();
   public content: PopupContent<P>;
   public align: PopupAlign = PopupAlign.Center;
   public modalState: ModalState = ModalState.ModalDismiss;
   public animate: boolean = true;
   public resolution: any;
-  public group?: string;
   public onClose?: () => void;
 
   @observable public position?: Point;
@@ -98,7 +89,6 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
     for (const key in props) {
       (this as any)[key] = (props as any)[key];
     }
-    this.id = idCounter++;
   }
 
   reposition (position: Point) {
