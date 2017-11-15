@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {Bounds} from "./Bounds";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "./AppStateComponent";
@@ -13,8 +12,8 @@ export class BoundsObserver extends AppStateComponent<{
   private lastBounds: ClientRect;
 
   componentDidMount () {
-    this.domNode = ReactDOM.findDOMNode(this);
     this.pollIntervalId = setInterval(() => this.pollBounds(), 125);
+    this.pollBounds();
   }
 
   componentWillUnmount () {
@@ -23,7 +22,10 @@ export class BoundsObserver extends AppStateComponent<{
 
   render () {
     return (
-      <div className={css(styles.container)}/>
+      <div
+        ref={(node) => this.domNode = node}
+        className={css(styles.container)}
+      />
     );
   }
 
