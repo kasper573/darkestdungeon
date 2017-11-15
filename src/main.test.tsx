@@ -3,7 +3,7 @@ import * as TestUtils from "react-dom/test-utils";
 import {StyleSheetTestUtils} from "aphrodite";
 import {AppState} from "./AppState";
 import {App} from "./App";
-import {addStaticState, ambience} from "./config/general";
+import {addStaticState} from "./config/general";
 import {routes} from "./config/routes";
 
 describe("Router", () => {
@@ -16,7 +16,6 @@ describe("Router", () => {
       addStaticState();
       state.isRunningJest = true;
       state.router.addRoutes(routes);
-      state.ambience.addDefinitions(ambience);
       state.router.goto(path);
       state.profiles.activeProfile.heroes[0].inParty = true;
       state.initialize();

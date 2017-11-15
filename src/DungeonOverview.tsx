@@ -15,10 +15,6 @@ export class DungeonOverview extends AppStateComponent {
     this.appState.profiles.activeProfile.party
   )[0];
 
-  componentWillMount () {
-    this.appState.ambience.activate("dungeonOverview");
-  }
-
   render () {
     const profile = this.appState.profiles.activeProfile;
     const quest = profile.selectedQuest;

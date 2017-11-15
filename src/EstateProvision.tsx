@@ -18,10 +18,6 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
       this.appState.itemGenerator
     );
 
-  componentWillMount () {
-    this.appState.ambience.activate("estateProvision");
-  }
-
   checkItemsBeforeContinue () {
     return this.appState.popups.prompt(
       <Prompt

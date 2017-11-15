@@ -8,10 +8,6 @@ import {PauseMenu} from "./PauseMenu";
 import {AppStateComponent} from "./AppStateComponent";
 
 export class Start extends AppStateComponent {
-  componentWillMount () {
-    this.appState.ambience.activate("start");
-  }
-
   transitionOut () {
     console.warn("Not implemented");
     return Promise.resolve();

@@ -12,10 +12,6 @@ import {AppStateComponent} from "./AppStateComponent";
 export class DungeonResult extends AppStateComponent {
   @observable slide = Slide.Items;
 
-  componentWillMount () {
-    this.appState.ambience.activate("dungeonResult");
-  }
-
   render () {
     const profile = this.appState.profiles.activeProfile;
     const quest = profile.selectedQuest;

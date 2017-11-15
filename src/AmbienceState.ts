@@ -1,55 +1,34 @@
 import {autorun, IReactionDisposer, observable} from "mobx";
 
-type DefinitionOrLink = AmbienceDefinition | string;
-
 export class AmbienceState {
   private player?: AmbiencePlayer;
   private positions: {[key: string]: number} = {};
-  private currentId: string;
-  private definitions = new Map<string, DefinitionOrLink>();
+  private definition: AmbienceDefinition;
 
-  addDefinitions (defs: {[key: string]: DefinitionOrLink}) {
-    for (const key in defs) {
-      this.addDefinition(key, defs[key]);
-    }
-  }
-
-  addDefinition (name: string, def: DefinitionOrLink) {
-    this.definitions.set(name, def);
-  }
-
-  deleteDefinition (name: string) {
-    this.definitions.delete(name);
-  }
-
-  activate (id: string) {
-    // Check if requested ambience exists and possibly route to a linked id
-    const lookupResult = this.performLookup(id);
-    if (!lookupResult) {
-      console.warn("Unknown ambience: ", id);
+  activate (definition: AmbienceDefinition) {
+    if (!definition) {
       this.deactivate();
-      this.currentId = id;
       return;
     }
 
     // Ignore recurring activations of the same ambience
-    id = lookupResult.id;
-    if (id === this.currentId && this.player) {
+    if (this.definition && definition.id === this.definition.id) {
       return;
     }
 
     // Deactivate the current ambience and switch to the new one
     this.deactivate();
-    this.currentId = id;
-    this.player = new AmbiencePlayer(lookupResult.definition);
-    this.player.play(this.positions[id] || 0);
+    this.definition = definition;
+    this.player = new AmbiencePlayer(definition);
+    this.player.play(this.positions[definition.id] || 0);
   }
 
   deactivate () {
     if (this.player) {
-      this.positions[this.currentId] = this.player.getBasePosition();
+      this.positions[this.definition.id] = this.player.getBasePosition();
       this.player.stop();
       delete this.player;
+      delete this.definition;
     }
   }
 
@@ -58,24 +37,6 @@ export class AmbienceState {
       this.player.muffle(isMuffled);
     }
   }
-
-  private performLookup (id: string) {
-    let definition;
-    while (true) {
-      definition = this.definitions.get(id);
-      if (!definition) {
-        return;
-      }
-
-      if (typeof definition === "string") {
-        id = definition as string;
-      } else {
-        break;
-      }
-    }
-
-    return {definition, id};
-  }
 }
 
 export class AmbienceDefinition {
@@ -83,6 +44,10 @@ export class AmbienceDefinition {
     public base: IHowlProperties,
     public os: IHowlProperties[] = []
   ) {}
+
+  get id () {
+    return JSON.stringify(this.base.src);
+  }
 }
 
 export class AmbiencePlayer {
@@ -115,7 +80,8 @@ export class AmbiencePlayer {
     this.baseSound.fade(0, definedOr(this.definition.base.volume, 1), AmbiencePlayer.fadeTime);
 
     this.disposeReaction = autorun(() => {
-      if (this.isPlaying && !this.isMuffled && !this.isOSOnCooldown) {
+      if (this.osSounds.length > 0 && this.isPlaying &&
+        !this.isMuffled && !this.isOSOnCooldown) {
         this.playNextOS();
       }
     });
