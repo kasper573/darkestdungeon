@@ -31,7 +31,7 @@ export class EstateOverview extends AppStateComponent<{path: Path}> {
     this.appState.popups.show({
       align: PopupAlign.TopLeft,
       position: {x: 25, y: 25},
-      group: "building",
+      id: "building",
       content: <Popup padding={false}>{component}</Popup>,
       onClose: () => this.appState.ambience.activate("estateOverview")
     });

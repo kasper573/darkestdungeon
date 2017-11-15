@@ -52,7 +52,7 @@ export class EstateTemplate extends AppStateComponent<{
             <span onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
-              group: "heirloomTrader"
+              id: "heirloomTrader"
             })}>
               [TRADE HEIRLOOMS]
             </span>
@@ -66,7 +66,7 @@ export class EstateTemplate extends AppStateComponent<{
             <span onClick={() => this.appState.popups.show({
               content: <Popup><Inventory/></Popup>,
               modalState: ModalState.Opaque,
-              group: "inventory"
+              id: "inventory"
             })}>
               [INVENTORY]
             </span>

@@ -17,7 +17,7 @@ export class EstateRoster extends AppStateComponent<{
       align: PopupAlign.TopLeft,
       position: {x: 0, y: 0},
       modalState: ModalState.Opaque,
-      group: "heroInfo",
+      id: "heroInfo",
       content: (
         <HeroOverview
           profile={this.appState.profiles.activeProfile}
