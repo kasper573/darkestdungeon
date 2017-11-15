@@ -3,6 +3,7 @@ import {serializable} from "serializr";
 import {AmbienceDefinition} from "./AmbienceState";
 
 export type PathTypes = Path | string;
+const noop: () => null = () => null;
 
 export class RouterState  {
   @observable private history: Path[] = [new Path("")];
@@ -17,7 +18,25 @@ export class RouterState  {
   }
 
   @computed get route () {
-    return this.routes.get(this.path.value) || route404;
+    let route = this.routes.get(this.path.root);
+    if (!route) {
+      return route404;
+    }
+
+    route.path = new Path(this.path.root);
+    const childPaths = this.path.parts.slice(1);
+    while (childPaths.length) {
+      const childPath = childPaths.shift();
+      const child = route.children[childPath];
+      if (!child) {
+        route = route404.inherit(route, childPath);
+        break;
+      } else {
+        route = child.inherit(route, childPath);
+      }
+    }
+
+    return route;
   }
 
   addRoutes (routes: {[key: string]: Route}) {
@@ -77,44 +96,85 @@ export type RouteConstructionProps = {
   isMemorable?: boolean;
   music?: (state?: any, path?: Path) => IHowlProperties | string;
   ambience?: (state?: any, path?: Path) => AmbienceDefinition;
+  children?: {[key: string]: Route}
 };
 
 export class Route {
   public component: any;
-  public isMemorable: boolean = true;
+  public isMemorable: boolean;
   public music: (state?: any, path?: Path) => IHowlProperties;
   public ambience: (state?: any, path?: Path) => AmbienceDefinition;
+  public children: {[key: string]: Route};
+
+  private constructionProps: RouteConstructionProps;
+
+  // Created by inherit
+  public path?: Path;
+  public parent?: Route;
+  public root: Route = this;
 
   constructor (props: RouteConstructionProps) {
-    this.component = props.component;
-    this.isMemorable = props.isMemorable;
-    this.ambience = function () {
-      let res;
-      if (props.ambience) {
-        res = props.ambience.apply(this, arguments);
-        if (typeof res === "string") {
-          return new AmbienceDefinition({src: res});
-        }
-      }
-      return res;
-    };
+    this.constructionProps = props;
 
-    this.music = function () {
-      let res;
-      if (props.music) {
-        res = props.music.apply(this, arguments);
-        if (typeof res === "string") {
-          return {src: res};
+    this.component = props.component;
+    this.isMemorable = props.isMemorable !== undefined ? props.isMemorable : true;
+    this.children = props.children || {};
+
+    this.ambience = props.ambience ?
+      function () {
+        let res;
+        if (props.ambience) {
+          res = props.ambience.apply(this, arguments);
+          if (typeof res === "string") {
+            return new AmbienceDefinition({src: res});
+          }
         }
-      }
-      return res;
-    };
+        return res;
+      } : noop;
+
+    this.music = props.music ?
+      function () {
+        let res;
+        if (props.music) {
+          res = props.music.apply(this, arguments);
+          if (typeof res === "string") {
+            return {src: res};
+          }
+        }
+        return res;
+      } : noop;
+  }
+
+  inherit (parent: Route, childPath: string) {
+    const cascaded = new Route(this.constructionProps);
+    cascaded.root = parent.root;
+    cascaded.parent = parent;
+    cascaded.path = new Path(
+      parent.path.parts.concat(childPath).join(Path.separator)
+    );
+    if (cascaded.music === noop) {
+      cascaded.music = parent.music;
+    }
+    if (cascaded.ambience === noop) {
+      cascaded.ambience = parent.ambience;
+    }
+    return cascaded;
   }
 }
 
 export class Path {
+  public static separator: string = "/";
+
   @serializable public value: string;
   public args: any;
+
+  get parts () {
+    return this.value.split(Path.separator);
+  }
+
+  get root () {
+    return this.parts[0];
+  }
 
   constructor (
     value: string = "",

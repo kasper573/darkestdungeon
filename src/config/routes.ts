@@ -1,4 +1,4 @@
-import {Path, Route} from "../RouterState";
+import {Route} from "../RouterState";
 import {Start} from "../Start";
 import {Loading} from "../Loading";
 import {EstateOverview} from "../EstateOverview";
@@ -10,6 +10,14 @@ import {PopupTester} from "../PopupTester";
 import {AmbienceDefinition} from "../AmbienceState";
 import {AppState} from "../AppState";
 import {DungeonOverview} from "../DungeonOverview";
+import {StageCoach} from "../StageCoach";
+import {Graveyard} from "../Graveyard";
+import {Tavern} from "../Tavern";
+import {Sanitarium} from "../Sanitarium";
+import {Abbey} from "../Abbey";
+import {Guild} from "../Guild";
+import {Blacksmith} from "../Blacksmith";
+import {Memoirs} from "../Memoirs";
 
 export const defaultEstateAmbience = new AmbienceDefinition(
   {src: require("../../assets/dd/audio/amb_town_gen_base.wav")},
@@ -19,68 +27,6 @@ export const defaultEstateAmbience = new AmbienceDefinition(
     {src: require("../../assets/dd/audio/amb_town_gen_base_os_03.wav")}
   ]
 );
-
-export const buildingAmbience = {
-  "StageCoach": defaultEstateAmbience,
-  "Graveyard": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_graveyard.wav")},
-    [
-      {src: require("../../assets/dd/audio/amb_town_graveyard_os_01.wav")},
-      {src: require("../../assets/dd/audio/amb_town_graveyard_os_02.wav")},
-      {src: require("../../assets/dd/audio/amb_town_graveyard_os_03.wav")}
-    ]
-  ),
-  "Tavern": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_tavern.wav")},
-    [
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_01.wav")},
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_02.wav")},
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_03.wav")},
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_01.wav")},
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_02.wav")},
-      {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_03.wav")}
-    ]
-  ),
-  "Sanitarium": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_sanitarium.wav")},
-    [
-      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_01.wav")},
-      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_02.wav")},
-      {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_03.wav")}
-    ]
-  ),
-  "Abbey": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_abbey.wav")},
-    [
-      {src: require("../../assets/dd/audio/amb_town_abbey_os_chants.wav")},
-      {src: require("../../assets/dd/audio/amb_town_abbey_os_whispers.wav")}
-    ]
-  ),
-  "Guild": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_guild.wav")}
-  ),
-  "Blacksmith": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_blacksmith.wav")},
-    [
-      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_01.wav")},
-      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_02.wav")},
-      {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")}
-    ]
-  ),
-  "Memoirs": new AmbienceDefinition(
-    {src: require("../../assets/dd/audio/amb_town_tavern.wav")}
-  ),
-};
-
-// Lower all os to 0.25 volume
-for (const key in buildingAmbience) {
-  const def = (buildingAmbience as any)[key] as AmbienceDefinition;
-  if (def.os) {
-    def.os.forEach(
-      (o: IHowlProperties) => o.volume = 0.25
-    );
-  }
-}
 
 export const routes: {[key: string]: Route} = {
   start: new Route({
@@ -102,10 +48,79 @@ export const routes: {[key: string]: Route} = {
         volume: 0.25
       };
     },
-    ambience: (state: any, path: Path) =>
-      path.args.building ?
-        (buildingAmbience as any)[path.args.building] :
-        defaultEstateAmbience
+    ambience: () => defaultEstateAmbience,
+    children: {
+      "StageCoach": new Route({component: StageCoach}),
+      "Graveyard": new Route({
+        component: Graveyard,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_graveyard.wav")},
+          [
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_01.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_02.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_03.wav")}
+          ]
+        )
+      }),
+      "Tavern": new Route({
+        component: Tavern,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_tavern.wav")},
+          [
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_01.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_02.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_01.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_02.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_03.wav")}
+          ]
+        )
+      }),
+      "Sanitarium": new Route({
+        component: Sanitarium,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_sanitarium.wav")},
+          [
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_01.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_02.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_03.wav")}
+          ]
+        )
+      }),
+      "Abbey": new Route({
+        component: Abbey,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_abbey.wav")},
+          [
+            {src: require("../../assets/dd/audio/amb_town_abbey_os_chants.wav")},
+            {src: require("../../assets/dd/audio/amb_town_abbey_os_whispers.wav")}
+          ]
+        )
+      }),
+      "Guild": new Route({
+        component: Guild,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_guild.wav")}
+        )
+      }),
+      "Blacksmith": new Route({
+        component: Blacksmith,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_blacksmith.wav")},
+          [
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_01.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_02.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")}
+          ]
+        )
+      }),
+      "Memoirs": new Route({
+        component: Memoirs,
+        ambience: () => new AmbienceDefinition(
+          {src: require("../../assets/dd/audio/amb_town_tavern.wav")}
+        )
+      }),
+    }
   }),
 
   estateDungeons: new Route({

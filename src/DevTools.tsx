@@ -2,7 +2,9 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {Stats} from "./Stats";
 import {AppStateComponent} from "./AppStateComponent";
+import {observer} from "mobx-react";
 
+@observer
 export class DevTools extends AppStateComponent {
   pathSelect: HTMLSelectElement;
 
@@ -16,6 +18,9 @@ export class DevTools extends AppStateComponent {
 
     return (
       <div className={css(styles.container)}>
+        <div className={css(styles.currentPath)}>
+          {this.appState.router.path.toString()}
+        </div>
         <select ref={(node) => this.pathSelect = node}
                 className={css(styles.paths)}
                 onChange={() => this.gotoSelectedPath()}>
@@ -51,8 +56,8 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
 
-  path: {
-    marginRight: 10,
+  currentPath: {
+    padding: 3,
     justifyContent: "center",
     alignItems: "center"
   }
