@@ -6,7 +6,7 @@ import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../assets/fonts";
 import {AppState} from "./AppState";
 import {App} from "./App";
-import {addStaticState, ambience} from "./config/general";
+import {addStaticState} from "./config/general";
 const {AppContainer} = require("react-hot-loader");
 const TWEEN = require("tween.js");
 
@@ -14,7 +14,6 @@ const TWEEN = require("tween.js");
 const state = new AppState();
 addStaticState();
 state.router.goto("start");
-state.ambience.addDefinitions(ambience);
 state.initialize();
 
 // Set up basic styling

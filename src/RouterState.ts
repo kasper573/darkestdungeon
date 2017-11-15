@@ -1,5 +1,6 @@
 import {computed, observable, transaction} from "mobx";
 import {serializable} from "serializr";
+import {AmbienceDefinition} from "./AmbienceState";
 
 export type PathTypes = Path | string;
 
@@ -71,11 +72,44 @@ export class RouterState  {
   }
 }
 
+export type RouteConstructionProps = {
+  component: any;
+  isMemorable?: boolean;
+  music?: (state?: any, path?: Path) => IHowlProperties | string;
+  ambience?: (state?: any, path?: Path) => AmbienceDefinition;
+};
+
 export class Route {
-  constructor (
-    public component: any,
-    public isMemorable: boolean = true
-  ) {}
+  public component: any;
+  public isMemorable: boolean = true;
+  public music: (state?: any, path?: Path) => IHowlProperties;
+  public ambience: (state?: any, path?: Path) => AmbienceDefinition;
+
+  constructor (props: RouteConstructionProps) {
+    this.component = props.component;
+    this.isMemorable = props.isMemorable;
+    this.ambience = function () {
+      let res;
+      if (props.ambience) {
+        res = props.ambience.apply(this, arguments);
+        if (typeof res === "string") {
+          return new AmbienceDefinition({src: res});
+        }
+      }
+      return res;
+    };
+
+    this.music = function () {
+      let res;
+      if (props.music) {
+        res = props.music.apply(this, arguments);
+        if (typeof res === "string") {
+          return {src: res};
+        }
+      }
+      return res;
+    };
+  }
 }
 
 export class Path {
@@ -111,7 +145,7 @@ function ensurePath (path: PathTypes): Path {
   return path as Path;
 }
 
-const route404 = new Route(
-  ({path}: any) => `No route exists for path "${path}"`,
-  false
-);
+const route404 = new Route({
+  component: ({path}: any) => `No route exists for path "${path}"`,
+  isMemorable: false
+});

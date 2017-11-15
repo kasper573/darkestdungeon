@@ -36,6 +36,7 @@ export class AppState {
   initialize () {
     this.load();
 
+    let previousPath = this.router.path;
     this.reactionDisposers = [
       // Path changes
       reaction(
@@ -43,12 +44,20 @@ export class AppState {
         ([path, route]: [Path, Route]) => {
           // Close all popups as soon as the path changes.
           // This avoids popups staying visible during screen transitions.
-          this.popups.closeAll();
+          if (previousPath.value !== path.value) {
+            this.popups.closeAll();
+          }
+          previousPath = path;
 
           // Update memorized path for active profile
           if (route.isMemorable) {
             this.profiles.activeProfile.path = path;
           }
+
+          // Change music and ambience
+          console.log("Changing music and ambience for path", path.value, path.args);
+          this.ambience.activate(route.ambience(this, path));
+          this.music.play(route.music(this, path));
         }
       ),
       // Save whenever interesting data changes

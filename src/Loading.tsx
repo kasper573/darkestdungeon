@@ -14,8 +14,6 @@ export class Loading extends AppStateComponent<{target: Path}> {
   @observable private backgroundUrl: any = require("../assets/images/loading-bg.jpg");
 
   async componentWillMount () {
-    this.appState.ambience.activate("loading");
-
     this.allowNavigation = true;
 
     this.isLoading = true;

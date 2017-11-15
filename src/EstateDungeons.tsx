@@ -11,10 +11,6 @@ import {AppStateComponent} from "./AppStateComponent";
 
 @observer
 export class EstateDungeons extends AppStateComponent<{path: Path}> {
-  componentWillMount () {
-    this.appState.ambience.activate("estateDungeons");
-  }
-
   groupQuestsByDungeon (quests: Quest[]) {
     return quests.reduce(
       (groups: any, quest) => {

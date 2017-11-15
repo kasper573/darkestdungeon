@@ -2,6 +2,11 @@ export class MusicState {
   private fader?: Fader;
 
   play (track: IHowlProperties) {
+    if (!track) {
+      this.stop();
+      return;
+    }
+
     const id = MusicState.getHowlId(track);
 
     if (this.fader && this.fader.id === id) {
