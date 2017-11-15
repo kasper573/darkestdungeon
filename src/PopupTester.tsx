@@ -104,7 +104,10 @@ export class PopupTester extends AppStateComponent {
   pop (e: React.MouseEvent<HTMLDivElement>) {
     if (this.popupQueue.length > 0) {
       const [content, align, modalState] = this.popupQueue.shift();
-      const position = e.ctrlKey ? undefined : {x: e.clientX, y: e.clientY};
+      const position = !e.ctrlKey ?
+        this.appState.bounds.transformClientPoint(e.clientX, e.clientY) :
+        undefined;
+
       this.appState.popups.show({content, align, position, modalState});
     }
   }

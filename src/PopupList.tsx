@@ -3,14 +3,12 @@ import {css, StyleSheet} from "aphrodite";
 import {PopupState} from "./PopupState";
 import {observer} from "mobx-react";
 import {PopupEntry} from "./PopupEntry";
-import {UIState} from "./UIState";
 import * as TransitionGroup from "react-transition-group/TransitionGroup";
 import Transition from "react-transition-group/Transition";
 
 @observer
 export class PopupList extends React.Component<{
-  popups: PopupState,
-  uiState: UIState
+  popups: PopupState
 }> {
   renderPopups () {
     const elements: JSX.Element[] = [];
@@ -24,7 +22,6 @@ export class PopupList extends React.Component<{
             <PopupEntry
               handle={handle}
               transitionState={state}
-              uiState={this.props.uiState}
             />
           )}
         </Transition>

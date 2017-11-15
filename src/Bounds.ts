@@ -29,7 +29,10 @@ export class Bounds {
     return new Bounds(xOffset, yOffset, adjustedWidth, adjustedHeight);
   }
 
-  scale (xScale: number, yScale: number) {
-    return new Bounds(this.x, this.y, this.width * xScale, this.height * yScale);
+  scale (xScale: number, yScale: number = xScale) {
+    return new Bounds(
+      this.x * xScale, this.y * yScale,
+      this.width * xScale, this.height * yScale
+    );
   }
 }
