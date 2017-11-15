@@ -13,7 +13,7 @@ const TWEEN = require("tween.js");
 // Initialize application state
 const state = new AppState();
 addStaticState();
-state.router.goto("popupTester");
+state.router.goto("start");
 state.initialize();
 
 // Set up basic styling
