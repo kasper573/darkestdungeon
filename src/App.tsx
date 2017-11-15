@@ -9,6 +9,7 @@ import {routes} from "./config/routes";
 import {SizeObserver} from "./SizeObserver";
 import {computed} from "mobx";
 import {appStateContext} from "./AppStateComponent";
+import {RouterPopups} from "./RouterPopups";
 
 @observer
 export class App extends React.Component<{
@@ -53,6 +54,10 @@ export class App extends React.Component<{
         <div className={css(styles.arc)} style={this.arcStyle}>
           <div className={css(styles.game)}>
             <Router router={this.props.state.router}/>
+            <RouterPopups
+              popups={this.props.state.popups}
+              router={this.props.state.router}
+            />
             <PopupList
               popups={this.props.state.popups}
               uiState={this.props.state.ui}

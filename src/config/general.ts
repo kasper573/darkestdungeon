@@ -1,5 +1,7 @@
 import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, StaticState} from "../StaticState";
 
+export const defaultAmbienceOSVolume = 0.25;
+
 export const todo = "?todo?";
 
 export function addStaticState () {

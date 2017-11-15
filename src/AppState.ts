@@ -41,10 +41,10 @@ export class AppState {
       // Path changes
       reaction(
         () => [this.router.path, this.router.route],
-        ([path, route]: [Path, Route]) => {
+        ([path, route]: [Path, Route, Route]) => {
           // Close all popups as soon as the path changes.
           // This avoids popups staying visible during screen transitions.
-          if (previousPath.value !== path.value) {
+          if (previousPath.root !== path.root) {
             this.popups.closeAll();
           }
           previousPath = path;
@@ -55,7 +55,6 @@ export class AppState {
           }
 
           // Change music and ambience
-          console.log("Changing music and ambience for path", path.value, path.args);
           this.ambience.activate(route.ambience(this, path));
           this.music.play(route.music(this, path));
         }
@@ -64,10 +63,12 @@ export class AppState {
       reaction(
         () => {
           return {
-            path: this.router.path.value,
             profiles: Array.from(this.profiles.map.values()).map((p) => [
               p.name,
-              p.isNameFinalized
+              p.isNameFinalized,
+              p.path,
+              p.estateEvent,
+              p.estateEvent.shown
             ])
           };
         },

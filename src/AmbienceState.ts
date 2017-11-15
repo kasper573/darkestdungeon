@@ -1,4 +1,5 @@
 import {autorun, IReactionDisposer, observable} from "mobx";
+import {defaultAmbienceOSVolume} from "./config/general";
 
 export class AmbienceState {
   private player?: AmbiencePlayer;
@@ -43,7 +44,13 @@ export class AmbienceDefinition {
   constructor (
     public base: IHowlProperties,
     public os: IHowlProperties[] = []
-  ) {}
+  ) {
+    this.os.forEach((o) => {
+      if (o.volume !== undefined) {
+        o.volume = defaultAmbienceOSVolume;
+      }
+    });
+  }
 
   get id () {
     return JSON.stringify(this.base.src);
