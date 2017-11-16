@@ -1,7 +1,7 @@
 import * as React from "react";
-import {Popup} from "./Popups";
-import {PopupAlign, PopupHandle, PopupState} from "./PopupState";
-import {Path, Route, RouterState} from "./RouterState";
+import {Popup} from "./ui/Popups";
+import {PopupAlign, PopupHandle, PopupState} from "./state/PopupState";
+import {Path, Route, RouterState} from "./state/RouterState";
 import {IReactionDisposer, reaction} from "mobx";
 
 export class RouterPopups extends React.Component<{

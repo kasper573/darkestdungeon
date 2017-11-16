@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {PopupState} from "./PopupState";
+import {PopupState} from "./state/PopupState";
 import {observer} from "mobx-react";
 import {PopupEntry} from "./PopupEntry";
 import * as TransitionGroup from "react-transition-group/TransitionGroup";

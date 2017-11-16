@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
 import {TransitionGroup} from "react-transition-group";
 import Transition from "react-transition-group/Transition";
-import {RouterState} from "./RouterState";
+import {RouterState} from "./state/RouterState";
 
 const transitionDuration = 500;
 

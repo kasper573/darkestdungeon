@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as TestUtils from "react-dom/test-utils";
 import {StyleSheetTestUtils} from "aphrodite";
-import {AppState} from "./AppState";
-import {App} from "./App";
+import {AppState} from "./state/AppState";
+import {App} from "./app";
 import {addStaticState} from "./config/general";
 import {routes} from "./config/routes";
 
