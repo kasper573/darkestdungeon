@@ -2,7 +2,7 @@ import * as React from "react";
 import {PopupAlign, PopupContent, ModalState} from "./PopupState";
 import {TooltipArea, TooltipSide} from "./TooltipArea";
 import {css, StyleSheet} from "aphrodite";
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {Popup, Prompt} from "./Popups";
 import {AppStateComponent} from "./AppStateComponent";
@@ -39,7 +39,7 @@ export class PopupTester extends AppStateComponent {
           key={key}
           classStyle={styles.tooltipAreas}
           side={(TooltipSide as any)[key]}
-          tip="Tip">
+          tip={<Tip/>}>
           {key}
         </TooltipArea>
       ));
@@ -48,7 +48,6 @@ export class PopupTester extends AppStateComponent {
       <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
         <div style={{flexDirection: "row"}}>
           <TooltipArea
-            mouse={false}
             side={TooltipSide.Right}
             show={this.popupQueue.length > 0}
             tip="Click to place popup. Ctrl+click for default position.">
@@ -110,6 +109,42 @@ export class PopupTester extends AppStateComponent {
 
       this.appState.popups.show({content, align, position, modalState});
     }
+  }
+}
+
+@observer
+class Tip extends React.Component {
+  private intervalId: any;
+  @observable private size = 0;
+
+  @computed get messages () {
+    const rows = [];
+    for (let i = 0; i < this.size; i++) {
+      let str = "";
+      for (let n = 0; n < this.size; n++) {
+        str += "W";
+      }
+      rows.push(str);
+    }
+    return rows;
+  }
+
+  componentWillMount () {
+    this.intervalId = setInterval(() => this.size++, 150);
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.intervalId);
+  }
+
+  render () {
+    return (
+      <div style={{maxWidth: 300, maxHeight: 300, overflow: "hidden"}}>
+        {this.messages.map((msg, index) => (
+          <div key={index}>{msg}</div>
+        ))}
+      </div>
+    );
   }
 }
 

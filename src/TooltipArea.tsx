@@ -1,11 +1,13 @@
 import * as React from "react";
-import {PopupHandle, PopupAlign, PopupContent, ModalState} from "./PopupState";
-import {computed, IReactionDisposer, observable, reaction} from "mobx";
+import {computed, observable} from "mobx";
 import {Tooltip} from "./Tooltip";
 import {BoundsObserver} from "./BoundsObserver";
 import {css} from "aphrodite";
 import {AppStateComponent} from "./AppStateComponent";
-import {Bounds} from "./Bounds";
+import {Bounds, Point, Size} from "./Bounds";
+import {grid} from "./Grid";
+import {observer} from "mobx-react";
+import {SizeObserver} from "./SizeObserver";
 
 export enum TooltipSide {
   Above,
@@ -14,19 +16,11 @@ export enum TooltipSide {
   Left
 }
 
-const sideAlignMap = {
-  [TooltipSide.Above]: PopupAlign.Bottom,
-  [TooltipSide.Right]: PopupAlign.Left,
-  [TooltipSide.Below]: PopupAlign.Top,
-  [TooltipSide.Left]: PopupAlign.Right,
-};
-
 type TooltipAreaProps = {
-  tip?: PopupContent,
+  tip?: any,
   side?: TooltipSide,
   classStyle?: any,
   style?: any,
-  mouse?: boolean,
   show?: boolean
 };
 
@@ -38,120 +32,99 @@ type TooltipAreaProps = {
  * NOTE: Manually showing a tooltip disables mouse
  * triggers until you manually hide it again.
  */
+@observer
 export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   static defaultProps = {
-    side: TooltipSide.Below,
-    mouse: true
+    side: TooltipSide.Below
   };
 
-  private disposeReaction: IReactionDisposer;
-  private popup: PopupHandle;
-  private isOpenedByMouse: boolean;
+  @observable private isHovered = false;
+  @observable private areaBounds: Bounds = new Bounds();
+  @observable private tooltipSize: Size = {width: 0, height: 0};
 
-  @observable bounds: Bounds;
-
-  @computed get popupPosition () {
-    if (!this.bounds) {
-      return {x: 0, y: 0};
-    }
-
-    switch (this.props.side) {
-      case TooltipSide.Above:
-        return {
-          x: this.bounds.x + this.bounds.width / 2,
-          y: this.bounds.y
-        };
-      case TooltipSide.Right:
-        return {
-          x: this.bounds.x + this.bounds.width,
-          y: this.bounds.y + this.bounds.height / 2
-        };
-      case TooltipSide.Below:
-        return {
-          x: this.bounds.x + this.bounds.width / 2,
-          y: this.bounds.y + this.bounds.height
-        };
-      case TooltipSide.Left:
-        return {
-          x: this.bounds.x,
-          y: this.bounds.y + this.bounds.height / 2
-        };
-    }
-  }
-
-  componentDidMount () {
-    if (this.props.show) {
-      this.show();
-    }
-  }
-
-  componentWillUpdate (nextProps: TooltipAreaProps) {
-    if (!this.props.show && nextProps.show) {
-      this.show();
-    } else if (this.props.show && !nextProps.show) {
-      this.hide();
-    }
-  }
-
-  componentWillUnmount () {
-    this.hide();
-  }
-
-  show (tip = this.props.tip) {
-    this.hide();
-
-    if (!tip) {
-      return;
-    }
-
-    this.popup = this.appState.popups.show({
-      content: <Tooltip>{tip}</Tooltip>,
-      align: sideAlignMap[this.props.side],
-      position: this.popupPosition,
-      modalState: ModalState.Opaque,
-      animate: false
-    });
-
-    this.disposeReaction = reaction(
-      () => this.popupPosition,
-      (position) => this.popup.reposition(position)
+  @computed get isTooltipVisible () {
+    return this.props.tip && (
+      this.props.show !== undefined ? this.props.show : this.isHovered
     );
   }
 
-  hide () {
-    if (this.popup) {
-      this.disposeReaction();
-      this.popup.close();
-      delete this.disposeReaction;
-      delete this.popup;
+  @computed get adjustedSide () {
+    const offset = this.getTooltipOffset(this.props.side);
+    const projectedBounds = new Bounds(
+      this.areaBounds.x + offset.x,
+      this.areaBounds.y + offset.y,
+      this.tooltipSize.width,
+      this.tooltipSize.height
+    );
+
+    if (projectedBounds.left < 0) {
+      return TooltipSide.Right;
+    } else if (projectedBounds.right > grid.width) {
+      return TooltipSide.Left;
+    } else if (projectedBounds.top < 0) {
+      return TooltipSide.Below;
+    } else if (projectedBounds.bottom > grid.height) {
+      return TooltipSide.Above;
+    }
+    return this.props.side;
+  }
+
+  @computed get tooltipStyle (): any {
+    const {x, y} = this.getTooltipOffset(this.adjustedSide);
+    return {
+      zIndex: 1,
+      position: "absolute",
+      left: x,
+      top: y,
+      pointerEvents: "none"
+    };
+  }
+
+  getTooltipOffset (side: TooltipSide): Point {
+    switch (side) {
+      case TooltipSide.Above:
+        return {
+          y: -this.tooltipSize.height,
+          x: (this.areaBounds.width - this.tooltipSize.width) / 2
+        };
+      case TooltipSide.Right:
+        return {
+          x: this.areaBounds.width,
+          y: (this.areaBounds.height - this.tooltipSize.height) / 2
+        };
+      case TooltipSide.Below:
+        return {
+          y: this.areaBounds.height,
+          x: (this.areaBounds.width - this.tooltipSize.width) / 2
+        };
+      case TooltipSide.Left:
+        return {
+          x: -this.tooltipSize.width,
+          y: (this.areaBounds.height - this.tooltipSize.height) / 2
+        };
     }
   }
 
   render () {
+    const tip = this.isTooltipVisible && (
+      <Tooltip>{this.props.tip}</Tooltip>
+    );
+
     return (
       <div
         className={css(this.props.classStyle)}
         style={this.props.style}
-        onMouseEnter={this.props.mouse ? () => this.onMouseEnter() : undefined}
-        onMouseLeave={this.props.mouse ? () => this.onMouseLeave() : undefined}>
+        onMouseEnter={() => this.isHovered = true}
+        onMouseLeave={() => this.isHovered = false}>
+
         {this.props.children}
-        <BoundsObserver onBoundsChanged={(bounds) => this.bounds = bounds}/>
+        <BoundsObserver onBoundsChanged={(bounds) => this.areaBounds = bounds}/>
+
+        <div style={this.tooltipStyle}>
+          {tip}
+          <SizeObserver onSizeChanged={(size) => this.tooltipSize = size}/>
+        </div>
       </div>
     );
-  }
-
-  onMouseEnter () {
-    // Ignore mouse trigger if tooltip has been opened externally
-    if (!this.popup) {
-      this.isOpenedByMouse = true;
-      this.show();
-    }
-  }
-
-  onMouseLeave () {
-    if (this.isOpenedByMouse) {
-      this.isOpenedByMouse = false;
-      this.hide();
-    }
   }
 }

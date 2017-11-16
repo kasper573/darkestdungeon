@@ -16,6 +16,11 @@ export class Bounds {
     public height = 0
   ) {}
 
+  get left () { return this.x; }
+  get top () { return this.y; }
+  get right () { return this.x + this.width; }
+  get bottom () { return this.y + this.height; }
+
   public static fitRatio (container: Bounds, boxAspectRatio: number) {
     let adjustedWidth = container.width;
     let adjustedHeight = adjustedWidth / boxAspectRatio;
