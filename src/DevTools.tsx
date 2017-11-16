@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Stats} from "./Stats";
+import {AppStats} from "./ui/AppStats";
 import {AppStateComponent} from "./AppStateComponent";
 import {observer} from "mobx-react";
 
@@ -35,7 +35,7 @@ export class DevTools extends AppStateComponent {
         <button style={{width: 50}} onClick={() => this.appState.load()}>
           Load
         </button>
-        {!this.appState.isRunningJest && <Stats/>}
+        {!this.appState.isRunningJest && <AppStats/>}
       </div>
     );
   }

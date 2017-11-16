@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import * as WebFontLoader from "webfontloader";
 import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../assets/fonts";
-import {AppState} from "./AppState";
+import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";
 const {AppContainer} = require("react-hot-loader");

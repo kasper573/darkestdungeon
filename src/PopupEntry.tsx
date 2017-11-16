@@ -1,12 +1,12 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {ModalState, PopupAlign, PopupHandle} from "./PopupState";
+import {ModalState, PopupAlign, PopupHandle} from "./state/PopupState";
 import {ReactElement} from "react";
 import {computed, observable, transaction} from "mobx";
 import {observer} from "mobx-react";
-import {SizeObserver} from "./SizeObserver";
+import {SizeObserver} from "./lib/SizeObserver";
 import {Size} from "./Bounds";
-import {grid} from "./Grid";
+import {grid} from "./config/Grid";
 
 @observer
 export class PopupEntry extends React.Component<{

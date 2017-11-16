@@ -1,18 +1,18 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {AppState} from "./AppState";
+import {AppState} from "./state/AppState";
 import {Router} from "./Router";
 import {PopupList} from "./PopupList";
 import {observer} from "mobx-react";
 import {DevTools} from "./DevTools";
 import {routes} from "./config/routes";
-import {SizeObserver} from "./SizeObserver";
+import {SizeObserver} from "./lib/SizeObserver";
 import {computed} from "mobx";
 import {appStateContext} from "./AppStateComponent";
 import {RouterPopups} from "./RouterPopups";
 import {fonts} from "../assets/fonts";
-import {grid} from "./Grid";
-import {InputRoot} from "./InputState";
+import {grid} from "./config/Grid";
+import {InputRoot} from "./state/InputState";
 
 @observer
 export class App extends React.Component<{

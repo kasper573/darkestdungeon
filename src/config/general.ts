@@ -1,4 +1,4 @@
-import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, StaticState} from "../StaticState";
+import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, StaticState} from "../state/StaticState";
 
 export const defaultAmbienceOSVolume = 0.25;
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {AppState} from "./AppState";
+import {AppState} from "./state/AppState";
 
 export const appStateContext = {
   state: PropTypes.instanceOf(AppState)
