@@ -4,7 +4,7 @@ import {QuestMap} from "./QuestMap";
 import {QuestObjective} from "./QuestObjective";
 import {Item} from "./Item";
 import {observable} from "mobx";
-import {QuestInfo} from "../StaticState";
+import {QuestInfo} from "../static/QuestInfo";
 import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
 
