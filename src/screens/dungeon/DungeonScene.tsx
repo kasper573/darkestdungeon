@@ -1,11 +1,12 @@
 import * as React from "react";
-import {Character, Profile} from "../../state/ProfileState";
 import {StaticState} from "../../state/StaticState";
 import {randomizeItem} from "../../state/Generators";
 import {StyleSheet} from "aphrodite";
 import {CharacterModel} from "../../ui/CharacterModel";
 import {Row} from "../../config/styles";
 import {CurioModel} from "../../ui/CurioModel";
+import {Profile} from "../../state/profile/Profile";
+import {Character} from "../../state/profile/Character";
 
 export class DungeonScene extends React.Component<{
   profile: Profile

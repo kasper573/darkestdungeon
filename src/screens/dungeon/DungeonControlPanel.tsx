@@ -4,9 +4,10 @@ import {DungeonHeroSummary} from "./DungeonHeroSummary";
 import {css, StyleSheet} from "aphrodite";
 import {Inventory} from "../../ui/Inventory";
 import {observable} from "mobx";
-import {Hero, QuestMap} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {DungeonMap} from "./DungeonMap";
+import {QuestMap} from "../../state/profile/QuestMap";
+import {Hero} from "../../state/profile/Hero";
 
 @observer
 export class DungeonControlPanel extends React.Component<{

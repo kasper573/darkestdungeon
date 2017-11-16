@@ -1,9 +1,9 @@
 import * as React from "react";
-import {Hero} from "../state/ProfileState";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
 import {HeroLevel} from "./HeroLevel";
 import {StressMeter} from "./StressMeter";
+import {Hero} from "../state/profile/Hero";
 
 @observer
 export class HeroFlag extends React.Component<{

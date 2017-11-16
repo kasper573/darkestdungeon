@@ -1,9 +1,9 @@
 import * as React from "react";
-import {Quest} from "../../state/ProfileState";
 import {BannerHeader} from "../../ui/BannerHeader";
 import {Row} from "../../config/styles";
 import {ItemSlot} from "../../ui/ItemSlot";
 import {CommonHeader} from "../../ui/CommonHeader";
+import {Quest} from "../../state/profile/Quest";
 
 export class DungeonResultItems extends React.Component<{
   quest: Quest

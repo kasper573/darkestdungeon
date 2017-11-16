@@ -1,8 +1,8 @@
 import * as React from "react";
 import {StyleSheet} from "aphrodite";
-import {Hero} from "../state/ProfileState";
 import {Avatar} from "./Avatar";
 import {Row} from "../config/styles";
+import {Hero} from "../state/profile/Hero";
 
 export class PartyDropbox extends React.Component<{
   members: Hero[],

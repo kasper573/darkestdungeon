@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Hero} from "../../state/ProfileState";
 import {Column, Row} from "../../config/styles";
 import {Avatar} from "../../ui/Avatar";
 import {HeroEquipment} from "../../ui/HeroEquipment";
 import {HeroSkills} from "../../ui/HeroSkills";
 import {StatsText} from "../../ui/StatsText";
 import {StatsInfo, StatsModSource} from "../../state/StaticState";
+import {Hero} from "../../state/profile/Hero";
 
 export class DungeonHeroSummary extends React.Component<{
   hero: Hero

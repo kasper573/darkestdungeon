@@ -1,12 +1,12 @@
 import * as React from "react";
 import {Prompt} from "./Popups";
-import {Item} from "../state/ProfileState";
 import {observer} from "mobx-react";
 import {BannerHeader} from "./BannerHeader";
 import {CompareFunction, SortOptions} from "./SortOptions";
 import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
+import {Item} from "../state/profile/Item";
 
 @observer
 export class Inventory extends AppStateComponent {

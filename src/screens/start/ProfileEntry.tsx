@@ -1,7 +1,7 @@
-import {Profile} from "../../state/ProfileState";
 import {css, StyleSheet} from "aphrodite";
 import * as React from "react";
 import {observer} from "mobx-react";
+import {Profile} from "../../state/profile/Profile";
 
 @observer
 export class ProfileEntry extends React.Component<{

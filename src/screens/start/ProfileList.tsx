@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Difficulty, Profile, ProfileId} from "../../state/ProfileState";
 import {css, StyleSheet} from "aphrodite";
 import {entryHeight, entrySpacing, ProfileEntry} from "./ProfileEntry";
 import {PopupHandle} from "../../state/PopupState";
@@ -7,6 +6,7 @@ import {observer} from "mobx-react";
 import {transaction} from "mobx";
 import {Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Difficulty, Profile, ProfileId} from "../../state/profile/Profile";
 
 @observer
 export class ProfileList extends AppStateComponent<{

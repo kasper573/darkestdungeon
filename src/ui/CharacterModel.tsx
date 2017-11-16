@@ -1,10 +1,11 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Character, Hero} from "../state/ProfileState";
 import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
 import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
 import {todo} from "../config/general";
+import {Character} from "../state/profile/Character";
+import {Hero} from "../state/profile/Hero";
 
 export class CharacterModel extends React.Component<{
   character: Character,

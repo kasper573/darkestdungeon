@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Hero, Profile, Item} from "../state/ProfileState";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
@@ -15,6 +14,9 @@ import {HeroEquipment} from "./HeroEquipment";
 import {HeroSkills} from "./HeroSkills";
 import {HeroFlag} from "./HeroFlag";
 import {CharacterModel} from "./CharacterModel";
+import {Profile} from "../state/profile/Profile";
+import {Hero} from "../state/profile/Hero";
+import {Item} from "../state/profile/Item";
 
 @observer
 export class HeroOverview extends React.Component<
