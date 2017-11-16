@@ -1,4 +1,9 @@
-import {AfflictionInfo, CharacterClassInfo, DungeonInfo, ItemInfo, LevelInfo, StaticState} from "../state/StaticState";
+import {StaticState} from "../state/StaticState";
+import {DungeonInfo} from "../state/static/DungeonInfo";
+import {LevelInfo} from "../state/static/LevelInfo";
+import {AfflictionInfo} from "../state/static/AfflictionInfo";
+import {CharacterClassInfo} from "../state/static/CharacterClassInfo";
+import {ItemInfo} from "../state/static/ItemInfo";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -40,6 +45,12 @@ export function addStaticState () {
       info.experience = Math.pow(level, 2) * 1000;
       StaticState.instance.levels.set(info.id, info);
     });
+
+  for (let level = 0; level < StaticState.instance.levels.size; level++) {
+    const info = StaticState.instance.levels.get(level);
+    info.previous = StaticState.instance.levels.get(this.id - 1);
+    info.next = StaticState.instance.levels.get(this.id + 1);
+  }
 
   ["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
     const info = new DungeonInfo();

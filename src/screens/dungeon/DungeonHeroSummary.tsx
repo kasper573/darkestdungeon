@@ -4,8 +4,9 @@ import {Avatar} from "../../ui/Avatar";
 import {HeroEquipment} from "../../ui/HeroEquipment";
 import {HeroSkills} from "../../ui/HeroSkills";
 import {StatsText} from "../../ui/StatsText";
-import {StatsInfo, StatsModSource} from "../../state/StaticState";
+import {StatsInfo} from "../../state/static/StatsInfo";
 import {Hero} from "../../state/profile/Hero";
+import {StatsModSource} from "../../state/static/StatsInfo";
 
 export class DungeonHeroSummary extends React.Component<{
   hero: Hero

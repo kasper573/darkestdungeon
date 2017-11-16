@@ -8,7 +8,7 @@ import {Avatar} from "../../ui/Avatar";
 import {commonStyles} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
-import {ItemType} from "../../state/StaticState";
+import {ItemType} from "../../state/static/ItemInfo";
 import {Hero} from "../../state/profile/Hero";
 
 @observer

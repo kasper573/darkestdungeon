@@ -1,6 +1,6 @@
 import * as React from "react";
 import {commonStyles} from "../config/styles";
-import {QuirkInfo} from "../state/StaticState";
+import {QuirkInfo} from "../state/static/QuirkInfo";
 import {TooltipArea} from "../lib/TooltipArea";
 import {todo} from "../config/general";
 

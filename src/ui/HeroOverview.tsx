@@ -4,7 +4,7 @@ import {Popup, PopupProps} from "./Popups";
 import {computed} from "mobx";
 import {StyleSheet} from "aphrodite";
 import {Column, Row} from "../config/styles";
-import {QuirkInfo, StatsInfo, StatsModSource} from "../state/StaticState";
+import {StatsInfo} from "../state/static/StatsInfo";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {StatsText} from "./StatsText";
@@ -17,6 +17,8 @@ import {CharacterModel} from "./CharacterModel";
 import {Profile} from "../state/profile/Profile";
 import {Hero} from "../state/profile/Hero";
 import {Item} from "../state/profile/Item";
+import {QuirkInfo} from "../state/static/QuirkInfo";
+import {StatsModSource} from "../state/static/StatsInfo";
 
 @observer
 export class HeroOverview extends React.Component<
