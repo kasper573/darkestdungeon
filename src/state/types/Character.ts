@@ -3,8 +3,8 @@ import {StaticState} from "../StaticState";
 import {identifier, reference, serializable} from "serializr";
 import uuid = require("uuid");
 import {Experienced} from "./Experienced";
-import {AfflictionInfo} from "../static/AfflictionInfo";
-import {CharacterClassInfo} from "../static/CharacterClassInfo";
+import {AfflictionInfo} from "./AfflictionInfo";
+import {CharacterClassInfo} from "./CharacterClassInfo";
 
 export type CharacterId = string;
 

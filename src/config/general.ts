@@ -1,9 +1,9 @@
 import {StaticState} from "../state/StaticState";
-import {DungeonInfo} from "../state/static/DungeonInfo";
-import {LevelInfo} from "../state/static/LevelInfo";
-import {AfflictionInfo} from "../state/static/AfflictionInfo";
-import {CharacterClassInfo} from "../state/static/CharacterClassInfo";
-import {ItemInfo} from "../state/static/ItemInfo";
+import {DungeonInfo} from "../state/types/DungeonInfo";
+import {LevelInfo} from "../state/types/LevelInfo";
+import {AfflictionInfo} from "../state/types/AfflictionInfo";
+import {CharacterClassInfo} from "../state/types/CharacterClassInfo";
+import {ItemInfo} from "../state/types/ItemInfo";
 
 export const defaultAmbienceOSVolume = 0.25;
 

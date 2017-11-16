@@ -7,8 +7,8 @@ import {Torch} from "../../ui/Torch";
 import {QuestHeader} from "../../ui/QuestHeader";
 import {DungeonScene} from "./DungeonScene";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Hero} from "../../state/profile/Hero";
-import {QuestStatus} from "../../state/profile/Quest";
+import {Hero} from "../../state/types/Hero";
+import {QuestStatus} from "../../state/types/Quest";
 
 @observer
 export class DungeonOverview extends AppStateComponent {

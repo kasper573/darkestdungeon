@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Quest, QuestStatus} from "../state/profile/Quest";
+import {Quest, QuestStatus} from "../state/types/Quest";
 
 export class QuestHeader extends React.Component<{
   quest: Quest,

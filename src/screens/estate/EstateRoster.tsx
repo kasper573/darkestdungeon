@@ -6,7 +6,7 @@ import {SortOptions} from "../../ui/SortOptions";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {ModalState, PopupAlign} from "../../state/PopupState";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Hero} from "../../state/profile/Hero";
+import {Hero} from "../../state/types/Hero";
 
 @observer
 export class EstateRoster extends AppStateComponent<{

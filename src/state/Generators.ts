@@ -1,10 +1,10 @@
 import {StaticState} from "./StaticState";
-import {Hero} from "./profile/Hero";
-import {Item} from "./profile/Item";
-import {Dungeon} from "./profile/Dungeon";
-import {Quest} from "./profile/Quest";
-import {MapSize, QuestMap} from "./profile/QuestMap";
-import {QuestObjective} from "./profile/QuestObjective";
+import {Hero} from "./types/Hero";
+import {Item} from "./types/Item";
+import {Dungeon} from "./types/Dungeon";
+import {Quest} from "./types/Quest";
+import {MapSize, QuestMap} from "./types/QuestMap";
+import {QuestObjective} from "./types/QuestObjective";
 
 export class HeroGenerator {
   next (): Hero {

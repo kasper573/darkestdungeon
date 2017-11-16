@@ -4,7 +4,7 @@ import {Avatar} from "./Avatar";
 import {Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemSlot} from "./ItemSlot";
-import {Quest} from "../state/profile/Quest";
+import {Quest} from "../state/types/Quest";
 
 export class QuestBreakdown extends React.Component<{
   quest: Quest

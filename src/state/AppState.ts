@@ -8,7 +8,7 @@ import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
-import {Profile} from "./profile/Profile";
+import {Profile} from "./types/Profile";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];

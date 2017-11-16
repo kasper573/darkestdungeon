@@ -6,7 +6,7 @@ import {observer} from "mobx-react";
 import {transaction} from "mobx";
 import {Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Difficulty, Profile, ProfileId} from "../../state/profile/Profile";
+import {Difficulty, Profile, ProfileId} from "../../state/types/Profile";
 
 @observer
 export class ProfileList extends AppStateComponent<{

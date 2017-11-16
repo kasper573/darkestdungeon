@@ -3,7 +3,7 @@ import * as React from "react";
 import {css} from "aphrodite";
 import {commonStyles} from "../config/styles";
 import {QuestSelector} from "./QuestSelector";
-import {Quest, QuestId} from "../state/profile/Quest";
+import {Quest, QuestId} from "../state/types/Quest";
 
 export class DungeonBreakdown extends React.Component<{
   name: string,

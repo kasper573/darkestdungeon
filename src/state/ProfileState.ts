@@ -1,8 +1,8 @@
 import {computed, observable} from "mobx";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {StaticState} from "./StaticState";
-import {Difficulty, Profile, ProfileId} from "./profile/Profile";
-import {Dungeon} from "./profile/Dungeon";
+import {Difficulty, Profile, ProfileId} from "./types/Profile";
+import {Dungeon} from "./types/Dungeon";
 
 let nullProfile: Profile;
 

@@ -8,8 +8,8 @@ import {PartyDropbox} from "../../ui/PartyDropbox";
 import {observer} from "mobx-react";
 import {Store} from "./Store";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Item} from "../../state/profile/Item";
-import {QuestStatus} from "../../state/profile/Quest";
+import {Item} from "../../state/types/Item";
+import {QuestStatus} from "../../state/types/Quest";
 
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {

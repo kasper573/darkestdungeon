@@ -7,7 +7,7 @@ import {DungeonBreakdown} from "../../ui/DungeonBreakdown";
 import {QuestBreakdown} from "../../ui/QuestBreakdown";
 import {PartyDropbox} from "../../ui/PartyDropbox";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Quest} from "../../state/profile/Quest";
+import {Quest} from "../../state/types/Quest";
 
 @observer
 export class EstateDungeons extends AppStateComponent<{path: Path}> {

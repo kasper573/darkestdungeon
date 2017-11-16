@@ -3,7 +3,7 @@ import {BannerHeader} from "../../ui/BannerHeader";
 import {Row} from "../../config/styles";
 import {ItemSlot} from "../../ui/ItemSlot";
 import {CommonHeader} from "../../ui/CommonHeader";
-import {Quest} from "../../state/profile/Quest";
+import {Quest} from "../../state/types/Quest";
 
 export class DungeonResultItems extends React.Component<{
   quest: Quest

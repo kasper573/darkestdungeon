@@ -6,8 +6,8 @@ import {Inventory} from "../../ui/Inventory";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {DungeonMap} from "./DungeonMap";
-import {QuestMap} from "../../state/profile/QuestMap";
-import {Hero} from "../../state/profile/Hero";
+import {QuestMap} from "../../state/types/QuestMap";
+import {Hero} from "../../state/types/Hero";
 
 @observer
 export class DungeonControlPanel extends React.Component<{

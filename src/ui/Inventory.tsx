@@ -6,7 +6,7 @@ import {CompareFunction, SortOptions} from "./SortOptions";
 import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
-import {Item} from "../state/profile/Item";
+import {Item} from "../state/types/Item";
 
 @observer
 export class Inventory extends AppStateComponent {
