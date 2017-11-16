@@ -84,6 +84,9 @@ export class ProfileState {
       this.itemGenerator.next()
     ];
 
+    profile.heroes[0].inParty = true;
+    profile.heroes[1].inParty = true;
+
     // Assign one item to each hero
     profile.items[0].heroId = profile.heroes[0].id;
     profile.items[1].heroId = profile.heroes[1].id;
@@ -446,12 +449,21 @@ export class Profile {
     newEvent.message = "Event " + eventIndex;
     this.estateEvent = newEvent;
 
-    // Randomize quests
-    this.quests = [
-      questGenerator.next(this.dungeons),
-      questGenerator.next(this.dungeons),
-      questGenerator.next(this.dungeons)
-    ];
+    if (this.week === 0) {
+      // The quest on the first week should always be the same
+      this.quests = [
+        // TODO generate start quest
+        questGenerator.next(this.dungeons)
+      ];
+    } else {
+      // Randomize quests each week
+      this.quests = [
+        questGenerator.next(this.dungeons),
+        questGenerator.next(this.dungeons),
+        questGenerator.next(this.dungeons)
+      ];
+    }
+
     this.selectedQuestId = this.quests[0].id;
   }
 }
