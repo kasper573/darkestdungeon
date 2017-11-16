@@ -1,8 +1,9 @@
 import {observable} from "mobx";
 import {identifier, reference, serializable} from "serializr";
 import uuid = require("uuid");
-import {ItemInfo, StaticState} from "../StaticState";
+import {StaticState} from "../StaticState";
 import {CharacterId} from "./Character";
+import {ItemInfo} from "../static/ItemInfo";
 
 export type ItemId = string;
 

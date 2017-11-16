@@ -1,8 +1,10 @@
 import {computed, observable} from "mobx";
-import {AfflictionInfo, CharacterClassInfo, StaticState} from "../StaticState";
+import {StaticState} from "../StaticState";
 import {identifier, reference, serializable} from "serializr";
 import uuid = require("uuid");
 import {Experienced} from "./Experienced";
+import {AfflictionInfo} from "../static/AfflictionInfo";
+import {CharacterClassInfo} from "../static/CharacterClassInfo";
 
 export type CharacterId = string;
 

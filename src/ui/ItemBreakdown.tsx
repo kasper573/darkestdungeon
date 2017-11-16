@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StatsInfo} from "../state/StaticState";
+import {StatsInfo} from "../state/static/StatsInfo";
 import {StatsText} from "./StatsText";
 import {todo} from "../config/general";
 

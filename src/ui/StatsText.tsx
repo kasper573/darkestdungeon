@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Column, commonStyles} from "../config/styles";
 import {PopupState} from "../state/PopupState";
-import {StatsInfo} from "../state/StaticState";
+import {StatsInfo} from "../state/static/StatsInfo";
 import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
 import {StatsBreakdown} from "./StatsBreakdown";
 import {StatsValueText} from "./StatsValueText";

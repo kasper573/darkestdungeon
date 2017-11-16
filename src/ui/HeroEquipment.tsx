@@ -1,9 +1,10 @@
 import * as React from "react";
 import {Row} from "../config/styles";
 import {ItemLevel} from "./ItemLevel";
-import {ItemInfo, ItemType} from "../state/StaticState";
+import {ItemInfo} from "../state/static/ItemInfo";
 import {ItemSlot} from "./ItemSlot";
 import {Hero} from "../state/profile/Hero";
+import {ItemType} from "../state/static/ItemInfo";
 
 export class HeroEquipment extends React.Component<{
   hero: Hero
