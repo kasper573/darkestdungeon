@@ -12,6 +12,7 @@ import {appStateContext} from "./AppStateComponent";
 import {RouterPopups} from "./RouterPopups";
 import {fonts} from "../assets/fonts";
 import {grid} from "./Grid";
+import {InputRoot} from "./InputState";
 
 @observer
 export class App extends React.Component<{
@@ -59,7 +60,7 @@ export class App extends React.Component<{
 
   render () {
     return (
-      <div className={css(styles.app)}>
+      <InputRoot className={css(styles.app)}>
         <div className={css(styles.arc)} style={this.arcStyle}>
           <div className={css(styles.game)} style={this.gameStyle}>
             <Router router={this.props.state.router}/>
@@ -74,7 +75,7 @@ export class App extends React.Component<{
           />
         </div>
         <DevTools />
-      </div>
+      </InputRoot>
     );
   }
 }
