@@ -8,8 +8,8 @@ import {Avatar} from "../../ui/Avatar";
 import {commonStyles} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
-import {ItemType} from "../../state/static/ItemInfo";
-import {Hero} from "../../state/profile/Hero";
+import {ItemType} from "../../state/types/ItemInfo";
+import {Hero} from "../../state/types/Hero";
 
 @observer
 export class EstateRosterEntry extends React.Component<{

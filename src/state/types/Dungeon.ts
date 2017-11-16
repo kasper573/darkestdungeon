@@ -2,7 +2,7 @@ import {Experienced} from "./Experienced";
 import {identifier, reference, serializable} from "serializr";
 import uuid = require("uuid");
 import {StaticState} from "../StaticState";
-import {DungeonInfo} from "../static/DungeonInfo";
+import {DungeonInfo} from "./DungeonInfo";
 
 export type DungeonId = string;
 

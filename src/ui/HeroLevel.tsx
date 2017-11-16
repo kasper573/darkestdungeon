@@ -2,7 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {commonStyles} from "../config/styles";
 import {observer} from "mobx-react";
-import {Hero} from "../state/profile/Hero";
+import {Hero} from "../state/types/Hero";
 
 @observer
 export class HeroLevel extends React.Component<{

@@ -4,8 +4,8 @@ import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
 import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
 import {todo} from "../config/general";
-import {Character} from "../state/profile/Character";
-import {Hero} from "../state/profile/Hero";
+import {Character} from "../state/types/Character";
+import {Hero} from "../state/types/Hero";
 
 export class CharacterModel extends React.Component<{
   character: Character,

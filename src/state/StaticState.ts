@@ -1,8 +1,8 @@
-import {DungeonInfo} from "./static/DungeonInfo";
-import {LevelInfo} from "./static/LevelInfo";
-import {AfflictionInfo} from "./static/AfflictionInfo";
-import {CharacterClassInfo} from "./static/CharacterClassInfo";
-import {ItemInfo} from "./static/ItemInfo";
+import {DungeonInfo} from "./types/DungeonInfo";
+import {LevelInfo} from "./types/LevelInfo";
+import {AfflictionInfo} from "./types/AfflictionInfo";
+import {CharacterClassInfo} from "./types/CharacterClassInfo";
+import {ItemInfo} from "./types/ItemInfo";
 
 export class StaticState  {
   // noinspection TsLint

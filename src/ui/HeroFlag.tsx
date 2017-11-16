@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
 import {HeroLevel} from "./HeroLevel";
 import {StressMeter} from "./StressMeter";
-import {Hero} from "../state/profile/Hero";
+import {Hero} from "../state/types/Hero";
 
 @observer
 export class HeroFlag extends React.Component<{

@@ -4,7 +4,7 @@ import {Avatar} from "../../ui/Avatar";
 import {css} from "aphrodite";
 import {HeroFlag} from "../../ui/HeroFlag";
 import {QuirkFaces} from "../../ui/QuirkFaces";
-import {Hero} from "../../state/profile/Hero";
+import {Hero} from "../../state/types/Hero";
 
 export class DungeonResultHeroes extends React.Component<{
   party: Hero[]

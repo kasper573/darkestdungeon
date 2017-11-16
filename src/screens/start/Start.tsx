@@ -5,7 +5,7 @@ import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
 import {PauseMenu} from "../../ui/PauseMenu";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Profile} from "../../state/profile/Profile";
+import {Profile} from "../../state/types/Profile";
 
 export class Start extends AppStateComponent {
   transitionOut () {

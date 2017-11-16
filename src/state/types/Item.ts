@@ -3,7 +3,7 @@ import {identifier, reference, serializable} from "serializr";
 import uuid = require("uuid");
 import {StaticState} from "../StaticState";
 import {CharacterId} from "./Character";
-import {ItemInfo} from "../static/ItemInfo";
+import {ItemInfo} from "./ItemInfo";
 
 export type ItemId = string;
 

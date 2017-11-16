@@ -3,8 +3,8 @@ import {ItemSlot} from "../../ui/ItemSlot";
 import {CommonHeader} from "../../ui/CommonHeader";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
-import {Item} from "../../state/profile/Item";
-import {Profile} from "../../state/profile/Profile";
+import {Item} from "../../state/types/Item";
+import {Profile} from "../../state/types/Profile";
 
 @observer
 export class Store extends React.Component<{

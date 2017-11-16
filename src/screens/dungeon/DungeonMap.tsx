@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {QuestMap} from "../../state/profile/QuestMap";
-import {QuestRoom} from "../../state/profile/QuestRoom";
+import {QuestMap} from "../../state/types/QuestMap";
+import {QuestRoom} from "../../state/types/QuestRoom";
 
 export class DungeonMap extends React.Component<{
   map: QuestMap
