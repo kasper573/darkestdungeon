@@ -1,6 +1,5 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Hero} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {HeroLevel} from "../../ui/HeroLevel";
 import {ItemLevel} from "../../ui/ItemLevel";
@@ -10,6 +9,7 @@ import {commonStyles} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/StaticState";
+import {Hero} from "../../state/profile/Hero";
 
 @observer
 export class EstateRosterEntry extends React.Component<{

@@ -1,12 +1,12 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {EstateRosterEntry} from "./EstateRosterEntry";
-import {Hero} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {SortOptions} from "../../ui/SortOptions";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {ModalState, PopupAlign} from "../../state/PopupState";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Hero} from "../../state/profile/Hero";
 
 @observer
 export class EstateRoster extends AppStateComponent<{

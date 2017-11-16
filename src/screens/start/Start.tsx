@@ -3,9 +3,9 @@ import {TitleHeader} from "../../ui/TitleHeader";
 import {Path} from "../../state/RouterState";
 import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
-import {Profile} from "../../state/ProfileState";
 import {PauseMenu} from "../../ui/PauseMenu";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Profile} from "../../state/profile/Profile";
 
 export class Start extends AppStateComponent {
   transitionOut () {

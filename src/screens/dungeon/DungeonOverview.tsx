@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Hero, QuestStatus} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
@@ -8,6 +7,8 @@ import {Torch} from "../../ui/Torch";
 import {QuestHeader} from "../../ui/QuestHeader";
 import {DungeonScene} from "./DungeonScene";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Hero} from "../../state/profile/Hero";
+import {QuestStatus} from "../../state/profile/Quest";
 
 @observer
 export class DungeonOverview extends AppStateComponent {

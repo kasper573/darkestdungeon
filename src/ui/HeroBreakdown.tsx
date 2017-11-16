@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Hero} from "../state/ProfileState";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
 import {commonStyles} from "../config/styles";
+import {Hero} from "../state/profile/Hero";
 
 @observer
 export class HeroBreakdown extends React.Component<{hero: Hero}> {

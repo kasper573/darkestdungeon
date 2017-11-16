@@ -1,7 +1,7 @@
 import * as React from "react";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "../../state/RouterState";
-import {EstateEvent} from "../../state/ProfileState";
+import {EstateEvent} from "../../state/profile/EstateEvent";
 import {Popup, PopupProps} from "../../ui/Popups";
 import {StageCoach} from "./buildings/StageCoach";
 import {Graveyard} from "./buildings/Graveyard";

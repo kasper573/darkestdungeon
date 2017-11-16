@@ -1,6 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {QuestMap, Room} from "../../state/ProfileState";
+import {QuestMap} from "../../state/profile/QuestMap";
+import {QuestRoom} from "../../state/profile/QuestRoom";
 
 export class DungeonMap extends React.Component<{
   map: QuestMap
@@ -20,7 +21,7 @@ export class DungeonMap extends React.Component<{
   }
 }
 
-class RoomOnMap extends React.Component<{room: Room}> {
+class RoomOnMap extends React.Component<{room: QuestRoom}> {
   render () {
     const coords = this.props.room.coordinates;
     return (

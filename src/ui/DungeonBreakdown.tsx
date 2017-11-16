@@ -1,9 +1,9 @@
 
 import * as React from "react";
-import {Quest, QuestId} from "../state/ProfileState";
 import {css} from "aphrodite";
 import {commonStyles} from "../config/styles";
 import {QuestSelector} from "./QuestSelector";
+import {Quest, QuestId} from "../state/profile/Quest";
 
 export class DungeonBreakdown extends React.Component<{
   name: string,

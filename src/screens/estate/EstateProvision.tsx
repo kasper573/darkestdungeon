@@ -5,10 +5,11 @@ import {Prompt} from "../../ui/Popups";
 import {BuildingOverview} from "./buildings/BuildingOverview";
 import {StyleSheet} from "aphrodite";
 import {PartyDropbox} from "../../ui/PartyDropbox";
-import {Item, QuestStatus} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {Store} from "./Store";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Item} from "../../state/profile/Item";
+import {QuestStatus} from "../../state/profile/Quest";
 
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {

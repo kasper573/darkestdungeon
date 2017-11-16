@@ -1,10 +1,10 @@
 import * as React from "react";
-import {Quest} from "../state/ProfileState";
 import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
 import {Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemSlot} from "./ItemSlot";
+import {Quest} from "../state/profile/Quest";
 
 export class QuestBreakdown extends React.Component<{
   quest: Quest

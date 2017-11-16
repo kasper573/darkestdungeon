@@ -1,9 +1,10 @@
 import * as React from "react";
 import {ItemSlot} from "../../ui/ItemSlot";
 import {CommonHeader} from "../../ui/CommonHeader";
-import {Item, Profile} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
+import {Item} from "../../state/profile/Item";
+import {Profile} from "../../state/profile/Profile";
 
 @observer
 export class Store extends React.Component<{

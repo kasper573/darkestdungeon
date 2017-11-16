@@ -3,11 +3,12 @@ import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
-import {Profile, ProfileState} from "./ProfileState";
+import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
+import {Profile} from "./profile/Profile";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];

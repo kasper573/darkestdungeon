@@ -2,12 +2,12 @@ import * as React from "react";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "../../state/RouterState";
 import {Alert, Prompt} from "../../ui/Popups";
-import {Quest} from "../../state/ProfileState";
 import {observer} from "mobx-react";
 import {DungeonBreakdown} from "../../ui/DungeonBreakdown";
 import {QuestBreakdown} from "../../ui/QuestBreakdown";
 import {PartyDropbox} from "../../ui/PartyDropbox";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Quest} from "../../state/profile/Quest";
 
 @observer
 export class EstateDungeons extends AppStateComponent<{path: Path}> {
