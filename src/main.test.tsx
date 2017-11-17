@@ -5,15 +5,24 @@ import {AppState} from "./state/AppState";
 import {App} from "./app";
 import {addStaticState} from "./config/general";
 import {routes} from "./config/routes";
+import {StaticState} from "./state/StaticState";
+import {Difficulty} from "./state/types/Profile";
 
-describe("Router", () => {
-  beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
-  afterEach(() => StyleSheetTestUtils.clearBufferAndResumeStyleInjection());
+describe("main", () => {
+  beforeEach(() => {
+    addStaticState();
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  afterEach(() => {
+    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    localStorage.clear();
+    StaticState.instance.clear();
+  });
 
   for (const path in routes) {
     it (`renders "${path}" without errors`, () => {
       const state = new AppState();
-      addStaticState();
       state.isRunningJest = true;
       state.router.addRoutes(routes);
       state.router.goto(path);
@@ -24,4 +33,18 @@ describe("Router", () => {
       state.dispose();
     });
   }
+
+  it (`hibernates state`, () => {
+    const savedState = new AppState();
+    savedState.profiles.createProfile(Difficulty.Darkest);
+    savedState.initialize();
+
+    savedState.save();
+    savedState.dispose();
+
+    const loadedState = new AppState();
+    loadedState.load();
+
+    expect(savedState.profiles.map).toEqual(loadedState.profiles.map);
+  });
 });
