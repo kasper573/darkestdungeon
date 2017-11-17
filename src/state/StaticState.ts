@@ -20,6 +20,17 @@ export class StaticState  {
   levels = new Map<number, LevelInfo>();
   dungeons = new Map<string, DungeonInfo>();
 
+  clear () {
+    for (const key in this) {
+      const prop: any = this[key];
+      if (Array.isArray(prop)) {
+        this[key] = [];
+      } else if (prop instanceof Map) {
+        prop.clear();
+      }
+    }
+  }
+
   // Glue to provide a lookupFn interface for serializr
   public static lookup<K, V> (getLookup: (i: StaticState) => Map<K, V>) {
     return (id: K, resolve: (e: any, r: any) => void) => {

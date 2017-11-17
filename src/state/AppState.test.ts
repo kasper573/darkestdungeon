@@ -4,11 +4,14 @@ import {StaticState} from "./StaticState";
 import {Difficulty} from "./types/Profile";
 
 describe("AppState", () => {
-  afterEach(() => StaticState.instance.clear());
+  beforeEach(() => addStaticState());
+  afterEach(() => {
+    localStorage.clear();
+    StaticState.instance.clear();
+  });
 
   it (`hibernates state`, () => {
     const savedState = new AppState();
-    addStaticState();
     savedState.profiles.createProfile(Difficulty.Darkest);
     savedState.initialize();
 
