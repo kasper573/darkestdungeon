@@ -20,6 +20,7 @@ type TooltipAreaProps = {
   tip?: any,
   side?: TooltipSide,
   classStyle?: any,
+  onClick?: () => void,
   style?: any,
   show?: boolean
 };
@@ -114,6 +115,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
       <div
         className={css(this.props.classStyle)}
         style={this.props.style}
+        onClick={this.props.onClick}
         onMouseEnter={() => this.isHovered = true}
         onMouseLeave={() => this.isHovered = false}>
 

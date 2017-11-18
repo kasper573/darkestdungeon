@@ -1,12 +1,15 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {TooltipArea} from "../lib/TooltipArea";
-import {todo} from "../config/general";
+import {SkillInfo} from "../state/types/SkillInfo";
+import {SkillBreakdown} from "./SkillBreakdown";
 
 export class SkillIcon extends React.Component<{
   unlocked?: boolean,
   selected?: boolean,
-  level?: number
+  level?: number,
+  skill: SkillInfo,
+  onClick?: () => void
 }> {
   render () {
     const lockSymbol = !this.props.unlocked && (
@@ -19,13 +22,14 @@ export class SkillIcon extends React.Component<{
 
     const levelIndicator = this.props.level && (
       <span className={css(styles.levelIndicator)}>
-          {this.props.level}
-        </span>
+        {this.props.level}
+      </span>
     );
 
     return (
       <TooltipArea
-        tip={todo}
+        onClick={this.props.onClick}
+        tip={<SkillBreakdown skill={this.props.skill}/>}
         classStyle={styles.container}>
         {lockSymbol}
         {levelIndicator}

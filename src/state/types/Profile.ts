@@ -33,6 +33,10 @@ export class Profile {
   @observable
   heroes: Hero[] = [];
 
+  @serializable(list(object(Hero)))
+  @observable
+  graveyard: Hero[] = [];
+
   @serializable(list(object(Quest)))
   @observable
   quests: Quest[] = [];
@@ -57,10 +61,6 @@ export class Profile {
     return this.quests.find((q) => q.id === this.selectedQuestId);
   }
 
-  @computed get unassignedItems () {
-    return this.items.filter((item) => item.heroId === undefined);
-  }
-
   get rosterSize () {
     return 9; // TODO should derive from upgrades
   }
@@ -71,6 +71,14 @@ export class Profile {
 
   @computed get hasBegun () {
     return !!this.path;
+  }
+
+  killHero (hero: Hero) {
+    const index = this.heroes.indexOf(hero);
+    if (index !== -1) {
+      this.heroes.splice(index, 1);
+      this.graveyard.push(hero);
+    }
   }
 
   sortHeroes (compareFn: (a: Hero, b: Hero) => number) {
@@ -92,9 +100,11 @@ export class Profile {
 
   unequipAllItems () {
     transaction(() => {
-      this.items.forEach((item) =>
-        item.heroId = undefined
-      );
+      this.heroes.forEach((hero) => {
+        while (hero.items.length) {
+          this.items.push(hero.items.pop());
+        }
+      });
     });
   }
 

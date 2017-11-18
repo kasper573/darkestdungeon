@@ -13,8 +13,10 @@ const TWEEN = require("tween.js");
 // Initialize application state
 const state = new AppState();
 addStaticState();
-state.router.goto("start");
+state.load();
+state.ensureProfile();
 state.initialize();
+state.router.goto("start");
 
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});

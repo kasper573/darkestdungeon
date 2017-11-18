@@ -28,7 +28,10 @@ export class Quest {
   // Data that changes throughout a quest
   @serializable @observable status: QuestStatus = QuestStatus.Idle;
   @serializable @observable light: number = 1;
-  @serializable @observable battle?: Battle;
+
+  @serializable(object(Battle))
+  @observable
+  battle?: Battle;
 
   get isFinished () {
     return this.status === QuestStatus.Victory ||

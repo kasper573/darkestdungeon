@@ -12,7 +12,10 @@ export class HeroGenerator {
     c.name = randomizeItem(StaticState.instance.heroNames);
     c.classInfo = randomizeItem(Array.from(StaticState.instance.heroClasses.values()));
     c.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
-    c.stress = Math.floor(Math.random() * c.stressMax);
+    c.diseases = randomizeItems(Array.from(StaticState.instance.diseases.values()), 1, 3);
+    c.quirks = randomizeItems(Array.from(StaticState.instance.quirks.values()), 1, 8);
+    c.skills = randomizeItems(Array.from(StaticState.instance.skills.values()), 4, 4);
+    c.resetMutableStats();
     return c;
   }
 }
@@ -59,4 +62,22 @@ export class QuestGenerator {
 export function randomizeItem<T> (items: T[]): T {
   const index = Math.floor(items.length * Math.random());
   return items[index];
+}
+
+export function randomizeItems<T> (items: T[], min: number = 1, max: number = items.length): T[] {
+  if (max > items.length) {
+    max = items.length;
+  }
+  if (min > items.length) {
+    min = items.length;
+  }
+
+  let amount = min + Math.floor(Math.random() * (max - min));
+  const itemsLeft = items.slice();
+  const selectedItems: T[] = [];
+  while (amount-- > 0) {
+    const index = Math.floor(itemsLeft.length * Math.random());
+    selectedItems.push(itemsLeft.splice(index, 1)[0]);
+  }
+  return selectedItems;
 }

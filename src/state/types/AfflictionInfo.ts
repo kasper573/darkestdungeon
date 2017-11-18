@@ -1,6 +1,5 @@
-import {identifier, serializable} from "serializr";
+import {QuirkInfo} from "./QuirkInfo";
 
-export class AfflictionInfo {
-  @serializable(identifier()) id: string;
-  name: string;
+export class AfflictionInfo extends QuirkInfo {
+  statsSourceName: string = "Affliction";
 }

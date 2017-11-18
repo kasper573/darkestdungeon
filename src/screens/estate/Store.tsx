@@ -54,7 +54,7 @@ export class Store extends React.Component<{
           {this.store.map((item) =>
             <ItemSlot
               key={item.id}
-              item={item.info}
+              item={item}
               style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
               onClick={
                 this.canAffordItem(item) ?
@@ -70,7 +70,7 @@ export class Store extends React.Component<{
           {this.cart.map((item) =>
             <ItemSlot
               key={item.id}
-              item={item.info}
+              item={item}
               onClick={() => this.returnItem(item)}
             />
           )}

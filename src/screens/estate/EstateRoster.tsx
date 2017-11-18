@@ -18,12 +18,7 @@ export class EstateRoster extends AppStateComponent<{
       position: {x: 0, y: 0},
       modalState: ModalState.Opaque,
       id: "heroInfo",
-      content: (
-        <HeroOverview
-          profile={this.appState.profiles.activeProfile}
-          hero={hero}
-        />
-      )
+      content: <HeroOverview hero={hero}/>
     });
   }
 

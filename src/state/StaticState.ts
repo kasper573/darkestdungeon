@@ -3,6 +3,9 @@ import {LevelInfo} from "./types/LevelInfo";
 import {AfflictionInfo} from "./types/AfflictionInfo";
 import {CharacterClassInfo} from "./types/CharacterClassInfo";
 import {ItemInfo} from "./types/ItemInfo";
+import {QuirkInfo} from "./types/QuirkInfo";
+import {SkillInfo} from "./types/SkillInfo";
+import {DiseaseInfo} from "./types/DiseaseInfo";
 
 export class StaticState  {
   // noinspection TsLint
@@ -19,6 +22,9 @@ export class StaticState  {
   afflictions = new Map<string, AfflictionInfo>();
   levels = new Map<number, LevelInfo>();
   dungeons = new Map<string, DungeonInfo>();
+  quirks = new Map<string, QuirkInfo>();
+  diseases = new Map<string, DiseaseInfo>();
+  skills = new Map<string, SkillInfo>();
 
   clear () {
     for (const key in this) {

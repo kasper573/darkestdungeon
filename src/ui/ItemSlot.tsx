@@ -1,18 +1,23 @@
 import * as React from "react";
 import { StyleSheet} from "aphrodite";
-import {ItemInfo} from "../state/types/ItemInfo";
 import {commonStyles} from "../config/styles";
 import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
-import {ItemBreakdown} from "./ItemBreakdown";
+import {StatsTextList} from "./StatsText";
+import {ItemLevel} from "./ItemLevel";
+import {Item} from "../state/types/Item";
 
 export class ItemSlot extends React.Component<{
-  item?: ItemInfo,
+  item?: Item,
   onClick?: () => void,
   style?: any
 }> {
   render () {
-    const breakdown = this.props.item && (
-      <ItemBreakdown/>
+    const item = this.props.item;
+    const breakdown = item && (
+      <div>
+        <ItemLevel key={item.id} type={item.info.type} level={item.level}/>
+        <StatsTextList stats={this.props.item.info.stats.nonNeutral}/>
+      </div>
     );
 
     return (
@@ -22,7 +27,7 @@ export class ItemSlot extends React.Component<{
         classStyle={[styles.itemSlot, commonStyles.boxBorder]}
         style={this.props.style}>
         <span style={{flex: 1}} onClick={this.props.onClick}>
-          {this.props.item ? this.props.item.name : undefined}
+          {this.props.item ? this.props.item.info.name : undefined}
         </span>
       </TooltipArea>
     );

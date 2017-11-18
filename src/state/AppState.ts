@@ -8,7 +8,7 @@ import {OptionsState} from "./OptionsState";
 import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
-import {Profile} from "./types/Profile";
+import {Difficulty, Profile} from "./types/Profile";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -35,8 +35,6 @@ export class AppState {
    * Starts composite state behavior
    */
   initialize () {
-    this.load();
-
     let previousPath = this.router.path;
     this.reactionDisposers = [
       // Path changes
@@ -78,6 +76,17 @@ export class AppState {
     ];
   }
 
+  ensureProfile () {
+    if (this.profiles.map.size === 0) {
+      const nullProfile = this.profiles.createProfile(Difficulty.Radiant);
+      nullProfile.name = "Null";
+      nullProfile.isNameFinalized = true;
+    }
+
+    // Activate the first profile
+    this.profiles.setActiveProfile(Array.from(this.profiles.map.keys())[0]);
+  }
+
   save () {
     const jsProfileList = [];
     for (const profile of this.profiles.map.values()) {
@@ -109,7 +118,6 @@ export class AppState {
    * Ends composite state behavior
    */
   dispose () {
-    this.save();
     this.reactionDisposers.forEach((dispose) => dispose());
   }
 }

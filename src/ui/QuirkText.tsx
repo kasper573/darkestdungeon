@@ -2,18 +2,20 @@ import * as React from "react";
 import {commonStyles} from "../config/styles";
 import {QuirkInfo} from "../state/types/QuirkInfo";
 import {TooltipArea} from "../lib/TooltipArea";
-import {todo} from "../config/general";
+import {StatsTextList} from "./StatsText";
 
 export class QuirkText extends React.Component<{
   quirk: QuirkInfo
 }> {
   render () {
-    const classStyle = this.props.quirk.isPositive ?
+    const classStyle = this.props.quirk.stats.isPositive ?
       commonStyles.positiveText :
       commonStyles.negativeText;
 
     return (
-      <TooltipArea tip={todo} classStyle={classStyle}>
+      <TooltipArea
+        tip={<StatsTextList stats={this.props.quirk.stats.nonNeutral} long/>}
+        classStyle={classStyle}>
         {this.props.quirk.name}
       </TooltipArea>
     );
