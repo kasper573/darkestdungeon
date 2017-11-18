@@ -19,7 +19,7 @@ export class Character extends Experienced {
 
   @serializable @observable name: string;
 
-  @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.heroClasses)))
+  @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.classes)))
   classInfo: CharacterClassInfo;
 
   @serializable(reference(AfflictionInfo, StaticState.lookup((i) => i.afflictions)))
@@ -30,9 +30,6 @@ export class Character extends Experienced {
 
   @serializable(list(reference(DiseaseInfo, StaticState.lookup((i) => i.diseases))))
   diseases: DiseaseInfo[] = [];
-
-  @serializable(list(reference(SkillInfo, StaticState.lookup((i) => i.skills))))
-  skills: SkillInfo[] = [];
 
   @serializable(list(object(Item)))
   @observable
@@ -50,6 +47,11 @@ export class Character extends Experienced {
 
   @serializable(object(Stats))
   @observable mutableStats = new Stats();
+
+  get skills () {
+    // TODO create Skill type containing level and SkillInfo
+    return this.classInfo.skills;
+  }
 
   @computed get stats () {
     const sum = new Stats();

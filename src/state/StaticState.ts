@@ -6,6 +6,7 @@ import {ItemInfo} from "./types/ItemInfo";
 import {QuirkInfo} from "./types/QuirkInfo";
 import {SkillInfo} from "./types/SkillInfo";
 import {DiseaseInfo} from "./types/DiseaseInfo";
+import {CharacterTemplate} from "./types/CharacterTemplate";
 
 export class StaticState  {
   // noinspection TsLint
@@ -16,15 +17,16 @@ export class StaticState  {
 
   private constructor () {}
 
-  heroNames: string[] = [];
   items = new Map<string, ItemInfo>();
-  heroClasses = new Map<string, CharacterClassInfo>();
   afflictions = new Map<string, AfflictionInfo>();
   levels = new Map<number, LevelInfo>();
   dungeons = new Map<string, DungeonInfo>();
   quirks = new Map<string, QuirkInfo>();
   diseases = new Map<string, DiseaseInfo>();
   skills = new Map<string, SkillInfo>();
+  heroes = new Map<string, CharacterTemplate>();
+  monsters = new Map<string, CharacterTemplate>();
+  classes = new Map<string, CharacterClassInfo>();
 
   clear () {
     for (const key in this) {

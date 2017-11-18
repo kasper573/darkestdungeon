@@ -61,6 +61,12 @@ export class Profile {
     return this.quests.find((q) => q.id === this.selectedQuestId);
   }
 
+  @computed get selectedDungeon () {
+    if (this.selectedQuest) {
+      return this.dungeons.find((d) => d.id === this.selectedQuest.dungeonId);
+    }
+  }
+
   get rosterSize () {
     return 9; // TODO should derive from upgrades
   }
