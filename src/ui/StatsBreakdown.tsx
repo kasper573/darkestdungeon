@@ -1,40 +1,29 @@
 import * as React from "react";
-import {StatsInfo} from "../state/types/StatsInfo";
-import {StatsValueText} from "./StatsValueText";
-import {Column, commonStyles, Row} from "../config/styles";
-import {css} from "aphrodite";
+import {StatItem} from "../state/types/StatItem";
+import {css, StyleSheet} from "aphrodite";
+import {commonStyles} from "../config/styles";
 
-export class StatsBreakdown extends React.Component<{
-  stats: StatsInfo
-}> {
+export class StatsBreakdown extends React.Component<{stats: StatItem}> {
   render () {
-    const stats = this.props.stats;
-    const modRows = stats.mods.map((mod, index) => {
-      let valueText;
-      if (mod.percentages !== undefined) {
-        valueText = <StatsValueText value={mod.percentages} isPercentage/>;
-      } else if (mod.units !== undefined) {
-        valueText = <StatsValueText value={mod.units} isPercentage={stats.isPercentage}/>;
-      }
-      return (
-        <Row key={index}>
-          {valueText}
-          <span style={{flex: "inherit"}}>{mod.source}</span>
-        </Row>
-      );
-    });
+    const mods = this.props.stats.mods.map((mod, index) => (
+      <div className={css(styles.source)} key={index}>
+        {mod.stat.toString()} from {mod.source.statsSourceName} ({mod.source.name})
+      </div>
+    ));
 
     return (
       <div>
-        <div className={css(commonStyles.positiveText)}>{stats.longName}</div>
-        <Row>
-          <Column>Base:</Column>
-          <div style={{flex: "inherit"}}>
-            <StatsValueText value={stats.value}/>
-          </div>
-        </Row>
-        {modRows}
+        <div className={css(commonStyles.positiveText)}>
+          {this.props.stats.info.longName}
+        </div>
+        {mods}
       </div>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  source: {
+    whiteSpace: "nowrap"
+  }
+});

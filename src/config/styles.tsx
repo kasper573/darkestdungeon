@@ -31,10 +31,12 @@ export const commonStyles = StyleSheet.create({
   },
 
   positiveText: {
+    whiteSpace: "nowrap",
     color: "rgb(200, 180, 110)"
   },
 
   negativeText: {
+    whiteSpace: "nowrap",
     color: "red"
   },
 

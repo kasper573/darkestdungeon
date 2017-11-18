@@ -1,8 +1,9 @@
 import * as React from "react";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyles} from "../config/styles";
+import {commonStyles, Row} from "../config/styles";
 import {Hero} from "../state/types/Hero";
+import {QuirkText} from "./QuirkText";
 
 @observer
 export class HeroBreakdown extends React.Component<{hero: Hero}> {
@@ -10,9 +11,10 @@ export class HeroBreakdown extends React.Component<{hero: Hero}> {
     const c = this.props.hero;
 
     const afflictionItem = c.affliction && (
-      <li className={css(commonStyles.afflictionText)}>
-        Affliction: {c.affliction.name}
-      </li>
+      <Row classStyle={commonStyles.afflictionText}>
+        <span>Affliction:</span>
+        <QuirkText quirk={c.affliction}/>
+      </Row>
     );
 
     const experience = c.level.isMax ? "MAX" : (
@@ -28,7 +30,7 @@ export class HeroBreakdown extends React.Component<{hero: Hero}> {
           Resolve XP: {experience}
         </li>
         {afflictionItem}
-        <li>Stress {c.stress}/{c.stressMax}</li>
+        <li>Stress {c.stats.stress.value}/{c.stats.maxStress.value}</li>
       </ul>
     );
   }

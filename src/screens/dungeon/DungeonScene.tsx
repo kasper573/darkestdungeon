@@ -7,8 +7,9 @@ import {Row} from "../../config/styles";
 import {CurioModel} from "../../ui/CurioModel";
 import {Profile} from "../../state/types/Profile";
 import {Character} from "../../state/types/Character";
+import {AppStateComponent} from "../../AppStateComponent";
 
-export class DungeonScene extends React.Component<{
+export class DungeonScene extends AppStateComponent<{
   profile: Profile
 }> {
   monsters: Character[];

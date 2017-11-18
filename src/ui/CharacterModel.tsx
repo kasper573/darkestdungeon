@@ -3,10 +3,15 @@ import {css, StyleSheet} from "aphrodite";
 import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
 import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
-import {todo} from "../config/general";
 import {Character} from "../state/types/Character";
 import {Hero} from "../state/types/Hero";
+import {QuirkText} from "./QuirkText";
+import {StatsTextList} from "./StatsText";
+import {commonStyles} from "../config/styles";
+import {observer} from "mobx-react";
+import {TurnStats} from "../state/types/Stats";
 
+@observer
 export class CharacterModel extends React.Component<{
   character: Character,
   classStyle?: any
@@ -16,21 +21,74 @@ export class CharacterModel extends React.Component<{
   }
 
   render () {
+    const c = this.props.character;
+    const dotBreakdowns: any[] = [];
+    c.dots.forEach((stats, status) => {
+      const name = stats.statusChances.get(status).info.shortName;
+      dotBreakdowns.push(
+        <TurnBreakdown key={status} turnStats={stats} name={name} invert/>
+      );
+    });
+
     return (
       <div className={css(styles.model, this.props.classStyle)}>
-        <div>{this.props.character.name}</div>
-        {this.props.character.affliction && (
-          <div>{this.props.character.affliction.name}</div>
+        <div>{c.name}</div>
+
+        {c.affliction && (
+          <QuirkText quirk={c.affliction}/>
         )}
+
         <TooltipArea
-          tip={this.isHero && <HPAndStress character={this.props.character}/>}
+          tip={this.isHero && <HPAndStress character={c}/>}
           side={TooltipSide.Above}>
-          <HealthMeter percentage={0.5}/>
+          <HealthMeter percentage={c.stats.healthPercentage}/>
           {this.isHero && (
-            <StressMeter percentage={this.props.character.stressPercentage}/>
+            <StressMeter percentage={c.stats.stressPercentage}/>
           )}
         </TooltipArea>
+        
+        {c.buff && <TurnBreakdown turnStats={c.buff} name={c.buff.isPositive ? "Buff" : "Debuff"}/>}
+
+        {dotBreakdowns}
       </div>
+    );
+  }
+}
+
+class TurnBreakdown extends React.Component<{
+  turnStats: TurnStats,
+  name: string,
+  invert?: boolean
+}> {
+  render () {
+    const stats = this.props.turnStats;
+    let isPositive = stats.isPositive;
+    if (this.props.invert) {
+      isPositive = !isPositive;
+    }
+
+    return (
+      <TooltipArea
+        tip={(
+          <div>
+            {
+              <div className={css(isPositive ?
+                commonStyles.positiveText :
+                commonStyles.negativeText
+              )}>
+                {stats.turns} turns
+              </div>
+            }
+            <StatsTextList stats={stats.nonNeutral}/>
+          </div>
+        )}>
+        <div className={css(isPositive ?
+          commonStyles.positiveText :
+          commonStyles.negativeText
+        )}>
+          {this.props.name}
+        </div>
+      </TooltipArea>
     );
   }
 }
@@ -39,9 +97,11 @@ class HPAndStress extends React.Component<{character: Character}> {
   render () {
     return (
       <div>
-        <span>HP: {todo}</span>
-        <span>
-          Stress: {this.props.character.stress} / {this.props.character.stressMax}
+        <span style={{whiteSpace: "nowrap"}}>
+          HP: {this.props.character.stats.health.value} / {this.props.character.stats.maxHealth.value}
+        </span>
+        <span style={{whiteSpace: "nowrap"}}>
+          Stress: {this.props.character.stats.stress.value} / {this.props.character.stats.maxStress.value}
         </span>
       </div>
     );

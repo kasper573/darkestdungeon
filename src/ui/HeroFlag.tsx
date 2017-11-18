@@ -4,6 +4,7 @@ import {css, StyleSheet} from "aphrodite";
 import {HeroLevel} from "./HeroLevel";
 import {StressMeter} from "./StressMeter";
 import {Hero} from "../state/types/Hero";
+import {QuirkText} from "./QuirkText";
 
 @observer
 export class HeroFlag extends React.Component<{
@@ -13,9 +14,9 @@ export class HeroFlag extends React.Component<{
     return (
       <div className={css(styles.container)}>
         <HeroLevel hero={this.props.hero}/>
-        <StressMeter percentage={this.props.hero.stressPercentage}/>
+        <StressMeter percentage={this.props.hero.stats.stressPercentage}/>
         {this.props.hero.affliction && (
-          <div>{this.props.hero.affliction.name}</div>
+          <QuirkText quirk={this.props.hero.affliction}/>
         )}
       </div>
     );

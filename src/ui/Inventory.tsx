@@ -7,6 +7,7 @@ import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {Item} from "../state/types/Item";
+import {ItemSlot} from "./ItemSlot";
 
 @observer
 export class Inventory extends AppStateComponent {
@@ -24,7 +25,7 @@ export class Inventory extends AppStateComponent {
 
   render () {
     const profile = this.appState.profiles.activeProfile;
-    const sortedItems = profile.unassignedItems.sort(this.compareFn);
+    const sortedItems = profile.items.sort(this.compareFn);
     return (
       <div>
         <BannerHeader>
@@ -41,9 +42,7 @@ export class Inventory extends AppStateComponent {
         </div>
         <ul>
           {sortedItems.map((item) => (
-            <li key={item.id}>
-              [{item.info.name}]
-            </li>
+            <ItemSlot key={item.id} item={item}/>
           ))}
         </ul>
       </div>

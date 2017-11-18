@@ -18,6 +18,7 @@ import {Abbey} from "../screens/estate/buildings/Abbey";
 import {Guild} from "../screens/estate/buildings/Guild";
 import {Blacksmith} from "../screens/estate/buildings/Blacksmith";
 import {Memoirs} from "../screens/estate/buildings/Memoirs";
+import {StatsTester} from "../screens/StatsTester";
 
 export const defaultEstateAmbience = new AmbienceDefinition(
   {src: require("../../assets/dd/audio/amb_town_gen_base.wav")},
@@ -164,6 +165,11 @@ export const routes: {[key: string]: Route} = {
 
   popupTester: new Route({
     component: PopupTester,
+    isMemorable: false
+  }),
+
+  statsTester: new Route({
+    component: StatsTester,
     isMemorable: false
   })
 };

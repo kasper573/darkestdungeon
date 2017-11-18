@@ -1,37 +1,25 @@
 import * as React from "react";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
-import {computed} from "mobx";
 import {StyleSheet} from "aphrodite";
 import {Column, Row} from "../config/styles";
-import {StatsInfo} from "../state/types/StatsInfo";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
-import {StatsText} from "./StatsText";
 import {PositionDots} from "./PositionDots";
-import {SkillIcon} from "./SkillIcon";
 import {HeroEquipment} from "./HeroEquipment";
 import {HeroSkills} from "./HeroSkills";
 import {HeroFlag} from "./HeroFlag";
 import {CharacterModel} from "./CharacterModel";
-import {Profile} from "../state/types/Profile";
 import {Hero} from "../state/types/Hero";
-import {Item} from "../state/types/Item";
-import {QuirkInfo} from "../state/types/QuirkInfo";
-import {StatsModSource} from "../state/types/StatsInfo";
+import {StatsTextList} from "./StatsText";
+import {SkillInfo} from "../state/types/SkillInfo";
 
 @observer
 export class HeroOverview extends React.Component<
   PopupProps & {
-  profile: Profile,
-  hero: Hero
+  hero: Hero,
+  onSkillSelected?: (skill: SkillInfo) => void
 }> {
-  @computed get heroItems () {
-    return this.props.profile.items.filter(
-      (item: Item) => item.heroId === this.props.hero.id
-    );
-  }
-
   render () {
     const {hero, ...rest} = this.props;
     return (
@@ -45,7 +33,7 @@ export class HeroOverview extends React.Component<
 
             <Row>
               <button>DISMISS</button>
-              <span>Class Name</span>
+              <span>{hero.classInfo.name}</span>
             </Row>
 
             <Row>
@@ -60,49 +48,20 @@ export class HeroOverview extends React.Component<
                 <CommonHeader label="Quirks"/>
                 <Row>
                   <Column>
-                    <QuirkText quirk={new QuirkInfo("Hard Noggin")}/>
-                    <QuirkText quirk={new QuirkInfo("Balanced")}/>
-                    <QuirkText quirk={new QuirkInfo("Nymphomania")}/>
-                    <QuirkText quirk={new QuirkInfo("Quick Reflexes")}/>
-                    <QuirkText quirk={new QuirkInfo("Quickdraw")}/>
+                    {hero.quirks.filter((q) => q.stats.isPositive).map((q) => (
+                      <QuirkText key={q.id} quirk={q}/>
+                    ))}
                   </Column>
                   <Column style={{textAlign: "right"}}>
-                    <QuirkText quirk={new QuirkInfo("Known Cheat", false)}/>
-                    <QuirkText quirk={new QuirkInfo("Night Blindness", false)}/>
-                    <QuirkText quirk={new QuirkInfo("Thanatophobia", false)}/>
-                    <QuirkText quirk={new QuirkInfo("Witness", false)}/>
+                    {hero.quirks.filter((q) => !q.stats.isPositive).map((q) => (
+                      <QuirkText key={q.id} quirk={q}/>
+                    ))}
                   </Column>
                 </Row>
 
                 <CommonHeader label="Base Stats"/>
                 <Row classStyle={styles.baseStats}>
-                  <Column>
-                    <StatsText stats={
-                      new StatsInfo("HP", "MAX HEALTH POINTS", 23, [
-                        {percentages: -0.1, source: StatsModSource.Affliction},
-                        {percentages: 0.05, source: StatsModSource.Item},
-                        {units: -10, source: StatsModSource.Quirk},
-                        {units: 5, source: StatsModSource.Quirk},
-                        {units: -1, source: StatsModSource.Item}
-                      ])}
-                    />
-                    <StatsText stats={new StatsInfo("DGE", "DODGE", 10)}/>
-                    <StatsText stats={new StatsInfo("PROT", "PROTECTION POINTS", 0)}/>
-                    <StatsText stats={new StatsInfo("SPD", "SPEED", 6)}/>
-                  </Column>
-                  <Column>
-                    <StatsText stats={new StatsInfo("ACC", "ACCURACY", 0)}/>
-                    <StatsText stats={
-                      new StatsInfo("CRIT", "CRITICAL CHANCE", 0.025, [
-                        {percentages: -0.1, source: StatsModSource.Affliction},
-                        {percentages: 0.15, source: StatsModSource.Item},
-                        {units: 0.05, source: StatsModSource.Quirk}
-                      ], true)
-                    }/>
-                    <StatsText stats={
-                      new StatsInfo("DMG", "DAMAGE", [3, 7])
-                    }/>
-                  </Column>
+                  <StatsTextList stats={hero.stats.base}/>
                 </Row>
 
                 <CommonHeader label="Equipment"/>
@@ -112,56 +71,35 @@ export class HeroOverview extends React.Component<
           </Column>
 
           <Column>
-            <CommonHeader label="Combat Skills"/>
+            <CommonHeader label="Skills"/>
             <Row>
               <Column style={{alignItems: "center"}}>
                 <h1 style={{whiteSpace: "nowrap"}}>Positions</h1>
-                <PositionDots color="gold" innerValues={[1, 3, 2, 0]} outerValues={[0, 1, 0, 1]}/>
+                <PositionDots
+                  color="gold"
+                  innerValues={PositionDots.getPositionValues(hero.skills)}
+                  outerValues={PositionDots.getSupportValues(hero.skills)}
+                />
               </Column>
               <Column style={{alignItems: "center"}}>
                 <h1 style={{whiteSpace: "nowrap"}}>Targets</h1>
-                <PositionDots color="red" innerValues={[0, 1, 2, 3]}/>
+                <PositionDots
+                  color="red"
+                  innerValues={PositionDots.getHostileValues(hero.skills)}
+                />
               </Column>
             </Row>
-            <HeroSkills />
-
-            <CommonHeader label="Camping Skills"/>
-            <Row>
-              <SkillIcon unlocked/>
-              <SkillIcon />
-              <SkillIcon selected unlocked/>
-              <SkillIcon selected unlocked/>
-              <SkillIcon />
-              <SkillIcon />
-              <SkillIcon selected unlocked/>
-            </Row>
+            <HeroSkills skills={hero.skills} onSkillSelected={this.props.onSkillSelected}/>
 
             <CommonHeader label="Resistances"/>
             <Row classStyle={styles.baseStats}>
-              <Column>
-                <StatsText stats={
-                  new StatsInfo("Stun", "Stun", 0.5, [
-                    {percentages: -0.1, source: StatsModSource.Affliction},
-                    {percentages: 0.05, source: StatsModSource.Item},
-                    {units: -0.1, source: StatsModSource.Quirk},
-                    {units: 0.2, source: StatsModSource.Quirk},
-                    {units: -0.05, source: StatsModSource.Item}
-                  ], true)}
-                />
-                <StatsText stats={new StatsInfo("Blight", "Blight", 0.5, [], true)}/>
-                <StatsText stats={new StatsInfo("Disease", "Disease", 0.5, [], true)}/>
-                <StatsText stats={new StatsInfo("Death Blow", "Death Blow", 0.5, [], true)}/>
-              </Column>
-              <Column>
-                <StatsText stats={new StatsInfo("Move", "Move", 0.5, [], true)}/>
-                <StatsText stats={new StatsInfo("Bleed", "Bleed", 0.5, [], true)}/>
-                <StatsText stats={new StatsInfo("Debuff", "Debuff", 0.5, [], true)}/>
-                <StatsText stats={new StatsInfo("Trap", "Trap", 0.5, [], true)}/>
-              </Column>
+              <StatsTextList stats={Array.from(hero.stats.resistances.values())}/>
             </Row>
 
             <CommonHeader label="Diseases"/>
-            <QuirkText quirk={new QuirkInfo("Death", false)}/>
+            {hero.diseases.map((q) => (
+              <QuirkText key={q.id} quirk={q}/>
+            ))}
           </Column>
         </Row>
       </Popup>

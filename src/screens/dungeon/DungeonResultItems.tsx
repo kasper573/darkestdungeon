@@ -14,10 +14,7 @@ export class DungeonResultItems extends React.Component<{
         <BannerHeader>Quest Rewards</BannerHeader>
         <Row>
           {this.props.quest.rewards.map((item) =>
-            <ItemSlot
-              key={item.id}
-              item={item.info}
-            />
+            <ItemSlot key={item.id} item={item}/>
           )}
         </Row>
 

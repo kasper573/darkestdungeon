@@ -23,6 +23,7 @@ describe("main", () => {
   for (const path in routes) {
     it (`renders "${path}" without errors`, () => {
       const state = new AppState();
+      state.ensureProfile();
       state.isRunningJest = true;
       state.router.addRoutes(routes);
       state.router.goto(path);
@@ -37,10 +38,8 @@ describe("main", () => {
   it (`hibernates state`, () => {
     const savedState = new AppState();
     savedState.profiles.createProfile(Difficulty.Darkest);
-    savedState.initialize();
 
     savedState.save();
-    savedState.dispose();
 
     const loadedState = new AppState();
     loadedState.load();

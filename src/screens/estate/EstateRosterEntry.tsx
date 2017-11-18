@@ -38,6 +38,9 @@ export class EstateRosterEntry extends React.Component<{
       }
     }
 
+    const armor = hero.items.find((i) => i.info.type === ItemType.Armor);
+    const weapon = hero.items.find((i) => i.info.type === ItemType.Weapon);
+
     return (
       <li className={css(styles.entry, extraStyle)}
           onClick={this.props.onSelect}>
@@ -50,11 +53,11 @@ export class EstateRosterEntry extends React.Component<{
           </span>
           <StressMeter
             classStyle={styles.stress}
-            percentage={hero.stressPercentage}
+            percentage={hero.stats.stressPercentage}
           />
           <div className={css(styles.equipment)}>
-            <ItemLevel type={ItemType.Armor} level={1}/>
-            <ItemLevel type={ItemType.Weapon} level={1}/>
+            {armor && <ItemLevel type={ItemType.Armor} level={armor.level}/>}
+            {weapon && <ItemLevel type={ItemType.Weapon} level={weapon.level}/>}
           </div>
         </div>
         <TooltipArea
