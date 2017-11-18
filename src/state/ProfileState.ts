@@ -24,10 +24,8 @@ export class ProfileState {
     profile.name = difficulty.toString();
     profile.gold = 250;
 
-    profile.heroes = [
-      this.heroGenerator.next(),
-      this.heroGenerator.next()
-    ];
+    profile.heroes.push(this.heroGenerator.next(profile.heroes));
+    profile.heroes.push(this.heroGenerator.next(profile.heroes));
 
     profile.items = [
       this.itemGenerator.next(),

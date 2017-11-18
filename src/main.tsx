@@ -16,7 +16,7 @@ addStaticState();
 state.load();
 state.ensureProfile();
 state.initialize();
-state.router.goto("start");
+state.router.goto("estateOverview");
 
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});

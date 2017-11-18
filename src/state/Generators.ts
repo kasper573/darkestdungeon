@@ -5,18 +5,33 @@ import {Dungeon} from "./types/Dungeon";
 import {Quest} from "./types/Quest";
 import {MapSize, QuestMap} from "./types/QuestMap";
 import {QuestObjective} from "./types/QuestObjective";
+import {Character} from "./types/Character";
+import {DungeonInfo} from "./types/DungeonInfo";
+import {CharacterTemplate} from "./types/CharacterTemplate";
+
+export class MonsterGenerator {
+  next (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
+    const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
+    const monster = new Character();
+    monster.name = randomizeItem(template.characterNames);
+    monster.classInfo = template.classInfo;
+    return monster;
+  }
+}
 
 export class HeroGenerator {
-  next (): Hero {
-    const c = new Hero();
-    c.name = randomizeItem(StaticState.instance.heroNames);
-    c.classInfo = randomizeItem(Array.from(StaticState.instance.heroClasses.values()));
-    c.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
-    c.diseases = randomizeItems(Array.from(StaticState.instance.diseases.values()), 1, 3);
-    c.quirks = randomizeItems(Array.from(StaticState.instance.quirks.values()), 1, 8);
-    c.skills = randomizeItems(Array.from(StaticState.instance.skills.values()), 4, 4);
-    c.resetMutableStats();
-    return c;
+  next (activeHeroes: Hero[]): Hero {
+    const allTemplates = Array.from(StaticState.instance.heroes.values());
+    const template = randomizeTemplate(allTemplates, activeHeroes);
+
+    const hero = new Hero();
+    hero.name = randomizeItem(template.characterNames);
+    hero.classInfo = template.classInfo;
+    hero.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
+    hero.diseases = randomizeItems(Array.from(StaticState.instance.diseases.values()), 1, 3);
+    hero.quirks = randomizeItems(Array.from(StaticState.instance.quirks.values()), 1, 8);
+    hero.resetMutableStats();
+    return hero;
   }
 }
 
@@ -57,6 +72,26 @@ export class QuestGenerator {
     q.objective = o;
     return q;
   }
+}
+
+export function randomizeTemplate (allTemplates: CharacterTemplate[], activeCharacters: Character[]) {
+  const activeTemplates = activeCharacters.map(
+    (h) => allTemplates.find((t) => t.classInfo.id === h.classInfo.id)
+  );
+
+  // Filter out any templates marked as unique that already is active
+  const templatePool = allTemplates.filter((t) => {
+    return !activeTemplates.find(
+      (active) => active.id === t.id && active.unique
+    );
+  });
+
+  // Randomize order so we can pick the first rarity match and still have randomness
+  templatePool.sort(() => Math.random () > 0.5 ? -1 : 1);
+
+  // Find rarity match
+  const rarityScore = Math.random();
+  return templatePool.find((t) => rarityScore <= t.rarity);
 }
 
 export function randomizeItem<T> (items: T[]): T {

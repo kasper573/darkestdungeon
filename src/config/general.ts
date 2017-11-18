@@ -9,16 +9,13 @@ import {CharacterStatus} from "../state/types/CharacterStatus";
 import {SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInfo";
 import {DiseaseInfo} from "../state/types/DiseaseInfo";
 import {Stats, TurnStats} from "../state/types/Stats";
+import {CharacterTemplate} from "../state/types/CharacterTemplate";
 
 export const defaultAmbienceOSVolume = 0.25;
 
 export const todo = "?todo?";
 
 export function addStaticState () {
-  StaticState.instance.heroNames = [
-    "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev"
-  ];
-
   ["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]
     .forEach((name, level) => {
       const info = new LevelInfo();
@@ -34,13 +31,6 @@ export function addStaticState () {
     info.previous = StaticState.instance.levels.get(this.id - 1);
     info.next = StaticState.instance.levels.get(this.id + 1);
   }
-
-  ["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
-    const info = new DungeonInfo();
-    info.id = name;
-    info.name = name;
-    StaticState.instance.dungeons.set(info.id, info);
-  });
 
   ["Hopeless", "Paranoid", "Gullible", "Ignorant"].forEach((name, index) => {
     const info = new AfflictionInfo();
@@ -113,26 +103,31 @@ export function addStaticState () {
   heal.target = SkillTarget.anyOne(SkillTargetObject.Ally);
   heal.damageScale = 0;
 
-  ["Ninja", "Superhero", "Magician", "Baller", "Chad"].forEach((className, index) => {
-    const info = new CharacterClassInfo();
-    info.id = className;
-    info.name = className;
+  const commonHeroNames = [
+    "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev", "Kfirba2"
+  ];
 
-    info.stats = new Stats();
-    info.stats.maxHealth.value = 10 + index * 5;
-    info.stats.maxStress.value = 200;
-    info.stats.protect.value = index;
-    info.stats.damage.value = 1 + index;
-    info.stats.dodge.value = index;
-    info.stats.accuracy.value = index;
-    info.stats.speed.value = index;
-    info.stats.criticalChance.value = index / 5;
+  addHero("Ninja", commonHeroNames);
+  addHero("Superhero", commonHeroNames);
+  addHero("Magician", commonHeroNames);
+  addHero("Baller", commonHeroNames);
+  addHero("Chad", commonHeroNames);
 
-    for (const stat of info.stats.resistances.values()) {
-      stat.value = 0.2;
-    }
+  addHero("Master of Everything", ["Noob"], 0.1, true);
 
-    StaticState.instance.heroClasses.set(info.id, info);
+  addMonster("Skeleton");
+  addMonster("Demon");
+  addMonster("Devil");
+  addMonster("Snake");
+
+  addMonster("Destruction of Everything", ["jQuery"], 0.1, true);
+
+  ["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
+    const info = new DungeonInfo();
+    info.id = name;
+    info.name = name;
+    info.monsters = Array.from(StaticState.instance.monsters.values());
+    StaticState.instance.dungeons.set(info.id, info);
   });
 
   ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name, index) => {
@@ -190,4 +185,52 @@ export function addStaticState () {
 
     StaticState.instance.diseases.set(info.id, info);
   });
+}
+
+function createStandardCharacterClass (className: string) {
+  const info = new CharacterClassInfo();
+  info.id = info.name = className;
+  info.stats = new Stats();
+  info.stats.maxHealth.value = 50;
+  info.stats.maxStress.value = 200;
+  info.stats.protect.value = 10;
+  info.stats.damage.value = 10;
+  info.stats.dodge.value = 10;
+  info.stats.accuracy.value = 10;
+  info.stats.speed.value = 10;
+  info.stats.criticalChance.value = 0.05;
+  info.skills = Array.from(StaticState.instance.skills.values());
+
+  for (const stat of info.stats.statusChances.values()) {
+    stat.value = 0.5;
+  }
+
+  for (const stat of info.stats.resistances.values()) {
+    stat.value = 0.2;
+  }
+  return info;
+}
+
+function createStandardHeroClass (className: string) {
+  return createStandardCharacterClass(className);
+}
+
+function createStandardMonsterClass (className: string) {
+  return createStandardCharacterClass(className);
+}
+
+function addHero (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
+  const classInfo = createStandardHeroClass(className);
+  const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
+  StaticState.instance.heroes.set(template.id, template);
+  StaticState.instance.classes.set(template.id, classInfo);
+  return template;
+}
+
+function addMonster (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
+  const classInfo = createStandardMonsterClass(className);
+  const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
+  StaticState.instance.monsters.set(template.id, template);
+  StaticState.instance.classes.set(template.id, classInfo);
+  return template;
 }
