@@ -2,15 +2,21 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import uuid = require("uuid");
 
+export type InputLayerId = string;
 export type InputBindingId = string;
 export type InputHandlerContext = {inputHandler: InputHandler};
+export type InputLayerContext = {inputLayerId: InputLayerId};
+export type InputBindingMatch = string;
+export type InputBindingCallback = (e: KeyboardEvent) => void;
 export type InputBindingProps = {
-  match: string,
-  onTrigger: (e: KeyboardEvent) => void;
+  match: InputBindingMatch,
+  callback: InputBindingCallback;
+  global?: boolean
 };
 
 export class InputHandler {
   bindings = new Map<InputBindingId, InputBinding>();
+  layerId: InputLayerId;
 
   startListening () {
     if (typeof window !== "undefined") {
@@ -25,9 +31,13 @@ export class InputHandler {
   }
 
   onKeyDown (e: KeyboardEvent) {
-    for (const binding of this.bindings.values()) {
-      if (e.key.toLowerCase() === binding.props.match.toLowerCase()) {
-        binding.props.onTrigger(e);
+    // Get current bindings since side effects may cause new bindings
+    const bindingsAtKeypress = Array.from(this.bindings.values());
+
+    for (const binding of bindingsAtKeypress) {
+      const isLayerMatch = binding.props.global || !this.layerId || this.layerId === binding.context.inputLayerId;
+      if (isLayerMatch && binding.props.callback && e.key.toLowerCase() === binding.props.match.toLowerCase()) {
+        binding.props.callback(e);
       }
     }
   }
@@ -37,10 +47,12 @@ export const inputHandlerContext = {
   inputHandler: PropTypes.instanceOf(InputHandler)
 };
 
-export class InputRoot extends React.Component<any> {
+export class InputRoot extends React.Component<{
+  className?: string,
+  style?: any
+}> {
   static childContextTypes = inputHandlerContext;
-  private domNode: HTMLDivElement;
-  private inputHandler = new InputHandler();
+  inputHandler = new InputHandler();
 
   getChildContext (): InputHandlerContext {
     return {
@@ -58,24 +70,61 @@ export class InputRoot extends React.Component<any> {
 
   render () {
     return (
-      <div ref={(node) => this.domNode = node} {...this.props}>
+      <div {...this.props}>
         {this.props.children}
       </div>
     );
   }
 }
 
-export class InputBindings extends React.Component<{list: InputBindingProps[]}> {
+export const inputLayerContext = {
+  inputLayerId: PropTypes.string
+};
+
+export class InputLayer extends React.Component<{
+  id: InputLayerId,
+  className?: string,
+  style?: any
+}> {
+  static childContextTypes = inputLayerContext;
+
+  getChildContext (): InputLayerContext {
+    return {
+      inputLayerId: this.props.id
+    };
+  }
+
   render () {
-    return this.props.list.map((props, index) => (
-      <InputBinding key={index} {...props} />
-    ));
+    const {id, ...rest} = this.props;
+    return (
+      <div {...rest}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+export class InputBindings extends React.Component<{
+  list: Array<[InputBindingMatch, InputBindingCallback] | InputBindingProps>
+}> {
+  render () {
+    return this.props.list.filter((entry) => entry)
+      .map((props: any, index) => {
+        if (Array.isArray(props)) {
+          return <InputBinding key={index} match={props[0]} callback={props[1]}/>;
+        } else {
+          return <InputBinding key={index} {...props}/>;
+        }
+      });
   }
 }
 
 export class InputBinding extends React.Component<InputBindingProps> {
-  static contextTypes = inputHandlerContext;
-  context: InputHandlerContext;
+  static contextTypes = {
+    ...inputHandlerContext,
+    ...inputLayerContext
+  };
+  context: InputHandlerContext & InputLayerContext;
   id: InputBindingId = uuid();
 
   componentWillMount () {

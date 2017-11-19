@@ -1,6 +1,6 @@
 import * as React from "react";
 import {ReactElement} from "react";
-import {observable, reaction, transaction} from "mobx";
+import {computed, observable, reaction, transaction} from "mobx";
 import {Point} from "../Bounds";
 import uuid = require("uuid");
 
@@ -28,6 +28,12 @@ function ensureProps<P> (arg: PopupHandlePropsOrContent<P>): PopupHandleProps<P>
 
 export class PopupState {
   @observable map = new Map<PopupId, PopupHandle>();
+
+  @computed get top () {
+    const modals = Array.from(this.map.values())
+      .filter((p) => p.modalState !== ModalState.Opaque);
+    return modals[modals.length - 1];
+  }
 
   show <P> (arg: PopupHandlePropsOrContent<P>): PopupHandle<P> {
     const popup = new PopupHandle<P>(ensureProps(arg), this);

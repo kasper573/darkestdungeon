@@ -10,6 +10,8 @@ import {Popup} from "../../ui/Popups";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
 import {Row} from "../../config/styles";
 import {AppStateComponent} from "../../AppStateComponent";
+import {InputBindings} from "../../state/InputState";
+import {Input} from "../../config/Input";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -30,6 +32,10 @@ export class EstateTemplate extends AppStateComponent<{
     return this.props.backPath;
   }
 
+  pause () {
+    this.appState.popups.show(<PauseMenu/>);
+  }
+
   goBack () {
     this.appState.router.goto(this.props.backPath);
   }
@@ -37,6 +43,10 @@ export class EstateTemplate extends AppStateComponent<{
   render () {
     return (
       <div className={css(styles.container)}>
+        <InputBindings list={[
+          [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
+        ]}/>
+
         <div className={css(styles.header)}>
           {this.mayGoBack && <span onClick={() => this.goBack()}>[BACK]</span>}
           {this.appState.profiles.activeProfile.name} Estate
@@ -70,7 +80,7 @@ export class EstateTemplate extends AppStateComponent<{
             })}>
               [INVENTORY]
             </span>
-            <span onClick={() => this.appState.popups.show(<PauseMenu/>)}>
+            <span onClick={() => this.pause()}>
               [PAUSE MENU]
             </span>
           </div>

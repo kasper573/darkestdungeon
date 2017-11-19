@@ -1,19 +1,22 @@
-// General
-export const Help = "H";
+export const Input = {
+  // General
+  help: "H",
+  back: "Escape",
 
-// Town
-export const PreviousHero = "Q";
-export const NextHero = "E";
+  // Town
+  previousHero: "Q",
+  nextHero: "E",
 
-// Quest
-export const MoveLeft = "A";
-export const MoveRight = "D";
-export const UseTorch = "T";
+  // Questm
+  moveLeft: "A",
+  moveRight: "D",
+  useTorch: "T",
 
-export const Skills = [
-  "1", "2", "3", "4", "5"
-];
+  skills: [
+    "1", "2", "3", "4", "5"
+  ],
 
-export const Tab = "Tab";
-export const TakeAll = "Space";
-export const HeroInfo = "C";
+  tab: "Tab",
+  takeAll: "Space",
+  heroInfo: "C",
+};

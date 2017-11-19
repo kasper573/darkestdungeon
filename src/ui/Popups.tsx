@@ -5,6 +5,8 @@ import {LineButton} from "./LineButton";
 import {fonts} from "../../assets/fonts";
 import {BannerHeader} from "./BannerHeader";
 import {grid} from "../config/Grid";
+import {Input} from "../config/Input";
+import {InputBinding} from "../state/InputState";
 
 export type PopupProps = {
   handle?: PopupHandle,
@@ -25,6 +27,10 @@ export class Popup extends React.Component<PopupProps> {
         className={css(styles.popupCloseButton)}
         onClick={() => this.props.handle.close()}>
         X
+        <InputBinding
+          match={Input.back}
+          callback={() => this.props.handle.close()}
+        />
       </span>
     );
 
