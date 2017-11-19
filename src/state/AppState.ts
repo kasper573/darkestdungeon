@@ -2,7 +2,7 @@ import {RouterState} from "./RouterState";
 import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
-import {IReactionDisposer, reaction} from "mobx";
+import {IReactionDisposer, observable, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {deserialize, serialize} from "serializr";
@@ -23,6 +23,9 @@ export class AppState {
   public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
+
+  // A react portal node placed above the first layer of popups
+  @observable public portalNode: HTMLDivElement; // HACK this probably shouldn't be part of state
 
   /**
    * Starts composite state behavior

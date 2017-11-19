@@ -131,6 +131,10 @@ export class Profile {
     moveItem(hero, this.roster, this.graveyard);
   }
 
+  recruitHero (hero: Hero) {
+    moveItem(hero, this.coach, this.roster);
+  }
+
   sortHeroes (compareFn: (a: Hero, b: Hero) => number) {
     transaction(() => {
       this.roster = this.roster.sort(compareFn);

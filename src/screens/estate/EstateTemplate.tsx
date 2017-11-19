@@ -42,6 +42,7 @@ export class EstateTemplate extends AppStateComponent<{
   }
 
   render () {
+    const isShowingBuilding = this.props.path.parts.length > 1;
     return (
       <div className={css(styles.container)}>
         <InputBindings list={[
@@ -88,7 +89,10 @@ export class EstateTemplate extends AppStateComponent<{
         </div>
 
         {this.props.roster && (
-          <EstateRoster partyFeatures={this.props.partyFeaturesInRoster}/>
+          <EstateRoster
+            partyFeatures={this.props.partyFeaturesInRoster}
+            portalNode={isShowingBuilding && this.appState.portalNode}
+          />
         )}
       </div>
     );
@@ -107,7 +111,7 @@ export class EstateTemplate extends AppStateComponent<{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 30,
+    paddingTop: 30
   },
 
   header: {
@@ -135,12 +139,12 @@ const styles = StyleSheet.create({
   },
 
   footerLeft: {
-    flex: 1,
+    flex: 1
   },
 
   footerCenter: {
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 20
   },
 
   footerRight: {
