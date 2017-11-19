@@ -9,7 +9,6 @@ import {routes} from "./config/routes";
 import {SizeObserver} from "./lib/SizeObserver";
 import {computed, IReactionDisposer, reaction} from "mobx";
 import {appStateContext} from "./AppStateComponent";
-import {RouterPopups} from "./RouterPopups";
 import {fonts} from "../assets/fonts";
 import {grid} from "./config/Grid";
 import {InputRoot} from "./state/InputState";
@@ -82,10 +81,6 @@ export class App extends React.Component<{
         <div className={css(styles.arc)} style={this.arcStyle}>
           <div className={css(styles.game)} style={this.gameStyle}>
             <Router router={this.props.state.router}/>
-            <RouterPopups
-              popups={this.props.state.popups}
-              router={this.props.state.router}
-            />
             <PopupList
               popups={this.props.state.popups}
               portalNodeRef={(node) => this.props.state.portalNode = node}
