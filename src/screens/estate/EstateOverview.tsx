@@ -12,6 +12,7 @@ import {Blacksmith} from "./buildings/Blacksmith";
 import {Guild} from "./buildings/Guild";
 import {Memoirs} from "./buildings/Memoirs";
 import {AppStateComponent} from "../../AppStateComponent";
+import {when} from "mobx";
 
 const buildings = [
   StageCoach,
@@ -29,13 +30,19 @@ function getBuildingId (component: any) {
 }
 
 export class EstateOverview extends AppStateComponent<{path: Path}> {
+  private stopWaitingForEstateEvents: () => void;
+
   componentWillMount () {
-    // Show estate event popup if there's a new event pending
-    const estateEvent = this.appState.profiles.activeProfile.estateEvent;
-    if (!estateEvent.shown) {
-      estateEvent.shown = true;
-      this.appState.popups.show(<EstateEventPopup event={estateEvent}/>);
-    }
+    // Show estate event when there is one
+    const profile = this.appState.profiles.activeProfile;
+    this.stopWaitingForEstateEvents = when(() => !profile.estateEvent.shown, () => {
+      profile.estateEvent.shown = true;
+      this.appState.popups.show(<EstateEventPopup event={profile.estateEvent}/>);
+    });
+  }
+
+  componentWillUnmount () {
+    this.stopWaitingForEstateEvents();
   }
 
   gotoBuilding (component: any) {
