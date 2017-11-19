@@ -77,7 +77,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
             quest={profile.selectedQuest}
           />
         )}
-        <PartyDropbox members={profile.party}/>
+        <PartyDropbox profile={profile}/>
       </EstateTemplate>
     );
   }

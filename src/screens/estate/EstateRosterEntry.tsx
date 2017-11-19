@@ -10,12 +10,13 @@ import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Hero} from "../../state/types/Hero";
+import {DragDropSlot} from "../../lib/DragDropSlot";
 
 @observer
 export class EstateRosterEntry extends React.Component<{
   hero: Hero,
   partyFeatures?: boolean,
-  canJoinParty?: boolean,
+  onDrop?: (droppedHero: Hero) => void,
   onSelect?: () => void
 }> {
   render () {
@@ -24,26 +25,21 @@ export class EstateRosterEntry extends React.Component<{
     let extraStyle;
     let partyElement;
 
-    if (this.props.partyFeatures) {
-      if (hero.inParty) {
-        extraStyle = styles.entryInParty;
-        partyElement = <div className={css(styles.partyIcon)}/>;
-      } else if (this.props.canJoinParty) {
-        partyElement = (
-          <button
-            onClick={(e) => e.stopPropagation() || (hero.inParty = true)}>
-            JOIN
-          </button>
-        );
-      }
+    if (this.props.partyFeatures && hero.inParty) {
+      extraStyle = styles.entryInParty;
+      partyElement = <div className={css(styles.partyIcon)}/>;
     }
 
     const armor = hero.items.find((i) => i.info.type === ItemType.Armor);
     const weapon = hero.items.find((i) => i.info.type === ItemType.Weapon);
 
     return (
-      <li className={css(styles.entry, extraStyle)}
-          onClick={this.props.onSelect}>
+      <DragDropSlot
+        type={Hero}
+        item={this.props.hero}
+        className={css(styles.entry, extraStyle)}
+        onClick={this.props.onSelect}
+        onDrop={this.props.onDrop}>
         <Avatar src={hero.classInfo.avatarUrl}>
           {partyElement}
         </Avatar>
@@ -66,7 +62,7 @@ export class EstateRosterEntry extends React.Component<{
         >
           <HeroLevel hero={hero}/>
         </TooltipArea>
-      </li>
+      </DragDropSlot>
     );
   }
 }

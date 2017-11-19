@@ -4,7 +4,13 @@ import {observable} from "mobx";
 
 export class Hero extends Character {
   @serializable @observable rosterIndex: number = 0;
+  @serializable @observable partyIndex: number = -1;
   @serializable @observable inParty: boolean;
+
+  leaveParty () {
+    this.inParty = false;
+    this.partyIndex = -1;
+  }
 
   static comparers = {
     name (a: Hero, b: Hero) {

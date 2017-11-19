@@ -54,8 +54,21 @@ export class Profile {
   @observable
   dungeons: Dungeon[] = [];
 
+  @computed get partySlots () {
+    const members: Hero[] = [undefined, undefined, undefined, undefined];
+    this.party.forEach((member) => members[member.partyIndex] = member);
+    return members;
+  }
+
   @computed get party () {
-    return this.roster.filter((c) => c.inParty);
+    return this.roster
+      .filter((c) => c.inParty)
+      .sort((a, b) => {
+        if (a.partyIndex === b.partyIndex) {
+          return 0;
+        }
+        return a.partyIndex < b.partyIndex ? -1 : 1;
+      });
   }
 
   @computed get isPartyFull () {
@@ -74,6 +87,44 @@ export class Profile {
 
   get rosterSize () {
     return 9; // TODO should derive from upgrades
+  }
+
+  joinParty (newHero: Hero, slotIndex: number = -1) {
+    if (slotIndex === -1) {
+      slotIndex = this.partySlots.findIndex((member) => !member);
+      if (slotIndex === -1) {
+        throw new Error("Can't join full party");
+      }
+    }
+
+    const oldHero = this.partySlots[slotIndex];
+
+    // Slot is free, join directly
+    if (!oldHero) {
+      newHero.inParty = true;
+      newHero.partyIndex = slotIndex;
+      return;
+    }
+
+    // Slot is taken, make space
+    if (newHero.inParty) {
+      // Hero just wants to swap places in the party
+      const oldIndex = newHero.partyIndex;
+      newHero.partyIndex = slotIndex;
+      oldHero.partyIndex = oldIndex;
+    } else {
+      // Let new hero take the old ones place
+      newHero.inParty = true;
+      newHero.partyIndex = slotIndex;
+
+      // Move old hero to a new slot if it exists, otherwise kick from party
+      oldHero.leaveParty();
+      const availableIndex = this.partySlots.findIndex((member) => !member);
+      if (availableIndex !== -1) {
+        oldHero.inParty = true;
+        oldHero.partyIndex = availableIndex;
+      }
+    }
   }
 
   killHero (hero: Hero) {

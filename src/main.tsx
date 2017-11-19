@@ -7,7 +7,9 @@ import {fonts} from "../assets/fonts";
 import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";
-const {AppContainer} = require("react-hot-loader");
+const HTML5Backend = require("react-dnd-html5-backend");
+const {DragDropContext} = require("react-dnd");
+const HotLoaderContainer = require("react-hot-loader").AppContainer;
 const TWEEN = require("tween.js");
 
 // Initialize application state
@@ -16,7 +18,7 @@ addStaticState();
 state.load();
 state.ensureProfile();
 state.initialize();
-state.router.goto("estateOverview");
+state.router.goto("start");
 
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});
@@ -42,6 +44,17 @@ const styles = StyleSheet.create({
 
 const rootEl = document.createElement("div");
 rootEl.className = css(styles.root);
+
+@DragDropContext(HTML5Backend)
+class AppContainer extends React.Component {
+  render () {
+    return (
+      <HotLoaderContainer>
+        {this.props.children}
+      </HotLoaderContainer>
+    );
+  }
+}
 
 function render (Component: any) {
   ReactDOM.render(
