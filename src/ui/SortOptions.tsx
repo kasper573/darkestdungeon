@@ -26,10 +26,6 @@ export class SortOptions<T> extends React.Component<{
     this.props.onChange(actualFn);
   }
 
-  componentWillMount () {
-    this.changeSort(this.activeComparerName);
-  }
-
   render () {
     const buttons = Object.keys(this.props.comparers).map((name) => {
       const dynamicStyle = this.isInverted.get(name) ? styles.desc : styles.asc;
