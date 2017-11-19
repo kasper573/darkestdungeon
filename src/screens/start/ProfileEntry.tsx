@@ -33,10 +33,6 @@ export class ProfileEntry extends React.Component<{
   }
 
   private getProfileInfo (profile: Profile) {
-    if (!profile.hasBegun) {
-      return [];
-    }
-
     return [
       profile.path.toString(),
       "Week " + profile.week,

@@ -3,10 +3,11 @@ import uuid = require("uuid");
 import {QuestMap} from "./QuestMap";
 import {QuestObjective} from "./QuestObjective";
 import {Item} from "./Item";
-import {observable} from "mobx";
+import {computed, observable} from "mobx";
 import {QuestInfo} from "./QuestInfo";
 import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
+import {MapLocationId} from "./QuestRoom";
 
 export type QuestId = string;
 
@@ -32,6 +33,11 @@ export class Quest {
   @serializable(object(Battle))
   @observable
   battle?: Battle;
+
+  @serializable @observable currentRoomId: MapLocationId;
+  @computed get currentRoom () {
+    return this.map.rooms.find((room) => room.id === this.currentRoomId);
+  }
 
   get isFinished () {
     return this.status === QuestStatus.Victory ||

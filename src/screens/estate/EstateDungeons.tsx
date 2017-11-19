@@ -24,7 +24,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
 
   checkPartyBeforeContinue () {
     const profile = this.appState.profiles.activeProfile;
-    if (profile.party.length === profile.maxPartySize) {
+    if (profile.isPartyFull) {
       return Promise.resolve(true);
     }
 

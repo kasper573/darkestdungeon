@@ -5,7 +5,6 @@ import {PopupState} from "./PopupState";
 import {IReactionDisposer, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
-import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
 import {Difficulty, Profile} from "./types/Profile";
@@ -13,21 +12,13 @@ import {Difficulty, Profile} from "./types/Profile";
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
 
-  public heroGenerator = new HeroGenerator();
-  public itemGenerator = new ItemGenerator();
-  public questGenerator = new QuestGenerator();
-
   public bounds: AppBounds = new AppBounds();
   public router: RouterState = new RouterState();
   public ambience: AmbienceState = new AmbienceState();
   public music: MusicState = new MusicState();
   public popups: PopupState = new PopupState();
   public options: OptionsState = new OptionsState();
-  public profiles: ProfileState = new ProfileState(
-    this.heroGenerator,
-    this.itemGenerator,
-    this.questGenerator
-  );
+  public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
 

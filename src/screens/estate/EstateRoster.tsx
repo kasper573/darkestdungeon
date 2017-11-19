@@ -24,12 +24,12 @@ export class EstateRoster extends AppStateComponent<{
 
   render () {
     const profile = this.appState.profiles.activeProfile;
-    const sortedHeroes = profile.heroes.slice().sort(Hero.comparers.rosterIndex);
+    const sortedHeroes = profile.roster.slice().sort(Hero.comparers.rosterIndex);
     return (
       <div className={css(styles.roster)}>
         <div className={css(styles.header)}>
           <span>
-            {profile.heroes.length} / {profile.rosterSize}
+            {profile.roster.length} / {profile.rosterSize}
           </span>
           <SortOptions
             comparers={Hero.visibleComparers}

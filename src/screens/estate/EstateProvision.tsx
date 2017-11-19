@@ -14,10 +14,7 @@ import {QuestStatus} from "../../state/types/Quest";
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {
   private store: Store;
-  private initialStoreItems: Item[] =
-    this.appState.profiles.activeProfile.generateStoreItems(
-      this.appState.itemGenerator
-    );
+  private initialStoreItems: Item[] = this.appState.profiles.activeProfile.getStoreItems();
 
   checkItemsBeforeContinue () {
     return this.appState.popups.prompt(
