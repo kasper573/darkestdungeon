@@ -11,6 +11,7 @@ const HTML5Backend = require("react-dnd-html5-backend");
 const {DragDropContext} = require("react-dnd");
 const HotLoaderContainer = require("react-hot-loader").AppContainer;
 const TWEEN = require("tween.js");
+const queryString = require("query-string");
 
 // Initialize application state
 const state = new AppState();
@@ -18,12 +19,23 @@ addStaticState();
 state.load();
 state.ensureProfile();
 state.initialize();
-state.router.goto("start");
 
-// Expose application state in global scope for developers
+let startPath = "start";
+
+// Developer features:
+// - Expose application state in global scope
+// - Allow custom start path
 if (process.env.NODE_ENV !== "production") {
   (global as any).appState = state;
+  if (typeof window !== "undefined") {
+    const customStartPath = queryString.parse(window.location.search).path;
+    if (customStartPath) {
+      startPath = customStartPath;
+    }
+  }
 }
+
+state.router.goto(startPath);
 
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});
