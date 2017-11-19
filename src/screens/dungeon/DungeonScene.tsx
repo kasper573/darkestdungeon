@@ -4,24 +4,12 @@ import {CharacterModel} from "../../ui/CharacterModel";
 import {Row} from "../../config/styles";
 import {CurioModel} from "../../ui/CurioModel";
 import {Profile} from "../../state/types/Profile";
-import {Character} from "../../state/types/Character";
-import {AppStateComponent} from "../../AppStateComponent";
-import {MonsterGenerator} from "../../state/Generators";
+import {QuestRoom} from "../../state/types/QuestRoom";
 
-export class DungeonScene extends AppStateComponent<{
-  profile: Profile
+export class DungeonScene extends React.Component<{
+  profile: Profile,
+  room: QuestRoom
 }> {
-  monsters: Character[];
-
-  componentWillMount () {
-    // TODO remove all this
-    const dungeon = this.appState.profiles.activeProfile.selectedDungeon;
-    const monsterGenerator = new MonsterGenerator();
-    this.monsters = [];
-    this.monsters.push(monsterGenerator.next(dungeon.info, this.monsters));
-    this.monsters.push(monsterGenerator.next(dungeon.info, this.monsters));
-  }
-
   render () {
     return (
       <Row classStyle={styles.scene}>
@@ -34,7 +22,7 @@ export class DungeonScene extends AppStateComponent<{
         <CurioModel />
 
         <Row classStyle={styles.monsters}>
-          {this.monsters.map((monster) => (
+          {this.props.room.monsters.map((monster) => (
             <CharacterModel key={monster.id} character={monster}/>
           ))}
         </Row>

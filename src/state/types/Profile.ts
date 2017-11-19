@@ -7,7 +7,8 @@ import {Hero} from "./Hero";
 import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
-import {ItemGenerator, QuestGenerator} from "../Generators";
+import {generateHero, generateItem, generateQuest} from "../Generators";
+import {moveItem} from "../../lib/ArrayHelpers";
 
 export type ProfileId = string;
 
@@ -20,7 +21,7 @@ export class Profile {
   @serializable @observable isNameFinalized: boolean;
   @serializable @observable name: string;
   @serializable(object(Path)) @observable path: Path;
-  @serializable @observable week: number = -1;
+  @serializable @observable week: number = 0;
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
   @serializable @observable selectedQuestId?: QuestId;
   @serializable @observable gold: number = 0;
@@ -31,7 +32,11 @@ export class Profile {
 
   @serializable(list(object(Hero)))
   @observable
-  heroes: Hero[] = [];
+  coach: Hero[] = [];
+
+  @serializable(list(object(Hero)))
+  @observable
+  roster: Hero[] = [];
 
   @serializable(list(object(Hero)))
   @observable
@@ -50,11 +55,11 @@ export class Profile {
   dungeons: Dungeon[] = [];
 
   @computed get party () {
-    return this.heroes.filter((c) => c.inParty);
+    return this.roster.filter((c) => c.inParty);
   }
 
   @computed get isPartyFull () {
-    return this.party.length === this.maxPartySize;
+    return this.party.length === 4;
   }
 
   @computed get selectedQuest () {
@@ -71,42 +76,30 @@ export class Profile {
     return 9; // TODO should derive from upgrades
   }
 
-  get maxPartySize () {
-    return 4; // TODO should derive from upgrades
-  }
-
-  @computed get hasBegun () {
-    return !!this.path;
-  }
-
   killHero (hero: Hero) {
-    const index = this.heroes.indexOf(hero);
-    if (index !== -1) {
-      this.heroes.splice(index, 1);
-      this.graveyard.push(hero);
-    }
+    moveItem(hero, this.roster, this.graveyard);
   }
 
   sortHeroes (compareFn: (a: Hero, b: Hero) => number) {
     transaction(() => {
-      this.heroes = this.heroes.sort(compareFn);
-      this.heroes.forEach((hero, index) => {
+      this.roster = this.roster.sort(compareFn);
+      this.roster.forEach((hero, index) => {
         hero.rosterIndex = index;
       });
     });
   }
 
-  generateStoreItems (itemGenerator: ItemGenerator) {
+  getStoreItems () {
     return [
-      itemGenerator.next(),
-      itemGenerator.next(),
-      itemGenerator.next()
+      generateItem(),
+      generateItem(),
+      generateItem()
     ];
   }
 
   unequipAllItems () {
     transaction(() => {
-      this.heroes.forEach((hero) => {
+      this.roster.forEach((hero) => {
         while (hero.items.length) {
           this.items.push(hero.items.pop());
         }
@@ -114,7 +107,7 @@ export class Profile {
     });
   }
 
-  gotoNextWeek (questGenerator: QuestGenerator) {
+  gotoNextWeek () {
     this.week++;
 
     // Randomize estate event
@@ -123,22 +116,20 @@ export class Profile {
     newEvent.message = "Event " + eventIndex;
     this.estateEvent = newEvent;
 
-    if (this.week === 0) {
-      // The quest on the first week should always be the same
-      this.quests = [
-        // TODO generate start quest
-        questGenerator.next(this.dungeons)
-      ];
-    } else {
-      // Randomize quests each week
-      this.quests = [
-        questGenerator.next(this.dungeons),
-        questGenerator.next(this.dungeons),
-        questGenerator.next(this.dungeons)
-      ];
-    }
-
+    // Randomize quests each week
+    this.quests = [this.newQuest(), this.newQuest(), this.newQuest()];
     this.selectedQuestId = this.quests[0].id;
+
+    // Randomize coach each week
+    this.coach = [this.newHero(), this.newHero()];
+  }
+
+  newHero () {
+    return generateHero([...this.roster, ...this.coach]);
+  }
+
+  newQuest () {
+    return generateQuest(this.dungeons);
   }
 }
 

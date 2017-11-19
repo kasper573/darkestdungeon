@@ -1,8 +1,8 @@
 import {computed, observable} from "mobx";
-import {HeroGenerator, ItemGenerator, QuestGenerator} from "./Generators";
 import {StaticState} from "./StaticState";
 import {Difficulty, Profile, ProfileId} from "./types/Profile";
 import {Dungeon} from "./types/Dungeon";
+import {Path} from "./RouterState";
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;
@@ -12,44 +12,31 @@ export class ProfileState {
     return this.map.get(this.activeProfileId);
   }
 
-  constructor (
-    private heroGenerator: HeroGenerator,
-    private itemGenerator: ItemGenerator,
-    private questGenerator: QuestGenerator
-  ) {}
-
-  createProfile (difficulty: Difficulty, add: boolean = true) {
+  createProfile (difficulty: Difficulty) {
     const profile = new Profile();
+
+    // Basic settings
     profile.difficulty = difficulty;
     profile.name = difficulty.toString();
     profile.gold = 250;
-
-    profile.heroes.push(this.heroGenerator.next(profile.heroes));
-    profile.heroes.push(this.heroGenerator.next(profile.heroes));
-
-    profile.items = [
-      this.itemGenerator.next(),
-      this.itemGenerator.next(),
-      this.itemGenerator.next(),
-      this.itemGenerator.next()
-    ];
-
-    profile.heroes[0].inParty = true;
-    profile.heroes[1].inParty = true;
-
-    // Give one item to each hero
-    profile.heroes[0].items = [this.itemGenerator.next()];
-    profile.heroes[1].items = [this.itemGenerator.next()];
 
     // Add all dungeons to profile
     profile.dungeons = Array.from(StaticState.instance.dungeons.values())
       .map(Dungeon.fromInfo);
 
-    profile.gotoNextWeek(this.questGenerator);
+    // Add two random heroes to the roster
+    profile.roster = [profile.newHero(), profile.newHero()];
+    profile.roster.forEach((hero) => hero.inParty = true);
 
-    if (add) {
-      this.addProfile(profile);
-    }
+    // Set starting quest
+    const startQuest = profile.newQuest();
+    profile.quests = [startQuest];
+    profile.selectedQuestId = startQuest.id;
+
+    // Put profile on the path to load into the quest dungeon
+    profile.path = new Path("dungeonOverview");
+
+    this.addProfile(profile);
 
     return profile;
   }

@@ -23,7 +23,7 @@ export class StatsTester extends AppStateComponent {
   }
 
   @computed get battleMembers () {
-    return this.appState.profiles.activeProfile.heroes;
+    return this.appState.profiles.activeProfile.roster;
   }
 
   componentWillMount () {

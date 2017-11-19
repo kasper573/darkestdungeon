@@ -24,7 +24,7 @@ export class DungeonOverview extends AppStateComponent {
         <div className={css(styles.scene)}>
           <QuestHeader quest={quest} onLeaveRequested={(status) => this.finish(status)}/>
           <Torch quest={quest}/>
-          <DungeonScene profile={profile} />
+          <DungeonScene profile={profile} room={quest.currentRoom} />
         </div>
 
         <DungeonControlPanel
