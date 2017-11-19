@@ -1,4 +1,4 @@
-import {Path, Route, RouterState} from "./RouterState";
+import {RouterState} from "./RouterState";
 import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
@@ -8,6 +8,8 @@ import {OptionsState} from "./OptionsState";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
 import {Difficulty, Profile} from "./types/Profile";
+import {Route} from "./types/Route";
+import {Path} from "./types/Path";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];

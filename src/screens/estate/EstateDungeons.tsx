@@ -1,6 +1,6 @@
 import * as React from "react";
 import {EstateTemplate} from "./EstateTemplate";
-import {Path} from "../../state/RouterState";
+import {Path} from "../../state/types/Path";
 import {Alert, Prompt} from "../../ui/Popups";
 import {observer} from "mobx-react";
 import {DungeonBreakdown} from "../../ui/DungeonBreakdown";

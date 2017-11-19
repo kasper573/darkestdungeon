@@ -1,6 +1,6 @@
 import * as React from "react";
 import {EstateTemplate} from "./EstateTemplate";
-import {Path} from "../../state/RouterState";
+import {Path} from "../../state/types/Path";
 import {Prompt} from "../../ui/Popups";
 import {BuildingOverview} from "./buildings/BuildingOverview";
 import {StyleSheet} from "aphrodite";

@@ -1,4 +1,4 @@
-import {Path, Route} from "../state/RouterState";
+import {Path} from "../state/types/Path";
 import {Start} from "../screens/start/Start";
 import {Loading} from "../screens/Loading";
 import {EstateOverview} from "../screens/estate/EstateOverview";
@@ -19,6 +19,7 @@ import {Guild} from "../screens/estate/buildings/Guild";
 import {Blacksmith} from "../screens/estate/buildings/Blacksmith";
 import {Memoirs} from "../screens/estate/buildings/Memoirs";
 import {StatsTester} from "../screens/StatsTester";
+import {Route} from "../state/types/Route";
 
 export const defaultEstateAmbience = new AmbienceDefinition(
   {src: require("../../assets/dd/audio/amb_town_gen_base.wav")},

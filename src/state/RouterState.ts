@@ -1,9 +1,6 @@
 import {computed, observable, transaction, when} from "mobx";
-import {custom, serializable} from "serializr";
-import {AmbienceDefinition} from "./AmbienceState";
-
-export type PathTypes = Path | string;
-const noop: () => null = () => null;
+import {Route} from "./types/Route";
+import {ensurePath, Path, PathTypes} from "./types/Path";
 
 export class RouterState  {
   @observable private history: Path[] = [new Path("")];
@@ -111,120 +108,6 @@ export class RouterState  {
       this.currentIndex = nextIndex;
     }
   }
-}
-
-export class RouteConstructionProps {
-  component: any;
-  isMemorable?: boolean;
-  music?: (state?: any, path?: Path) => IHowlProperties;
-  ambience?: (state?: any, path?: Path) => AmbienceDefinition;
-  children?: {[key: string]: Route};
-  rerouter?: (fromPath: Path, toPath: Path) => Path;
-}
-
-export class Route extends RouteConstructionProps {
-  private constructionProps: RouteConstructionProps;
-
-  // Created by inherit
-  public path?: Path;
-  public parent?: Route;
-  public root: Route = this;
-
-  constructor (props: RouteConstructionProps) {
-    super();
-
-    this.constructionProps = props;
-
-    this.component = props.component;
-    this.isMemorable = props.isMemorable !== undefined ? props.isMemorable : true;
-    this.children = props.children || {};
-    this.rerouter = props.rerouter;
-
-    this.ambience = props.ambience ?
-      function () {
-        let res;
-        if (props.ambience) {
-          res = props.ambience.apply(this, arguments);
-          if (typeof res === "string") {
-            return new AmbienceDefinition({src: res});
-          }
-        }
-        return res;
-      } : noop;
-
-    this.music = props.music ?
-      function () {
-        let res;
-        if (props.music) {
-          res = props.music.apply(this, arguments);
-          if (typeof res === "string") {
-            return {src: res};
-          }
-        }
-        return res;
-      } : noop;
-  }
-
-  inherit (parent: Route, childPath: string) {
-    const cascaded = new Route(this.constructionProps);
-    cascaded.root = parent.root;
-    cascaded.parent = parent;
-    cascaded.path = new Path(
-      parent.path.parts.concat(childPath).join(Path.separator)
-    );
-    if (cascaded.music === noop) {
-      cascaded.music = parent.music;
-    }
-    if (cascaded.ambience === noop) {
-      cascaded.ambience = parent.ambience;
-    }
-    return cascaded;
-  }
-}
-
-export class Path {
-  public static separator: string = "/";
-
-  @serializable public value: string;
-
-  @serializable(custom((val) => val, (val) => val))
-  public args: any;
-
-  get parts () {
-    return this.value.split(Path.separator);
-  }
-
-  get root () {
-    return this.parts[0];
-  }
-
-  constructor (
-    value: string = "",
-    args: any = {}
-  ) {
-    this.value = value;
-    this.args = args;
-  }
-
-  equals (possibleOther: PathTypes) {
-    const other = ensurePath(possibleOther);
-    return other && other.value === this.value &&
-      JSON.stringify(other.args) === JSON.stringify(this.args);
-  }
-
-  toString () {
-    return this.value;
-  }
-}
-
-function ensurePath (path: PathTypes): Path {
-  if (typeof path === "string") {
-    return new Path(path);
-  }
-  if (!path) {
-    return new Path("");
-  }
-  return path as Path;
 }
 
 const route404 = new Route({
