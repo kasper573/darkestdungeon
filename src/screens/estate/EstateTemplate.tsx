@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Path, PathTypes} from "../../state/RouterState";
+import {Path} from "../../state/types/Path";
 import {PauseMenu} from "../../ui/PauseMenu";
 import {Inventory} from "../../ui/Inventory";
 import {EstateRoster} from "./EstateRoster";
@@ -12,6 +12,7 @@ import {Row} from "../../config/styles";
 import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
+import {PathTypes} from "../../state/types/Path";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{

@@ -1,7 +1,7 @@
 import {date, identifier, list, object, serializable} from "serializr";
 import uuid = require("uuid");
 import {computed, observable, transaction} from "mobx";
-import {Path} from "../RouterState";
+import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
 import {Hero} from "./Hero";
 import {Quest, QuestId} from "./Quest";

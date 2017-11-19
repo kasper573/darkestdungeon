@@ -2,7 +2,7 @@ import {computed, observable} from "mobx";
 import {StaticState} from "./StaticState";
 import {Difficulty, Profile, ProfileId} from "./types/Profile";
 import {Dungeon} from "./types/Dungeon";
-import {Path} from "./RouterState";
+import {Path} from "./types/Path";
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;

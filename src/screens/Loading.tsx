@@ -1,6 +1,6 @@
 import * as React from "react";
 import {observable} from "mobx";
-import {Path} from "../state/RouterState";
+import {Path} from "../state/types/Path";
 import {observer} from "mobx-react";
 import {Sprite} from "../lib/Sprite";
 import {smoke} from "../../assets/sprites";
