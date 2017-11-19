@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Path} from "../../state/RouterState";
 import {css, StyleSheet} from "aphrodite";
 import {CommonHeader} from "../../ui/CommonHeader";
 import {DungeonResultHeroes} from "./DungeonResultHeroes";
@@ -39,13 +38,9 @@ export class DungeonResult extends AppStateComponent {
     );
   }
 
-  returnToEstate () {
-    this.appState.profiles.activeProfile.gotoNextWeek(
-      this.appState.questGenerator
-    );
-    this.appState.router.goto(
-      new Path("loading", {target: "estateOverview"})
-    );
+  async returnToEstate () {
+    await this.appState.router.goto("estateOverview");
+    this.appState.profiles.activeProfile.gotoNextWeek();
   }
 }
 

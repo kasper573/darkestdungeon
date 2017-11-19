@@ -43,7 +43,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         roster={false}
         continueCheck={() => this.checkItemsBeforeContinue()}
         continueLabel="Embark"
-        continuePath={new Path("loading", {target: "dungeonOverview"})}>
+        continuePath="dungeonOverview">
         <BuildingOverview
           classStyle={styles.container}
           header="Provision"

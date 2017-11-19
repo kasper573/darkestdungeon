@@ -50,7 +50,7 @@ export class AppState {
 
           // Update memorized path for active profile
           if (route.isMemorable) {
-            this.profiles.activeProfile.path = path;
+            this.profiles.activeProfile.path = new Path(path.value);
           }
 
           // Change music and ambience
