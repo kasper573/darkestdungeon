@@ -7,6 +7,7 @@ import {observer} from "mobx-react";
 import {SizeObserver} from "./lib/SizeObserver";
 import {Size} from "./Bounds";
 import {grid} from "./config/Grid";
+import {InputLayer} from "./state/InputState";
 
 @observer
 export class PopupEntry extends React.Component<{
@@ -91,12 +92,14 @@ export class PopupEntry extends React.Component<{
 
     // To make it modal we wrap it in a container containing the modal design
     return (
-      <div className={css(styles.modalContainer, styles.animator)}
-           style={opacityStyle}>
+      <InputLayer
+        id={handle.id}
+        className={css(styles.modalContainer, styles.animator)}
+        style={opacityStyle}>
         <div className={css(styles.modalBackground)}
              onClick={onBackgroundClicked}/>
         {popup}
-      </div>
+      </InputLayer>
     );
   }
 

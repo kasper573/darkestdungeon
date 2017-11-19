@@ -7,7 +7,7 @@ import {observer} from "mobx-react";
 import {DevTools} from "./DevTools";
 import {routes} from "./config/routes";
 import {SizeObserver} from "./lib/SizeObserver";
-import {computed} from "mobx";
+import {computed, IReactionDisposer, reaction} from "mobx";
 import {appStateContext} from "./AppStateComponent";
 import {RouterPopups} from "./RouterPopups";
 import {fonts} from "../assets/fonts";
@@ -25,6 +25,9 @@ export class App extends React.Component<{
       state: this.props.state
     };
   }
+
+  private disposeReactions: IReactionDisposer;
+  private inputRoot: InputRoot;
 
   /**
    * The style required to create the black borders around
@@ -58,9 +61,24 @@ export class App extends React.Component<{
     }
   }
 
+  componentDidMount () {
+    // Let the top popup layer be the input layer
+    this.disposeReactions = reaction(
+      () => this.props.state.popups.top,
+      (topPopup) => this.inputRoot.inputHandler.layerId = topPopup ? topPopup.id : null,
+      true
+    );
+  }
+
+  componentWillUnmount () {
+    this.disposeReactions();
+  }
+
   render () {
     return (
-      <InputRoot className={css(styles.app)}>
+      <InputRoot
+        ref={(ir) => this.inputRoot = ir}
+        className={css(styles.app)}>
         <div className={css(styles.arc)} style={this.arcStyle}>
           <div className={css(styles.game)} style={this.gameStyle}>
             <Router router={this.props.state.router}/>
