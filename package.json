@@ -21,7 +21,8 @@
     "stats.js": "0.17.0",
     "tween.js": "16.6.0",
     "webfontloader": "1.6.28",
-    "uuid": "3.1.0"
+    "uuid": "3.1.0",
+    "query-string": "5.0.1"
   },
   "devDependencies": {
     "@types/aphrodite": "0.5.6",
