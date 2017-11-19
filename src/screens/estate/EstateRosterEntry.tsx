@@ -11,14 +11,29 @@ import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Hero} from "../../state/types/Hero";
 import {DragDropSlot} from "../../lib/DragDropSlot";
+import {AppStateComponent} from "../../AppStateComponent";
+import {ModalState, PopupAlign} from "../../state/PopupState";
+import {HeroOverview} from "../../ui/HeroOverview";
 
 @observer
-export class EstateRosterEntry extends React.Component<{
+export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
   partyFeatures?: boolean,
+  allowDrop?: (item: Hero) => boolean,
+  allowDrag?: (item: Hero) => boolean,
   onDrop?: (droppedHero: Hero) => void,
-  onSelect?: () => void
+  onSelect?: (hero: Hero) => void
 }> {
+  showHeroOverview () {
+    this.appState.popups.show({
+      align: PopupAlign.TopLeft,
+      position: {x: 0, y: 0},
+      modalState: ModalState.Opaque,
+      id: "heroOverview",
+      content: <HeroOverview hero={this.props.hero}/>
+    });
+  }
+
   render () {
     const hero = this.props.hero;
 
@@ -36,9 +51,11 @@ export class EstateRosterEntry extends React.Component<{
     return (
       <DragDropSlot
         type={Hero}
-        item={this.props.hero}
+        item={hero}
         className={css(styles.entry, extraStyle)}
-        onClick={this.props.onSelect}
+        allowDrag={this.props.allowDrag}
+        allowDrop={this.props.allowDrop}
+        onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
         <Avatar src={hero.classInfo.avatarUrl}>
           {partyElement}

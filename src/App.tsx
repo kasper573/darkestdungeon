@@ -86,7 +86,10 @@ export class App extends React.Component<{
               popups={this.props.state.popups}
               router={this.props.state.router}
             />
-            <PopupList popups={this.props.state.popups}/>
+            <PopupList
+              popups={this.props.state.popups}
+              portalNodeRef={(node) => this.props.state.portalNode = node}
+            />
           </div>
           <SizeObserver
             onSizeChanged={(size) => this.props.state.bounds.realSize = size}
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
   arc: {
     flex: 1,
     overflow: "hidden",
-    background: "black",
+    background: "black"
   },
 
   game: {
