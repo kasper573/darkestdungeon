@@ -51,7 +51,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
             profile={profile}
           />
         </BuildingOverview>
-        <PartyDropbox members={profile.party} lock/>
+        <PartyDropbox profile={profile} lock/>
       </EstateTemplate>
     );
   }

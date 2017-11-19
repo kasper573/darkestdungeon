@@ -26,7 +26,7 @@ export class ProfileState {
 
     // Add two random heroes to the roster
     profile.roster = [profile.newHero(), profile.newHero()];
-    profile.roster.forEach((hero) => hero.inParty = true);
+    profile.roster.forEach((hero) => profile.joinParty(hero));
 
     // Set starting quest
     const startQuest = profile.newQuest();

@@ -22,6 +22,21 @@ export class EstateRoster extends AppStateComponent<{
     });
   }
 
+  receiveHero (droppedHero: Hero, slotHero: Hero) {
+    if (droppedHero.inParty) {
+      droppedHero.leaveParty();
+    }
+
+    // Swap places in roster
+    const profile = this.appState.profiles.activeProfile;
+    const isInRosterAlready = profile.roster.indexOf(droppedHero) !== -1;
+    if (isInRosterAlready) {
+      const swapIndex = slotHero.rosterIndex;
+      slotHero.rosterIndex = droppedHero.rosterIndex;
+      droppedHero.rosterIndex = swapIndex;
+    }
+  }
+
   render () {
     const profile = this.appState.profiles.activeProfile;
     const sortedHeroes = profile.roster.slice().sort(Hero.comparers.rosterIndex);
@@ -41,9 +56,9 @@ export class EstateRoster extends AppStateComponent<{
             <EstateRosterEntry
               key={hero.id}
               partyFeatures={this.props.partyFeatures}
-              canJoinParty={!profile.isPartyFull}
               hero={hero}
               onSelect={() => this.showHeroInfo(hero)}
+              onDrop={(droppedHero) => this.receiveHero(droppedHero, hero)}
             />
           ))}
         </ul>
