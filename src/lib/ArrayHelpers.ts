@@ -7,6 +7,6 @@ export function moveItem <T> (item: T, fromList: T[], toList: T[]) {
 export function removeItem <T> (item: T, a: T[]) {
   const index = a.indexOf(item);
   if (index !== -1) {
-    a.splice(index);
+    a.splice(index, 1);
   }
 }
