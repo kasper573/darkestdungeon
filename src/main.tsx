@@ -20,6 +20,11 @@ state.ensureProfile();
 state.initialize();
 state.router.goto("start");
 
+// Expose application state in global scope for developers
+if (process.env.NODE_ENV !== "production") {
+  (global as any).appState = state;
+}
+
 // Set up basic styling
 WebFontLoader.load({google: {families: Object.values(fonts)}});
 
