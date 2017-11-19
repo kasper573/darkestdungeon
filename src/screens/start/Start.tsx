@@ -1,6 +1,5 @@
 import * as React from "react";
 import {TitleHeader} from "../../ui/TitleHeader";
-import {Path} from "../../state/RouterState";
 import {ProfileList} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
 import {PauseMenu} from "../../ui/PauseMenu";
@@ -43,11 +42,7 @@ export class Start extends AppStateComponent {
 
     await this.transitionOut();
     this.appState.profiles.setActiveProfile(profile.id);
-    this.appState.router.goto(
-      new Path("loading", {
-        target: profile.path || "dungeonOverview"
-      })
-    );
+    this.appState.router.goto(profile.path);
   }
 }
 

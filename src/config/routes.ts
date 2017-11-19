@@ -1,4 +1,4 @@
-import {Route} from "../state/RouterState";
+import {Path, Route} from "../state/RouterState";
 import {Start} from "../screens/start/Start";
 import {Loading} from "../screens/Loading";
 import {EstateOverview} from "../screens/estate/EstateOverview";
@@ -29,6 +29,25 @@ export const defaultEstateAmbience = new AmbienceDefinition(
   ]
 );
 
+const loadingRerouter = (fromPath: Path, toPath: Path) => {
+  if (!toPath.args.bypassRerouter) {
+    return new Path("loading", {
+      target: new Path(
+        toPath.value, {
+          ...toPath.args,
+          bypassRerouter: true
+        }
+      ),
+    });
+  }
+};
+
+const estateLoadingRerouter = (from: Path, to: Path) => {
+  if (!/^estate/.test(from.value)) {
+    return loadingRerouter(from, to);
+  }
+};
+
 export const routes: {[key: string]: Route} = {
   start: new Route({
     component: Start,
@@ -42,6 +61,7 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateOverview: new Route({
+    rerouter: estateLoadingRerouter,
     component: EstateOverview,
     music: () => {
       return {
@@ -125,6 +145,7 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateDungeons: new Route({
+    rerouter: estateLoadingRerouter,
     component: EstateDungeons,
     music: () => routes.estateOverview.music.apply(this, arguments),
     ambience: () => new AmbienceDefinition(
@@ -138,12 +159,14 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateProvision: new Route({
+    rerouter: estateLoadingRerouter,
     component: EstateProvision,
     music: () => routes.estateDungeons.music.apply(this, arguments),
     ambience: () => routes.estateDungeons.ambience.apply(this, arguments)
   }),
 
   dungeonOverview: new Route({
+    rerouter: loadingRerouter,
     component: DungeonOverview,
     ambience: () => require("../../assets/dd/audio/amb_dun_weald_base.wav"),
     music: (state: AppState) => {

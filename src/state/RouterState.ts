@@ -1,5 +1,5 @@
-import {computed, observable, transaction} from "mobx";
-import {serializable} from "serializr";
+import {computed, observable, transaction, when} from "mobx";
+import {custom, serializable} from "serializr";
 import {AmbienceDefinition} from "./AmbienceState";
 
 export type PathTypes = Path | string;
@@ -18,13 +18,17 @@ export class RouterState  {
   }
 
   @computed get route () {
-    let route = this.routes.get(this.path.root);
+    return this.getRouteForPath(this.path);
+  }
+
+  getRouteForPath (path: Path) {
+    let route = this.routes.get(path.root);
     if (!route) {
       return route404;
     }
 
-    route.path = new Path(this.path.root);
-    const childPaths = this.path.parts.slice(1);
+    route.path = new Path(path.root);
+    const childPaths = path.parts.slice(1);
     while (childPaths.length) {
       const childPath = childPaths.shift();
       const child = route.children[childPath];
@@ -56,9 +60,21 @@ export class RouterState  {
   }
 
   goto (possiblePath: PathTypes) {
-    const path = ensurePath(possiblePath);
-    if (path.equals(this.path)) {
-      return;
+    let nextPath = ensurePath(possiblePath);
+    if (nextPath.equals(this.path)) {
+      return Promise.resolve();
+    }
+
+    const destinationPath = nextPath;
+
+    // Go through potential rerouting
+    let fromPath = this.path;
+    let newPath = nextPath;
+    while (newPath) {
+      nextPath = newPath;
+      const rerouter = this.getRouteForPath(nextPath).rerouter;
+      newPath = rerouter ? rerouter(fromPath, nextPath) : null;
+      fromPath = nextPath;
     }
 
     transaction(() => {
@@ -69,8 +85,14 @@ export class RouterState  {
       }
 
       // Add new path and move to it
-      this.history.push(path as Path);
+      this.history.push(nextPath as Path);
       this.currentIndex++;
+    });
+
+    // Return a promise that resolves when we
+    // reach the destination (in case of reroutes)
+    return new Promise((resolve) => {
+      when(() => this.path.value === destinationPath.value, resolve);
     });
   }
 
@@ -91,21 +113,16 @@ export class RouterState  {
   }
 }
 
-export type RouteConstructionProps = {
+export class RouteConstructionProps {
   component: any;
   isMemorable?: boolean;
-  music?: (state?: any, path?: Path) => IHowlProperties | string;
+  music?: (state?: any, path?: Path) => IHowlProperties;
   ambience?: (state?: any, path?: Path) => AmbienceDefinition;
-  children?: {[key: string]: Route}
-};
+  children?: {[key: string]: Route};
+  rerouter?: (fromPath: Path, toPath: Path) => Path;
+}
 
-export class Route {
-  public component: any;
-  public isMemorable: boolean;
-  public music: (state?: any, path?: Path) => IHowlProperties;
-  public ambience: (state?: any, path?: Path) => AmbienceDefinition;
-  public children: {[key: string]: Route};
-
+export class Route extends RouteConstructionProps {
   private constructionProps: RouteConstructionProps;
 
   // Created by inherit
@@ -114,11 +131,14 @@ export class Route {
   public root: Route = this;
 
   constructor (props: RouteConstructionProps) {
+    super();
+
     this.constructionProps = props;
 
     this.component = props.component;
     this.isMemorable = props.isMemorable !== undefined ? props.isMemorable : true;
     this.children = props.children || {};
+    this.rerouter = props.rerouter;
 
     this.ambience = props.ambience ?
       function () {
@@ -166,6 +186,8 @@ export class Path {
   public static separator: string = "/";
 
   @serializable public value: string;
+
+  @serializable(custom((val) => val, (val) => val))
   public args: any;
 
   get parts () {
