@@ -7,6 +7,7 @@ import {fonts} from "../assets/fonts";
 import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";
+import {StaticState} from "./state/StaticState";
 const HTML5Backend = require("react-dnd-html5-backend");
 const {DragDropContext} = require("react-dnd");
 const HotLoaderContainer = require("react-hot-loader").AppContainer;
@@ -27,6 +28,7 @@ let startPath = "start";
 // - Allow custom start path
 if (process.env.NODE_ENV !== "production") {
   (global as any).appState = state;
+  (global as any).staticState = StaticState.instance;
   if (typeof window !== "undefined") {
     const customStartPath = queryString.parse(window.location.search).path;
     if (customStartPath) {
