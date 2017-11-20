@@ -1,4 +1,4 @@
-import {date, identifier, list, object, serializable} from "serializr";
+import {date, identifier, list, object, reference, serializable} from "serializr";
 import uuid = require("uuid");
 import {computed, observable, transaction} from "mobx";
 import {Path} from "./Path";
@@ -8,7 +8,10 @@ import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateItem, generateQuest} from "../Generators";
-import {moveItem} from "../../lib/ArrayHelpers";
+import {count, moveItem} from "../../lib/ArrayHelpers";
+import {BuildingUpgradeEffects} from "./BuildingUpgradeEffects";
+import {StaticState} from "../StaticState";
+import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 
 export type ProfileId = string;
 
@@ -54,6 +57,10 @@ export class Profile {
   @observable
   dungeons: Dungeon[] = [];
 
+  @serializable(list(reference(BuildingUpgradeInfo, StaticState.lookup((i) => i.buildingUpgrades))))
+  @observable
+  buildingUpgrades: BuildingUpgradeInfo[] = [];
+
   @computed get partySlots () {
     const members: Hero[] = [undefined, undefined, undefined, undefined];
     this.party.forEach((member) => members[member.partyIndex] = member);
@@ -85,8 +92,35 @@ export class Profile {
     }
   }
 
-  get rosterSize () {
-    return 9; // TODO should derive from upgrades
+  @computed get isRosterFull () {
+    return this.roster.length === this.rosterSize;
+  }
+
+  @computed get rosterSize () {
+    return 8 + this.getUpgradeEffects("coach", "roster").size;
+  }
+
+  @computed get coachSize () {
+    return 2 + this.getUpgradeEffects("coach", "network").size;
+  }
+
+  getUpgradeEffects (...keys: string[]): BuildingUpgradeEffects {
+    const selectedUpgrades = this.buildingUpgrades.filter((upgrade) => upgrade.isChildOf(keys));
+    return selectedUpgrades
+      .map((upgrade) => upgrade.effects)
+      .reduce(
+        (sum, item) => sum.add(item),
+        new BuildingUpgradeEffects()
+      );
+  }
+
+  ownsUpgrade (upgradeItem: BuildingUpgradeInfo) {
+    return this.buildingUpgrades.indexOf(upgradeItem) !== -1;
+  }
+
+  purchaseUpgrade (upgradeItem: BuildingUpgradeInfo) {
+    this.gold -= upgradeItem.cost;
+    this.buildingUpgrades.push(upgradeItem);
   }
 
   joinParty (newHero: Hero, slotIndex: number = -1) {
@@ -176,7 +210,7 @@ export class Profile {
     this.selectedQuestId = this.quests[0].id;
 
     // Randomize coach each week
-    this.coach = [this.newHero(), this.newHero()];
+    this.coach = count(this.coachSize).map(() => this.newHero());
   }
 
   newHero () {

@@ -3,6 +3,7 @@ import {BuildingOverview} from "./BuildingOverview";
 import {EstateRosterEntry} from "../EstateRosterEntry";
 import {AppStateComponent} from "../../../AppStateComponent";
 import {observer} from "mobx-react";
+import {StaticState} from "../../../state/StaticState";
 
 @observer
 export class Graveyard extends AppStateComponent {
@@ -10,9 +11,7 @@ export class Graveyard extends AppStateComponent {
 
   render () {
     return (
-      <BuildingOverview
-        header="Graveyard"
-        backgroundUrl={require("../../../../assets/images/graveyard-bg.jpg")}>
+      <BuildingOverview info={StaticState.instance.buildings.get(Graveyard.id)}>
         {this.appState.profiles.activeProfile.graveyard.map((hero) => (
           <EstateRosterEntry
             key={hero.id} hero={hero}

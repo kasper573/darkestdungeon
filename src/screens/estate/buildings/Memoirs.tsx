@@ -1,5 +1,6 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
+import {StaticState} from "../../../state/StaticState";
 
 export class Memoirs extends React.Component<{
   header?: string
@@ -8,10 +9,7 @@ export class Memoirs extends React.Component<{
 
   render () {
     return (
-      <BuildingOverview
-        header="Memoirs"
-        backgroundUrl={require("../../../../assets/images/memoirs-bg.jpg")}
-      />
+      <BuildingOverview info={StaticState.instance.buildings.get(Memoirs.id)}/>
     );
   }
 }

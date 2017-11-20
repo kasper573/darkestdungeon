@@ -3,6 +3,7 @@ import {BuildingOverview} from "./BuildingOverview";
 import {AppStateComponent} from "../../../AppStateComponent";
 import {EstateRosterEntry} from "../EstateRosterEntry";
 import {observer} from "mobx-react";
+import {StaticState} from "../../../state/StaticState";
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -10,10 +11,7 @@ export class StageCoach extends AppStateComponent {
 
   render () {
     return (
-      <BuildingOverview
-        header="Stage Coach"
-        backgroundUrl={require("../../../../assets/images/coach-bg.jpg")}
-      >
+      <BuildingOverview info={StaticState.instance.buildings.get(StageCoach.id)}>
         {this.appState.profiles.activeProfile.coach.map((hero) => (
           <EstateRosterEntry key={hero.id} hero={hero} allowDrop={() => false}/>
         ))}

@@ -7,6 +7,8 @@ import {QuirkInfo} from "./types/QuirkInfo";
 import {SkillInfo} from "./types/SkillInfo";
 import {DiseaseInfo} from "./types/DiseaseInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
+import {BuildingUpgradeInfo} from "./types/BuildingUpgradeInfo";
+import {BuildingInfo} from "./types/BuildingInfo";
 
 export class StaticState  {
   // noinspection TsLint
@@ -27,6 +29,10 @@ export class StaticState  {
   heroes = new Map<string, CharacterTemplate>();
   monsters = new Map<string, CharacterTemplate>();
   classes = new Map<string, CharacterClassInfo>();
+
+  buildingInfoRoot = new BuildingInfo();
+  buildingUpgrades = new Map<string, BuildingUpgradeInfo>();
+  get buildings () { return this.buildingInfoRoot.children; }
 
   clear () {
     for (const key in this) {

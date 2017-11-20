@@ -3,46 +3,47 @@ import {css, StyleSheet} from "aphrodite";
 import {Column, Row} from "../../../config/styles";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
-import {BuildingUpgrades} from "./BuildingUpgrades";
+import {BuildingUpgradeShop} from "./BuildingUpgradeShop";
 import {Avatar} from "../../../ui/Avatar";
+import {BuildingInfo} from "../../../state/types/BuildingInfo";
 
 @observer
 export class BuildingOverview extends React.Component<{
-  header: string,
-  backgroundUrl: string,
+  info: BuildingInfo,
   classStyle?: any
 }> {
   @observable areUpgradesVisible = false;
-  @observable areUpgradesAvailable = true;
 
   render () {
-    const upgradeSign = this.areUpgradesAvailable && (
-      <div className={
-        css(
-          styles.upgradeSign, this.areUpgradesVisible ?
-            styles.upgradeSignClose :
-            styles.upgradeSignShow
-        )
-      }/>
+    const upgradeSign = this.props.info.children.size > 0 && (
+      <div
+        onClick={() => this.areUpgradesVisible = !this.areUpgradesVisible}
+        className={
+          css(
+            styles.upgradeSign, this.areUpgradesVisible ?
+              styles.upgradeSignClose :
+              styles.upgradeSignShow
+          )
+        }
+      />
     );
 
     return (
       <Row
         classStyle={[styles.container, this.props.classStyle]}
-        style={{backgroundImage: `url(${this.props.backgroundUrl})`}}>
+        style={{backgroundImage: `url(${this.props.info.backgroundUrl})`}}>
         <Column>
           <Row>
             <Avatar
               classStyle={styles.headerAvatar}
-              src={require("../../../../assets/images/avatar.jpg")}
-              onClick={() => this.areUpgradesVisible = !this.areUpgradesVisible}>
+              src={this.props.info.avatarUrl}>
               {upgradeSign}
             </Avatar>
             <h1 className={css(styles.headerLabel)}>
-              {this.props.header}
+              {this.props.info.name}
             </h1>
           </Row>
-          {this.areUpgradesVisible && <BuildingUpgrades />}
+          {this.areUpgradesVisible && <BuildingUpgradeShop upgrades={this.props.info} />}
         </Column>
         <Column>
           {this.props.children}

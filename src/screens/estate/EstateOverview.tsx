@@ -14,7 +14,7 @@ import {Memoirs} from "./buildings/Memoirs";
 import {AppStateComponent} from "../../AppStateComponent";
 import {when} from "mobx";
 
-const buildings = [
+const buildings: Array<{id: string}> = [
   StageCoach,
   Graveyard,
   Tavern,
