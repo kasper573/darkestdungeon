@@ -1,5 +1,6 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
+import {StaticState} from "../../../state/StaticState";
 
 export class Blacksmith extends React.Component<{
   header?: string
@@ -8,10 +9,7 @@ export class Blacksmith extends React.Component<{
 
   render () {
     return (
-      <BuildingOverview
-        header="Blacksmith"
-        backgroundUrl={require("../../../../assets/images/blacksmith-bg.jpg")}
-      />
+      <BuildingOverview info={StaticState.instance.buildings.get(Blacksmith.id)}/>
     );
   }
 }

@@ -13,4 +13,8 @@ export abstract class AppStateComponent<P = {}> extends React.Component<P> {
   get appState () {
     return this.context.state;
   }
+
+  get activeProfile () {
+    return this.appState.profiles.activeProfile;
+  }
 }

@@ -1,5 +1,6 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
+import {StaticState} from "../../../state/StaticState";
 
 export class Guild extends React.Component<{
   header?: string
@@ -8,10 +9,7 @@ export class Guild extends React.Component<{
 
   render () {
     return (
-      <BuildingOverview
-        header="Guild"
-        backgroundUrl={require("../../../../assets/images/guild-bg.jpg")}
-      />
+      <BuildingOverview info={StaticState.instance.buildings.get(Guild.id)}/>
     );
   }
 }

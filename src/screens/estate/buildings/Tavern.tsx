@@ -1,17 +1,16 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
+import {StaticState} from "../../../state/StaticState";
+import {AppStateComponent} from "../../../AppStateComponent";
 
-export class Tavern extends React.Component<{
+export class Tavern extends AppStateComponent<{
   header?: string
 }> {
   static id = "tavern";
 
   render () {
     return (
-      <BuildingOverview
-        header="Tavern"
-        backgroundUrl={require("../../../../assets/images/tavern-bg.jpg")}
-      />
+      <BuildingOverview info={StaticState.instance.buildings.get(Tavern.id)}/>
     );
   }
 }

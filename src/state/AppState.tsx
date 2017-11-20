@@ -66,7 +66,8 @@ export class AppState {
               p.isNameFinalized,
               p.path,
               p.estateEvent,
-              p.estateEvent.shown
+              p.estateEvent.shown,
+              p.gold
             ])
           };
         },

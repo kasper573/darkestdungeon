@@ -10,6 +10,8 @@ import {SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInf
 import {DiseaseInfo} from "../state/types/DiseaseInfo";
 import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
+import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
+import {BuildingInfo} from "../state/types/BuildingInfo";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -185,6 +187,121 @@ export function addStaticState () {
 
     StaticState.instance.diseases.set(info.id, info);
   });
+
+  addBuildingInfo({
+    abbey: {
+      name: "Abbey",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/abbey-bg.jpg")
+    },
+    blacksmith: {
+      name: "Blacksmith",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/blacksmith-bg.jpg")
+    },
+    graveyard: {
+      name: "Graveyard",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/graveyard-bg.jpg")
+    },
+    guild: {
+      name: "Guild",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/guild-bg.jpg")
+    },
+    memoirs: {
+      name: "Memoirs",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/memoirs-bg.jpg")
+    },
+    sanitarium: {
+      name: "Sanitarium",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/sanitarium-bg.jpg")
+    },
+    coach: {
+      name: "Stage Coach",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/coach-bg.jpg"),
+      description: "Upgrading the Stage Coach increases the available" +
+      " heroes for hire each week or increases your roster size.",
+      children: {
+        network: {
+          name: "Stagecoach Network",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Increases the number of recruits available for hire",
+          items: [
+            {cost: 250, effects: {size: 2}},
+            {cost: 500, effects: {size: 2}},
+            {cost: 1000, effects: {size: 2}}
+          ]
+        },
+        roster: {
+          name: "Hero Barracks",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Increases the size of the hero roster",
+          items: [
+            {cost: 250, effects: {size: 2}},
+            {cost: 500, effects: {size: 2}},
+            {cost: 1000, effects: {size: 2}}
+          ]
+        },
+        recruits: {
+          name: "Experienced Recruits",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Provides a chance of higher level recruits",
+          items: [
+            {cost: 250, effects: {level: 1}},
+            {cost: 500, effects: {level: 1}},
+            {cost: 1000, effects: {level: 1}}
+          ]
+        }
+      }
+    },
+    tavern: {
+      name: "Tavern",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/tavern-bg.jpg"),
+      description: "Upgrading the Tavern increases the number of available stress treatments and their effectiveness",
+      children: {
+        bar: {
+          name: "Bar",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Improves the bar facilities",
+          items: [
+            {cost: 250, effects: {recovery: 0.2}},
+            {cost: 500, effects: {discount: 0.2}},
+            {cost: 1000, effects: {recovery: 0.2}}
+          ]
+        },
+        gambling: {
+          name: "Gambling",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Improves the gambling facilities",
+          items: [
+            {cost: 250, effects: {recovery: 0.2}},
+            {cost: 500, effects: {discount: 0.2}},
+            {cost: 1000, effects: {recovery: 0.2}}
+          ]
+        },
+        recruits: {
+          name: "Brothel",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Improves the brothel facilities",
+          items: [
+            {cost: 250, effects: {recovery: 0.2}},
+            {cost: 500, effects: {discount: 0.2}},
+            {cost: 1000, effects: {recovery: 0.2}}
+          ]
+        }
+      }
+    },
+    provision: {
+      name: "Provision",
+      avatarUrl: require("../../assets/images/avatar.jpg"),
+      backgroundUrl: require("../../assets/images/provision-bg.jpg")
+    }
+  });
 }
 
 function createStandardCharacterClass (className: string) {
@@ -233,4 +350,36 @@ function addMonster (className: string, characterNames?: string [], rarity?: num
   StaticState.instance.monsters.set(template.id, template);
   StaticState.instance.classes.set(template.id, classInfo);
   return template;
+}
+
+function addBuildingInfo (rawInfo: any, parent = StaticState.instance.buildingInfoRoot) {
+  for (const key in rawInfo) {
+    // Add to parent
+    const info = new BuildingInfo();
+    info.key = key;
+    info.parent = parent;
+    parent.children.set(key, info);
+
+    // Assign props
+    const {children, items, ...props} = rawInfo[key];
+    Object.assign(info, props);
+
+    // Parse raw items
+    info.items = (items || []).map((rawItem: any, index: number) => {
+      const {effects, ...itemProps} = rawItem;
+      const item = new BuildingUpgradeInfo();
+      item.id = BuildingUpgradeInfo.createId([info.id, index.toString()]);
+      Object.assign(item, itemProps);
+      Object.assign(item.effects, effects);
+
+      // Store item in static state list
+      StaticState.instance.buildingUpgrades.set(item.id, item);
+      return item;
+    });
+
+    // Parse raw children
+    if (children) {
+      addBuildingInfo(children, info);
+    }
+  }
 }

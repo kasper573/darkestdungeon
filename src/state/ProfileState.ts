@@ -18,7 +18,7 @@ export class ProfileState {
     // Basic settings
     profile.difficulty = difficulty;
     profile.name = difficulty.toString();
-    profile.gold = 250;
+    profile.gold = 2000;
 
     // Add all dungeons to profile
     profile.dungeons = Array.from(StaticState.instance.dungeons.values())

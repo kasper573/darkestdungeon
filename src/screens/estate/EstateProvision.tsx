@@ -10,6 +10,7 @@ import {Store} from "./Store";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Item} from "../../state/types/Item";
 import {QuestStatus} from "../../state/types/Quest";
+import {StaticState} from "../../state/StaticState";
 
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {
@@ -43,8 +44,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         continuePath="dungeonOverview">
         <BuildingOverview
           classStyle={styles.container}
-          header="Provision"
-          backgroundUrl={require("../../../assets/images/provision-bg.jpg")}>
+          info={StaticState.instance.buildings.get("provision")}>
           <Store
             ref={(store) => this.store = store}
             initialStoreItems={this.initialStoreItems}

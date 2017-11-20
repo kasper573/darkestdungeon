@@ -6,6 +6,7 @@ import {observer} from "mobx-react";
 import {SortOptions} from "../../ui/SortOptions";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
+import {Alert} from "../../ui/Popups";
 
 @observer
 export class EstateRoster extends AppStateComponent<{
@@ -25,7 +26,13 @@ export class EstateRoster extends AppStateComponent<{
       droppedHero.rosterIndex = swapIndex;
     } else if (profile.coach.indexOf(droppedHero) !== -1) {
       // Dragged from stage coach to roster
-      profile.recruitHero(droppedHero);
+      if (profile.isRosterFull) {
+        this.appState.popups.show(
+          <Alert message="The Hero Barracks is full. You can upgrade the barracks at the Stage Coach."/>
+        );
+      } else {
+        profile.recruitHero(droppedHero);
+      }
     }
   }
 
