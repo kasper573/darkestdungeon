@@ -10,7 +10,9 @@ import {Item} from "../state/types/Item";
 import {ItemSlot} from "./ItemSlot";
 
 @observer
-export class Inventory extends AppStateComponent {
+export class Inventory extends AppStateComponent<{
+  filter?: (item: Item) => boolean
+}> {
   @observable compareFn: CompareFunction<Item>;
 
   promptUnequipAll () {
@@ -25,7 +27,10 @@ export class Inventory extends AppStateComponent {
 
   render () {
     const profile = this.appState.profiles.activeProfile;
-    const sortedItems = profile.items.sort(this.compareFn);
+    let sortedItems = profile.items.sort(this.compareFn);
+    if (this.props.filter) {
+      sortedItems = sortedItems.filter(this.props.filter);
+    }
     return (
       <div>
         <BannerHeader>

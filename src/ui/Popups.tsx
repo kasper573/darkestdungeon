@@ -49,7 +49,7 @@ export class Popup extends React.Component<PopupProps> {
 
 export class Prompt extends React.Component<
   PopupProps & {
-  query?: string,
+  query?: any,
   responses?: PromptResponse[],
   yesLabel?: string,
   noLabel?: string
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
 
     textShadow: "0px 0px 5px rgb(210, 90, 90)",
     ":hover": {
-      textShadow: "0px 0px 5px rgb(255, 255, 255)",
+      textShadow: "0px 0px 5px rgb(255, 255, 255)"
     }
   },
 
