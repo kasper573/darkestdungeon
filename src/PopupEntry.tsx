@@ -128,7 +128,7 @@ const opacityStyles: {[key: string]: any} = {
 
 const filterStyles: {[key: string]: any} = {
   entering: {backdropFilter: "blur(0)"},
-  entered: {backdropFilter: "blur(5px)"},
+  entered: {backdropFilter: "blur(2px)"},
   exiting: {backdropFilter: "blur(0)"},
   exited: {backdropFilter: "blur(0)"}
 };
