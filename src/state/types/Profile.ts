@@ -8,10 +8,11 @@ import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateItem, generateQuest} from "../Generators";
-import {count, moveItem} from "../../lib/ArrayHelpers";
+import {count, moveItem, removeItems} from "../../lib/ArrayHelpers";
 import {BuildingUpgradeEffects} from "./BuildingUpgradeEffects";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
+import {HeirloomType, ItemType} from "./ItemInfo";
 
 export type ProfileId = string;
 
@@ -60,6 +61,15 @@ export class Profile {
   @serializable(list(reference(BuildingUpgradeInfo, StaticState.lookup((i) => i.buildingUpgrades))))
   @observable
   buildingUpgrades: BuildingUpgradeInfo[] = [];
+
+  @computed get heirloomCounts () {
+    return this.items
+      .filter((item) => item.info.type === ItemType.Heirloom)
+      .reduce((sum, item) => {
+        sum.set(item.info.heirloomType, (sum.get(item.info.heirloomType) || 0) + 1);
+        return sum;
+      }, new Map<HeirloomType, number>());
+  }
 
   @computed get partySlots () {
     const members: Hero[] = [undefined, undefined, undefined, undefined];
@@ -119,8 +129,37 @@ export class Profile {
   }
 
   purchaseUpgrade (upgradeItem: BuildingUpgradeInfo) {
-    this.gold -= upgradeItem.cost;
+    this.offsetHeirlooms(upgradeItem.cost, -1);
     this.buildingUpgrades.push(upgradeItem);
+  }
+
+  hasEnoughHeirlooms (requiredAmounts: Map<HeirloomType, number>) {
+    for (const [type, requiredAmount] of requiredAmounts.entries()) {
+      if (this.heirloomCounts.get(type) < requiredAmount) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  offsetHeirlooms (offset: Map<HeirloomType, number>, multiplier: number = 1) {
+    offset.forEach((amount, type) => {
+      amount *= multiplier;
+
+      if (amount < 0) {
+        // Remove heirlooms from inventory
+        const removed = this.items
+          .filter((item) => item.info.heirloomType === type)
+          .slice(0, Math.abs(amount));
+        removeItems(this.items, removed);
+      } else if (amount > 0) {
+        // Add new heirlooms to inventory
+        const heirloomInfo = StaticState.instance.heirlooms
+          .find((info) => info.heirloomType === type);
+        const newHeirlooms = count(amount).map(() => Item.fromInfo(heirloomInfo));
+        this.items.push(...newHeirlooms);
+      }
+    });
   }
 
   joinParty (newHero: Hero, slotIndex: number = -1) {

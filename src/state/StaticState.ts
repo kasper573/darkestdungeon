@@ -2,7 +2,7 @@ import {DungeonInfo} from "./types/DungeonInfo";
 import {LevelInfo} from "./types/LevelInfo";
 import {AfflictionInfo} from "./types/AfflictionInfo";
 import {CharacterClassInfo} from "./types/CharacterClassInfo";
-import {ItemInfo} from "./types/ItemInfo";
+import {ItemInfo, ItemType} from "./types/ItemInfo";
 import {QuirkInfo} from "./types/QuirkInfo";
 import {SkillInfo} from "./types/SkillInfo";
 import {DiseaseInfo} from "./types/DiseaseInfo";
@@ -33,6 +33,11 @@ export class StaticState  {
   buildingInfoRoot = new BuildingInfo();
   buildingUpgrades = new Map<string, BuildingUpgradeInfo>();
   get buildings () { return this.buildingInfoRoot.children; }
+
+  get heirlooms () {
+    return Array.from(this.items.values())
+      .filter((info) => info.type === ItemType.Heirloom);
+  }
 
   clear () {
     for (const key in this) {

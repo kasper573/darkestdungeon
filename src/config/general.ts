@@ -3,7 +3,7 @@ import {DungeonInfo} from "../state/types/DungeonInfo";
 import {LevelInfo} from "../state/types/LevelInfo";
 import {AfflictionInfo} from "../state/types/AfflictionInfo";
 import {CharacterClassInfo} from "../state/types/CharacterClassInfo";
-import {ItemInfo, ItemType} from "../state/types/ItemInfo";
+import {HeirloomType, ItemInfo, ItemType} from "../state/types/ItemInfo";
 import {QuirkInfo} from "../state/types/QuirkInfo";
 import {CharacterStatus} from "../state/types/CharacterStatus";
 import {SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInfo";
@@ -12,6 +12,7 @@ import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo} from "../state/types/BuildingInfo";
+import {enumMap} from "../lib/ArrayHelpers";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -132,24 +133,32 @@ export function addStaticState () {
     StaticState.instance.dungeons.set(info.id, info);
   });
 
+  enumMap<HeirloomType>(HeirloomType)
+    .forEach((value, name) => {
+      const info = new ItemInfo();
+      info.id = "heirloom" + value;
+      info.name = name;
+      info.type = ItemType.Heirloom;
+      info.heirloomType = value;
+
+      StaticState.instance.items.set(info.id, info);
+    });
+
   ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name, index) => {
     const info = new ItemInfo();
     info.id = name;
     info.name = name;
     info.goldCost = 25 + 50 * index;
 
-    const stats = new Stats();
     if (index % 2 === 0) {
       info.type = ItemType.Weapon;
-      stats.damage.value = (10 + Math.pow(index, 2));
-      stats.accuracy.value = (2 + index * 2);
+      info.stats.damage.value = (10 + Math.pow(index, 2));
+      info.stats.accuracy.value = (2 + index * 2);
     } else {
       info.type = ItemType.Armor;
-      stats.maxHealth.value = (20 + index * 5);
-      stats.protect.value = (2 + index * 2);
+      info.stats.maxHealth.value = (20 + index * 5);
+      info.stats.protect.value = (2 + index * 2);
     }
-
-    info.stats = stats;
 
     StaticState.instance.items.set(info.id, info);
   });
@@ -231,9 +240,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Increases the number of recruits available for hire",
           items: [
-            {cost: 250, effects: {size: 2}},
-            {cost: 500, effects: {size: 2}},
-            {cost: 1000, effects: {size: 2}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 2}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {size: 2}}
           ]
         },
         roster: {
@@ -241,9 +250,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Increases the size of the hero roster",
           items: [
-            {cost: 250, effects: {size: 2}},
-            {cost: 500, effects: {size: 2}},
-            {cost: 1000, effects: {size: 2}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 2}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {size: 2}}
           ]
         },
         recruits: {
@@ -251,9 +260,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Provides a chance of higher level recruits",
           items: [
-            {cost: 250, effects: {level: 1}},
-            {cost: 500, effects: {level: 1}},
-            {cost: 1000, effects: {level: 1}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {level: 1}}
           ]
         }
       }
@@ -269,9 +278,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the bar facilities",
           items: [
-            {cost: 250, effects: {recovery: 0.2}},
-            {cost: 500, effects: {discount: 0.2}},
-            {cost: 1000, effects: {recovery: 0.2}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
         gambling: {
@@ -279,9 +288,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the gambling facilities",
           items: [
-            {cost: 250, effects: {recovery: 0.2}},
-            {cost: 500, effects: {discount: 0.2}},
-            {cost: 1000, effects: {recovery: 0.2}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
         recruits: {
@@ -289,9 +298,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the brothel facilities",
           items: [
-            {cost: 250, effects: {recovery: 0.2}},
-            {cost: 500, effects: {discount: 0.2}},
-            {cost: 1000, effects: {recovery: 0.2}}
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         }
       }
@@ -366,10 +375,12 @@ function addBuildingInfo (rawInfo: any, parent = StaticState.instance.buildingIn
 
     // Parse raw items
     info.items = (items || []).map((rawItem: any, index: number) => {
-      const {effects, ...itemProps} = rawItem;
+      const {effects, cost} = rawItem;
       const item = new BuildingUpgradeInfo();
       item.id = BuildingUpgradeInfo.createId([info.id, index.toString()]);
-      Object.assign(item, itemProps);
+      for (const heirloomName in cost) {
+        item.cost.set(parseInt(heirloomName, 10) as HeirloomType, cost[heirloomName]);
+      }
       Object.assign(item.effects, effects);
 
       // Store item in static state list

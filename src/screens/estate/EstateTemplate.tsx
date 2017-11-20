@@ -13,6 +13,8 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
 import {PathTypes} from "../../state/types/Path";
+import {Heirlooms} from "../../ui/Heirlooms";
+import {ItemType} from "../../state/types/ItemInfo";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -61,6 +63,7 @@ export class EstateTemplate extends AppStateComponent<{
         <div className={css(styles.footer)}>
           <Row classStyle={styles.footerLeft}>
             <span>Gold: {this.appState.profiles.activeProfile.gold}</span>
+            <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
             <span onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
@@ -76,9 +79,13 @@ export class EstateTemplate extends AppStateComponent<{
           </div>
           <div className={css(styles.footerRight)}>
             <span onClick={() => this.appState.popups.show({
-              content: <Popup><Inventory/></Popup>,
+              id: "inventory",
               modalState: ModalState.Opaque,
-              id: "inventory"
+              content: (
+                <Popup>
+                  <Inventory filter={(item) => item.info.type !== ItemType.Heirloom}/>
+                </Popup>
+              )
             })}>
               [INVENTORY]
             </span>

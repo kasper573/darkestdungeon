@@ -10,6 +10,7 @@ import {Prompt} from "../../../ui/Popups";
 import {observer} from "mobx-react";
 import {findSubset} from "../../../lib/ArrayHelpers";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
+import {Heirlooms} from "../../../ui/Heirlooms";
 
 export class BuildingUpgradeShop extends AppStateComponent<{
   upgrades: BuildingInfo
@@ -86,7 +87,11 @@ class UpgradeItem extends AppStateComponent<{
 }> {
   async promptUnlock () {
     const proceed = await this.appState.popups.prompt(
-      <Prompt query={"Do you wish to purchase this upgrade for " + this.props.item.cost + " gold"}/>
+      <Prompt query={(
+        <div>
+          Do you wish to purchase this upgrade for <Heirlooms counts={this.props.item.cost}/>?
+        </div>
+      )}/>
     );
 
     if (proceed) {
@@ -98,7 +103,7 @@ class UpgradeItem extends AppStateComponent<{
     const {item} = this.props;
 
     const isUpgraded = this.activeProfile.ownsUpgrade(item);
-    const canAfford = this.activeProfile.gold >= item.cost;
+    const canAfford = this.activeProfile.hasEnoughHeirlooms(item.cost);
     const isAvailable = !this.props.prerequisite || this.activeProfile.ownsUpgrade(this.props.prerequisite);
     const canBuy = canAfford && isAvailable && !isUpgraded;
 
@@ -112,9 +117,10 @@ class UpgradeItem extends AppStateComponent<{
           classStyle={[styles.step, dynStyle]}
           tip={(
             <div>
-              <span style={{whiteSpace: "nowrap", color: canAfford ? "green" : "red"}}>
-                Cost: {item.cost}
-              </span>
+              <Row style={{whiteSpace: "nowrap"}}>
+                <span>Cost: </span>
+                <Heirlooms counts={item.cost} compare={this.activeProfile.heirloomCounts}/>
+              </Row>
               <pre>{item.description}</pre>
               {!isAvailable && (
                 <div style={{whiteSpace: "nowrap"}}>

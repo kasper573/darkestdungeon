@@ -5,7 +5,15 @@ export enum ItemType {
   Weapon = "W",
   Armor = "A",
   Trinket = "T",
-  Usable = "T"
+  Usable = "U",
+  Heirloom = "H"
+}
+
+export enum HeirloomType {
+  Bust,
+  Portrait,
+  Deed,
+  Crest
 }
 
 export class ItemInfo implements IStatsSource {
@@ -13,7 +21,9 @@ export class ItemInfo implements IStatsSource {
 
   name: string = "";
   type: ItemType = ItemType.Usable;
+  heirloomType?: HeirloomType;
   goldCost: number = 0;
-  stats: Stats;
+  stats: Stats = new Stats();
+
   statsSourceName: string = "Item";
 }
