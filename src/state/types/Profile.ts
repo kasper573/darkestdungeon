@@ -12,6 +12,7 @@ import {count, moveItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 import {HeirloomType, ItemType} from "./ItemInfo";
+import {BuildingInfoId} from "./BuildingInfo";
 
 export type ProfileId = string;
 
@@ -115,6 +116,20 @@ export class Profile {
 
   @computed get coachSize () {
     return this.getUpgradeEffects("coach", "network").size;
+  }
+
+  purchaseResidency (resident: Hero) {
+    const cost = this.getUpgradeEffects(resident.residentInfo.buildingId).cost;
+    resident.residentInfo.isLockedIn = true;
+    this.gold -= cost;
+  }
+
+  findResident (buildingId: BuildingInfoId, slotIndex: number) {
+    return this.roster.find((hero) =>
+      hero.residentInfo &&
+      hero.residentInfo.buildingId === buildingId &&
+      hero.residentInfo.slotIndex === slotIndex
+    );
   }
 
   getUpgradeEffects (...keys: string[]) {

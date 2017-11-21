@@ -14,6 +14,7 @@ import {DragDropSlot} from "../../lib/DragDropSlot";
 import {AppStateComponent} from "../../AppStateComponent";
 import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
+import {StaticState} from "../../state/StaticState";
 
 @observer
 export class EstateRosterEntry extends AppStateComponent<{
@@ -37,12 +38,25 @@ export class EstateRosterEntry extends AppStateComponent<{
   render () {
     const hero = this.props.hero;
 
+    let allowDrag = this.props.allowDrag;
     let extraStyle;
     let partyElement;
+    let residentElement;
 
     if (this.props.partyFeatures && hero.inParty) {
       extraStyle = styles.entryInParty;
       partyElement = <div className={css(styles.partyIcon)}/>;
+    }
+
+    if (hero.residentInfo) {
+      const buildingInfo = StaticState.instance.buildingInfoRoot.get(hero.residentInfo.buildingId);
+      residentElement = (
+        <div>{buildingInfo.name}</div>
+      );
+
+      if (hero.residentInfo.isLockedIn) {
+        allowDrag = () => false;
+      }
     }
 
     const armor = hero.items.find((i) => i.info.type === ItemType.Armor);
@@ -53,12 +67,13 @@ export class EstateRosterEntry extends AppStateComponent<{
         type={Hero}
         item={hero}
         classStyle={[styles.entry, extraStyle]}
-        allowDrag={this.props.allowDrag}
+        allowDrag={allowDrag}
         allowDrop={this.props.allowDrop}
         onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
         <Avatar src={hero.classInfo.avatarUrl}>
           {partyElement}
+          {residentElement}
         </Avatar>
         <div className={css(styles.info)}>
           <span className={css(commonStyles.heroName)}>

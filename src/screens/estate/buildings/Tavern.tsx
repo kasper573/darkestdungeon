@@ -11,7 +11,7 @@ export class Tavern extends AppStateComponent {
     const info = StaticState.instance.buildings.get(Tavern.id);
     return (
       <BuildingOverview info={info}>
-        <TreatmentSlots info={info} profile={this.activeProfile}/>
+        <TreatmentSlots info={info}/>
       </BuildingOverview>
     );
   }

@@ -1,6 +1,7 @@
 import {BuildingUpgradeEffects} from "./BuildingUpgradeEffects";
 import {identifier, serializable} from "serializr";
 import {HeirloomType} from "./ItemInfo";
+import {createId} from "./BuildingInfo";
 
 export class BuildingUpgradeInfo {
   @serializable(identifier()) id: string;
@@ -27,10 +28,6 @@ export class BuildingUpgradeInfo {
   }
 
   isChildOf (keys: string []) {
-    return this.id.indexOf(BuildingUpgradeInfo.createId(keys)) === 0;
-  }
-
-  static createId (keys: string[]) {
-    return keys.filter((key) => key).join(".");
+    return this.id.indexOf(createId(keys)) === 0;
   }
 }

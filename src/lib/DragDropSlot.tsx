@@ -4,10 +4,19 @@ const {DropTarget, DragSource} = require("react-dnd");
 
 const SourceSpec = {
   beginDrag (props: DragDropSlotProps<{}>, monitor: any) {
+    if (props.onDragBegin) {
+      props.onDragBegin(props.item, monitor);
+    }
     return {item: props.item};
   },
 
-  canDrag (props: DragDropSlotProps<{}>, monitor: any) {
+  endDrag (props: DragDropSlotProps<{}>, monitor: any) {
+    if (props.onDragEnd) {
+      props.onDragEnd(monitor.getItem().item, monitor);
+    }
+  },
+
+  canDrag (props: DragDropSlotProps<{}>) {
     return props.item && (!props.allowDrag || props.allowDrag(props.item));
   }
 };
@@ -15,7 +24,9 @@ const SourceSpec = {
 const TargetSpec = {
   drop (props: DragDropSlotProps<{}>, monitor: any, target: DragDropSlot<{}>) {
     if (target.props.onDrop) {
-      target.props.onDrop(monitor.getItem().item);
+      // HACK make onDrop always get called after onDragEnd
+      const item = monitor.getItem().item;
+      requestAnimationFrame(() => target.props.onDrop(item));
     }
   },
 
@@ -28,6 +39,10 @@ const TargetSpec = {
   }
 };
 
+type ContentType = React.ReactNode[] | React.ReactNode;
+type ContentFunction<T> = (dragItem: T, isOver: boolean, isDragging: boolean,
+                           canDrag: boolean, canDrop: boolean) => ContentType;
+
 export type DragDropSlotProps<T> = {
   // Custom API
   type: new () => T,
@@ -36,16 +51,21 @@ export type DragDropSlotProps<T> = {
   allowDrag?: (item: T) => boolean,
   allowDrop?: (item: T) => boolean,
   onDrop?: (item: T) => void,
+  onDragBegin?: (item: T, monitor: any) => void,
+  onDragEnd?: (item: T, monitor: any) => void,
 
   // DOM glue
-  children?: any,
+  children?: ContentType | ContentFunction<T>,
   onClick?: () => void,
   classStyle?: any,
   style?: any,
 
   // react-dnd internals
   isOver?: boolean,
+  isDragging?: boolean,
+  canDrag?: boolean,
   canDrop?: boolean,
+  dragItem?: any,
   connectDropTarget?: any,
   connectDragSource?: any,
   connectDragPreview?: any
@@ -54,11 +74,13 @@ export type DragDropSlotProps<T> = {
 @DropTarget("slot", TargetSpec, (connect: any, monitor: any) => ({
   connectDropTarget: connect.dropTarget(),
   isOver: monitor.isOver(),
-  canDrop: monitor.canDrop()
+  canDrop: monitor.canDrop(),
+  dragItem: monitor.getItem()
 }))
 @DragSource("slot", SourceSpec, (connect: any, monitor: any) => ({
   connectDragSource: connect.dragSource(),
   connectDragPreview: connect.dragPreview(),
+  canDrag: monitor.canDrag(),
   isDragging: monitor.isDragging()
 }))
 export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
@@ -73,10 +95,15 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
   }
 
   render () {
-    const {isOver, canDrop} = this.props;
+    const {dragItem, isOver, isDragging, canDrag, canDrop} = this.props;
     const colorStyle = canDrop ? {
       background: isOver ? "green" : "yellow"
     } : undefined;
+
+    // Normalize this.props.children into always being a ContentFunction
+    const childrenFn = typeof this.props.children === "function" ?
+      this.props.children as ContentFunction<T>  :
+      (() => this.props.children) as ContentFunction<T>;
 
     return this.props.connectDropTarget(
       this.props.connectDragSource(
@@ -84,7 +111,7 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
           className={css(this.props.classStyle)}
           style={{...this.props.style, flex: 1, ...colorStyle}}
           onClick={this.props.onClick}>
-          {this.props.children}
+          {childrenFn(dragItem && dragItem.item, isOver, isDragging, canDrag, canDrop)}
         </div>
       )
     );
