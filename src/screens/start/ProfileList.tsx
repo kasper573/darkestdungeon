@@ -7,6 +7,7 @@ import {transaction} from "mobx";
 import {Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Difficulty, Profile, ProfileId} from "../../state/types/Profile";
+import {enumMap, mapMap} from "../../lib/Helpers";
 
 @observer
 export class ProfileList extends AppStateComponent<{
@@ -93,15 +94,12 @@ class DeletePrompt extends React.Component<{handle?: PopupHandle}> {
 
 class CreatePrompt extends React.Component<{handle?: PopupHandle}> {
   render () {
-    const responses =
-      Object.values(Difficulty)
-        .filter((key) => typeof key === "string")
-        .map((difficultyName: string) => {
-          return {
-            label: difficultyName,
-            value: (Difficulty as any)[difficultyName]
-          };
-        });
+    const responses = mapMap(enumMap<Difficulty>(Difficulty), (difficulty, name) => {
+      return {
+        label: name,
+        value: difficulty
+      };
+    });
 
     return (
       <Prompt
@@ -119,5 +117,5 @@ const styles = StyleSheet.create({
   list: {
     height: entryHeight * visibleEntries + entrySpacing * 2,
     overflowY: "scroll"
-  },
+  }
 });

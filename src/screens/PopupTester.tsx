@@ -6,43 +6,39 @@ import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {Popup, Prompt} from "../ui/Popups";
 import {AppStateComponent} from "../AppStateComponent";
+import {enumMap, mapMap} from "../lib/Helpers";
 
 @observer
 export class PopupTester extends AppStateComponent {
   @observable popupQueue: Array<[PopupContent, PopupAlign, ModalState]> = [];
 
   renderPlacementButtons (modalState: ModalState) {
-    return Object.values(PopupAlign)
-      .filter((key) => typeof key === "string")
-      .map((key) => (
-        <button key={key} onClick={
-          (e: any) => {
-            e.stopPropagation();
-            const align = (PopupAlign as any)[key];
-            this.push(
-              <Popup closeable><pre>{JSON.stringify({align, modalState}, null, 2)}</pre></Popup>,
-              align,
-              modalState
-            );
-          }
-        }>
-          {key}
-        </button>
-      ));
+    return mapMap(enumMap<PopupAlign>(PopupAlign), (align, name) => (
+      <button key={name} onClick={
+        (e: any) => {
+          e.stopPropagation();
+          this.push(
+            <Popup closeable><pre>{JSON.stringify({align, modalState}, null, 2)}</pre></Popup>,
+            align,
+            modalState
+          );
+        }
+      }>
+        {name}
+      </button>
+    ));
   }
 
   render () {
-    const tooltipAreas = Object.values(TooltipSide)
-      .filter((key) => typeof key === "string")
-      .map((key) => (
-        <TooltipArea
-          key={key}
-          classStyle={styles.tooltipAreas}
-          side={(TooltipSide as any)[key]}
-          tip={<Tip/>}>
-          {key}
-        </TooltipArea>
-      ));
+    const tooltipAreas = mapMap(enumMap<TooltipSide>(TooltipSide), (side, name) => (
+      <TooltipArea
+        key={name}
+        classStyle={styles.tooltipAreas}
+        side={side}
+        tip={<Tip/>}>
+        {name}
+      </TooltipArea>
+    ));
 
     return (
       <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
@@ -158,7 +154,7 @@ const styles = StyleSheet.create({
     border: "2px solid green",
     backgroundColor: "black",
     color: "white",
-    padding: 10,
+    padding: 10
   },
 
   tooltipAreas: {

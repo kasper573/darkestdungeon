@@ -8,6 +8,7 @@ import {QuestObjective} from "./types/QuestObjective";
 import {Character} from "./types/Character";
 import {DungeonInfo} from "./types/DungeonInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
+import {enumMap} from "../lib/Helpers";
 
 export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
@@ -48,7 +49,7 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
   q.bonfires = Math.round(Math.random() * 2);
   q.map = QuestMap.generate(
     dungeon.info,
-    randomizeItem(Object.values(MapSize)) as MapSize
+    randomizeItem(Array.from(enumMap<MapSize>(MapSize).values()))
   );
   q.currentRoomId = q.map.entrance.id;
 
