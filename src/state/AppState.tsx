@@ -67,7 +67,8 @@ export class AppState {
               p.path,
               p.estateEvent,
               p.estateEvent.shown,
-              p.gold
+              p.gold,
+              p.heirloomCounts
             ])
           };
         },

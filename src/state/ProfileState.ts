@@ -4,7 +4,7 @@ import {Difficulty, Profile, ProfileId} from "./types/Profile";
 import {Dungeon} from "./types/Dungeon";
 import {Path} from "./types/Path";
 import {Item} from "./types/Item";
-import {count} from "../lib/ArrayHelpers";
+import {count} from "../lib/Helpers";
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;

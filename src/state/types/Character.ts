@@ -1,7 +1,6 @@
-import { computed, observable} from "mobx";
+import {computed, observable} from "mobx";
 import {StaticState} from "../StaticState";
 import {identifier, list, map, object, reference, serializable} from "serializr";
-import uuid = require("uuid");
 import {Experienced} from "./Experienced";
 import {AfflictionInfo} from "./AfflictionInfo";
 import {CharacterClassInfo} from "./CharacterClassInfo";
@@ -11,6 +10,8 @@ import {CharacterStatus} from "./CharacterStatus";
 import {SkillInfo, SkillTargetObject} from "./SkillInfo";
 import {DiseaseInfo} from "./DiseaseInfo";
 import {Stats, TurnStats} from "./Stats";
+import {cap} from "../../lib/Helpers";
+import uuid = require("uuid");
 
 export type CharacterId = string;
 
@@ -232,13 +233,4 @@ export class Character extends Experienced {
     const resistance = targetStats.resistances.get(status).value;
     return chance - resistance;
   }
-}
-
-export function cap (value: number, min: number, max: number) {
-  if (value < min) {
-    return min;
-  } else if (value > max) {
-    return max;
-  }
-  return value;
 }

@@ -15,6 +15,7 @@ import {Input} from "../../config/Input";
 import {PathTypes} from "../../state/types/Path";
 import {Heirlooms} from "../../ui/Heirlooms";
 import {ItemType} from "../../state/types/ItemInfo";
+import {TooltipArea} from "../../lib/TooltipArea";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -64,13 +65,16 @@ export class EstateTemplate extends AppStateComponent<{
           <Row classStyle={styles.footerLeft}>
             <span>Gold: {this.appState.profiles.activeProfile.gold}</span>
             <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
-            <span onClick={() => this.appState.popups.show({
-              content: <Popup><HeirloomTrader/></Popup>,
-              modalState: ModalState.Opaque,
-              id: "heirloomTrader"
-            })}>
-              [TRADE HEIRLOOMS]
-            </span>
+            <TooltipArea
+              tip={<span style={{whiteSpace: "nowrap"}}>Trade heirlooms</span>}
+              onClick={() => this.appState.popups.show({
+                content: <Popup><HeirloomTrader/></Popup>,
+                modalState: ModalState.Opaque,
+                id: "heirloomTrader"
+              })}
+            >
+              [⇅]
+            </TooltipArea>
           </Row>
           <div className={css(styles.footerCenter)}>
             <button onClick={() => this.onContinueSelected()}>

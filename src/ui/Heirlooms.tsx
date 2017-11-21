@@ -2,7 +2,9 @@ import * as React from "react";
 import {HeirloomType} from "../state/types/ItemInfo";
 import {StaticState} from "../state/StaticState";
 import {Row} from "../config/styles";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
+import {Heirloom} from "./Heirloom";
+import {TooltipArea} from "../lib/TooltipArea";
 
 export class Heirlooms extends React.Component<{
   counts: Map<HeirloomType, number>,
@@ -29,9 +31,13 @@ export class Heirlooms extends React.Component<{
             compareStyle = amount <= compareAmount ? styles.compareEnough : styles.compareLess;
           }
           return (
-            <span key={heirloom.id} className={css(compareStyle)}>
-              {heirloom.name}: {amount}
-            </span>
+            <TooltipArea
+              tip={heirloom.pluralName}
+              key={heirloom.id}
+              classStyle={[styles.heirloom, compareStyle]}>
+              <Heirloom info={heirloom}/>
+              <span>: {amount}</span>
+            </TooltipArea>
           );
         })}
       </Row>
@@ -40,6 +46,10 @@ export class Heirlooms extends React.Component<{
 }
 
 const styles = StyleSheet.create({
+  heirloom: {
+    flexDirection: "row"
+  },
+
   compareEnough: {
     color: "green"
   },

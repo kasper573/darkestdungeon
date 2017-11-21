@@ -5,7 +5,7 @@ import {observer} from "mobx-react";
 import {observable} from "mobx";
 import {Item} from "../../state/types/Item";
 import {Profile} from "../../state/types/Profile";
-import {moveItem} from "../../lib/ArrayHelpers";
+import {moveItem} from "../../lib/Helpers";
 
 @observer
 export class Store extends React.Component<{
@@ -24,16 +24,16 @@ export class Store extends React.Component<{
 
   buyItem (item: Item) {
     moveItem(item, this.store, this.cart);
-    this.props.profile.gold -= item.info.goldCost;
+    this.props.profile.gold -= item.info.value;
   }
 
   returnItem (item: Item) {
     moveItem(item, this.cart, this.store);
-    this.props.profile.gold += item.info.goldCost;
+    this.props.profile.gold += item.info.value;
   }
 
   canAffordItem (item: Item) {
-    return this.props.profile.gold >= item.info.goldCost;
+    return this.props.profile.gold >= item.info.value;
   }
 
   checkout () {

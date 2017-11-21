@@ -8,7 +8,7 @@ import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateItem, generateQuest} from "../Generators";
-import {count, moveItem, removeItems} from "../../lib/ArrayHelpers";
+import {count, moveItem, removeItems} from "../../lib/Helpers";
 import {BuildingUpgradeEffects} from "./BuildingUpgradeEffects";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
@@ -61,6 +61,10 @@ export class Profile {
   @serializable(list(reference(BuildingUpgradeInfo, StaticState.lookup((i) => i.buildingUpgrades))))
   @observable
   buildingUpgrades: BuildingUpgradeInfo[] = [];
+
+  get heirloomConversionRate () {
+    return 1.5;
+  }
 
   @computed get heirloomCounts () {
     return this.items
@@ -140,6 +144,22 @@ export class Profile {
       }
     }
     return true;
+  }
+
+  getConvertedHeirloomValue (amount: number, from: HeirloomType, to: HeirloomType) {
+    const fromInfo = StaticState.instance.heirlooms.find((info) => info.heirloomType === from);
+    const toInfo = StaticState.instance.heirlooms.find((info) => info.heirloomType === to);
+    return Math.floor(
+      (amount * (fromInfo.value / this.heirloomConversionRate)) / toInfo.value
+    );
+  }
+
+  tradeHeirlooms (givenAmount: number, from: HeirloomType, to: HeirloomType) {
+    const receivedAmount = this.getConvertedHeirloomValue(givenAmount, from, to);
+    const deal = new Map<HeirloomType, number>();
+    deal.set(from, -givenAmount);
+    deal.set(to, receivedAmount);
+    this.offsetHeirlooms(deal);
   }
 
   offsetHeirlooms (offset: Map<HeirloomType, number>, multiplier: number = 1) {
