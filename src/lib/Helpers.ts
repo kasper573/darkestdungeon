@@ -43,6 +43,12 @@ export function range (start: number, end: number) {
   return list;
 }
 
+export function mapMap<K, V, T> (map: Map<K, V>, getItem: (v: V, k: K) => T) {
+  const items: T[] = [];
+  map.forEach((v, k) => items.push(getItem(v, k)));
+  return items;
+}
+
 export function enumMap<T> (e: any): Map<string, T> {
   const map = new Map<string, T>();
   const enumKeys = Object.keys(e);

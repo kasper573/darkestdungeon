@@ -2,6 +2,7 @@ import {observable} from "mobx";
 import {StatItem} from "./StatItem";
 import {CharacterStatus} from "./CharacterStatus";
 import {map, serializable} from "serializr";
+import {enumMap} from "../../lib/Helpers";
 
 export interface IStatsSource {
   stats: Stats;
@@ -18,13 +19,11 @@ export class StatMod {
 }
 
 function declareStatuses (shortSuffix: string, longSuffix: string) {
-  return Object.values(CharacterStatus).reduce((m, val) => {
-    if (typeof val === "string") {
-      const status = (CharacterStatus as any)[val];
-      m.set(status, StatItem.declare(val + shortSuffix, val + longSuffix, true));
-    }
-    return m;
-  }, new Map<CharacterStatus, StatItem>());
+  const statItems = new Map<CharacterStatus, StatItem>();
+  enumMap<CharacterStatus>(CharacterStatus).forEach((status, name) => {
+    statItems.set(status, StatItem.declare(name + shortSuffix, name + longSuffix, true));
+  });
+  return statItems;
 }
 
 export class Stats {
