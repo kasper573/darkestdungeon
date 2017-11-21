@@ -12,12 +12,9 @@ export class DungeonResult extends AppStateComponent {
   @observable slide = Slide.Items;
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
-    const quest = profile.selectedQuest;
-
     const slideContent = this.slide === Slide.Items ?
-      <DungeonResultItems quest={quest}/> :
-      <DungeonResultHeroes party={profile.party}/>;
+      <DungeonResultItems quest={this.selectedQuest}/> :
+      <DungeonResultHeroes party={this.activeProfile.party}/>;
 
     const continueLabel = this.slide === Slide.Items ? "Next" : "Return to Town";
     const continueFn = this.slide === Slide.Items ?
@@ -26,8 +23,8 @@ export class DungeonResult extends AppStateComponent {
 
     return (
       <div className={css(styles.container)}>
-        <div>{quest.status}</div>
-        <CommonHeader label={quest.info.type}/>
+        <div>{this.selectedQuest.status}</div>
+        <CommonHeader label={this.selectedQuest.info.type}/>
 
         {slideContent}
 
@@ -40,7 +37,7 @@ export class DungeonResult extends AppStateComponent {
 
   async returnToEstate () {
     await this.appState.router.goto("estateOverview");
-    this.appState.profiles.activeProfile.gotoNextWeek();
+    this.activeProfile.gotoNextWeek();
   }
 }
 

@@ -12,7 +12,7 @@ export class StageCoach extends AppStateComponent {
   render () {
     return (
       <BuildingOverview info={StaticState.instance.buildings.get(StageCoach.id)}>
-        {this.appState.profiles.activeProfile.coach.map((hero) => (
+        {this.activeProfile.coach.map((hero) => (
           <EstateRosterEntry key={hero.id} hero={hero} allowDrop={() => false}/>
         ))}
       </BuildingOverview>

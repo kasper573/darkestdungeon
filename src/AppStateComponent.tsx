@@ -17,4 +17,8 @@ export abstract class AppStateComponent<P = {}> extends React.Component<P> {
   get activeProfile () {
     return this.appState.profiles.activeProfile;
   }
+
+  get selectedQuest () {
+    return this.activeProfile.selectedQuest;
+  }
 }

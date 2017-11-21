@@ -18,36 +18,34 @@ export class EstateRoster extends AppStateComponent<{
       droppedHero.leaveParty();
     }
 
-    const profile = this.appState.profiles.activeProfile;
-    if (profile.roster.indexOf(droppedHero) !== -1) {
+    if (this.activeProfile.roster.indexOf(droppedHero) !== -1) {
       // Drag from roster entry to roster entry
       const swapIndex = slotHero.rosterIndex;
       slotHero.rosterIndex = droppedHero.rosterIndex;
       droppedHero.rosterIndex = swapIndex;
-    } else if (profile.coach.indexOf(droppedHero) !== -1) {
+    } else if (this.activeProfile.coach.indexOf(droppedHero) !== -1) {
       // Dragged from stage coach to roster
-      if (profile.isRosterFull) {
+      if (this.activeProfile.isRosterFull) {
         this.appState.popups.show(
           <Alert message="The Hero Barracks is full. You can upgrade the barracks at the Stage Coach."/>
         );
       } else {
-        profile.recruitHero(droppedHero);
+        this.activeProfile.recruitHero(droppedHero);
       }
     }
   }
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
-    const sortedHeroes = profile.roster.slice().sort(Hero.comparers.rosterIndex);
+    const sortedHeroes = this.activeProfile.roster.slice().sort(Hero.comparers.rosterIndex);
     const roster = (
       <div className={css(styles.roster)}>
         <div className={css(styles.header)}>
           <span>
-            {profile.roster.length} / {profile.rosterSize}
+            {this.activeProfile.roster.length} / {this.activeProfile.rosterSize}
           </span>
           <SortOptions
             comparers={Hero.visibleComparers}
-            onChange={(fn) => profile.sortHeroes(fn)}
+            onChange={(fn) => this.activeProfile.sortHeroes(fn)}
           />
         </div>
         <ul>

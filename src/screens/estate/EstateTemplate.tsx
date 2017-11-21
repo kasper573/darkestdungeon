@@ -54,7 +54,7 @@ export class EstateTemplate extends AppStateComponent<{
 
         <div className={css(styles.header)}>
           {this.mayGoBack && <span onClick={() => this.goBack()}>[BACK]</span>}
-          {this.appState.profiles.activeProfile.name} Estate
+          {this.activeProfile.name} Estate
         </div>
 
         <div className={css(styles.content)}>
@@ -63,7 +63,7 @@ export class EstateTemplate extends AppStateComponent<{
 
         <div className={css(styles.footer)}>
           <Row classStyle={styles.footerLeft}>
-            <span>Gold: {this.appState.profiles.activeProfile.gold}</span>
+            <span>Gold: {this.activeProfile.gold}</span>
             <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
             <TooltipArea
               tip={<span style={{whiteSpace: "nowrap"}}>Trade heirlooms</span>}

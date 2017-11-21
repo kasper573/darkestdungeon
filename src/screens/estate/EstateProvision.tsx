@@ -15,7 +15,7 @@ import {StaticState} from "../../state/StaticState";
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {
   private store: Store;
-  private initialStoreItems: Item[] = this.appState.profiles.activeProfile.getStoreItems();
+  private initialStoreItems: Item[] = this.activeProfile.getStoreItems();
 
   checkItemsBeforeContinue () {
     return this.appState.popups.prompt(
@@ -26,14 +26,13 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
     ).then((willEmbark) => {
       if (willEmbark) {
         this.store.checkout();
-        this.appState.profiles.activeProfile.selectedQuest.status = QuestStatus.Started;
+        this.selectedQuest.status = QuestStatus.Started;
         return true;
       }
     });
   }
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
     return (
       <EstateTemplate
         path={this.props.path}
@@ -48,10 +47,10 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
           <Store
             ref={(store) => this.store = store}
             initialStoreItems={this.initialStoreItems}
-            profile={profile}
+            profile={this.activeProfile}
           />
         </BuildingOverview>
-        <PartyDropbox profile={profile} lock/>
+        <PartyDropbox profile={this.activeProfile} lock/>
       </EstateTemplate>
     );
   }
