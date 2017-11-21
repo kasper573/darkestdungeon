@@ -32,7 +32,7 @@ export function without <T> (all: T[], remove: T[]) {
 }
 
 export function count (n: number) {
-  return range(0, n);
+  return range(1, n + 1);
 }
 
 export function range (start: number, end: number) {
