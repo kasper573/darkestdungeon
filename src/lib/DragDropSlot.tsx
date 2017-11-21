@@ -1,4 +1,5 @@
 import * as React from "react";
+import {css} from "aphrodite";
 const {DropTarget, DragSource} = require("react-dnd");
 
 const SourceSpec = {
@@ -39,7 +40,7 @@ export type DragDropSlotProps<T> = {
   // DOM glue
   children?: any,
   onClick?: () => void,
-  className?: any,
+  classStyle?: any,
   style?: any,
 
   // react-dnd internals
@@ -80,7 +81,7 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div
-          className={this.props.className}
+          className={css(this.props.classStyle)}
           style={{...this.props.style, flex: 1, ...colorStyle}}
           onClick={this.props.onClick}>
           {this.props.children}
