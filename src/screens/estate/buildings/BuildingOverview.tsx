@@ -6,6 +6,7 @@ import {observer} from "mobx-react";
 import {BuildingUpgradeShop} from "./BuildingUpgradeShop";
 import {Avatar} from "../../../ui/Avatar";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
+import {grid} from "../../../config/Grid";
 
 @observer
 export class BuildingOverview extends React.Component<{
@@ -57,8 +58,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundSize: "cover",
     backgroundPosition: "50% 50%",
-    minWidth: 350,
-    minHeight: 200,
+    width: grid.xSpan(grid.columns * 0.8),
+    height: grid.ySpan(grid.rows * 0.8),
     padding: 10
   },
 

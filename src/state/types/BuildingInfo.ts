@@ -1,5 +1,9 @@
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 
+export type BuildingInfoId = string;
+
+const idSeparator = ".";
+
 export class BuildingInfo {
   key: string;
   name: string;
@@ -19,6 +23,15 @@ export class BuildingInfo {
     return flattenedItems;
   }
 
+  get (id: BuildingInfoId) {
+    const keys = id.split(idSeparator);
+    let info: BuildingInfo = this;
+    while (keys.length) {
+      info = info.children.get(keys.shift());
+    }
+    return info;
+  }
+
   get id () {
     let next: BuildingInfo = this;
     const keys = [];
@@ -26,6 +39,10 @@ export class BuildingInfo {
       keys.push(next.key);
       next = next.parent;
     }
-    return BuildingUpgradeInfo.createId(keys.reverse());
+    return createId(keys.reverse());
   }
+}
+
+export function createId (keys: string[]): BuildingInfoId {
+  return keys.filter((key) => key).join(idSeparator);
 }

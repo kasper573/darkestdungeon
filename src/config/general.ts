@@ -11,7 +11,7 @@ import {DiseaseInfo} from "../state/types/DiseaseInfo";
 import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
-import {BuildingInfo} from "../state/types/BuildingInfo";
+import {BuildingInfo, createId as createBuildingInfoId} from "../state/types/BuildingInfo";
 import {enumMap} from "../lib/Helpers";
 
 export const defaultAmbienceOSVolume = 0.25;
@@ -283,10 +283,10 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the bar facilities",
           items: [
-            {cost: null, effects: {size: 1}},
+            {cost: null, effects: {size: 1, cost: 500}},
             {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {recovery: 0.2}},
             {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 1}},
-            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {cost: -100}},
             {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 1}},
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
@@ -296,9 +296,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the gambling facilities",
           items: [
-            {cost: null, effects: {size: 1}},
+            {cost: null, effects: {size: 1, cost: 2500}},
             {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
-            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {cost: -100}},
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
@@ -307,9 +307,9 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Improves the brothel facilities",
           items: [
-            {cost: null, effects: {size: 1}},
+            {cost: null, effects: {size: 1, cost: 500}},
             {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
-            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {discount: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {cost: -100}},
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         }
@@ -387,7 +387,7 @@ function addBuildingInfo (rawInfo: any, parent = StaticState.instance.buildingIn
     info.items = (items || []).map((rawItem: any, index: number) => {
       const {effects, cost} = rawItem;
       const item = new BuildingUpgradeInfo();
-      item.id = BuildingUpgradeInfo.createId([info.id, index.toString()]);
+      item.id = createBuildingInfoId([info.id, index.toString()]);
       if (cost) {
         for (const heirloomName in cost) {
           item.cost.set(parseInt(heirloomName, 10) as HeirloomType, cost[heirloomName]);

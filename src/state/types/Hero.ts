@@ -1,15 +1,33 @@
 import {Character} from "./Character";
-import {serializable} from "serializr";
-import {observable} from "mobx";
+import {object, serializable} from "serializr";
+import {observable, transaction} from "mobx";
+import {HeroResidentInfo} from "./HeroResidentInfo";
+import {BuildingInfoId} from "./BuildingInfo";
 
 export class Hero extends Character {
   @serializable @observable rosterIndex: number = 0;
   @serializable @observable partyIndex: number = -1;
   @serializable @observable inParty: boolean;
 
+  @serializable(object(HeroResidentInfo))
+  @observable
+  residentInfo?: HeroResidentInfo;
+
   leaveParty () {
     this.inParty = false;
     this.partyIndex = -1;
+  }
+
+  enterResidence (buildingId: BuildingInfoId, slotIndex: number) {
+    transaction(() => {
+      this.residentInfo = new HeroResidentInfo();
+      this.residentInfo.buildingId = buildingId;
+      this.residentInfo.slotIndex = slotIndex;
+    });
+  }
+
+  leaveResidence () {
+    this.residentInfo = null;
   }
 
   static comparers = {
