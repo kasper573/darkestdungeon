@@ -52,7 +52,7 @@ export class EstateRosterEntry extends AppStateComponent<{
       <DragDropSlot
         type={Hero}
         item={hero}
-        className={css(styles.entry, extraStyle)}
+        classStyle={[styles.entry, extraStyle]}
         allowDrag={this.props.allowDrag}
         allowDrop={this.props.allowDrop}
         onClick={() => this.showHeroOverview()}
