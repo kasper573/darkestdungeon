@@ -13,22 +13,20 @@ import {QuestStatus} from "../../state/types/Quest";
 @observer
 export class DungeonOverview extends AppStateComponent {
   @observable selectedHero: Hero = Array.from(
-    this.appState.profiles.activeProfile.party
+    this.activeProfile.party
   )[0];
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
-    const quest = profile.selectedQuest;
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.scene)}>
-          <QuestHeader quest={quest} onLeaveRequested={(status) => this.finish(status)}/>
-          <Torch quest={quest}/>
-          <DungeonScene profile={profile} room={quest.currentRoom} />
+          <QuestHeader quest={this.selectedQuest} onLeaveRequested={(status) => this.finish(status)}/>
+          <Torch quest={this.selectedQuest}/>
+          <DungeonScene profile={this.activeProfile} room={this.selectedQuest.currentRoom} />
         </div>
 
         <DungeonControlPanel
-          questMap={quest.map}
+          questMap={this.selectedQuest.map}
           selectedHero={this.selectedHero}
         />
       </div>
@@ -36,7 +34,7 @@ export class DungeonOverview extends AppStateComponent {
   }
 
   finish (status: QuestStatus) {
-    this.appState.profiles.activeProfile.selectedQuest.status = status;
+    this.selectedQuest.status = status;
     this.appState.router.goto("dungeonResult");
   }
 }

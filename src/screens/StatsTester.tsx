@@ -19,11 +19,11 @@ export class StatsTester extends AppStateComponent {
   @observable private turnResults: Stats[] = [];
 
   @computed get quest () {
-    return this.appState.profiles.activeProfile.selectedQuest;
+    return this.selectedQuest;
   }
 
   @computed get battleMembers () {
-    return this.appState.profiles.activeProfile.roster;
+    return this.activeProfile.roster;
   }
 
   componentWillMount () {
@@ -112,7 +112,7 @@ export class StatsTester extends AppStateComponent {
   reactToStatsMemento (target: Character, memento: Stats) {
     if (target.stats.health.value <= 0) {
       if (target instanceof Hero) {
-        this.appState.profiles.activeProfile.killHero(target);
+        this.activeProfile.killHero(target);
       }
     }
   }

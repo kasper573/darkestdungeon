@@ -12,7 +12,7 @@ export class Graveyard extends AppStateComponent {
   render () {
     return (
       <BuildingOverview info={StaticState.instance.buildings.get(Graveyard.id)}>
-        {this.appState.profiles.activeProfile.graveyard.map((hero) => (
+        {this.activeProfile.graveyard.map((hero) => (
           <EstateRosterEntry
             key={hero.id} hero={hero}
             allowDrop={() => false}

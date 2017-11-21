@@ -23,18 +23,17 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
   }
 
   checkPartyBeforeContinue () {
-    const profile = this.appState.profiles.activeProfile;
-    if (profile.isPartyFull) {
+    if (this.activeProfile.isPartyFull) {
       return Promise.resolve(true);
     }
 
-    if (profile.party.length === 0) {
+    if (this.activeProfile.party.length === 0) {
       return this.appState.popups.prompt(
         <Alert message="Please form a party before embarking"/>
       );
     }
 
-    if (!profile.selectedQuest) {
+    if (!this.selectedQuest) {
       return this.appState.popups.prompt(
         <Alert message="Please select a quest before embarking"/>
       );
@@ -51,8 +50,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
   }
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
-    const questLookup = this.groupQuestsByDungeon(profile.quests);
+    const questLookup = this.groupQuestsByDungeon(this.activeProfile.quests);
     return (
       <EstateTemplate
         partyFeaturesInRoster={true}
@@ -61,23 +59,23 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
         continueCheck={() => this.checkPartyBeforeContinue()}
         continueLabel="Provision"
         continuePath="estateProvision">
-        {profile.dungeons.map((d) =>
+        {this.activeProfile.dungeons.map((d) =>
           <DungeonBreakdown
             key={d.id}
             name={d.info.name}
             level={d.level.number}
             progress={d.levelProgress}
             quests={questLookup[d.id]}
-            selectedQuestId={profile.selectedQuestId}
-            onQuestSelected={(quest) => profile.selectedQuestId = quest.id}
+            selectedQuestId={this.activeProfile.selectedQuestId}
+            onQuestSelected={(quest) => this.activeProfile.selectedQuestId = quest.id}
           />
         )}
-        {profile.selectedQuest && (
+        {this.selectedQuest && (
           <QuestBreakdown
-            quest={profile.selectedQuest}
+            quest={this.selectedQuest}
           />
         )}
-        <PartyDropbox profile={profile}/>
+        <PartyDropbox profile={this.activeProfile}/>
       </EstateTemplate>
     );
   }

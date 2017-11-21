@@ -20,14 +20,13 @@ export class Inventory extends AppStateComponent<{
       <Prompt query="Unequip all items on all heroes?"/>
     ).then((unequip) => {
       if (unequip) {
-        this.appState.profiles.activeProfile.unequipAllItems();
+        this.activeProfile.unequipAllItems();
       }
     });
   }
 
   render () {
-    const profile = this.appState.profiles.activeProfile;
-    let sortedItems = profile.items.sort(this.compareFn);
+    let sortedItems = this.activeProfile.items.sort(this.compareFn);
     if (this.props.filter) {
       sortedItems = sortedItems.filter(this.props.filter);
     }

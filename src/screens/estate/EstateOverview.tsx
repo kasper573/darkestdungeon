@@ -34,10 +34,9 @@ export class EstateOverview extends AppStateComponent<{path: Path}> {
 
   componentWillMount () {
     // Show estate event when there is one
-    const profile = this.appState.profiles.activeProfile;
-    this.stopWaitingForEstateEvents = when(() => !profile.estateEvent.shown, () => {
-      profile.estateEvent.shown = true;
-      this.appState.popups.show(<EstateEventPopup event={profile.estateEvent}/>);
+    this.stopWaitingForEstateEvents = when(() => !this.activeProfile.estateEvent.shown, () => {
+      this.activeProfile.estateEvent.shown = true;
+      this.appState.popups.show(<EstateEventPopup event={this.activeProfile.estateEvent}/>);
     });
   }
 
