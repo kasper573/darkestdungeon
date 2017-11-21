@@ -12,7 +12,7 @@ import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo} from "../state/types/BuildingInfo";
-import {enumMap} from "../lib/ArrayHelpers";
+import {enumMap} from "../lib/Helpers";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -133,13 +133,16 @@ export function addStaticState () {
     StaticState.instance.dungeons.set(info.id, info);
   });
 
+  let heirloomIndex = 0;
   enumMap<HeirloomType>(HeirloomType)
     .forEach((value, name) => {
       const info = new ItemInfo();
       info.id = "heirloom" + value;
       info.name = name;
+      info.pluralName = name + "s";
       info.type = ItemType.Heirloom;
       info.heirloomType = value;
+      info.value = 1 + heirloomIndex++;
 
       StaticState.instance.items.set(info.id, info);
     });
@@ -148,7 +151,7 @@ export function addStaticState () {
     const info = new ItemInfo();
     info.id = name;
     info.name = name;
-    info.goldCost = 25 + 50 * index;
+    info.value = 25 + 50 * index;
 
     if (index % 2 === 0) {
       info.type = ItemType.Weapon;

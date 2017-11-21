@@ -8,7 +8,7 @@ import {BuildingUpgradeInfo} from "../../../state/types/BuildingUpgradeInfo";
 import {AppStateComponent} from "../../../AppStateComponent";
 import {Prompt} from "../../../ui/Popups";
 import {observer} from "mobx-react";
-import {findSubset} from "../../../lib/ArrayHelpers";
+import {findSubset} from "../../../lib/Helpers";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {Heirlooms} from "../../../ui/Heirlooms";
 

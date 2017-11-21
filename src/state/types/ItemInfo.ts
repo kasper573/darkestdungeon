@@ -19,10 +19,11 @@ export enum HeirloomType {
 export class ItemInfo implements IStatsSource {
   @serializable(identifier()) id: string;
 
-  name: string = "";
+  name: string = "[single name]";
+  pluralName: string = "[plural name]";
   type: ItemType = ItemType.Usable;
   heirloomType?: HeirloomType;
-  goldCost: number = 0;
+  value: number = 0;
   stats: Stats = new Stats();
 
   statsSourceName: string = "Item";

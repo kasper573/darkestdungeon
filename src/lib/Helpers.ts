@@ -25,6 +25,12 @@ export function findSubset <T> (needles: T[], haystack: T[]) {
   return subset;
 }
 
+export function without <T> (all: T[], remove: T[]) {
+  const slice = all.slice();
+  remove.forEach(removeItem.bind(null, slice));
+  return slice;
+}
+
 export function count (n: number) {
   return range(0, n);
 }
@@ -46,4 +52,13 @@ export function enumMap<T> (e: any): Map<string, T> {
     }
   }
   return map;
+}
+
+export function cap (value: number, min: number, max: number) {
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  }
+  return value;
 }
