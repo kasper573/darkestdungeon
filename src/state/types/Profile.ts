@@ -9,7 +9,6 @@ import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateItem, generateQuest} from "../Generators";
 import {count, moveItem, removeItems} from "../../lib/Helpers";
-import {BuildingUpgradeEffects} from "./BuildingUpgradeEffects";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 import {HeirloomType, ItemType} from "./ItemInfo";
@@ -111,21 +110,15 @@ export class Profile {
   }
 
   @computed get rosterSize () {
-    return 8 + this.getUpgradeEffects("coach", "roster").size;
+    return this.getUpgradeEffects("coach", "roster").size;
   }
 
   @computed get coachSize () {
-    return 2 + this.getUpgradeEffects("coach", "network").size;
+    return this.getUpgradeEffects("coach", "network").size;
   }
 
-  getUpgradeEffects (...keys: string[]): BuildingUpgradeEffects {
-    const selectedUpgrades = this.buildingUpgrades.filter((upgrade) => upgrade.isChildOf(keys));
-    return selectedUpgrades
-      .map((upgrade) => upgrade.effects)
-      .reduce(
-        (sum, item) => sum.add(item),
-        new BuildingUpgradeEffects()
-      );
+  getUpgradeEffects (...keys: string[]) {
+    return StaticState.instance.getUpgradeEffects(keys, this.buildingUpgrades);
   }
 
   ownsUpgrade (upgradeItem: BuildingUpgradeInfo) {

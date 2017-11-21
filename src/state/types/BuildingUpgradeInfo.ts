@@ -8,6 +8,12 @@ export class BuildingUpgradeInfo {
   cost = new Map<HeirloomType, number>();
   effects = new BuildingUpgradeEffects();
 
+  get isFree () {
+    let sum = 0;
+    this.cost.forEach((amount, type) => sum += amount);
+    return sum === 0;
+  }
+
   get description () {
     const effectStrings = [];
     for (const key in this.effects) {
