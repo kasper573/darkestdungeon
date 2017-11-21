@@ -9,6 +9,7 @@ import {DiseaseInfo} from "./types/DiseaseInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "./types/BuildingUpgradeInfo";
 import {BuildingInfo} from "./types/BuildingInfo";
+import {BuildingUpgradeEffects} from "./types/BuildingUpgradeEffects";
 
 export class StaticState  {
   // noinspection TsLint
@@ -37,6 +38,19 @@ export class StaticState  {
   get heirlooms () {
     return Array.from(this.items.values())
       .filter((info) => info.type === ItemType.Heirloom);
+  }
+
+  getUpgradeEffects (
+    keys: string[],
+    upgrades = Array.from(this.buildingUpgrades.values())
+  ): BuildingUpgradeEffects {
+    const selectedUpgrades = upgrades.filter((upgrade) => upgrade.isChildOf(keys));
+    return selectedUpgrades
+      .map((upgrade) => upgrade.effects)
+      .reduce(
+        (sum, item) => sum.add(item),
+        new BuildingUpgradeEffects()
+      );
   }
 
   clear () {
