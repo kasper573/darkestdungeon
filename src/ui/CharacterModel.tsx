@@ -2,7 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
-import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
+import {TooltipArea} from "../lib/TooltipArea";
 import {Character} from "../state/types/Character";
 import {Hero} from "../state/types/Hero";
 import {QuirkText} from "./QuirkText";
@@ -39,8 +39,7 @@ export class CharacterModel extends React.Component<{
         )}
 
         <TooltipArea
-          tip={this.isHero && <HPAndStress character={c}/>}
-          side={TooltipSide.Above}>
+          tip={this.isHero && <HPAndStress character={c}/>}>
           <HealthMeter percentage={c.stats.healthPercentage}/>
           {this.isHero && (
             <StressMeter percentage={c.stats.stressPercentage}/>

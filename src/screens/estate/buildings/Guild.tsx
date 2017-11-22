@@ -1,15 +1,17 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
 import {StaticState} from "../../../state/StaticState";
+import {HeroUpgradeShop, HeroUpgradeType} from "./HeroUpgradeShop";
 
-export class Guild extends React.Component<{
-  header?: string
-}> {
+export class Guild extends React.Component {
   static id = "guild";
 
   render () {
+    const info = StaticState.instance.buildings.get(Guild.id);
     return (
-      <BuildingOverview info={StaticState.instance.buildings.get(Guild.id)}/>
+      <BuildingOverview info={info}>
+        <HeroUpgradeShop type={HeroUpgradeType.Skills} info={info}/>
+      </BuildingOverview>
     );
   }
 }

@@ -1,5 +1,5 @@
 import {identifier, serializable} from "serializr";
-import {IStatsSource, Stats} from "./Stats";
+import {Stats} from "./Stats";
 
 export enum ItemType {
   Weapon = "W",
@@ -16,7 +16,7 @@ export enum HeirloomType {
   Crest
 }
 
-export class ItemInfo implements IStatsSource {
+export class ItemInfo {
   @serializable(identifier()) id: string;
 
   name: string = "[single name]";
@@ -25,6 +25,4 @@ export class ItemInfo implements IStatsSource {
   heirloomType?: HeirloomType;
   value: number = 0;
   stats: Stats = new Stats();
-
-  statsSourceName: string = "Item";
 }

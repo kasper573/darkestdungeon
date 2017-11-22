@@ -26,8 +26,10 @@ export class SkillTarget {
   }
 }
 
+export type SkillId = string;
+
 export class SkillInfo implements IStatsSource {
-  @serializable(identifier()) id: string;
+  @serializable(identifier()) id: SkillId;
   name: string;
   statsSourceName: string = "Skill";
   stats: Stats;

@@ -68,3 +68,7 @@ export function cap (value: number, min: number, max: number) {
   }
   return value;
 }
+
+export function compact<T> (items: T[]) {
+  return items.filter((item) => item);
+}

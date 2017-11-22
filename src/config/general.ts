@@ -18,6 +18,8 @@ export const defaultAmbienceOSVolume = 0.25;
 
 export const todo = "?todo?";
 
+export const maxSelectedSkills = 4;
+
 export function addStaticState () {
   ["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]
     .forEach((name, level) => {
@@ -211,7 +213,33 @@ export function addStaticState () {
     blacksmith: {
       name: "Blacksmith",
       avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/blacksmith-bg.jpg")
+      backgroundUrl: require("../../assets/images/blacksmith-bg.jpg"),
+      children: {
+        mastery: {
+          name: "Smithing",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Allows upgrading equipment to higher levels",
+          items: [
+            {cost: null, effects: {cost: 1000, level: 1}},
+            {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 5}, effects: {level: 1}}
+          ]
+        },
+        training: {
+          name: "Furnace",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Reduces cost of upgrading equipment",
+          items: [
+            {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 5}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 5, [HeirloomType.Crest]: 6}, effects: {cost: -100}}
+          ]
+        }
+      }
     },
     graveyard: {
       name: "Graveyard",
@@ -221,7 +249,33 @@ export function addStaticState () {
     guild: {
       name: "Guild",
       avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/guild-bg.jpg")
+      backgroundUrl: require("../../assets/images/guild-bg.jpg"),
+      children: {
+        mastery: {
+          name: "Treatment Ward",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Allows upgrading hero combat skills to higher ranks",
+          items: [
+            {cost: null, effects: {cost: 1000, level: 1}},
+            {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {level: 1}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 5}, effects: {level: 1}}
+          ]
+        },
+        training: {
+          name: "Training Regiment",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Reduces cost of upgrading hero skills",
+          items: [
+            {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 5}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 5, [HeirloomType.Crest]: 6}, effects: {cost: -100}}
+          ]
+        }
+      }
     },
     memoirs: {
       name: "Memoirs",

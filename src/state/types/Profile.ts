@@ -15,6 +15,7 @@ import {HeirloomType, ItemType} from "./ItemInfo";
 import {BuildingInfoId} from "./BuildingInfo";
 import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
+import {Skill} from "./Skill";
 
 export type ProfileId = string;
 
@@ -169,6 +170,16 @@ export class Profile {
       hero.residentInfo.buildingId === buildingId &&
       hero.residentInfo.slotIndex === slotIndex
     );
+  }
+
+  purchaseItemLevelUp (item: Item) {
+    item.level++;
+    this.gold -= this.getUpgradeEffects("blacksmith").cost;
+  }
+
+  purchaseSkillLevelUp (skill: Skill) {
+    skill.level++;
+    this.gold -= this.getUpgradeEffects("guild").cost;
   }
 
   getUpgradeEffects (...keys: string[]) {

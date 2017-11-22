@@ -1,28 +1,27 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {TooltipArea} from "../lib/TooltipArea";
-import {SkillInfo} from "../state/types/SkillInfo";
 import {SkillBreakdown} from "./SkillBreakdown";
+import {Skill} from "../state/types/Skill";
+import {observer} from "mobx-react";
 
+@observer
 export class SkillIcon extends React.Component<{
-  unlocked?: boolean,
-  selected?: boolean,
-  level?: number,
-  skill: SkillInfo,
+  skill: Skill,
   onClick?: () => void
 }> {
   render () {
-    const lockSymbol = !this.props.unlocked && (
+    const lockSymbol = this.props.skill.level === 0 && (
       <span>L</span>
     );
 
-    const selectionIndicator = this.props.selected && (
+    const selectionIndicator = this.props.skill.isSelected && (
       <div className={css(styles.selectionIndicator)}/>
     );
 
-    const levelIndicator = this.props.level && (
+    const levelIndicator = (
       <span className={css(styles.levelIndicator)}>
-        {this.props.level}
+        {this.props.skill.level}
       </span>
     );
 

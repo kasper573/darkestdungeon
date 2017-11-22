@@ -7,11 +7,11 @@ import {Stats} from "../state/types/Stats";
 import {computed, observable} from "mobx";
 import {CommonHeader} from "../ui/CommonHeader";
 import {StatsTextList} from "../ui/StatsText";
-import {SkillInfo} from "../state/types/SkillInfo";
 import {Character} from "../state/types/Character";
 import {Battle} from "../state/types/Battle";
 import {Hero} from "../state/types/Hero";
 import {randomizeItems} from "../state/Generators";
+import {Skill} from "../state/types/Skill";
 
 @observer
 export class StatsTester extends AppStateComponent {
@@ -88,7 +88,7 @@ export class StatsTester extends AppStateComponent {
     // prompt with items stored in battle
   }
 
-  useSkill (skill: SkillInfo, actor: Character, targets: Character[]) {
+  useSkill (skill: Skill, actor: Character, targets: Character[]) {
     this.skillResults = targets.map((target) => {
       const memento = actor.useSkill(skill, target);
       this.reactToStatsMemento(target, memento);

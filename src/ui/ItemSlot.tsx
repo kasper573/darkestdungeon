@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StyleSheet} from "aphrodite";
 import {commonStyles} from "../config/styles";
-import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
+import {TooltipArea} from "../lib/TooltipArea";
 import {StatsTextList} from "./StatsText";
 import {ItemLevel} from "./ItemLevel";
 import {Item} from "../state/types/Item";
@@ -16,13 +16,12 @@ export class ItemSlot extends React.Component<{
     const breakdown = item && (
       <div>
         <ItemLevel key={item.id} type={item.info.type} level={item.level}/>
-        <StatsTextList stats={this.props.item.info.stats.nonNeutral}/>
+        <StatsTextList stats={this.props.item.stats.nonNeutral}/>
       </div>
     );
 
     return (
       <TooltipArea
-        side={TooltipSide.Above}
         tip={breakdown}
         classStyle={[styles.itemSlot, commonStyles.boxBorder]}
         style={this.props.style}>

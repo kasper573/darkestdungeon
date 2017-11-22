@@ -1,18 +1,20 @@
 import {computed, observable} from "mobx";
 import {StaticState} from "../StaticState";
-import {identifier, list, map, object, reference, serializable} from "serializr";
+import {identifier, list, map, object, primitive, reference, serializable} from "serializr";
 import {Experienced} from "./Experienced";
 import {AfflictionInfo} from "./AfflictionInfo";
 import {CharacterClassInfo} from "./CharacterClassInfo";
 import {Item} from "./Item";
 import {QuirkInfo} from "./QuirkInfo";
 import {CharacterStatus} from "./CharacterStatus";
-import {SkillInfo, SkillTargetObject} from "./SkillInfo";
+import {SkillId, SkillTargetObject} from "./SkillInfo";
 import {DiseaseInfo} from "./DiseaseInfo";
 import {Stats, TurnStats} from "./Stats";
 import {cap} from "../../lib/Helpers";
 import uuid = require("uuid");
 import {BuildingInfoId} from "./BuildingInfo";
+import {Skill} from "./Skill";
+import {ItemType} from "./ItemInfo";
 
 export type CharacterId = string;
 
@@ -50,9 +52,24 @@ export class Character extends Experienced {
   @serializable(object(Stats))
   @observable mutableStats = new Stats();
 
+  @serializable(map(primitive()))
+  @observable
+  private skillLevels = new Map<SkillId, number>();
+
+  @serializable(map(primitive()))
+  @observable
+  private skillSelections = new Map<SkillId, boolean>();
+
   get skills () {
-    // TODO create Skill type containing level and SkillInfo
-    return this.classInfo.skills;
+    return this.classInfo.skills.map((info) => new Skill(this.skillLevels, this.skillSelections, info));
+  }
+
+  @computed get armor () {
+    return this.items.find((i) => i.info.type === ItemType.Armor);
+  }
+
+  @computed get weapon () {
+    return this.items.find((i) => i.info.type === ItemType.Weapon);
   }
 
   @computed get stats () {
@@ -79,7 +96,6 @@ export class Character extends Experienced {
       .forEach((source) => sum.add(source));
 
     this.items
-      .map((i) => i.info)
       .forEach((source) => sum.add(source));
 
     return sum;
@@ -177,7 +193,7 @@ export class Character extends Experienced {
     return deltaStats;
   }
 
-  useSkill (skill: SkillInfo, target: Character) {
+  useSkill (skill: Skill, target: Character) {
     const targetStats = target.stats;
 
     // Turn character and skill stats into action stats
@@ -193,7 +209,7 @@ export class Character extends Experienced {
     actionStats.health.value *= strength;
     actionStats.stress.value *= strength;
 
-    const isAllyTarget = skill.target.object === SkillTargetObject.Ally;
+    const isAllyTarget = skill.info.target.object === SkillTargetObject.Ally;
     const isCrit = Math.random() <= actionStats.criticalChance.value;
     const willBasicHit = actionStats.accuracy.value > targetStats.dodge.value;
     const willBuffHit = Math.random() <= Character.getStatusHitChance(
@@ -213,7 +229,7 @@ export class Character extends Experienced {
       const buffClone = new TurnStats();
       buffClone.turns = skill.buff.turns;
       buffClone.add(skill.buff);
-      target.buffSourceName = skill.name;
+      target.buffSourceName = skill.info.name;
       target.buff = buffClone;
 
       // Add buff memento

@@ -22,8 +22,10 @@ export class EstateRosterEntry extends AppStateComponent<{
   partyFeatures?: boolean,
   allowDrop?: (item: Hero) => boolean,
   allowDrag?: (item: Hero) => boolean,
+  onDragEnd?: () => void,
   onDrop?: (droppedHero: Hero) => void,
-  onSelect?: (hero: Hero) => void
+  onSelect?: (hero: Hero) => void,
+  classStyle?: any
 }> {
   showHeroOverview () {
     this.appState.popups.show({
@@ -54,16 +56,14 @@ export class EstateRosterEntry extends AppStateComponent<{
       );
     }
 
-    const armor = hero.items.find((i) => i.info.type === ItemType.Armor);
-    const weapon = hero.items.find((i) => i.info.type === ItemType.Weapon);
-
     return (
       <DragDropSlot
         type={Hero}
         item={hero}
-        classStyle={styles.entry}
+        classStyle={[styles.entry, this.props.classStyle]}
         allowDrag={this.props.allowDrag}
         allowDrop={this.props.allowDrop}
+        onDragEnd={this.props.onDragEnd}
         onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
         <Row classStyle={extraStyle}>
@@ -80,8 +80,8 @@ export class EstateRosterEntry extends AppStateComponent<{
               percentage={hero.stats.stressPercentage}
             />
             <div className={css(styles.equipment)}>
-              {armor && <ItemLevel type={ItemType.Armor} level={armor.level}/>}
-              {weapon && <ItemLevel type={ItemType.Weapon} level={weapon.level}/>}
+              {hero.armor && <ItemLevel type={ItemType.Armor} level={hero.armor.level}/>}
+              {hero.weapon && <ItemLevel type={ItemType.Weapon} level={hero.weapon.level}/>}
             </div>
           </div>
         </Row>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     border: "2px solid gray",
     backgroundColor: "black",
-    marginBottom: 10,
     padding: 2
   },
 
