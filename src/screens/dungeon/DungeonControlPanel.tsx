@@ -50,7 +50,8 @@ export class DungeonControlPanel extends React.Component<{
 
 const styles = StyleSheet.create({
   controlPanel: {
-    background: "black"
+    background: "black",
+    maxHeight: "50%"
   },
 
   controlPanelBox: {
