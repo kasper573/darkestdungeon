@@ -70,7 +70,7 @@ export class PopupEntry extends React.Component<{
     // Create the popup
     const popup = (
       <div
-        onClick={() => handle.bringToFront()}
+        onMouseDown={() => handle.bringToFront()}
         className={css(styles.popup, styles.animator)}
         style={{
           left: this.alignedPosition.x,
