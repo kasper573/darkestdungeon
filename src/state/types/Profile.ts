@@ -8,11 +8,13 @@ import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateItem, generateQuest} from "../Generators";
-import {count, moveItem, removeItems} from "../../lib/Helpers";
+import {cap, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 import {HeirloomType, ItemType} from "./ItemInfo";
 import {BuildingInfoId} from "./BuildingInfo";
+import {Stats} from "./Stats";
+import {HeroResidentInfo} from "./HeroResidentInfo";
 
 export type ProfileId = string;
 
@@ -118,10 +120,47 @@ export class Profile {
     return this.getUpgradeEffects("coach", "network").size;
   }
 
+  processResidencyEffects () {
+    this.roster
+      .filter((hero) => hero.residentInfo && hero.residentInfo.isLockedIn)
+      .forEach((resident) => {
+        const upgrades = this.getUpgradeEffects(resident.residentInfo.buildingId);
+
+        // Recover a percentage of the residents stress
+        const recoveryPercentage = cap(upgrades.recovery, 0, 1);
+        const recoveryStats = new Stats();
+        recoveryStats.stress.value -= recoveryPercentage * resident.stats.stress.value;
+        resident.offsetStats(recoveryStats);
+
+        // Remove treated quirk or disease
+        if (resident.residentInfo.treatmentId) {
+          removeItem(resident.quirks,
+            resident.quirks.find((q) => q.id === resident.residentInfo.treatmentId)
+          );
+          removeItem(resident.diseases,
+            resident.diseases.find((q) => q.id === resident.residentInfo.treatmentId)
+          );
+          resident.residentInfo = null;
+        }
+      });
+  }
+
+  clearNonLockedResidents () {
+    this.roster
+      .filter((hero) => hero.residentInfo && !hero.residentInfo.isLockedIn)
+      .forEach((hero) => hero.residentInfo = null);
+  }
+
+  getResidencyCost (residency: HeroResidentInfo) {
+    const cost = this.getUpgradeEffects(residency.buildingId).cost;
+    const quirkToTreat = StaticState.instance.findQuirkOrDisease(residency.treatmentId);
+    const costScale = quirkToTreat ? quirkToTreat.treatmentCostScale : 1;
+    return cost * costScale;
+  }
+
   purchaseResidency (resident: Hero) {
-    const cost = this.getUpgradeEffects(resident.residentInfo.buildingId).cost;
-    resident.residentInfo.isLockedIn = true;
-    this.gold -= cost;
+    resident.lockInResidency();
+    this.gold -= this.getResidencyCost(resident.residentInfo);
   }
 
   findResident (buildingId: BuildingInfoId, slotIndex: number) {
@@ -278,6 +317,8 @@ export class Profile {
 
     // Randomize coach each week
     this.coach = count(this.coachSize).map(() => this.newHero());
+
+    this.processResidencyEffects();
   }
 
   newHero () {

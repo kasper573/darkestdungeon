@@ -26,6 +26,11 @@ export class Hero extends Character {
     });
   }
 
+  lockInResidency () {
+    this.leaveParty();
+    this.residentInfo.isLockedIn = true;
+  }
+
   leaveResidence () {
     this.residentInfo = null;
   }

@@ -5,7 +5,7 @@ import {HeroLevel} from "../../ui/HeroLevel";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
-import {commonStyles} from "../../config/styles";
+import {commonStyles, Row} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
@@ -38,7 +38,6 @@ export class EstateRosterEntry extends AppStateComponent<{
   render () {
     const hero = this.props.hero;
 
-    let allowDrag = this.props.allowDrag;
     let extraStyle;
     let partyElement;
     let residentElement;
@@ -53,10 +52,6 @@ export class EstateRosterEntry extends AppStateComponent<{
       residentElement = (
         <div>{buildingInfo.name}</div>
       );
-
-      if (hero.residentInfo.isLockedIn) {
-        allowDrag = () => false;
-      }
     }
 
     const armor = hero.items.find((i) => i.info.type === ItemType.Armor);
@@ -66,28 +61,30 @@ export class EstateRosterEntry extends AppStateComponent<{
       <DragDropSlot
         type={Hero}
         item={hero}
-        classStyle={[styles.entry, extraStyle]}
-        allowDrag={allowDrag}
+        classStyle={styles.entry}
+        allowDrag={this.props.allowDrag}
         allowDrop={this.props.allowDrop}
         onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
-        <Avatar src={hero.classInfo.avatarUrl}>
-          {partyElement}
-          {residentElement}
-        </Avatar>
-        <div className={css(styles.info)}>
-          <span className={css(commonStyles.heroName)}>
-            {hero.name}
-          </span>
-          <StressMeter
-            classStyle={styles.stress}
-            percentage={hero.stats.stressPercentage}
-          />
-          <div className={css(styles.equipment)}>
-            {armor && <ItemLevel type={ItemType.Armor} level={armor.level}/>}
-            {weapon && <ItemLevel type={ItemType.Weapon} level={weapon.level}/>}
+        <Row classStyle={extraStyle}>
+          <Avatar src={hero.classInfo.avatarUrl}>
+            {partyElement}
+            {residentElement}
+          </Avatar>
+          <div className={css(styles.info)}>
+            <span className={css(commonStyles.heroName)}>
+              {hero.name}
+            </span>
+            <StressMeter
+              classStyle={styles.stress}
+              percentage={hero.stats.stressPercentage}
+            />
+            <div className={css(styles.equipment)}>
+              {armor && <ItemLevel type={ItemType.Armor} level={armor.level}/>}
+              {weapon && <ItemLevel type={ItemType.Weapon} level={weapon.level}/>}
+            </div>
           </div>
-        </div>
+        </Row>
         <TooltipArea
           side={TooltipSide.Left}
           tip={<HeroBreakdown hero={this.props.hero}/>}
@@ -105,7 +102,6 @@ const styles = StyleSheet.create({
     border: "2px solid gray",
     backgroundColor: "black",
     marginBottom: 10,
-    overflow: "hidden",
     padding: 2
   },
 

@@ -14,10 +14,6 @@ export class PartyDropbox extends React.Component<{
   profile: Profile,
   lock?: boolean
 }> {
-  receiveHero (droppedHero: Hero, slotIndex: number) {
-    this.props.profile.joinParty(droppedHero, slotIndex);
-  }
-
   render () {
     return (
       <Row classStyle={styles.party}>
@@ -26,7 +22,8 @@ export class PartyDropbox extends React.Component<{
             key={slotIndex}
             member={member}
             lock={this.props.lock}
-            onDrop={(droppedHero) => this.receiveHero(droppedHero, slotIndex)}
+            onDragEnd={(draggedHero) => draggedHero.leaveParty()}
+            onDrop={(droppedHero) => this.props.profile.joinParty(droppedHero, slotIndex)}
           />
         ))}
       </Row>
@@ -37,7 +34,8 @@ export class PartyDropbox extends React.Component<{
 class PartyDropboxSlot extends React.Component<{
   member?: Hero,
   lock?: boolean,
-  onDrop?: (hero: Hero) => void
+  onDragEnd: (hero: Hero) => void
+  onDrop: (hero: Hero) => void
 }> {
 
   render () {
@@ -48,6 +46,8 @@ class PartyDropboxSlot extends React.Component<{
           type={Hero}
           item={member}
           allowDrag={() => !this.props.lock}
+          allowDrop={(hero: Hero) => !(hero.residentInfo && hero.residentInfo.isLockedIn)}
+          onDragEnd={this.props.onDragEnd}
           onDrop={this.props.onDrop}>
           <div className={css(styles.slot)}>
             {member && (

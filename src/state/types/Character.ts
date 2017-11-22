@@ -12,6 +12,7 @@ import {DiseaseInfo} from "./DiseaseInfo";
 import {Stats, TurnStats} from "./Stats";
 import {cap} from "../../lib/Helpers";
 import uuid = require("uuid");
+import {BuildingInfoId} from "./BuildingInfo";
 
 export type CharacterId = string;
 
@@ -84,10 +85,33 @@ export class Character extends Experienced {
     return sum;
   }
 
+  acceptsTreatmentFrom (treatmentId: BuildingInfoId) {
+    for (const quirk of [...this.quirks, ...this.diseases]) {
+      if (quirk.forcedTreatmentIds.length > 0) {
+        if (quirk.forcedTreatmentIds.indexOf(treatmentId) === -1) {
+          return false;
+        }
+      }
+      if (quirk.bannedTreatmentIds.length > 0) {
+        if (quirk.bannedTreatmentIds.indexOf(treatmentId) !== -1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  offsetStats (offset: Stats) {
+    const updatedStats = new Stats();
+    updatedStats.add(this.mutableStats);
+    updatedStats.add(offset);
+    this.mutableStats = updatedStats;
+  }
+
   resetMutableStats () {
     const reset = new Stats();
     reset.health.value = this.stats.maxHealth.value;
-    reset.stress.value = cap(reset.stress.value, 0, this.stats.maxStress.value / 2);
+    reset.stress.value = 100; //cap(reset.stress.value, 0, this.stats.maxStress.value / 2);
     this.mutableStats = reset;
     this.dots.clear();
     this.buff = null;
@@ -148,11 +172,7 @@ export class Character extends Experienced {
 
     deltaStats.round();
 
-    // Combine delta and target stats into the new mutable stats of the target
-    const updatedTargetStats = new Stats();
-    updatedTargetStats.add(this.mutableStats);
-    updatedTargetStats.add(deltaStats);
-    this.mutableStats = updatedTargetStats;
+    this.offsetStats(deltaStats);
 
     return deltaStats;
   }

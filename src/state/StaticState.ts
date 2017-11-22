@@ -3,7 +3,7 @@ import {LevelInfo} from "./types/LevelInfo";
 import {AfflictionInfo} from "./types/AfflictionInfo";
 import {CharacterClassInfo} from "./types/CharacterClassInfo";
 import {ItemInfo, ItemType} from "./types/ItemInfo";
-import {QuirkInfo} from "./types/QuirkInfo";
+import {QuirkId, QuirkInfo} from "./types/QuirkInfo";
 import {SkillInfo} from "./types/SkillInfo";
 import {DiseaseInfo} from "./types/DiseaseInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
@@ -38,6 +38,13 @@ export class StaticState  {
   get heirlooms () {
     return Array.from(this.items.values())
       .filter((info) => info.type === ItemType.Heirloom);
+  }
+
+  findQuirkOrDisease (id: QuirkId) {
+    return [
+      ...StaticState.instance.quirks.values(),
+      ...StaticState.instance.diseases.values()
+    ].find((q) => q.id === id);
   }
 
   getUpgradeEffects (
