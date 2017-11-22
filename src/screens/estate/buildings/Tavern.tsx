@@ -2,7 +2,7 @@ import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
 import {StaticState} from "../../../state/StaticState";
 import {AppStateComponent} from "../../../AppStateComponent";
-import {TreatmentSlots} from "./TreatmentSlots";
+import {TreatmentFacility} from "./treatment/TreatmentFacility";
 
 export class Tavern extends AppStateComponent {
   static id = "tavern";
@@ -11,7 +11,7 @@ export class Tavern extends AppStateComponent {
     const info = StaticState.instance.buildings.get(Tavern.id);
     return (
       <BuildingOverview info={info}>
-        <TreatmentSlots info={info}/>
+        <TreatmentFacility info={info}/>
       </BuildingOverview>
     );
   }

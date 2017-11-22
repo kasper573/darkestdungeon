@@ -195,6 +195,8 @@ export function addStaticState () {
       stat.info.isPercentage ? 0.1 : (1 + index * 2)
     );
 
+    info.bannedTreatmentIds.push("tavern.bar");
+
     info.stats = stats;
 
     StaticState.instance.diseases.set(info.id, info);
@@ -229,7 +231,31 @@ export function addStaticState () {
     sanitarium: {
       name: "Sanitarium",
       avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/sanitarium-bg.jpg")
+      backgroundUrl: require("../../assets/images/sanitarium-bg.jpg"),
+      children: {
+        quirks: {
+          name: "Treatment Ward",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Treat Quirks and other problematic behaviors.",
+          items: [
+            {cost: null, effects: {size: 1, cost: 500, treatQuirk: 1}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 1}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 1}}
+          ]
+        },
+        diseases: {
+          name: "Medical Ward",
+          avatarUrl: require("../../assets/images/avatar.jpg"),
+          description: "Treat Diseases, humours, and other physical maladies.",
+          items: [
+            {cost: null, effects: {size: 1, cost: 500, treatDisease: 1}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 1}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 1}}
+          ]
+        }
+      }
     },
     coach: {
       name: "Stage Coach",

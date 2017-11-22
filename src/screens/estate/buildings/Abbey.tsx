@@ -1,7 +1,7 @@
 import * as React from "react";
 import {BuildingOverview} from "./BuildingOverview";
 import {StaticState} from "../../../state/StaticState";
-import {TreatmentSlots} from "./TreatmentSlots";
+import {TreatmentFacility} from "./treatment/TreatmentFacility";
 
 export class Abbey extends React.Component {
   static id = "abbey";
@@ -10,7 +10,7 @@ export class Abbey extends React.Component {
     const info = StaticState.instance.buildings.get(Abbey.id);
     return (
       <BuildingOverview info={info}>
-        <TreatmentSlots info={info}/>
+        <TreatmentFacility info={info}/>
       </BuildingOverview>
     );
   }

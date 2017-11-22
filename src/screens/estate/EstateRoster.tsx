@@ -14,10 +14,6 @@ export class EstateRoster extends AppStateComponent<{
   portalNode?: HTMLDivElement
 }> {
   receiveHero (droppedHero: Hero, slotHero: Hero) {
-    if (droppedHero.inParty) {
-      droppedHero.leaveParty();
-    }
-
     if (this.activeProfile.roster.indexOf(droppedHero) !== -1) {
       // Drag from roster entry to roster entry
       const swapIndex = slotHero.rosterIndex;
