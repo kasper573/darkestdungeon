@@ -67,6 +67,16 @@ export class PopupState {
     }
   }
 
+  bringToFront (id: PopupId) {
+    transaction(() => {
+      const popup = this.map.get(id);
+      if (popup) {
+        this.map.delete(id);
+        this.map.set(id, popup);
+      }
+    });
+  }
+
   closeAll () {
     transaction(() => {
       const popupIds = Array.from(this.map.keys());
@@ -90,7 +100,7 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
 
   constructor (
     props: PopupHandleProps<P>,
-    private state: PopupState,
+    private state: PopupState
   ) {
     for (const key in props) {
       (this as any)[key] = (props as any)[key];
@@ -104,6 +114,10 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
   close (resolution?: any) {
     this.resolution = resolution;
     this.state.close(this.id);
+  }
+
+  bringToFront () {
+    this.state.bringToFront(this.id);
   }
 }
 

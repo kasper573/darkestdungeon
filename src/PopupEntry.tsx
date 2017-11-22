@@ -69,12 +69,15 @@ export class PopupEntry extends React.Component<{
 
     // Create the popup
     const popup = (
-      <div className={css(styles.popup, styles.animator)} style={{
-        left: this.alignedPosition.x,
-        top: this.alignedPosition.y,
-        ...transformStyle,
-        ...opacityStyle
-      }}>
+      <div
+        onClick={() => handle.bringToFront()}
+        className={css(styles.popup, styles.animator)}
+        style={{
+          left: this.alignedPosition.x,
+          top: this.alignedPosition.y,
+          ...transformStyle,
+          ...opacityStyle
+        }}>
         {content}
         <SizeObserver onSizeChanged={(size) => this.updateContentSize(size)}/>
       </div>
