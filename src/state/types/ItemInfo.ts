@@ -25,4 +25,13 @@ export class ItemInfo {
   heirloomType?: HeirloomType;
   value: number = 0;
   stats: Stats = new Stats();
+
+  get isStackable () {
+    switch (this.type) {
+      case ItemType.Usable:
+      case ItemType.Heirloom:
+        return true;
+    }
+    return false;
+  }
 }

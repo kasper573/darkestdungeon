@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Column, Row} from "../../config/styles";
 import {Avatar} from "../../ui/Avatar";
-import {HeroEquipment} from "../../ui/HeroEquipment";
+import {ItemDropbox} from "../../ui/ItemDropbox";
 import {HeroSkills} from "../../ui/HeroSkills";
 import {Hero} from "../../state/types/Hero";
 import {StatsTextList} from "../../ui/StatsText";
@@ -29,7 +29,7 @@ export class DungeonHeroSummary extends React.Component<{
             <div>Stress: {hero.stats.stress.value}/{hero.stats.maxStress.value}</div>
             <StatsTextList stats={hero.stats.base}/>
           </Column>
-          <HeroEquipment hero={hero}/>
+          <ItemDropbox items={hero.items}/>
         </Row>
       </div>
     );

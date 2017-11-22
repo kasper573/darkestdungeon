@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
 import {Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
-import {ItemSlot} from "./ItemSlot";
+import {ItemIcon} from "./ItemIcon";
 import {Quest} from "../state/types/Quest";
 
 export class QuestBreakdown extends React.Component<{
@@ -35,7 +35,7 @@ export class QuestBreakdown extends React.Component<{
         <CommonHeader label="Rewards"/>
         <Row>
           {quest.rewards.map((item) =>
-            <ItemSlot key={item.id} item={item}/>
+            <ItemIcon key={item.id} item={item}/>
           )}
         </Row>
       </div>

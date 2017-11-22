@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ItemSlot} from "../../ui/ItemSlot";
+import {ItemIcon} from "../../ui/ItemIcon";
 import {CommonHeader} from "../../ui/CommonHeader";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
@@ -49,7 +49,7 @@ export class Store extends React.Component<{
         <CommonHeader label="Store inventory"/>
         <div>
           {this.store.map((item) =>
-            <ItemSlot
+            <ItemIcon
               key={item.id}
               item={item}
               style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
@@ -65,7 +65,7 @@ export class Store extends React.Component<{
         <CommonHeader label="Shopping cart"/>
         <div>
           {this.cart.map((item) =>
-            <ItemSlot
+            <ItemIcon
               key={item.id}
               item={item}
               onClick={() => this.returnItem(item)}
