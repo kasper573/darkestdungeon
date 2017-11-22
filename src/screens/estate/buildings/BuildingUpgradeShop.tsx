@@ -11,6 +11,7 @@ import {observer} from "mobx-react";
 import {findSubset} from "../../../lib/Helpers";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {Heirlooms} from "../../../ui/Heirlooms";
+import {UpgradeTooltip} from "./UpgradeTooltip";
 
 export class BuildingUpgradeShop extends AppStateComponent<{
   upgrades: BuildingInfo
@@ -116,21 +117,14 @@ class UpgradeItem extends AppStateComponent<{
           onClick={onClick}
           classStyle={[styles.step, dynStyle]}
           tip={(
-            <div>
-              <Row style={{whiteSpace: "nowrap"}}>
-                <span>Cost: </span>
-                <Heirlooms counts={item.cost} compare={this.activeProfile.heirloomCounts}/>
-              </Row>
+            <UpgradeTooltip
+              cost={<Heirlooms counts={item.cost} compare={this.activeProfile.heirloomCounts}/>}
+              isAvailable={isAvailable}
+              prerequisiteName={this.props.category.name}
+              prerequisiteLevel={this.props.level - 1}
+            >
               <pre>{item.description}</pre>
-              {!isAvailable && (
-                <div style={{whiteSpace: "nowrap"}}>
-                  <div className={css(commonStyles.commonName)}>Prerequisites:</div>
-                  <span style={{color: "red"}}>
-                    {this.props.category.name} Level {this.props.level - 1}
-                  </span>
-                </div>
-              )}
-            </div>
+            </UpgradeTooltip>
           )}
         />
       </div>

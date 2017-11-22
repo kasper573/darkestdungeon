@@ -1,6 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {SkillInfo, SkillTargetObject} from "../state/types/SkillInfo";
+import {SkillTargetObject} from "../state/types/SkillInfo";
+import {Skill} from "../state/types/Skill";
 
 export class PositionDots extends React.Component<{
   color: string,
@@ -31,25 +32,25 @@ export class PositionDots extends React.Component<{
     );
   }
 
-  static getPositionValues (skills: SkillInfo[]) {
+  static getPositionValues (skills: Skill[]) {
     return PositionDots.getSpotValues(
-      skills.map((skill) => skill.position)
+      skills.map((skill) => skill.info.position)
     );
   }
 
-  static getSupportValues (skills: SkillInfo[]) {
+  static getSupportValues (skills: Skill[]) {
     return PositionDots.getSpotValues(
       skills
-        .filter((skill) => skill.target.object === SkillTargetObject.Ally)
-        .map((skill) => skill.target.spots)
+        .filter((skill) => skill.info.target.object === SkillTargetObject.Ally)
+        .map((skill) => skill.info.target.spots)
     );
   }
 
-  static getHostileValues (skills: SkillInfo[]) {
+  static getHostileValues (skills: Skill[]) {
     return PositionDots.getSpotValues(
       skills
-        .filter((skill) => skill.target.object === SkillTargetObject.Enemy)
-        .map((skill) => skill.target.spots)
+        .filter((skill) => skill.info.target.object === SkillTargetObject.Enemy)
+        .map((skill) => skill.info.target.spots)
     );
   }
 
@@ -99,7 +100,7 @@ function getSizeStyle (size: number) {
   return {
     width: size,
     height: size,
-    borderRadius: size / 2,
+    borderRadius: size / 2
   };
 }
 

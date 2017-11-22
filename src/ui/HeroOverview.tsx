@@ -12,16 +12,32 @@ import {HeroFlag} from "./HeroFlag";
 import {CharacterModel} from "./CharacterModel";
 import {Hero} from "../state/types/Hero";
 import {StatsTextList} from "./StatsText";
-import {SkillInfo} from "../state/types/SkillInfo";
+import {Skill} from "../state/types/Skill";
+import {maxSelectedSkills} from "../config/general";
 
 @observer
 export class HeroOverview extends React.Component<
   PopupProps & {
   hero: Hero,
-  onSkillSelected?: (skill: SkillInfo) => void
+  onSkillSelected?: (skill: Skill) => void
 }> {
+  toggleSkillSelection (skill: Skill) {
+    if (skill.level > 0) {
+      const numSelected = this.props.hero.skills.filter((s) => s.isSelected).length;
+      const isSelecting = !skill.isSelected;
+      if (isSelecting) {
+        if (numSelected < maxSelectedSkills) {
+          skill.isSelected = true;
+        }
+      } else {
+        skill.isSelected = false;
+      }
+    }
+  }
+
   render () {
     const {hero, ...rest} = this.props;
+    const onSkillSelected = this.props.onSkillSelected || this.toggleSkillSelection.bind(this);
     return (
       <Popup {...rest}>
         <Row classStyle={styles.heroInfo}>
@@ -89,7 +105,7 @@ export class HeroOverview extends React.Component<
                 />
               </Column>
             </Row>
-            <HeroSkills skills={hero.skills} onSkillSelected={this.props.onSkillSelected}/>
+            <HeroSkills skills={hero.skills} onSkillSelected={onSkillSelected}/>
 
             <CommonHeader label="Resistances"/>
             <Row classStyle={styles.baseStats}>

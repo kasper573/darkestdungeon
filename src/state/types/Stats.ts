@@ -122,6 +122,12 @@ export class Stats {
     }
   }
 
+  scale (scale: number) {
+    for (const item of this.all) {
+      item.value *= scale;
+    }
+  }
+
   round () {
     this.all.forEach((stat) => {
       if (!stat.info.isPercentage) {

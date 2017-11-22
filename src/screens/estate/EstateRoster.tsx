@@ -48,6 +48,7 @@ export class EstateRoster extends AppStateComponent<{
           {sortedHeroes.map((hero) => (
             <EstateRosterEntry
               key={hero.id}
+              classStyle={styles.entry}
               partyFeatures={this.props.partyFeatures}
               hero={hero}
               onDrop={(droppedHero) => this.receiveHero(droppedHero, hero)}
@@ -76,5 +77,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center"
+  },
+
+  entry: {
+    marginBottom: 5
   }
 });

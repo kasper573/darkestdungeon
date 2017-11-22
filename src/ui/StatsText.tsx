@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Column, commonStyles} from "../config/styles";
 import {StatItem} from "../state/types/StatItem";
-import {TooltipArea, TooltipSide} from "../lib/TooltipArea";
+import {TooltipArea} from "../lib/TooltipArea";
 import {StatsBreakdown} from "./StatsBreakdown";
 
 export class StatsTextList extends React.Component<{stats: StatItem[], long?: boolean}> {
@@ -30,7 +30,6 @@ export class StatsText extends React.Component<{stats: StatItem, long?: boolean}
         tip={this.props.stats.mods.length > 0 && (
           <StatsBreakdown stats={this.props.stats}/>
         )}
-        side={TooltipSide.Above}
         style={{flexDirection: "row"}}
         classStyle={classStyle}>
         <Column style={{whiteSpace: "nowrap"}}>
