@@ -6,14 +6,14 @@ import {Column, Row} from "../config/styles";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {PositionDots} from "./PositionDots";
-import {HeroEquipment} from "./HeroEquipment";
+import {ItemDropbox} from "./ItemDropbox";
 import {HeroSkills} from "./HeroSkills";
 import {HeroFlag} from "./HeroFlag";
 import {CharacterModel} from "./CharacterModel";
 import {Hero} from "../state/types/Hero";
 import {StatsTextList} from "./StatsText";
 import {Skill} from "../state/types/Skill";
-import {maxSelectedSkills} from "../config/general";
+import {equippableItems, maxEquippedItems, maxSelectedSkills} from "../config/general";
 
 @observer
 export class HeroOverview extends React.Component<
@@ -81,7 +81,17 @@ export class HeroOverview extends React.Component<
                 </Row>
 
                 <CommonHeader label="Equipment"/>
-                <HeroEquipment hero={hero}/>
+                <ItemDropbox
+                  slots={maxEquippedItems}
+                  items={hero.items}
+                  filter={(item) => !!equippableItems.get(item.info.type)}
+                  allowDrop={(droppedItem) => {
+                    const itemCount = hero.items.filter(
+                      (heroItem) => heroItem.info.type === droppedItem.info.type
+                    ).length;
+                    return (itemCount + 1) <= equippableItems.get(droppedItem.info.type);
+                  }}
+                />
               </Column>
             </Row>
           </Column>

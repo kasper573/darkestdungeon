@@ -7,7 +7,7 @@ import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {Item} from "../state/types/Item";
-import {ItemSlot} from "./ItemSlot";
+import {ItemDropbox} from "./ItemDropbox";
 
 @observer
 export class Inventory extends AppStateComponent<{
@@ -26,10 +26,6 @@ export class Inventory extends AppStateComponent<{
   }
 
   render () {
-    let sortedItems = this.activeProfile.items.sort(this.compareFn);
-    if (this.props.filter) {
-      sortedItems = sortedItems.filter(this.props.filter);
-    }
     return (
       <div>
         <BannerHeader>
@@ -44,11 +40,11 @@ export class Inventory extends AppStateComponent<{
             onChange={(compareFn) => this.compareFn = compareFn}
           />
         </div>
-        <ul>
-          {sortedItems.map((item) => (
-            <ItemSlot key={item.id} item={item}/>
-          ))}
-        </ul>
+        <ItemDropbox
+          items={this.activeProfile.items}
+          filter={this.props.filter}
+          compare={this.compareFn}
+        />
       </div>
     );
   }

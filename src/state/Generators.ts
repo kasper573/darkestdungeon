@@ -10,6 +10,7 @@ import {DungeonInfo} from "./types/DungeonInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
 import {enumMap} from "../lib/Helpers";
 import {maxSelectedSkills} from "../config/general";
+import {ItemType} from "./types/ItemInfo";
 
 export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
@@ -30,7 +31,15 @@ export function generateHero (activeHeroes: Hero[]): Hero {
   hero.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
   hero.diseases = randomizeItems(Array.from(StaticState.instance.diseases.values()), 1, 3);
   hero.quirks = randomizeItems(Array.from(StaticState.instance.quirks.values()), 1, 8);
-  hero.items = randomizeItems(Array.from(StaticState.instance.items.values()), 2, 2).map(Item.fromInfo);
+
+  const allItems = Array.from(StaticState.instance.items.values());
+  const weapons = allItems.filter((item) => item.type === ItemType.Weapon);
+  const armors = allItems.filter((item) => item.type === ItemType.Armor);
+
+  hero.items = [
+    Item.fromInfo(randomizeItem(weapons)),
+    Item.fromInfo(randomizeItem(armors))
+  ];
 
   randomizeItems(hero.skills, maxSelectedSkills, maxSelectedSkills).forEach((skill) => {
     skill.level++;

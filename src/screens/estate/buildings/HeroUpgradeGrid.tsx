@@ -11,7 +11,7 @@ import {computed} from "mobx";
 import {observer} from "mobx-react";
 import {Skill} from "../../../state/types/Skill";
 import {Item} from "../../../state/types/Item";
-import {ItemSlot} from "../../../ui/ItemSlot";
+import {ItemIcon} from "../../../ui/ItemIcon";
 import {SkillIcon} from "../../../ui/SkillIcon";
 import {BuildingUpgradeEffects} from "../../../state/types/BuildingUpgradeEffects";
 import {TooltipArea, TooltipSide} from "../../../lib/TooltipArea";
@@ -144,7 +144,7 @@ class HeroUpgradeCell extends React.Component<{
         )}>
         <div>
           {this.props.thing instanceof Item ?
-            <ItemSlot item={this.props.thing.asLevel(this.props.level)}/> :
+            <ItemIcon item={this.props.thing.asLevel(this.props.level)}/> :
             <SkillIcon skill={this.props.thing.asLevel(this.props.level)}/>}
           {canUpgrade && (
             <TooltipArea tip={!canAfford && "Not enough gold"}>

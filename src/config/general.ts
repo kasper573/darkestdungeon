@@ -19,6 +19,14 @@ export const defaultAmbienceOSVolume = 0.25;
 export const todo = "?todo?";
 
 export const maxSelectedSkills = 4;
+export const equippableItems = new Map<ItemType, number>();
+equippableItems.set(ItemType.Weapon, 1);
+equippableItems.set(ItemType.Armor, 1);
+equippableItems.set(ItemType.Trinket, 2);
+export let maxEquippedItems = 0;
+for (const count of equippableItems.values()) {
+  maxEquippedItems += count;
+}
 
 export function addStaticState () {
   ["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]

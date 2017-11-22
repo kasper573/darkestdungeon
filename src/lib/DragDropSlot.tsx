@@ -1,5 +1,5 @@
 import * as React from "react";
-import {css} from "aphrodite";
+import {css, StyleSheet} from "aphrodite";
 const {DropTarget, DragSource} = require("react-dnd");
 
 const SourceSpec = {
@@ -108,8 +108,8 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div
-          className={css(this.props.classStyle)}
-          style={{...this.props.style, flex: 1, ...colorStyle}}
+          className={css(styles.fill, this.props.classStyle)}
+          style={{...this.props.style, ...colorStyle}}
           onClick={this.props.onClick}>
           {childrenFn(dragItem && dragItem.item, isOver, isDragging, canDrag, canDrop)}
         </div>
@@ -117,3 +117,9 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  fill: {
+    flex: 1
+  }
+});
