@@ -65,7 +65,7 @@ export function addStaticState () {
   crush.stats = new Stats();
   crush.stats.accuracy.value = 85;
   crush.stats.criticalChance.value = 0.05;
-  crush.stats.statusChances.get(CharacterStatus.Bleed).value = 0.5;
+  crush.stats.statuses.get(CharacterStatus.Bleed).value = 0.5;
   crush.stats.statusDamageScales.get(CharacterStatus.Bleed).value = 0.5;
   crush.position = [false, false, true, true];
   crush.target = SkillTarget.oneOf([false, true, true, true]);
@@ -77,8 +77,8 @@ export function addStaticState () {
   rampart.stats = new Stats();
   rampart.stats.accuracy.value = 90;
   rampart.stats.criticalChance.value = 0.05;
-  rampart.stats.statusChances.get(CharacterStatus.Move).value = 1;
-  rampart.stats.statusChances.get(CharacterStatus.Stun).value = 1;
+  rampart.stats.statuses.get(CharacterStatus.Move).value = 1;
+  rampart.stats.statuses.get(CharacterStatus.Stun).value = 1;
   rampart.position = [false, true, true, true];
   rampart.target = SkillTarget.oneOf([false, true, true, true]);
 
@@ -90,11 +90,11 @@ export function addStaticState () {
   bellow.stats.accuracy.value = 90;
   bellow.stats.stress.value = 10;
   bellow.stats.criticalChance.value = 0.05;
-  bellow.stats.statusChances.get(CharacterStatus.Move).value = 1;
-  bellow.stats.statusChances.get(CharacterStatus.Stun).value = 1;
+  bellow.stats.statuses.get(CharacterStatus.Move).value = 1;
+  bellow.stats.statuses.get(CharacterStatus.Stun).value = 1;
   bellow.position = [false, true, true, true];
   bellow.target = SkillTarget.anyOne(SkillTargetObject.Enemy);
-  bellow.stats.statusChances.get(CharacterStatus.Buff).value = 0.8;
+  bellow.stats.statuses.get(CharacterStatus.Buff).value = 0.8;
   bellow.buff = new TurnStats();
   bellow.buff.dodge.value = -5;
   bellow.buff.speed.value = -5;
@@ -518,7 +518,7 @@ function createStandardCharacterClass (className: string) {
   info.stats.criticalChance.value = 0.05;
   info.skills = Array.from(StaticState.instance.skills.values());
 
-  for (const stat of info.stats.statusChances.values()) {
+  for (const stat of info.stats.statuses.values()) {
     stat.value = 0.5;
   }
 

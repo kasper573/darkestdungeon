@@ -61,7 +61,7 @@ export class Stats {
   public resistances = declareStatuses(" Res", " Resistance");
 
   @serializable(map(StatItem.serializr()))
-  public statusChances = declareStatuses("", " Chance");
+  public statuses = declareStatuses("", " Chance");
 
   @serializable(map(StatItem.serializr()))
   public statusDamageScales = declareStatuses(" Dmg", " Damage Modifier");
@@ -79,7 +79,7 @@ export class Stats {
       this.health, this.stress,
       ...this.base,
       ...this.resistances.values(),
-      ...this.statusChances.values(),
+      ...this.statuses.values(),
       ...this.statusDamageScales.values()
     ];
   }

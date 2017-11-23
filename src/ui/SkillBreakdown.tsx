@@ -12,7 +12,7 @@ export class SkillBreakdown extends React.Component<{skill: Skill}> {
   render () {
     const skill = this.props.skill;
     const displayedStats = skill.stats.nonNeutral.slice();
-    const buffStat = skill.stats.statusChances.get(CharacterStatus.Buff);
+    const buffStat = skill.stats.statuses.get(CharacterStatus.Buff);
 
     // Remove buff from displayed stats since we're showing a specific section for skill buffs
     removeItem(displayedStats,

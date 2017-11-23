@@ -149,7 +149,7 @@ export class Character extends Experienced {
       memento.add(delta);
 
       // Add status memento
-      memento.statusChances.get(status).value = 1;
+      memento.statuses.get(status).value = 1;
 
       stats.turns--;
       if (stats.turns <= 0) {
@@ -241,11 +241,11 @@ export class Character extends Experienced {
       this.applyBuff(skill.buff, skill.info.name);
 
       // Add buff memento
-      memento.statusChances.get(CharacterStatus.Buff).value = 1;
+      memento.statuses.get(CharacterStatus.Buff).value = 1;
     }
 
     // Apply status effects for this skill
-    skill.stats.statusChances.forEach((s, status) => {
+    skill.stats.statuses.forEach((s, status) => {
       const willStatusHit = Math.random() <= Character.getStatusHitChance(status, actionStats, targetStats);
       if (!willStatusHit) {
         return;
@@ -266,7 +266,7 @@ export class Character extends Experienced {
       }
 
       // Add status memento
-      memento.statusChances.get(status).value = 1;
+      memento.statuses.get(status).value = 1;
     });
 
     return memento;
@@ -274,7 +274,7 @@ export class Character extends Experienced {
 
   applyItem (item: Item) {
     this.applyStats(false, item.stats);
-    item.stats.statusChances.forEach((value, status) => {
+    item.stats.statuses.forEach((value, status) => {
       this.dots.delete(status);
     });
 
@@ -292,7 +292,7 @@ export class Character extends Experienced {
   }
 
   static getStatusHitChance (status: CharacterStatus, actionStats: Stats, targetStats: Stats) {
-    const chance = actionStats.statusChances.get(status).value;
+    const chance = actionStats.statuses.get(status).value;
     const resistance = targetStats.resistances.get(status).value;
     return chance - resistance;
   }
