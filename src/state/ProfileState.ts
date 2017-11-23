@@ -30,13 +30,12 @@ export class ProfileState {
     });
 
     // Add all free building upgrades to profile
-    Array.from(StaticState.instance.buildingUpgrades.values())
+    StaticState.instance.buildingUpgrades
       .filter((upgrade) => upgrade.isFree)
       .forEach((upgrade) => profile.purchaseUpgrade(upgrade));
 
     // Add all dungeons to profile
-    profile.dungeons = Array.from(StaticState.instance.dungeons.values())
-      .map(Dungeon.fromInfo);
+    profile.dungeons = StaticState.instance.dungeons.map(Dungeon.fromInfo);
 
     // Add two random heroes to the roster
     profile.roster = [profile.newHero(), profile.newHero()];

@@ -31,6 +31,7 @@ for (const count of equippableItems.values()) {
 }
 
 export function addStaticState () {
+  let previousLevelInfo: LevelInfo;
   ["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]
     .forEach((name, level) => {
       const info = new LevelInfo();
@@ -38,14 +39,14 @@ export function addStaticState () {
       info.number = level;
       info.name = name;
       info.experience = Math.pow(level, 2) * 1000;
-      StaticState.instance.levels.set(info.id, info);
-    });
+      StaticState.instance.add((i) => i.levels, info);
 
-  for (let level = 0; level < StaticState.instance.levels.size; level++) {
-    const info = StaticState.instance.levels.get(level);
-    info.previous = StaticState.instance.levels.get(this.id - 1);
-    info.next = StaticState.instance.levels.get(this.id + 1);
-  }
+      if (previousLevelInfo) {
+        previousLevelInfo.next = info;
+      }
+      info.previous = previousLevelInfo;
+      previousLevelInfo = info;
+    });
 
   ["Hopeless", "Paranoid", "Gullible", "Ignorant"].forEach((name, index) => {
     const info = new AfflictionInfo();
@@ -56,12 +57,12 @@ export function addStaticState () {
     stats.speed.value = -index;
     info.stats = stats;
 
-    StaticState.instance.afflictions.set(info.id, info);
+    StaticState.instance.add((i) => i.afflictions, info);
   });
 
   const crush = new SkillInfo();
   crush.id = crush.name = "Crush";
-  StaticState.instance.skills.set(crush.id, crush);
+  StaticState.instance.add((i) => i.skills, crush);
   crush.stats = new Stats();
   crush.stats.accuracy.value = 85;
   crush.stats.criticalChance.value = 0.05;
@@ -72,7 +73,7 @@ export function addStaticState () {
 
   const rampart = new SkillInfo();
   rampart.id = rampart.name = "Rampart";
-  StaticState.instance.skills.set(rampart.id, rampart);
+  StaticState.instance.add((i) => i.skills, rampart);
   rampart.movement = 1;
   rampart.stats = new Stats();
   rampart.stats.accuracy.value = 90;
@@ -84,7 +85,7 @@ export function addStaticState () {
 
   const bellow = new SkillInfo();
   bellow.id = bellow.name = "Bellow";
-  StaticState.instance.skills.set(bellow.id, bellow);
+  StaticState.instance.add((i) => i.skills, bellow);
   bellow.movement = 1;
   bellow.stats = new Stats();
   bellow.stats.accuracy.value = 90;
@@ -101,7 +102,7 @@ export function addStaticState () {
 
   const defender = new SkillInfo();
   defender.id = defender.name = "Defender";
-  StaticState.instance.skills.set(defender.id, defender);
+  StaticState.instance.add((i) => i.skills, defender);
   defender.stats = new Stats();
   defender.stats.stress.value = -5;
   defender.position = [false, true, true, true];
@@ -111,7 +112,7 @@ export function addStaticState () {
 
   const heal = new SkillInfo();
   heal.id = heal.name = "Heal";
-  StaticState.instance.skills.set(heal.id, heal);
+  StaticState.instance.add((i) => i.skills, heal);
   heal.stats = new Stats();
   heal.stats.health.value = 5;
   heal.position = [true, true, false, false];
@@ -141,8 +142,8 @@ export function addStaticState () {
     const info = new DungeonInfo();
     info.id = name;
     info.name = name;
-    info.monsters = Array.from(StaticState.instance.monsters.values());
-    StaticState.instance.dungeons.set(info.id, info);
+    info.monsters = StaticState.instance.monsters;
+    StaticState.instance.add((i) => i.dungeons, info);
   });
 
   let heirloomIndex = 0;
@@ -286,7 +287,7 @@ export function addStaticState () {
 
     info.stats = stats;
 
-    StaticState.instance.quirks.set(info.id, info);
+    StaticState.instance.add((i) => i.quirks, info);
   });
 
   ["Terror", "Flynn", "Ok Ok"].forEach((name, index) => {
@@ -303,7 +304,7 @@ export function addStaticState () {
 
     info.stats = stats;
 
-    StaticState.instance.diseases.set(info.id, info);
+    StaticState.instance.add((i) => i.diseases, info);
   });
 
   addBuildings({
@@ -517,7 +518,7 @@ function createStandardCharacterClass (className: string) {
   info.stats.accuracy.value = 10;
   info.stats.speed.value = 10;
   info.stats.criticalChance.value = 0.05;
-  info.skills = Array.from(StaticState.instance.skills.values());
+  info.skills = StaticState.instance.skills;
 
   for (const stat of info.stats.statuses.values()) {
     stat.value = 0.5;
@@ -540,16 +541,16 @@ function createStandardMonsterClass (className: string) {
 function addHero (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
   const classInfo = createStandardHeroClass(className);
   const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
-  StaticState.instance.heroes.set(template.id, template);
-  StaticState.instance.classes.set(template.id, classInfo);
+  StaticState.instance.add((i) => i.heroes, template);
+  StaticState.instance.add((i) => i.classes, classInfo);
   return template;
 }
 
 function addMonster (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
   const classInfo = createStandardMonsterClass(className);
   const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
-  StaticState.instance.monsters.set(template.id, template);
-  StaticState.instance.classes.set(template.id, classInfo);
+  StaticState.instance.add((i) => i.monsters, template);
+  StaticState.instance.add((i) => i.classes, classInfo);
   return template;
 }
 
@@ -578,7 +579,7 @@ function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoR
       Object.assign(item.effects, effects);
 
       // Store item in static state list
-      StaticState.instance.buildingUpgrades.set(item.id, item);
+      StaticState.instance.add((i) => i.buildingUpgrades, item);
       return item;
     });
 
@@ -609,7 +610,7 @@ function addItem (itemId: string, rawInfo: any) {
   addStats(stats, info.stats);
   info.buff = parseBuff(buff);
 
-  StaticState.instance.items.set(info.id, info);
+  StaticState.instance.add((i) => i.items, info);
   return info;
 }
 

@@ -308,7 +308,7 @@ export class Profile {
   }
 
   getStoreItems () {
-    return Array.from(StaticState.instance.items.values())
+    return StaticState.instance.items
       .filter((info) => info.getStoreCount)
       .reduce((items, info) => {
         const num = info.getStoreCount(this.selectedQuest);
