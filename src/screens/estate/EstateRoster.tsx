@@ -7,6 +7,7 @@ import {SortOptions} from "../../ui/SortOptions";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
 import {Alert} from "../../ui/Popups";
+import {contains} from "../../lib/Helpers";
 
 @observer
 export class EstateRoster extends AppStateComponent<{
@@ -14,12 +15,12 @@ export class EstateRoster extends AppStateComponent<{
   portalNode?: HTMLDivElement
 }> {
   receiveHero (droppedHero: Hero, slotHero: Hero) {
-    if (this.activeProfile.roster.indexOf(droppedHero) !== -1) {
+    if (contains(this.activeProfile.roster, droppedHero)) {
       // Drag from roster entry to roster entry
       const swapIndex = slotHero.rosterIndex;
       slotHero.rosterIndex = droppedHero.rosterIndex;
       droppedHero.rosterIndex = swapIndex;
-    } else if (this.activeProfile.coach.indexOf(droppedHero) !== -1) {
+    } else if (contains(this.activeProfile.coach, droppedHero)) {
       // Dragged from stage coach to roster
       if (this.activeProfile.isRosterFull) {
         this.appState.popups.show(

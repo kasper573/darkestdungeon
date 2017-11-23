@@ -10,7 +10,7 @@ import {CharacterStatus} from "./CharacterStatus";
 import {SkillId, SkillTargetObject} from "./SkillInfo";
 import {DiseaseInfo} from "./DiseaseInfo";
 import {Stats, TurnStats} from "./Stats";
-import {cap} from "../../lib/Helpers";
+import {cap, contains} from "../../lib/Helpers";
 import uuid = require("uuid");
 import {BuildingInfoId} from "./BuildingInfo";
 import {Skill} from "./Skill";
@@ -105,15 +105,12 @@ export class Character extends Experienced {
 
   acceptsTreatmentFrom (treatmentId: BuildingInfoId) {
     for (const quirk of [...this.quirks, ...this.diseases]) {
-      if (quirk.forcedTreatmentIds.length > 0) {
-        if (quirk.forcedTreatmentIds.indexOf(treatmentId) === -1) {
-          return false;
-        }
+      if (quirk.forcedTreatmentIds.length > 0 &&
+        !contains(quirk.forcedTreatmentIds, treatmentId)) {
+        return false;
       }
-      if (quirk.bannedTreatmentIds.length > 0) {
-        if (quirk.bannedTreatmentIds.indexOf(treatmentId) !== -1) {
-          return false;
-        }
+      if (contains(quirk.bannedTreatmentIds, treatmentId)) {
+        return false;
       }
     }
     return true;

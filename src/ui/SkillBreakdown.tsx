@@ -6,6 +6,7 @@ import {StatsTextList} from "./StatsText";
 import {CharacterStatus} from "../state/types/CharacterStatus";
 import {PositionDots} from "./PositionDots";
 import {Skill} from "../state/types/Skill";
+import {removeItem} from "../lib/Helpers";
 
 export class SkillBreakdown extends React.Component<{skill: Skill}> {
   render () {
@@ -14,10 +15,9 @@ export class SkillBreakdown extends React.Component<{skill: Skill}> {
     const buffStat = skill.stats.statusChances.get(CharacterStatus.Buff);
 
     // Remove buff from displayed stats since we're showing a specific section for skill buffs
-    const index = displayedStats.findIndex((stat) => stat.info.id === buffStat.info.id);
-    if (index !== -1) {
-      displayedStats.splice(index, 1);
-    }
+    removeItem(displayedStats,
+      displayedStats.find((stat) => stat.info.id === buffStat.info.id)
+    );
 
     const dotColor = skill.info.target.object === SkillTargetObject.Enemy ? "red" : "yellow";
     const dotInnerValues = skill.info.target.spots.map((spot) => spot ? 3 : 0);

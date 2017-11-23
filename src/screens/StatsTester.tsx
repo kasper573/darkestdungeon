@@ -12,6 +12,7 @@ import {Battle} from "../state/types/Battle";
 import {Hero} from "../state/types/Hero";
 import {randomizeItems} from "../state/Generators";
 import {Skill} from "../state/types/Skill";
+import {removeItem} from "../lib/Helpers";
 
 @observer
 export class StatsTester extends AppStateComponent {
@@ -41,8 +42,7 @@ export class StatsTester extends AppStateComponent {
               hero={hero}
               onSkillSelected={(skill) => {
                 const targetPool = this.battleMembers.slice();
-                const myselfIndex = targetPool.indexOf(hero);
-                targetPool.splice(myselfIndex, 1);
+                removeItem(targetPool, hero);
                 this.useSkill(skill, hero, randomizeItems(targetPool));
               }}
             />
