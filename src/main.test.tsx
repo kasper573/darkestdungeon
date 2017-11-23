@@ -7,6 +7,15 @@ import {addStaticState} from "./config/general";
 import {routes} from "./config/routes";
 import {StaticState} from "./state/StaticState";
 import {Difficulty} from "./state/types/Profile";
+const {DragDropContext} = require("react-dnd");
+const TestBackend = require("react-dnd-test-backend");
+
+@DragDropContext(TestBackend)
+class TestApp extends React.Component<{state: AppState}> {
+  render () {
+    return <App state={this.props.state}/>;
+  }
+}
 
 describe("main", () => {
   beforeEach(() => {
@@ -29,7 +38,7 @@ describe("main", () => {
       state.router.goto(path);
       state.initialize();
 
-      TestUtils.renderIntoDocument(<App state={state} />);
+      TestUtils.renderIntoDocument(<TestApp state={state} />);
       state.dispose();
     });
   }
