@@ -179,7 +179,7 @@ export function addStaticState () {
         info.stats.protect.value = (index + 1) * 2;
         break;
       case 2:
-        info.type = ItemType.Usable;
+        info.type = ItemType.Consumable;
         info.stats.health.value = 5;
         info.stats.statusChances.get(CharacterStatus.Bleed).value = 1;
         break;

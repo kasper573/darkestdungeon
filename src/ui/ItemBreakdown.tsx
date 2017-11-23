@@ -14,7 +14,7 @@ export class ItemBreakdown extends React.Component<{
     let stats = item.stats.nonNeutral;
     let cures: StatInfo[] = [];
 
-    if (item.info.type === ItemType.Usable) {
+    if (item.info.type === ItemType.Consumable) {
       const statuses = Array.from(item.stats.statusChances.values())
         .filter((stat) => !stat.isNeutral)
         .map((stat) => stat.info);
