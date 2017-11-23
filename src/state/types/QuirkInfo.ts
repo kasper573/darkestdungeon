@@ -11,5 +11,6 @@ export class QuirkInfo implements IStatsSource {
   public stats: Stats;
   public forcedTreatmentIds: BuildingInfoId[] = [];
   public bannedTreatmentIds: BuildingInfoId[] = [];
+  public isDisease: boolean;
   statsSourceName: string = "Quirk";
 }

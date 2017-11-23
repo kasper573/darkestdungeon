@@ -64,7 +64,7 @@ export class TreatmentFacility extends AppStateComponent<{
     if (residencyEffects.treatDisease && hero.diseases.length === 0) {
       return false;
     }
-    if (residencyEffects.treatQuirk && hero.quirks.filter((q) => !q.stats.isPositive).length === 0) {
+    if (residencyEffects.treatFlaw && hero.flaws.length === 0) {
       return false;
     }
     return !residencyEffects.recovery || hero.stats.stress.value > 0;

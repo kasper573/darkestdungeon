@@ -7,7 +7,6 @@ import {HeirloomType, ItemInfo, ItemType} from "../state/types/ItemInfo";
 import {QuirkInfo} from "../state/types/QuirkInfo";
 import {CharacterStatus} from "../state/types/CharacterStatus";
 import {SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInfo";
-import {DiseaseInfo} from "../state/types/DiseaseInfo";
 import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
@@ -287,24 +286,12 @@ export function addStaticState () {
 
     info.stats = stats;
 
+    if (index % 4 === 0) {
+      info.isDisease = true;
+      info.bannedTreatmentIds.push("tavern.bar");
+    }
+
     StaticState.instance.add((i) => i.quirks, info);
-  });
-
-  ["Terror", "Flynn", "Ok Ok"].forEach((name, index) => {
-    const info = new DiseaseInfo();
-    info.id = name;
-    info.name = name;
-    const stats = new Stats();
-    const stat = stats.base[index % stats.base.length];
-    stat.value = -1 * (
-      stat.info.isPercentage ? 0.1 : (1 + index * 2)
-    );
-
-    info.bannedTreatmentIds.push("tavern.bar");
-
-    info.stats = stats;
-
-    StaticState.instance.add((i) => i.diseases, info);
   });
 
   addBuildings({
@@ -395,7 +382,7 @@ export function addStaticState () {
           avatarUrl: require("../../assets/images/avatar.jpg"),
           description: "Treat Quirks and other problematic behaviors.",
           items: [
-            {cost: null, effects: {size: 1, cost: 500, treatQuirk: 1}},
+            {cost: null, effects: {size: 1, cost: 500, treatFlaw: 1}},
             {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 1}},
             {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {cost: -100}},
             {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 1}}

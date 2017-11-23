@@ -64,14 +64,10 @@ export class HeroOverview extends React.Component<
                 <CommonHeader label="Quirks"/>
                 <Row>
                   <Column>
-                    {hero.quirks.filter((q) => q.stats.isPositive).map((q) => (
-                      <QuirkText key={q.id} quirk={q}/>
-                    ))}
+                    {hero.perks.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
                   <Column style={{textAlign: "right"}}>
-                    {hero.quirks.filter((q) => !q.stats.isPositive).map((q) => (
-                      <QuirkText key={q.id} quirk={q}/>
-                    ))}
+                    {hero.flaws.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
                 </Row>
 

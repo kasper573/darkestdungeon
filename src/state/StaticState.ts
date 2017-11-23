@@ -3,9 +3,8 @@ import {LevelInfo} from "./types/LevelInfo";
 import {AfflictionInfo} from "./types/AfflictionInfo";
 import {CharacterClassInfo} from "./types/CharacterClassInfo";
 import {ItemInfo, ItemType} from "./types/ItemInfo";
-import {QuirkId, QuirkInfo} from "./types/QuirkInfo";
+import {QuirkInfo} from "./types/QuirkInfo";
 import {SkillInfo} from "./types/SkillInfo";
-import {DiseaseInfo} from "./types/DiseaseInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "./types/BuildingUpgradeInfo";
 import {BuildingInfo} from "./types/BuildingInfo";
@@ -29,7 +28,6 @@ export class StaticState  {
   levels: LevelInfo[] = [];
   dungeons: DungeonInfo[] = [];
   quirks: QuirkInfo[] = [];
-  diseases: DiseaseInfo[] = [];
   skills: SkillInfo[] = [];
   heroes: CharacterTemplate[] = [];
   monsters: CharacterTemplate[] = [];
@@ -41,13 +39,6 @@ export class StaticState  {
 
   get heirlooms () {
     return this.items.filter((info) => info.type === ItemType.Heirloom);
-  }
-
-  findQuirkOrDisease (id: QuirkId) {
-    return [
-      ...StaticState.instance.quirks,
-      ...StaticState.instance.diseases
-    ].find((q) => q.id === id);
   }
 
   getUpgradeEffects (keys: string[], upgrades = this.buildingUpgrades) {

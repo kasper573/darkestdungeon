@@ -31,7 +31,7 @@ export class QuirkPicker extends React.Component<{
 
     const quirks = unlockedEffects.treatDisease ?
       this.pendingResident.diseases :
-      this.pendingResident.quirks.filter((q) => !q.stats.isPositive);
+      this.pendingResident.flaws;
 
     return (
       <div>
