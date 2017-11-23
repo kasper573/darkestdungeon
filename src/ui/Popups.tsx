@@ -89,7 +89,7 @@ export class Prompt extends React.Component<
 
 export class Alert extends React.Component<
   PopupProps & {
-  message: string,
+  message: any,
   dismissLabel?: string
   dismissValue?: any
 }> {

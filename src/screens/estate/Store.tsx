@@ -1,77 +1,78 @@
 import * as React from "react";
-import {ItemIcon} from "../../ui/ItemIcon";
 import {CommonHeader} from "../../ui/CommonHeader";
 import {observer} from "mobx-react";
-import {observable} from "mobx";
+import {autorun, computed, IReactionDisposer, observable, transaction} from "mobx";
 import {Item} from "../../state/types/Item";
 import {Profile} from "../../state/types/Profile";
 import {moveItem} from "../../lib/Helpers";
+import {ItemDropbox} from "../../ui/ItemDropbox";
+import {GoldText} from "../../ui/GoldText";
 
 @observer
 export class Store extends React.Component<{
   initialStoreItems: Item[],
   profile: Profile
 }> {
+  private stopManagingDebt: IReactionDisposer;
+
   @observable store: Item[] = this.props.initialStoreItems;
   @observable cart: Item[] = [];
 
-  componentWillUnmount () {
-    // Return all items that has not been checked out
-    this.cart.slice().forEach(
-      (item) => this.returnItem(item)
+  @computed get cartValue () {
+    return this.cart.reduce((sum, item) => sum + item.info.value, 0);
+  }
+
+  componentWillMount () {
+    this.stopManagingDebt = autorun(
+      () => this.props.profile.debt = this.cartValue
     );
   }
 
-  buyItem (item: Item) {
+  componentWillUnmount () {
+    // Return all items that has not been checked out
+    this.cart.forEach((item) => this.returnItem(item));
+    this.stopManagingDebt();
+  }
+
+  takeItem (item: Item) {
     moveItem(item, this.store, this.cart);
-    this.props.profile.gold -= item.info.value;
   }
 
   returnItem (item: Item) {
     moveItem(item, this.cart, this.store);
-    this.props.profile.gold += item.info.value;
   }
 
   canAffordItem (item: Item) {
-    return this.props.profile.gold >= item.info.value;
+    return this.props.profile.goldAfterDebt >= item.info.value;
   }
 
-  checkout () {
-    // Move purchased items to your inventory
-    while (this.cart.length > 0) {
-      this.props.profile.items.push(this.cart.pop());
-    }
+  purchase () {
+    transaction(() => {
+      while (this.cart.length) {
+        this.props.profile.purchaseItem(this.cart.pop());
+      }
+    });
   }
 
   render () {
     return (
       <div>
         <CommonHeader label="Store inventory"/>
-        <div>
-          {this.store.map((item) =>
-            <ItemIcon
-              key={item.id}
-              item={item}
-              style={{opacity: this.canAffordItem(item) ? 1 : 0.5}}
-              onClick={
-                this.canAffordItem(item) ?
-                  () => this.buyItem(item) :
-                  undefined
-              }
-            />
-          )}
-        </div>
+        <ItemDropbox
+          items={this.store}
+          acceptFrom={this.cart}
+          compare={Item.comparers.name}
+          canInteractWith={this.canAffordItem.bind(this)}
+          onSelect={this.takeItem.bind(this)}
+          extraComponent={({item}) => item && <GoldText amount={item.info.value}/>}
+        />
 
         <CommonHeader label="Shopping cart"/>
-        <div>
-          {this.cart.map((item) =>
-            <ItemIcon
-              key={item.id}
-              item={item}
-              onClick={() => this.returnItem(item)}
-            />
-          )}
-        </div>
+        <ItemDropbox
+          acceptFrom={this.store}
+          items={this.cart}
+          onSelect={this.returnItem.bind(this)}
+        />
       </div>
     );
   }

@@ -25,7 +25,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
       />
     ).then((willEmbark) => {
       if (willEmbark) {
-        this.store.checkout();
+        this.store.purchase();
         this.selectedQuest.status = QuestStatus.Started;
         return true;
       }
@@ -38,6 +38,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         path={this.props.path}
         backPath="estateDungeons"
         roster={false}
+        inventory={false}
         continueCheck={() => this.checkItemsBeforeContinue()}
         continueLabel="Embark"
         continuePath="dungeonOverview">

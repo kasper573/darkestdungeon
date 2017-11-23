@@ -24,10 +24,12 @@ export class EstateTemplate extends AppStateComponent<{
   continueLabel: string,
   continuePath: PathTypes,
   roster?: boolean,
+  inventory?: boolean,
   partyFeaturesInRoster?: boolean
 }> {
   static defaultProps = {
     roster: true,
+    inventory: true,
     continueCheck: () => Promise.resolve()
   };
 
@@ -62,7 +64,7 @@ export class EstateTemplate extends AppStateComponent<{
 
         <div className={css(styles.footer)}>
           <Row classStyle={styles.footerLeft}>
-            <span>Gold: {this.activeProfile.gold}</span>
+            <span>Gold: {this.activeProfile.goldAfterDebt}</span>
             <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
             <TooltipArea
               tip={<span style={{whiteSpace: "nowrap"}}>Trade heirlooms</span>}
@@ -81,17 +83,19 @@ export class EstateTemplate extends AppStateComponent<{
             </button>
           </div>
           <div className={css(styles.footerRight)}>
-            <span onClick={() => this.appState.popups.show({
-              id: "inventory",
-              modalState: ModalState.Opaque,
-              content: (
-                <Popup>
-                  <Inventory/>
-                </Popup>
-              )
-            })}>
+            {this.props.inventory && (
+              <span onClick={() => this.appState.popups.show({
+                id: "inventory",
+                modalState: ModalState.Opaque,
+                content: (
+                  <Popup>
+                    <Inventory/>
+                  </Popup>
+                )
+              })}>
               [INVENTORY]
             </span>
+            )}
             <span onClick={() => this.pause()}>
               [PAUSE MENU]
             </span>

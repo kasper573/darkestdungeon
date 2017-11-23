@@ -36,6 +36,7 @@
     "object-literal-key-quotes": false,
     "no-trailing-whitespace": false,
 
+    "jsx-no-bind": false,
     "jsx-no-lambda": false,
     "jsx-alignment": false,
     "jsx-no-multiline-js": false,

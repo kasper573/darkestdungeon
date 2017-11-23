@@ -1,12 +1,14 @@
 import * as React from "react";
 import {Column, Row} from "../../config/styles";
 import {Avatar} from "../../ui/Avatar";
-import {ItemDropbox} from "../../ui/ItemDropbox";
 import {HeroSkills} from "../../ui/HeroSkills";
 import {Hero} from "../../state/types/Hero";
 import {StatsTextList} from "../../ui/StatsText";
 import {QuirkText} from "../../ui/QuirkText";
+import {HeroEquipment} from "../../ui/HeroEquipment";
+import {observer} from "mobx-react";
 
+@observer
 export class DungeonHeroSummary extends React.Component<{
   hero: Hero
 }> {
@@ -29,7 +31,7 @@ export class DungeonHeroSummary extends React.Component<{
             <div>Stress: {hero.stats.stress.value}/{hero.stats.maxStress.value}</div>
             <StatsTextList stats={hero.stats.base}/>
           </Column>
-          <ItemDropbox items={hero.items}/>
+          <HeroEquipment hero={hero}/>
         </Row>
       </div>
     );

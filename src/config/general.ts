@@ -157,20 +157,38 @@ export function addStaticState () {
       StaticState.instance.items.set(info.id, info);
     });
 
-  ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato"].forEach((name, index) => {
+  ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato",
+    "Magic Wand", "Apple", "Torn Wing", "Banana", "Happy Thoughts",
+    "Honey", "Coconut", "Balloon", "Longsword", "Dagger", "Shield",
+    "Helmet", "Furnace", "Cape", "Feather", "Pen", "Bow & Arrow"
+  ].forEach((name, index) => {
     const info = new ItemInfo();
     info.id = name;
     info.name = name;
     info.value = 25 + 50 * index;
 
-    if (index % 2 === 0) {
-      info.type = ItemType.Weapon;
-      info.stats.damage.value = (10 + Math.pow(index, 2));
-      info.stats.accuracy.value = (2 + index * 2);
-    } else {
-      info.type = ItemType.Armor;
-      info.stats.maxHealth.value = (20 + index * 5);
-      info.stats.protect.value = (2 + index * 2);
+    switch (index % 4) {
+      case 0:
+        info.type = ItemType.Weapon;
+        info.stats.damage.value = (index + 1) * 2;
+        info.stats.accuracy.value = (index + 1);
+        break;
+      case 1:
+        info.type = ItemType.Armor;
+        info.stats.maxHealth.value = (index + 1) * 2;
+        info.stats.protect.value = (index + 1) * 2;
+        break;
+      case 2:
+        info.type = ItemType.Usable;
+        info.stats.health.value = 5;
+        info.stats.statusChances.get(CharacterStatus.Bleed).value = 1;
+        break;
+      case 3:
+        info.type = ItemType.Trinket;
+        info.stats.maxHealth.value = (1 + index);
+        info.stats.protect.value = (2 + index * 2);
+        info.stats.damage.value = (3 + index * 3);
+        break;
     }
 
     StaticState.instance.items.set(info.id, info);
@@ -187,7 +205,7 @@ export function addStaticState () {
     const stat = stats.base[index % stats.base.length];
     stat.value =
       (isPositive ? 1 : -1) * (
-        stat.info.isPercentage ? 0.1 : (1 + index * 2)
+        stat.info.isPercentage ? 0.1 : (1 + index)
       );
 
     info.stats = stats;

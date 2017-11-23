@@ -145,7 +145,7 @@ export class Character extends Experienced {
     const memento = new Stats();
 
     this.dots.forEach((stats, status) => {
-      const delta = this.getHit(true, stats);
+      const delta = this.applyStats(true, stats);
 
       // Add damage memento
       memento.add(delta);
@@ -162,7 +162,7 @@ export class Character extends Experienced {
     return memento;
   }
 
-  getHit (isCrit: boolean, attackStats: Stats) {
+  applyStats (isCrit: boolean, actionStats: Stats) {
     const targetStats = this.stats;
 
     // Calculate stats changes in the target
@@ -170,12 +170,12 @@ export class Character extends Experienced {
 
     // Reduce health by damage, ignoring protect for critical hits
     deltaStats.health.value += Math.min(
-      0, (isCrit ? 0 : 1) * targetStats.protect.value - attackStats.damage.value
+      0, (isCrit ? 0 : 1) * targetStats.protect.value - actionStats.damage.value
     );
 
     // Apply flat stress/health changes (ie. heals), double value for crits
-    deltaStats.health.value += (isCrit ? 2 : 1) * attackStats.health.value;
-    deltaStats.stress.value += (isCrit ? 2 : 1) * attackStats.stress.value;
+    deltaStats.health.value += (isCrit ? 2 : 1) * actionStats.health.value;
+    deltaStats.stress.value += (isCrit ? 2 : 1) * actionStats.stress.value;
 
     // Cap stress and health changes
     const minStressDelta = -targetStats.stress.value;
@@ -217,7 +217,7 @@ export class Character extends Experienced {
     );
 
     const willHit = isAllyTarget || willBasicHit;
-    const memento = willHit ? target.getHit(isCrit, actionStats) : new Stats();
+    const memento = willHit ? target.applyStats(isCrit, actionStats) : new Stats();
 
     // Add crit memento
     if (isCrit) {
@@ -262,6 +262,13 @@ export class Character extends Experienced {
     });
 
     return memento;
+  }
+
+  useItemOnSelf (item: Item) {
+    this.applyStats(false, item.stats);
+    item.stats.statusChances.forEach((value, status) => {
+      this.dots.delete(status);
+    });
   }
 
   static getStatusHitChance (status: CharacterStatus, actionStats: Stats, targetStats: Stats) {
