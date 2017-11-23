@@ -147,11 +147,12 @@ export function addStaticState () {
 
   let heirloomIndex = 0;
   enumMap<HeirloomType>(HeirloomType)
-    .forEach((value, name) => {
-      addItem("heirloom" + value, {
+    .forEach((heirloomType, name) => {
+      addItem("heirloom" + heirloomType, {
         name,
         pluralName: name + "s",
         type: ItemType.Heirloom,
+        heirloomType,
         value: 1 + heirloomIndex++,
         description: "Use for building upgrades"
       });
