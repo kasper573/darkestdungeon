@@ -14,7 +14,8 @@ import {TurnStats} from "../state/types/Stats";
 @observer
 export class CharacterModel extends React.Component<{
   character: Character,
-  classStyle?: any
+  classStyle?: any,
+  onClick?: () => void
 }> {
   get isHero () {
     return this.props.character instanceof Hero;
@@ -31,7 +32,9 @@ export class CharacterModel extends React.Component<{
     });
 
     return (
-      <div className={css(styles.model, this.props.classStyle)}>
+      <div
+        className={css(styles.model, this.props.classStyle)}
+        onClick={this.props.onClick}>
         <div>{c.name}</div>
 
         {c.affliction && (
