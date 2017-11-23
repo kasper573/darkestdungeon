@@ -25,7 +25,7 @@ export class CharacterModel extends React.Component<{
     const c = this.props.character;
     const dotBreakdowns: any[] = [];
     c.dots.forEach((stats, status) => {
-      const name = stats.statusChances.get(status).info.shortName;
+      const name = stats.statuses.get(status).info.shortName;
       dotBreakdowns.push(
         <TurnBreakdown key={status} turnStats={stats} name={name} invert/>
       );
