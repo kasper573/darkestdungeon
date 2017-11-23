@@ -22,17 +22,17 @@ export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Chara
 }
 
 export function generateHero (activeHeroes: Hero[]): Hero {
-  const allTemplates = Array.from(StaticState.instance.heroes.values());
+  const allTemplates = StaticState.instance.heroes;
   const template = randomizeTemplate(allTemplates, activeHeroes);
 
   const hero = new Hero();
   hero.name = randomizeItem(template.characterNames);
   hero.classInfo = template.classInfo;
-  hero.affliction = randomizeItem(Array.from(StaticState.instance.afflictions.values()));
-  hero.diseases = randomizeItems(Array.from(StaticState.instance.diseases.values()), 1, 3);
-  hero.quirks = randomizeItems(Array.from(StaticState.instance.quirks.values()), 1, 8);
+  hero.affliction = randomizeItem(StaticState.instance.afflictions);
+  hero.diseases = randomizeItems(StaticState.instance.diseases, 1, 3);
+  hero.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
 
-  const allItems = Array.from(StaticState.instance.items.values());
+  const allItems = StaticState.instance.items;
   const weapons = allItems.filter((item) => item.type === ItemType.Weapon);
   const armors = allItems.filter((item) => item.type === ItemType.Armor);
 
@@ -52,13 +52,11 @@ export function generateHero (activeHeroes: Hero[]): Hero {
 
 export function generateItem (): Item {
   const t = new Item();
-  t.info = randomizeItem(Array.from(StaticState.instance.items.values()));
+  t.info = randomizeItem(StaticState.instance.items);
   return t;
 }
 
 export function generateQuest (dungeons: Dungeon[]): Quest {
-  const itemPool = Array.from(StaticState.instance.items.values());
-
   const q = new Quest();
   const dungeon = randomizeItem(dungeons);
   q.dungeonId = dungeon.id;
@@ -71,9 +69,9 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
   q.currentRoomId = q.map.entrance.id;
 
   q.rewards = [
-    Item.fromInfo(randomizeItem(itemPool)),
-    Item.fromInfo(randomizeItem(itemPool)),
-    Item.fromInfo(randomizeItem(itemPool))
+    Item.fromInfo(randomizeItem(StaticState.instance.items)),
+    Item.fromInfo(randomizeItem(StaticState.instance.items)),
+    Item.fromInfo(randomizeItem(StaticState.instance.items))
   ];
 
   const o = new QuestObjective();

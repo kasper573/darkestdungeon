@@ -12,11 +12,10 @@ export class Experienced {
 
   @computed
   get level () {
-    return Array.from(StaticState.instance.levels.values())
-      .find((level) =>
-        this.experience >= level.experience &&
-        (level.isMax || this.experience < level.next.experience)
-      );
+    return StaticState.instance.levels.find((level) =>
+      this.experience >= level.experience &&
+      (level.isMax || this.experience < level.next.experience)
+    );
   }
 
   @computed
