@@ -35,7 +35,16 @@ export class DungeonResult extends AppStateComponent {
     );
   }
 
+  checkoutQuestItems () {
+    while (this.activeProfile.selectedQuest.items.length) {
+      this.activeProfile.items.push(
+        this.activeProfile.selectedQuest.items.pop()
+      );
+    }
+  }
+
   async returnToEstate () {
+    this.checkoutQuestItems();
     await this.appState.router.goto("estateOverview");
     this.activeProfile.gotoNextWeek();
   }

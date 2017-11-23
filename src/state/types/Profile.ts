@@ -152,9 +152,9 @@ export class Profile {
       .forEach((hero) => hero.residentInfo = null);
   }
 
-  purchaseItem (item: Item) {
+  purchaseItem (item: Item, inventory: Item[]) {
     this.gold -= item.info.value;
-    this.items.push(item);
+    inventory.push(item);
   }
 
   disposeItem (item: Item) {
@@ -312,16 +312,6 @@ export class Profile {
         const newItems = count(num).map(() => Item.fromInfo(info));
         return items.concat(newItems);
       }, []);
-  }
-
-  unequipAllItems () {
-    transaction(() => {
-      this.roster.forEach((hero) => {
-        while (hero.items.length) {
-          this.items.push(hero.items.pop());
-        }
-      });
-    });
   }
 
   gotoNextWeek () {
