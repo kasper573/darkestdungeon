@@ -15,6 +15,7 @@ import {Input} from "../../config/Input";
 import {PathTypes} from "../../state/types/Path";
 import {Heirlooms} from "../../ui/Heirlooms";
 import {TooltipArea} from "../../lib/TooltipArea";
+import {ItemType} from "../../state/types/ItemInfo";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -89,7 +90,7 @@ export class EstateTemplate extends AppStateComponent<{
                 modalState: ModalState.Opaque,
                 content: (
                   <Popup>
-                    <Inventory/>
+                    <Inventory filter={(i) => i.info.type !== ItemType.Heirloom}/>
                   </Popup>
                 )
               })}>
