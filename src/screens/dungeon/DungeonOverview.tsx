@@ -22,7 +22,11 @@ export class DungeonOverview extends AppStateComponent {
         <div className={css(styles.scene)}>
           <QuestHeader quest={this.selectedQuest} onLeaveRequested={(status) => this.finish(status)}/>
           <Torch quest={this.selectedQuest}/>
-          <DungeonScene profile={this.activeProfile} room={this.selectedQuest.currentRoom} />
+          <DungeonScene
+            profile={this.activeProfile}
+            room={this.selectedQuest.currentRoom}
+            onHeroSelected={(hero) => this.selectedHero = hero}
+          />
         </div>
 
         <DungeonControlPanel
