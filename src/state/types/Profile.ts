@@ -7,7 +7,7 @@ import {Hero} from "./Hero";
 import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
-import {generateHero, generateItem, generateQuest} from "../Generators";
+import {generateHero, generateQuest} from "../Generators";
 import {cap, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
@@ -308,7 +308,13 @@ export class Profile {
   }
 
   getStoreItems () {
-    return count(20).map(generateItem);
+    return Array.from(StaticState.instance.items.values())
+      .filter((info) => info.getStoreCount)
+      .reduce((items, info) => {
+        const num = info.getStoreCount(this.selectedQuest);
+        const newItems = count(num).map(() => Item.fromInfo(info));
+        return items.concat(newItems);
+      }, []);
   }
 
   unequipAllItems () {

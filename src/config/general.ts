@@ -13,6 +13,8 @@ import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo, createId as createBuildingInfoId} from "../state/types/BuildingInfo";
 import {enumMap} from "../lib/Helpers";
+import {Quest} from "../state/types/Quest";
+import {StatItem} from "../state/types/StatItem";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -146,52 +148,125 @@ export function addStaticState () {
   let heirloomIndex = 0;
   enumMap<HeirloomType>(HeirloomType)
     .forEach((value, name) => {
-      const info = new ItemInfo();
-      info.id = "heirloom" + value;
-      info.name = name;
-      info.pluralName = name + "s";
-      info.type = ItemType.Heirloom;
-      info.heirloomType = value;
-      info.value = 1 + heirloomIndex++;
-
-      StaticState.instance.items.set(info.id, info);
+      addItem("heirloom" + value, {
+        name,
+        pluralName: name + "s",
+        type: ItemType.Heirloom,
+        value: 1 + heirloomIndex++,
+        description: "Use for building upgrades"
+      });
     });
 
-  ["Excalibur", "Large beer", "Teddy bear", "Unicorn", "Potato",
-    "Magic Wand", "Apple", "Torn Wing", "Banana", "Happy Thoughts",
-    "Honey", "Coconut", "Balloon", "Longsword", "Dagger", "Shield",
-    "Helmet", "Furnace", "Cape", "Feather", "Pen", "Bow & Arrow"
+  ["Excalibur", "Teddy bear", "Unicorn", "Magic Wand", "Torn Wing", "Banana", "Happy Thoughts",
+    "Balloon", "Longsword", "Dagger", "Shield", "Helmet", "Furnace", "Cape", "Feather", "Pen", "Bow & Arrow"
   ].forEach((name, index) => {
-    const info = new ItemInfo();
-    info.id = name;
-    info.name = name;
-    info.value = 25 + 50 * index;
+    let damage = 0;
+    let accuracy = 0;
+    let protect = 0;
+    let maxHealth = 0;
+    let type;
 
-    switch (index % 4) {
+    switch (index % 3) {
       case 0:
-        info.type = ItemType.Weapon;
-        info.stats.damage.value = (index + 1) * 2;
-        info.stats.accuracy.value = (index + 1);
+        type = ItemType.Weapon;
+        damage = (index + 1) * 2;
+        accuracy = (index + 1);
         break;
       case 1:
-        info.type = ItemType.Armor;
-        info.stats.maxHealth.value = (index + 1) * 2;
-        info.stats.protect.value = (index + 1) * 2;
+        type = ItemType.Armor;
+        maxHealth = (index + 1) * 2;
+        protect = (index + 1) * 2;
         break;
       case 2:
-        info.type = ItemType.Consumable;
-        info.stats.health.value = 5;
-        info.stats.statusChances.get(CharacterStatus.Bleed).value = 1;
-        break;
-      case 3:
-        info.type = ItemType.Trinket;
-        info.stats.maxHealth.value = (1 + index);
-        info.stats.protect.value = (2 + index * 2);
-        info.stats.damage.value = (3 + index * 3);
+        type = ItemType.Trinket;
+        maxHealth = (1 + index);
+        protect = (2 + index * 2);
+        damage = (3 + index * 3);
         break;
     }
 
-    StaticState.instance.items.set(info.id, info);
+    addItem(name, {
+      value: 25 + 50 * index,
+      type,
+      stats: {
+        maxHealth,
+        protect,
+        damage,
+        accuracy
+      }
+    });
+  });
+
+  addItems({
+    "Food": {
+      description: "Eat to restore health and starve off hunger.",
+      value: 75,
+      getStoreCount: (quest: Quest) => 18,
+      resetHunger: true,
+      stats: {
+        health: 5
+      }
+    },
+    "Shovel": {
+      description: "Use to clear obstacles and break into things.",
+      value: 250,
+      getStoreCount: (quest: Quest) => 4
+    },
+    "Antivenom": {
+      description: "Use to counter blights, poisons and toxins.",
+      value: 150,
+      getStoreCount: (quest: Quest) => 6,
+      stats: {
+        statusChances: {
+          [CharacterStatus.Blight]: -1
+        }
+      }
+    },
+    "Bandages": {
+      description: "Use to stanch the flow of bleeding.",
+      value: 150,
+      getStoreCount: (quest: Quest) => 6,
+      stats: {
+        statusChances: {
+          [CharacterStatus.Bleed]: -1
+        }
+      }
+    },
+    "Herbs": {
+      description: "Use to cleanse items and prevent maladies. " +
+      "Can also be applied to a hero to eliminate combat debuffs.",
+      value: 200,
+      getStoreCount: (quest: Quest) => 6,
+      removeBuffs: true
+    },
+    "Torch": {
+      description: "Increases the light level.",
+      value: 75,
+      getStoreCount: (quest: Quest) => 18,
+      offsetLight: 1
+    },
+    "Skeleton Key": {
+      description: "Used to unlock strongboxes and doors.",
+      value: 200,
+      getStoreCount: (quest: Quest) => 6,
+      offsetLight: 1
+    },
+    "Holy Water": {
+      description: "Use to purge evil and restore purity. Can also be applied to a hero to increase resistances",
+      value: 150,
+      getStoreCount: (quest: Quest) => 6,
+      buff: {
+        resistances: {
+          [CharacterStatus.Bleed]: 0.1,
+          [CharacterStatus.Blight]: 0.1,
+          [CharacterStatus.Buff]: 0.1,
+          [CharacterStatus.Disease]: 0.1,
+          [CharacterStatus.Move]: 0.1,
+          [CharacterStatus.Stun]: 0.1,
+          [CharacterStatus.Trap]: 0.1
+        }
+      }
+    }
   });
 
   ["Hard Noggin", "Balanced", "Nymphomania", "Quick Reflexes", "Quickdraw",
@@ -230,7 +305,7 @@ export function addStaticState () {
     StaticState.instance.diseases.set(info.id, info);
   });
 
-  addBuildingInfo({
+  addBuildings({
     abbey: {
       name: "Abbey",
       avatarUrl: require("../../assets/images/avatar.jpg"),
@@ -477,7 +552,7 @@ function addMonster (className: string, characterNames?: string [], rarity?: num
   return template;
 }
 
-function addBuildingInfo (rawInfo: any, parent = StaticState.instance.buildingInfoRoot) {
+function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoRoot) {
   for (const key in rawInfo) {
     // Add to parent
     const info = new BuildingInfo();
@@ -508,7 +583,56 @@ function addBuildingInfo (rawInfo: any, parent = StaticState.instance.buildingIn
 
     // Parse raw children
     if (children) {
-      addBuildingInfo(children, info);
+      addBuildings(children, info);
     }
   }
+}
+
+function addItems (rawInfo: any, defaultType = ItemType.Consumable) {
+  for (const itemId in rawInfo) {
+    const info = addItem(itemId, rawInfo[itemId]);
+    if (info.type !== undefined) {
+      info.type = defaultType;
+    }
+  }
+}
+
+function addItem (itemId: string, rawInfo: any) {
+  const info = new ItemInfo();
+  info.id = itemId;
+  info.name = itemId;
+  info.pluralName = itemId;
+
+  const {stats, buff, ...props} = rawInfo;
+  Object.assign(info, props);
+  addStats(stats, info.stats);
+  info.buff = parseBuff(buff);
+
+  StaticState.instance.items.set(info.id, info);
+  return info;
+}
+
+function addStats (rawStats: any, stats: Stats) {
+  for (const statKey in rawStats) {
+    const rawStat = rawStats[statKey];
+    const realStat = (stats as any)[statKey];
+    if (realStat instanceof StatItem) {
+      realStat.value = rawStat;
+    } else if (realStat instanceof Map) {
+      realStat.forEach((stat: StatItem, key) => {
+        stat.value = rawStat[key];
+      });
+    }
+  }
+}
+
+function parseBuff (rawBuff: any) {
+  if (!rawBuff) {
+    return;
+  }
+
+  const buffStats = new TurnStats();
+  rawBuff.turns = rawBuff.turns as number;
+  addStats(rawBuff, buffStats);
+  return buffStats;
 }

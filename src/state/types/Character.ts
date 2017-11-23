@@ -39,6 +39,8 @@ export class Character extends Experienced {
   @observable
   items: Item[] = [];
 
+  @serializable @observable hunger: number = 0;
+
   @serializable @observable buffSourceName: string;
 
   @serializable(object(TurnStats))
@@ -72,7 +74,7 @@ export class Character extends Experienced {
     return this.items.find((i) => i.info.type === ItemType.Weapon);
   }
 
-  @computed get stats () {
+  get stats () {
     const sum = new Stats();
     sum.add(this.classInfo);
     sum.add(this.mutableStats);
@@ -130,15 +132,14 @@ export class Character extends Experienced {
     reset.stress.value = 100; //cap(reset.stress.value, 0, this.stats.maxStress.value / 2);
     this.mutableStats = reset;
     this.dots.clear();
-    this.buff = null;
+    this.removeBuffs();
   }
 
   processTurn () {
     if (this.buff) {
       this.buff.turns--;
       if (this.buff.turns <= 0) {
-        this.buff = null;
-        this.buffSourceName = null;
+        this.removeBuffs();
       }
     }
 
@@ -193,6 +194,20 @@ export class Character extends Experienced {
     return deltaStats;
   }
 
+  applyBuff (buff: TurnStats, sourceName: string) {
+    // TODO support multiple buffs
+    const buffClone = new TurnStats();
+    buffClone.turns = buff.turns;
+    buffClone.add(buff);
+    this.buffSourceName = sourceName;
+    this.buff = buffClone;
+  }
+
+  removeBuffs () {
+    this.buff = null;
+    this.buffSourceName = null;
+  }
+
   useSkill (skill: Skill, target: Character) {
     const targetStats = target.stats;
 
@@ -226,11 +241,7 @@ export class Character extends Experienced {
 
     // Apply buff for this skill
     if (skill.buff && (isAllyTarget || willBuffHit)) {
-      const buffClone = new TurnStats();
-      buffClone.turns = skill.buff.turns;
-      buffClone.add(skill.buff);
-      target.buffSourceName = skill.info.name;
-      target.buff = buffClone;
+      this.applyBuff(skill.buff, skill.info.name);
 
       // Add buff memento
       memento.statusChances.get(CharacterStatus.Buff).value = 1;
@@ -264,11 +275,23 @@ export class Character extends Experienced {
     return memento;
   }
 
-  useItemOnSelf (item: Item) {
+  applyItem (item: Item) {
     this.applyStats(false, item.stats);
     item.stats.statusChances.forEach((value, status) => {
       this.dots.delete(status);
     });
+
+    if (item.info.removeBuffs) {
+      this.removeBuffs();
+    }
+
+    if (item.info.buff) {
+      this.applyBuff(item.info.buff, item.name);
+    }
+
+    if (item.info.resetHunger) {
+      this.hunger = 0;
+    }
   }
 
   static getStatusHitChance (status: CharacterStatus, actionStats: Stats, targetStats: Stats) {

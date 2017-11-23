@@ -53,6 +53,10 @@ export class Quest {
     }
     return QuestInfo.free;
   }
+
+  applyItem (item: Item) {
+    this.light += item.info.offsetLight;
+  }
 }
 
 export enum QuestStatus {

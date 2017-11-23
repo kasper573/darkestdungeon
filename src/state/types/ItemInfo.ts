@@ -1,5 +1,6 @@
 import {identifier, serializable} from "serializr";
-import {Stats} from "./Stats";
+import {Stats, TurnStats} from "./Stats";
+import {Quest} from "./Quest";
 
 export enum ItemType {
   Weapon = "W",
@@ -21,10 +22,16 @@ export class ItemInfo {
 
   name: string = "[single name]";
   pluralName: string = "[plural name]";
+  description: string = "";
   type: ItemType = ItemType.Consumable;
   heirloomType?: HeirloomType;
   value: number = 0;
   stats: Stats = new Stats();
+  resetHunger: boolean;
+  removeBuffs: boolean;
+  offsetLight: number = 0;
+  buff?: TurnStats;
+  getStoreCount?: (q: Quest) => number;
 
   get isStackable () {
     switch (this.type) {
