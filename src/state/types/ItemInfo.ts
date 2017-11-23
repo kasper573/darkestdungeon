@@ -5,7 +5,7 @@ export enum ItemType {
   Weapon = "W",
   Armor = "A",
   Trinket = "T",
-  Usable = "U",
+  Consumable = "C",
   Heirloom = "H"
 }
 
@@ -21,14 +21,14 @@ export class ItemInfo {
 
   name: string = "[single name]";
   pluralName: string = "[plural name]";
-  type: ItemType = ItemType.Usable;
+  type: ItemType = ItemType.Consumable;
   heirloomType?: HeirloomType;
   value: number = 0;
   stats: Stats = new Stats();
 
   get isStackable () {
     switch (this.type) {
-      case ItemType.Usable:
+      case ItemType.Consumable:
       case ItemType.Heirloom:
         return true;
     }

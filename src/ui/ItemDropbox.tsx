@@ -19,15 +19,15 @@ export class ItemDropbox extends React.Component<{
   compare?: (a: Item, b: Item) => number,
   slots?: number,
 
-  onSelect?: (item: Item) => void
-  onUse?: (item: Item) => void
+  onItemClick?: (item: Item) => void
+  onItemDoubleClick?: (item: Item) => void
 }> {
   static defaultProps = {
     filter: () => true,
     allowDrop: () => true,
     canInteractWith: () => true,
-    onUse: (): null => null,
-    onSelect: (): null => null
+    onItemClick: (): null => null,
+    onItemDoubleClick: (): null => null
   };
 
   releaseItem (item: Item, monitor: any) {
@@ -96,8 +96,8 @@ export class ItemDropbox extends React.Component<{
               item={item}>
               <ItemIcon
                 item={item}
-                onClick={() => item && this.props.canInteractWith(item) && this.props.onSelect(item)}
-                onDoubleClick={() => item && this.props.canInteractWith(item) && this.props.onUse(item)}
+                onClick={() => item && this.props.canInteractWith(item) && this.props.onItemClick(item)}
+                onDoubleClick={() => item && this.props.canInteractWith(item) && this.props.onItemDoubleClick(item)}
                 classStyle={item && !this.props.canInteractWith(item) && styles.lockedItem}>
                 {stack && stack.length > 1 && (
                   <div className={css(styles.stackSize)}>

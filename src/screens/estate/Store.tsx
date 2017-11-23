@@ -63,7 +63,7 @@ export class Store extends React.Component<{
           acceptFrom={this.cart}
           compare={Item.comparers.name}
           canInteractWith={this.canAffordItem.bind(this)}
-          onSelect={this.takeItem.bind(this)}
+          onItemClick={this.takeItem.bind(this)}
           extraComponent={({item}) => item && <GoldText amount={item.info.value}/>}
         />
 
@@ -71,7 +71,7 @@ export class Store extends React.Component<{
         <ItemDropbox
           acceptFrom={this.store}
           items={this.cart}
-          onSelect={this.returnItem.bind(this)}
+          onItemClick={this.returnItem.bind(this)}
         />
       </div>
     );
