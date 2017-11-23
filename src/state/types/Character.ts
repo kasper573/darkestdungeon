@@ -8,7 +8,6 @@ import {Item} from "./Item";
 import {QuirkInfo} from "./QuirkInfo";
 import {CharacterStatus} from "./CharacterStatus";
 import {SkillId, SkillTargetObject} from "./SkillInfo";
-import {DiseaseInfo} from "./DiseaseInfo";
 import {Stats, TurnStats} from "./Stats";
 import {cap, contains} from "../../lib/Helpers";
 import uuid = require("uuid");
@@ -32,8 +31,23 @@ export class Character extends Experienced {
   @serializable(list(reference(QuirkInfo, StaticState.lookup((i) => i.quirks))))
   quirks: QuirkInfo[] = [];
 
-  @serializable(list(reference(DiseaseInfo, StaticState.lookup((i) => i.diseases))))
-  diseases: DiseaseInfo[] = [];
+  @computed get perks () {
+    return Object.freeze(
+      this.quirks.filter((q) => !q.isDisease && q.stats.isPositive)
+    );
+  }
+
+  @computed get flaws () {
+    return Object.freeze(
+      this.quirks.filter((q) => !q.isDisease && !q.stats.isPositive)
+    );
+  }
+
+  @computed get diseases () {
+    return Object.freeze(
+      this.quirks.filter((q) => q.isDisease)
+    );
+  }
 
   @serializable(list(object(Item)))
   @observable
@@ -94,9 +108,6 @@ export class Character extends Experienced {
     this.quirks
       .forEach((source) => sum.add(source));
 
-    this.diseases
-      .forEach((source) => sum.add(source));
-
     this.items
       .forEach((source) => sum.add(source));
 
@@ -104,7 +115,7 @@ export class Character extends Experienced {
   }
 
   acceptsTreatmentFrom (treatmentId: BuildingInfoId) {
-    for (const quirk of [...this.quirks, ...this.diseases]) {
+    for (const quirk of this.quirks) {
       if (quirk.forcedTreatmentIds.length > 0 &&
         !contains(quirk.forcedTreatmentIds, treatmentId)) {
         return false;

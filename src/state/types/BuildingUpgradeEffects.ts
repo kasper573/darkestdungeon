@@ -4,7 +4,7 @@ export class BuildingUpgradeEffects {
   cost: number = 0;
   recovery: number = 0;
   treatDisease: number = 0;
-  treatQuirk: number = 0;
+  treatFlaw: number = 0;
 
   add (other: BuildingUpgradeEffects) {
     const sum = new BuildingUpgradeEffects();
@@ -13,12 +13,12 @@ export class BuildingUpgradeEffects {
     sum.cost = this.cost + other.cost;
     sum.recovery = this.recovery + other.recovery;
     sum.treatDisease = this.treatDisease = other.treatDisease;
-    sum.treatQuirk = this.treatQuirk = other.treatQuirk;
+    sum.treatFlaw = this.treatFlaw = other.treatFlaw;
     return sum;
   }
 
   get hasTreatments () {
-    return this.treatQuirk || this.treatDisease;
+    return this.treatFlaw || this.treatDisease;
   }
 
   get treatmentArea () {

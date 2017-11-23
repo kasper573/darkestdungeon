@@ -136,13 +136,10 @@ export class Profile {
         recoveryStats.stress.value -= recoveryPercentage * resident.stats.stress.value;
         resident.offsetStats(recoveryStats);
 
-        // Remove treated quirk or disease
+        // Remove treated quirk
         if (resident.residentInfo.treatmentId) {
           removeItem(resident.quirks,
             resident.quirks.find((q) => q.id === resident.residentInfo.treatmentId)
-          );
-          removeItem(resident.diseases,
-            resident.diseases.find((q) => q.id === resident.residentInfo.treatmentId)
           );
           resident.residentInfo = null;
         }
@@ -166,7 +163,7 @@ export class Profile {
 
   getResidencyCost (residency: HeroResidentInfo) {
     const cost = this.getUpgradeEffects(residency.buildingId).cost;
-    const quirkToTreat = StaticState.instance.findQuirkOrDisease(residency.treatmentId);
+    const quirkToTreat = StaticState.instance.quirks.find((q) => q.id === residency.treatmentId);
     const costScale = quirkToTreat ? quirkToTreat.treatmentCostScale : 1;
     return cost * costScale;
   }

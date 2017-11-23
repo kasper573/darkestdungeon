@@ -29,7 +29,6 @@ export function generateHero (activeHeroes: Hero[]): Hero {
   hero.name = randomizeItem(template.characterNames);
   hero.classInfo = template.classInfo;
   hero.affliction = randomizeItem(StaticState.instance.afflictions);
-  hero.diseases = randomizeItems(StaticState.instance.diseases, 1, 3);
   hero.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
 
   const allItems = StaticState.instance.items;
