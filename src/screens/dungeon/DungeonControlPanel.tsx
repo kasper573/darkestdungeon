@@ -22,7 +22,10 @@ export class DungeonControlPanel extends React.Component<{
   render () {
     const dynamicContent = this.isMapVisible ?
       <DungeonMap map={this.props.quest.map}/> : (
-        <Inventory onItemRightClick={(item) => {
+        <Inventory
+          heroes={this.props.profile.party}
+          items={this.props.quest.items}
+          onItemRightClick={(item) => {
           if (item.info.type === ItemType.Consumable) {
             this.props.selectedHero.applyItem(item);
             this.props.quest.applyItem(item);

@@ -90,7 +90,11 @@ export class EstateTemplate extends AppStateComponent<{
                 modalState: ModalState.Opaque,
                 content: (
                   <Popup>
-                    <Inventory filter={(i) => i.info.type !== ItemType.Heirloom}/>
+                    <Inventory
+                      heroes={this.activeProfile.roster}
+                      items={this.activeProfile.items}
+                      filter={(i) => i.info.type !== ItemType.Heirloom}
+                    />
                   </Popup>
                 )
               })}>

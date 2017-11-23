@@ -34,6 +34,10 @@ export class Quest {
   @observable
   battle?: Battle;
 
+  @serializable(list(object(Item)))
+  @observable
+  items: Item[] = [];
+
   @serializable @observable currentRoomId: MapLocationId;
   @computed get currentRoom () {
     return this.map.rooms.find((room) => room.id === this.currentRoomId);

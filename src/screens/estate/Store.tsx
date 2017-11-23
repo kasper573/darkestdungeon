@@ -49,7 +49,10 @@ export class Store extends React.Component<{
   purchase () {
     transaction(() => {
       while (this.cart.length) {
-        this.props.profile.purchaseItem(this.cart.pop());
+        this.props.profile.purchaseItem(
+          this.cart.pop(),
+          this.props.profile.selectedQuest.items
+        );
       }
     });
   }
