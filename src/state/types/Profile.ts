@@ -8,7 +8,7 @@ import {Quest, QuestId} from "./Quest";
 import {Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateQuest} from "../Generators";
-import {cap, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
+import {cap, contains, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
 import {HeirloomType, ItemType} from "./ItemInfo";
@@ -199,7 +199,7 @@ export class Profile {
   }
 
   ownsUpgrade (upgradeItem: BuildingUpgradeInfo) {
-    return this.buildingUpgrades.indexOf(upgradeItem) !== -1;
+    return contains(this.buildingUpgrades, upgradeItem);
   }
 
   purchaseUpgrade (upgradeItem: BuildingUpgradeInfo) {

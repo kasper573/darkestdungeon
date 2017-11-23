@@ -18,7 +18,7 @@ export function removeItems <T> (list: T[], items: T[]) {
 export function findSubset <T> (needles: T[], haystack: T[]) {
   const subset: T[] = [];
   for (const needle of needles) {
-    if (haystack.indexOf(needle) !== -1) {
+    if (contains(haystack, needle)) {
       subset.push(needle);
     }
   }
