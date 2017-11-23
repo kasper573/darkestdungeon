@@ -20,14 +20,14 @@ export class ItemDropbox extends React.Component<{
   slots?: number,
 
   onItemClick?: (item: Item) => void
-  onItemDoubleClick?: (item: Item) => void
+  onItemRightClick?: (item: Item) => void
 }> {
   static defaultProps = {
     filter: () => true,
     allowDrop: () => true,
     canInteractWith: () => true,
     onItemClick: (): null => null,
-    onItemDoubleClick: (): null => null
+    onItemRightClick: (): null => null
   };
 
   releaseItem (item: Item, monitor: any) {
@@ -96,8 +96,8 @@ export class ItemDropbox extends React.Component<{
               item={item}>
               <ItemIcon
                 item={item}
-                onClick={() => item && this.props.canInteractWith(item) && this.props.onItemClick(item)}
-                onDoubleClick={() => item && this.props.canInteractWith(item) && this.props.onItemDoubleClick(item)}
+                onClick={this.onItemClick.bind(this, item)}
+                onRightClick={this.onItemRightClick.bind(this, item)}
                 classStyle={item && !this.props.canInteractWith(item) && styles.lockedItem}>
                 {stack && stack.length > 1 && (
                   <div className={css(styles.stackSize)}>
@@ -113,6 +113,18 @@ export class ItemDropbox extends React.Component<{
         })}
       </div>
     );
+  }
+
+  onItemClick (item: Item) {
+    if (item && this.props.canInteractWith(item)) {
+      this.props.onItemClick(item);
+    }
+  }
+
+  onItemRightClick (item: Item) {
+    if (item && this.props.canInteractWith(item)) {
+      this.props.onItemRightClick(item);
+    }
   }
 }
 

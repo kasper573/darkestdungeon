@@ -10,12 +10,12 @@ export class ItemIcon extends React.Component<{
   item?: Item,
   style?: any,
   classStyle?: any,
-  onClick?: (item: Item) => void,
-  onDoubleClick?: (item: Item) => void
+  onClick?: () => void,
+  onRightClick?: () => void
 }> {
   static defaultProps = {
     onClick: (): null => null,
-    onDoubleClick: (): null => null
+    onRightClick: (): null => null
   };
 
   render () {
@@ -29,13 +29,19 @@ export class ItemIcon extends React.Component<{
     return (
       <TooltipArea
         tip={<ItemBreakdown item={item}/>}
-        onClick={() => this.props.onClick(item)}
         classStyle={containerStyle}
         style={this.props.style}>
-        <span style={{flex: 1}} onDoubleClick={() => this.props.onDoubleClick(item)}>
+        <div
+          style={{flex: 1}}
+          onClick={this.props.onClick.bind(this)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            this.props.onRightClick();
+            return false;
+          }}>
           {this.props.item.info.name}
           {this.props.children}
-        </span>
+        </div>
       </TooltipArea>
     );
   }

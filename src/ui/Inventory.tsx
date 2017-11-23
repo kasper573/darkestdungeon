@@ -12,7 +12,7 @@ import {ItemDropbox} from "./ItemDropbox";
 @observer
 export class Inventory extends AppStateComponent<{
   filter?: (item: Item) => boolean,
-  onItemDoubleClick?: (item: Item) => void
+  onItemRightClick?: (item: Item) => void
 }> {
   @observable compareFn: CompareFunction<Item>;
 
@@ -45,7 +45,7 @@ export class Inventory extends AppStateComponent<{
           items={this.activeProfile.items}
           filter={this.props.filter}
           compare={this.compareFn}
-          onItemDoubleClick={this.props.onItemDoubleClick}
+          onItemRightClick={this.props.onItemRightClick}
         />
       </div>
     );
