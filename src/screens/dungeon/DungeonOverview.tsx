@@ -27,6 +27,7 @@ export class DungeonOverview extends AppStateComponent {
 
         <DungeonControlPanel
           questMap={this.selectedQuest.map}
+          profile={this.activeProfile}
           selectedHero={this.selectedHero}
         />
       </div>

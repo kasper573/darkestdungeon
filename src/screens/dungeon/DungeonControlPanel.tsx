@@ -8,18 +8,27 @@ import {observer} from "mobx-react";
 import {DungeonMap} from "./DungeonMap";
 import {QuestMap} from "../../state/types/QuestMap";
 import {Hero} from "../../state/types/Hero";
+import {ItemType} from "../../state/types/ItemInfo";
+import {Profile} from "../../state/types/Profile";
 
 @observer
 export class DungeonControlPanel extends React.Component<{
   questMap: QuestMap,
+  profile: Profile,
   selectedHero: Hero
 }> {
   @observable isMapVisible = false;
 
   render () {
     const dynamicContent = this.isMapVisible ?
-      <DungeonMap map={this.props.questMap}/> :
-      <Inventory/>;
+      <DungeonMap map={this.props.questMap}/> : (
+        <Inventory onUse={(item) => {
+          if (item.info.type === ItemType.Usable) {
+            this.props.selectedHero.useItemOnSelf(item);
+            this.props.profile.disposeItem(item);
+          }
+        }}/>
+      );
 
     return (
       <div className={css(styles.controlPanel)}>

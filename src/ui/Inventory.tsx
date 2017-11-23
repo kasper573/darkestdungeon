@@ -11,7 +11,8 @@ import {ItemDropbox} from "./ItemDropbox";
 
 @observer
 export class Inventory extends AppStateComponent<{
-  filter?: (item: Item) => boolean
+  filter?: (item: Item) => boolean,
+  onUse?: (item: Item) => void
 }> {
   @observable compareFn: CompareFunction<Item>;
 
@@ -44,6 +45,7 @@ export class Inventory extends AppStateComponent<{
           items={this.activeProfile.items}
           filter={this.props.filter}
           compare={this.compareFn}
+          onUse={this.props.onUse}
         />
       </div>
     );

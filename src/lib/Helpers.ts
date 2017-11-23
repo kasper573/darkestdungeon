@@ -31,6 +31,10 @@ export function without <T> (all: T[], remove: T[]) {
   return slice;
 }
 
+export function contains <T> (haystack: T[], needle: T) {
+  return haystack.indexOf(needle) !== -1;
+}
+
 export function count (n: number) {
   return range(1, n + 1);
 }

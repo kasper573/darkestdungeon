@@ -32,6 +32,9 @@ export class Profile {
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
   @serializable @observable selectedQuestId?: QuestId;
   @serializable @observable gold: number = 0;
+  @observable debt: number = 0;
+
+  @computed get goldAfterDebt () { return this.gold - this.debt; }
 
   @serializable(object(EstateEvent))
   @observable
@@ -150,6 +153,15 @@ export class Profile {
     this.roster
       .filter((hero) => hero.residentInfo && !hero.residentInfo.isLockedIn)
       .forEach((hero) => hero.residentInfo = null);
+  }
+
+  purchaseItem (item: Item) {
+    this.gold -= item.info.value;
+    this.items.push(item);
+  }
+
+  disposeItem (item: Item) {
+    removeItem(this.items, item);
   }
 
   getResidencyCost (residency: HeroResidentInfo) {
@@ -296,11 +308,7 @@ export class Profile {
   }
 
   getStoreItems () {
-    return [
-      generateItem(),
-      generateItem(),
-      generateItem()
-    ];
+    return count(20).map(generateItem);
   }
 
   unequipAllItems () {
