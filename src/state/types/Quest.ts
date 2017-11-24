@@ -9,7 +9,8 @@ import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
 import {Character} from "./Character";
-import {without} from "../../lib/Helpers";
+import {removeItem, without} from "../../lib/Helpers";
+import {Hero} from "./Hero";
 
 export type QuestId = string;
 
@@ -133,6 +134,12 @@ export class Quest {
 
   whenVictorious (callback: () => void) {
     return when(() => this.isObjectiveMet, callback);
+  }
+
+  useItem (item: Item, targetHero: Hero) {
+    this.applyItem(item); // Apply quest stats
+    targetHero.applyItem(item); // Apply hero stats
+    removeItem(this.items, item); // Dispose item
   }
 
   applyItem (item: Item) {

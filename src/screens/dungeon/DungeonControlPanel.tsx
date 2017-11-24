@@ -30,9 +30,7 @@ export class DungeonControlPanel extends React.Component<{
         items={this.props.quest.items}
         onItemRightClick={(item) => {
           if (item.info.type === ItemType.Consumable) {
-            this.props.selectedHero.applyItem(item);
-            this.props.quest.applyItem(item);
-            this.props.profile.disposeItem(item);
+            this.props.quest.useItem(item, this.props.selectedHero);
           }
         }}/>
     );

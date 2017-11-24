@@ -157,10 +157,6 @@ export class Profile {
     inventory.push(item);
   }
 
-  disposeItem (item: Item) {
-    removeItem(this.items, item);
-  }
-
   getResidencyCost (residency: HeroResidentInfo) {
     const cost = this.getUpgradeEffects(residency.buildingId).cost;
     const quirkToTreat = StaticState.instance.quirks.find((q) => q.id === residency.treatmentId);
