@@ -68,7 +68,9 @@ export class AppState {
               p.estateEvent,
               p.estateEvent.shown,
               p.gold,
-              p.heirloomCounts
+              p.heirloomCounts,
+              p.selectedQuest.currentRoomId,
+              p.selectedQuest.battle && p.selectedQuest.battle.round
             ])
           };
         },

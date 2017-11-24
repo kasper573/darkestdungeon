@@ -10,16 +10,21 @@ export type MapLocationId = string;
 
 export class QuestRoom {
   @serializable(identifier()) id: MapLocationId = uuid();
-  @serializable(list(object(Character))) monsters: Character[] = [];
   @serializable(object(Vector)) coordinates: Vector;
 
   // Mutable
+  @serializable(list(object(Character))) @observable monsters: Character[] = [];
   @serializable @observable isScouted: boolean;
+
+  isConnectedTo (other: QuestRoom) {
+    return this.coordinates.distance(other.coordinates) === 1;
+  }
 
   static walk (
     dungeonInfo: DungeonInfo,
     memory: Map<string, QuestRoom> = new Map<string, QuestRoom>(),
     stepsLeft: number = 10,
+    allowMonsters: (room: QuestRoom, coords: Vector) => boolean = () => true,
     coordinates: Vector = new Vector(),
     generatedMonsters: Character[] = []
   ) {
@@ -32,9 +37,11 @@ export class QuestRoom {
       return room;
     }
 
-    const newMonster = generateMonster(dungeonInfo, generatedMonsters);
-    generatedMonsters.push(newMonster);
-    room.monsters.push(newMonster);
+    if (allowMonsters(room, coordinates)) {
+      const newMonster = generateMonster(dungeonInfo, generatedMonsters);
+      generatedMonsters.push(newMonster);
+      room.monsters.push(newMonster);
+    }
 
     const direction: Vector = Math.random() > 0.5 ?
       new Vector(Math.random() ? -1 : 1, 0) :
@@ -42,7 +49,7 @@ export class QuestRoom {
 
     const nextCoordinate = coordinates.add(direction);
 
-    QuestRoom.walk(dungeonInfo, memory, stepsLeft - 1, nextCoordinate, generatedMonsters);
+    QuestRoom.walk(dungeonInfo, memory, stepsLeft - 1, allowMonsters, nextCoordinate, generatedMonsters);
 
     return room;
   }

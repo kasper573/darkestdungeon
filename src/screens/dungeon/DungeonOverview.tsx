@@ -18,6 +18,7 @@ export class DungeonOverview extends AppStateComponent {
 
   componentWillMount () {
     this.reactionDisposers = [
+      ...this.selectedQuest.initialize(),
       this.selectedQuest.whenVictorious(
         () => this.endQuestPopup(QuestStatus.Victory)
       ),
@@ -57,12 +58,23 @@ export class DungeonOverview extends AppStateComponent {
     }
   }
 
+  async battleRetreatPopup () {
+    const proceed = await this.appState.popups.prompt(
+      <Prompt query={"Are you sure you want to retreat from this battle?"}/>
+    );
+
+    if (proceed) {
+      this.selectedQuest.retreatFromBattle();
+    }
+  }
+
   render () {
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.scene)}>
           <QuestHeader
             quest={this.selectedQuest}
+            onRetreatRequested={this.battleRetreatPopup.bind(this)}
             onLeaveRequested={this.endQuestPopup.bind(this)}
           />
 
@@ -70,7 +82,7 @@ export class DungeonOverview extends AppStateComponent {
           <DungeonScene
             selectedHero={this.selectedHero}
             party={this.activeProfile.party}
-            room={this.selectedQuest.currentRoom}
+            battle={this.selectedQuest.battle}
             onHeroSelected={(hero) => this.selectedHero = hero}
           />
         </div>

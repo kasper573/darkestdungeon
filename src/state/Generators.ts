@@ -65,7 +65,7 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
     dungeon.info,
     randomizeItem(Array.from(enumMap<MapSize>(MapSize).values()))
   );
-  q.currentRoomId = q.map.entrance.id;
+  q.changeRoom(q.map.entrance.id);
 
   q.rewards = [
     Item.fromInfo(randomizeItem(StaticState.instance.items)),
