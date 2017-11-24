@@ -62,4 +62,4 @@ export class Grid {
   }
 }
 
-export const grid: Grid = new Grid(1280, 720, 16, 16, 10);
+export const grid: Grid = new Grid(1920, 1080, 16, 16, 10);
