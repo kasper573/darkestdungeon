@@ -26,7 +26,7 @@ export class Character extends Experienced {
   classInfo: CharacterClassInfo;
 
   @serializable(reference(AfflictionInfo, StaticState.lookup((i) => i.afflictions)))
-  affliction: AfflictionInfo;
+  affliction: AfflictionInfo = null;
 
   @serializable(list(reference(QuirkInfo, StaticState.lookup((i) => i.quirks))))
   quirks: QuirkInfo[] = [];

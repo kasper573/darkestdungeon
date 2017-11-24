@@ -11,7 +11,7 @@ export class Hero extends Character {
 
   @serializable(object(HeroResidentInfo))
   @observable
-  residentInfo?: HeroResidentInfo;
+  residentInfo: HeroResidentInfo = null;
 
   leaveParty () {
     this.inParty = false;
