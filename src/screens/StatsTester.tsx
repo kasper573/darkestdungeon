@@ -8,7 +8,6 @@ import {computed, observable} from "mobx";
 import {CommonHeader} from "../ui/CommonHeader";
 import {StatsTextList} from "../ui/StatsText";
 import {Character} from "../state/types/Character";
-import {Battle} from "../state/types/Battle";
 import {Hero} from "../state/types/Hero";
 import {randomizeItems} from "../state/Generators";
 import {Skill} from "../state/types/Skill";
@@ -28,8 +27,8 @@ export class StatsTester extends AppStateComponent {
   }
 
   componentWillMount () {
+    this.endBattle();
     this.newBattle();
-    //this.resetStats();
   }
 
   render () {
@@ -80,12 +79,11 @@ export class StatsTester extends AppStateComponent {
   }
 
   newBattle () {
-    this.quest.battle = new Battle();
+    this.quest.newBattle(this.battleMembers);
   }
 
   endBattle () {
-    this.quest.battle = undefined;
-    // prompt with items stored in battle
+    this.quest.endBattle();
   }
 
   useSkill (skill: Skill, actor: Character, targets: Character[]) {

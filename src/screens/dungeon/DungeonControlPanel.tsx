@@ -19,21 +19,26 @@ export class DungeonControlPanel extends React.Component<{
 }> {
   @observable isMapVisible = false;
 
-  render () {
-    const dynamicContent = this.isMapVisible ?
-      <DungeonMap map={this.props.quest.map}/> : (
-        <Inventory
-          heroes={this.props.profile.party}
-          items={this.props.quest.items}
-          onItemRightClick={(item) => {
+  renderSideContent () {
+    if (this.isMapVisible) {
+      return <DungeonMap quest={this.props.quest}/>;
+    }
+
+    return (
+      <Inventory
+        heroes={this.props.profile.party}
+        items={this.props.quest.items}
+        onItemRightClick={(item) => {
           if (item.info.type === ItemType.Consumable) {
             this.props.selectedHero.applyItem(item);
             this.props.quest.applyItem(item);
             this.props.profile.disposeItem(item);
           }
         }}/>
-      );
+    );
+  }
 
+  render () {
     return (
       <div className={css(styles.controlPanel)}>
         <Row>
@@ -46,8 +51,8 @@ export class DungeonControlPanel extends React.Component<{
           </Column>
           <Column classStyle={styles.controlPanelBox}>
             <Row style={{flex: 1}}>
-              <Column style={{overflow: "hidden"}}>
-                {dynamicContent}
+              <Column>
+                {this.renderSideContent()}
               </Column>
               <div style={{borderLeft: "2px solid gray", paddingLeft: 2, width: 50}}>
                 <span onClick={() => this.isMapVisible = true}>[MAP]</span>

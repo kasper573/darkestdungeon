@@ -3,13 +3,15 @@ import {StyleSheet} from "aphrodite";
 import {CharacterModel} from "../../ui/CharacterModel";
 import {Row} from "../../config/styles";
 import {CurioModel} from "../../ui/CurioModel";
-import {QuestRoom} from "../../state/types/QuestRoom";
 import {Hero} from "../../state/types/Hero";
+import {Battle} from "../../state/types/Battle";
+import {observer} from "mobx-react";
 
+@observer
 export class DungeonScene extends React.Component<{
   party: Hero[],
   selectedHero: Hero,
-  room: QuestRoom,
+  battle: Battle,
   onHeroSelected?: (hero: Hero) => void
 }> {
   render () {
@@ -28,11 +30,13 @@ export class DungeonScene extends React.Component<{
 
         <CurioModel />
 
-        <Row classStyle={styles.monsters}>
-          {this.props.room.monsters.map((monster) => (
-            <CharacterModel key={monster.id} character={monster}/>
-          ))}
-        </Row>
+        {this.props.battle && (
+          <Row classStyle={styles.monsters}>
+            {this.props.battle.monsters.map((monster) => (
+              <CharacterModel key={monster.id} character={monster}/>
+            ))}
+          </Row>
+        )}
       </Row>
     );
   }

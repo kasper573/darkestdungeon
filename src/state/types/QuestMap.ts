@@ -16,23 +16,25 @@ export class QuestMap {
     const memory = new Map<string, QuestRoom>();
     const m = new QuestMap();
     m.size = size;
-    m.entrance = QuestRoom.walk(dungeonInfo, memory, 16);
+    m.entrance = QuestRoom.walk(dungeonInfo, memory, 16,
+      (room, coords) => !(coords.x === 0 && coords.y === 0) // No monsters in the entrance
+    );
     m.rooms = Array.from(memory.values());
     return m;
   }
 
   static findBoundingBox (rooms: QuestRoom[]) {
-    let minX = Number.MAX_VALUE;
-    let minY = Number.MAX_VALUE;
-    let maxX = Number.MIN_VALUE;
-    let maxY = Number.MIN_VALUE;
+    let minX = Number.MAX_SAFE_INTEGER;
+    let minY = Number.MAX_SAFE_INTEGER;
+    let maxX = Number.MIN_SAFE_INTEGER;
+    let maxY = Number.MIN_SAFE_INTEGER;
     rooms.forEach((room) => {
       if (room.coordinates.x < minX) { minX = room.coordinates.x; }
       if (room.coordinates.x > maxX) { maxX = room.coordinates.x; }
       if (room.coordinates.y < minY) { minY = room.coordinates.y; }
       if (room.coordinates.y > maxY) { maxY = room.coordinates.y; }
     });
-    return new Bounds(0, 0, maxX - minX, maxY - minY);
+    return new Bounds(minX, minY, maxX - minX + 1, maxY - minY + 1);
   }
 }
 

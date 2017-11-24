@@ -3,12 +3,13 @@ import uuid = require("uuid");
 import {QuestMap} from "./QuestMap";
 import {QuestObjective} from "./QuestObjective";
 import {Item} from "./Item";
-import {computed, observable, when} from "mobx";
+import { computed, intercept, observable,  reaction, transaction, when} from "mobx";
 import {QuestInfo} from "./QuestInfo";
 import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
 import {Character} from "./Character";
+import {without} from "../../lib/Helpers";
 
 export type QuestId = string;
 
@@ -39,7 +40,13 @@ export class Quest {
   @observable
   items: Item[] = [];
 
+  @serializable @observable previousRoomId: MapLocationId;
   @serializable @observable currentRoomId: MapLocationId;
+
+  @computed get previousRoom () {
+    return this.map.rooms.find((room) => room.id === this.previousRoomId);
+  }
+
   @computed get currentRoom () {
     return this.map.rooms.find((room) => room.id === this.currentRoomId);
   }
@@ -50,10 +57,14 @@ export class Quest {
   }
 
   @computed get monsterPercentage () {
-    const monsters = this.map.rooms.reduce((reduction, room) => {
+    let monsters = this.map.rooms.reduce((reduction, room) => {
       reduction.push(...room.monsters);
       return reduction;
     }, [] as Character[]);
+
+    if (this.battle) {
+      monsters = [...monsters, ...this.battle.monsters];
+    }
 
     const deadMonsters = monsters.filter((monster) => monster.isDead);
     return deadMonsters.length / monsters.length;
@@ -73,12 +84,91 @@ export class Quest {
     return QuestInfo.free;
   }
 
+  changeRoom (roomId: MapLocationId) {
+    this.previousRoomId = this.currentRoomId;
+    this.currentRoomId = roomId;
+  }
+
+  canChangeToRoom (roomId: MapLocationId) {
+    if (this.battle) {
+      return false;
+    }
+
+    const requestedRoom = this.map.rooms.find((room) => room.id === roomId);
+    return this.currentRoom.isConnectedTo(requestedRoom);
+  }
+
+  newBattle (monsters: Character []) {
+    if (this.battle) {
+      throw new Error("Cannot initiate a new battle while already in one");
+    }
+
+    // Move monsters from the current room to the battle
+    // NOTE this is to avoid duplicates when serializing
+    transaction(() => {
+      this.currentRoom.monsters = without(this.currentRoom.monsters, monsters);
+      this.battle = new Battle();
+      this.battle.monsters = monsters;
+    });
+  }
+
+  endBattle () {
+    if (!this.battle) {
+      return;
+    }
+
+    transaction(() => {
+      // Return monsters to the room
+      while (this.battle.monsters.length) {
+        const monster = this.battle.monsters.pop();
+        if (monster.isAlive) {
+          monster.resetMutableStats();
+        }
+        this.currentRoom.monsters.push(monster);
+      }
+
+      this.battle = null;
+    });
+  }
+
   whenVictorious (callback: () => void) {
     return when(() => this.isObjectiveMet, callback);
   }
 
   applyItem (item: Item) {
     this.light += item.info.offsetLight;
+  }
+
+  retreatFromBattle () {
+    this.changeRoom(this.previousRoomId);
+  }
+
+  /**
+   * Initializes quest behavior
+   */
+  initialize () {
+    return [
+      // Leaving a room
+      intercept(
+        this,
+        "currentRoomId",
+        (change) => {
+          this.endBattle();
+          return change;
+        }
+      ),
+
+      // Entering a new room
+      reaction(
+        () => this.currentRoom,
+        (room) => {
+          // Enter a new battle with monsters encountered in new rooms
+          if (room.monsters.length) {
+            this.newBattle(room.monsters);
+          }
+        }
+      )
+    ];
   }
 }
 
