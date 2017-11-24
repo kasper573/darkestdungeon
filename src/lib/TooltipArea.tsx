@@ -44,9 +44,9 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   @observable private tooltipSize: Size = {width: 0, height: 0};
 
   @computed get isTooltipVisible () {
-    return this.props.tip && (
+    return !!(this.props.tip && (
       this.props.show !== undefined ? this.props.show : this.isHovered
-    );
+    ));
   }
 
   @computed get adjustedSide () {
