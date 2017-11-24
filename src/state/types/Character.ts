@@ -88,7 +88,7 @@ export class Character extends Experienced {
     return this.items.find((i) => i.info.type === ItemType.Weapon);
   }
 
-  get stats () {
+  @computed get stats () {
     const sum = new Stats();
     sum.add(this.classInfo);
     sum.add(this.mutableStats);
