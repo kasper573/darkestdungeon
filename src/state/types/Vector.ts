@@ -19,4 +19,10 @@ export class Vector {
       this.y + other.y
     );
   }
+
+  distance (other: Vector) {
+    const a = other.x - this.x;
+    const b = other.y - this.y;
+    return Math.sqrt(a * a + b * b);
+  }
 }
