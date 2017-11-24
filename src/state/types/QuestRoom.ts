@@ -4,14 +4,17 @@ import uuid = require("uuid");
 import {DungeonInfo} from "./DungeonInfo";
 import {Character} from "./Character";
 import {generateMonster} from "../Generators";
+import {observable} from "mobx";
 
 export type MapLocationId = string;
 
 export class QuestRoom {
   @serializable(identifier()) id: MapLocationId = uuid();
   @serializable(list(object(Character))) monsters: Character[] = [];
-  @serializable(object(Vector))
-  coordinates: Vector;
+  @serializable(object(Vector)) coordinates: Vector;
+
+  // Mutable
+  @serializable @observable isScouted: boolean;
 
   static walk (
     dungeonInfo: DungeonInfo,

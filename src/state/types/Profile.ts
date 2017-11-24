@@ -1,6 +1,6 @@
 import {date, identifier, list, object, reference, serializable} from "serializr";
 import uuid = require("uuid");
-import {computed, observable, transaction} from "mobx";
+import {computed, observable, transaction, when} from "mobx";
 import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
 import {Hero} from "./Hero";
@@ -339,6 +339,10 @@ export class Profile {
 
   newQuest () {
     return generateQuest(this.dungeons);
+  }
+
+  whenPartyWipes (callback: () => void) {
+    return when(() => this.party.filter((member) => member.isAlive).length === 0, callback);
   }
 }
 
