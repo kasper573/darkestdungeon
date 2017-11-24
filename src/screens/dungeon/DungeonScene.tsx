@@ -3,12 +3,12 @@ import {StyleSheet} from "aphrodite";
 import {CharacterModel} from "../../ui/CharacterModel";
 import {Row} from "../../config/styles";
 import {CurioModel} from "../../ui/CurioModel";
-import {Profile} from "../../state/types/Profile";
 import {QuestRoom} from "../../state/types/QuestRoom";
 import {Hero} from "../../state/types/Hero";
 
 export class DungeonScene extends React.Component<{
-  profile: Profile,
+  party: Hero[],
+  selectedHero: Hero,
   room: QuestRoom,
   onHeroSelected?: (hero: Hero) => void
 }> {
@@ -16,10 +16,11 @@ export class DungeonScene extends React.Component<{
     return (
       <Row classStyle={styles.scene}>
         <Row classStyle={styles.party}>
-          {this.props.profile.party.map((member) => (
+          {this.props.party.map((member) => (
             <CharacterModel
               key={member.id}
               character={member}
+              highlight={member === this.props.selectedHero}
               onClick={() => this.props.onHeroSelected(member)}
             />
           ))}

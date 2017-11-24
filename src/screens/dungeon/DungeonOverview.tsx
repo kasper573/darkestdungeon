@@ -9,21 +9,67 @@ import {DungeonScene} from "./DungeonScene";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
 import {QuestStatus} from "../../state/types/Quest";
+import {Alert, Prompt} from "../../ui/Popups";
 
 @observer
 export class DungeonOverview extends AppStateComponent {
-  @observable selectedHero: Hero = Array.from(
-    this.activeProfile.party
-  )[0];
+  @observable selectedHero: Hero = Array.from(this.activeProfile.party)[0];
+  private reactionDisposers: Array<() => void>;
+
+  componentWillMount () {
+    this.reactionDisposers = [
+      this.selectedQuest.whenVictorious(
+        () => this.endQuestPopup(QuestStatus.Victory)
+      ),
+      this.activeProfile.whenPartyWipes(
+        () => this.endQuest(QuestStatus.Defeat)
+      )
+    ];
+  }
+
+  componentWillUnmount () {
+    this.reactionDisposers.forEach((dispose) => dispose());
+  }
+
+  async endQuestPopup (status: QuestStatus) {
+    let promise;
+    switch (status) {
+      case QuestStatus.Defeat:
+        promise = this.appState.popups.prompt(
+          <Alert message="You have been defeated. Returning to town."/>
+        ).then(() => true);
+        break;
+      case QuestStatus.Escape:
+        promise = this.appState.popups.prompt(
+          <Prompt query={"Escape this dungeon and return to town?"}/>
+        );
+        break;
+      case QuestStatus.Victory:
+        promise = this.appState.popups.prompt(
+          <Prompt query={"You are victorious! Return to town now?"}/>
+        );
+        break;
+    }
+
+    const proceed = await promise;
+    if (proceed) {
+      this.endQuest(status);
+    }
+  }
 
   render () {
     return (
       <div className={css(styles.container)}>
         <div className={css(styles.scene)}>
-          <QuestHeader quest={this.selectedQuest} onLeaveRequested={(status) => this.finish(status)}/>
+          <QuestHeader
+            quest={this.selectedQuest}
+            onLeaveRequested={this.endQuestPopup.bind(this)}
+          />
+
           <Torch quest={this.selectedQuest}/>
           <DungeonScene
-            profile={this.activeProfile}
+            selectedHero={this.selectedHero}
+            party={this.activeProfile.party}
             room={this.selectedQuest.currentRoom}
             onHeroSelected={(hero) => this.selectedHero = hero}
           />
@@ -38,7 +84,7 @@ export class DungeonOverview extends AppStateComponent {
     );
   }
 
-  finish (status: QuestStatus) {
+  endQuest (status?: QuestStatus) {
     this.selectedQuest.status = status;
     this.appState.router.goto("dungeonResult");
   }

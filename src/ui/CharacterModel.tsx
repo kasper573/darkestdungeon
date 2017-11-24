@@ -14,6 +14,7 @@ import {TurnStats} from "../state/types/Stats";
 @observer
 export class CharacterModel extends React.Component<{
   character: Character,
+  highlight?: boolean,
   classStyle?: any,
   onClick?: () => void
 }> {
@@ -33,7 +34,7 @@ export class CharacterModel extends React.Component<{
 
     return (
       <div
-        className={css(styles.model, this.props.classStyle)}
+        className={css(styles.model, this.props.highlight && styles.highlight, this.props.classStyle)}
         onClick={this.props.onClick}>
         <div>{c.name}</div>
 
@@ -116,5 +117,9 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 3,
     border: "2px solid gray"
+  },
+
+  highlight: {
+    borderColor: "gold"
   }
 });

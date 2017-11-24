@@ -3,11 +3,12 @@ import uuid = require("uuid");
 import {QuestMap} from "./QuestMap";
 import {QuestObjective} from "./QuestObjective";
 import {Item} from "./Item";
-import {computed, observable} from "mobx";
+import {computed, observable, when} from "mobx";
 import {QuestInfo} from "./QuestInfo";
 import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
+import {Character} from "./Character";
 
 export type QuestId = string;
 
@@ -43,10 +44,24 @@ export class Quest {
     return this.map.rooms.find((room) => room.id === this.currentRoomId);
   }
 
-  get isFinished () {
-    return this.status === QuestStatus.Victory ||
-      this.status === QuestStatus.Escape ||
-      this.status === QuestStatus.Defeat;
+  @computed get explorePercentage () {
+    const scoutedRooms = this.map.rooms.filter((room) => room.isScouted);
+    return scoutedRooms.length / this.map.rooms.length;
+  }
+
+  @computed get monsterPercentage () {
+    const monsters = this.map.rooms.reduce((reduction, room) => {
+      reduction.push(...room.monsters);
+      return reduction;
+    }, [] as Character[]);
+
+    const deadMonsters = monsters.filter((monster) => monster.isDead);
+    return deadMonsters.length / monsters.length;
+  }
+
+  @computed get isObjectiveMet () {
+    return this.explorePercentage >= this.objective.explorePercentage &&
+      this.monsterPercentage >= this.objective.monsterPercentage;
   }
 
   get info (): QuestInfo {
@@ -56,6 +71,10 @@ export class Quest {
       return QuestInfo.explore;
     }
     return QuestInfo.free;
+  }
+
+  whenVictorious (callback: () => void) {
+    return when(() => this.isObjectiveMet, callback);
   }
 
   applyItem (item: Item) {

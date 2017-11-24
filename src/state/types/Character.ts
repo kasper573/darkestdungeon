@@ -114,6 +114,14 @@ export class Character extends Experienced {
     return sum;
   }
 
+  @computed get isAlive () {
+    return this.stats.health.value > 0;
+  }
+
+  @computed get isDead () {
+    return this.stats.health.value === 0;
+  }
+
   acceptsTreatmentFrom (treatmentId: BuildingInfoId) {
     for (const quirk of this.quirks) {
       if (quirk.forcedTreatmentIds.length > 0 &&
