@@ -32,12 +32,16 @@ export class BattleTester extends AppStateComponent {
 
   componentWillMount () {
     this.battler = new Battler();
-    this.newBattle();
-    this.reactionDisposers = this.battler.initialize(() => this.teamA);
+    this.reactionDisposers = this.battler.initialize(
+      () => this.teamA,
+      () => []
+    );
+
+    this.newTestBattle();
   }
 
   componentWillUnmount () {
-    this.endBattle();
+    this.endTestBattle();
     this.reactionDisposers.forEach((dispose) => dispose());
   }
 
@@ -66,8 +70,8 @@ export class BattleTester extends AppStateComponent {
         </Row>
 
         <Row>
-          <button onClick={() => this.newBattle()}>New battle</button>
-          <button onClick={() => this.endBattle()}>End battle</button>
+          <button onClick={() => this.newTestBattle()}>New battle</button>
+          <button onClick={() => this.endTestBattle()}>End battle</button>
         </Row>
 
         <div>
@@ -81,11 +85,12 @@ export class BattleTester extends AppStateComponent {
     );
   }
 
-  newBattle () {
+  newTestBattle () {
+    this.battleMembers.forEach((m) => m.resetMutableStats());
     this.battler.newBattle(this.teamB);
   }
 
-  endBattle () {
+  endTestBattle () {
     this.battler.endBattle();
   }
 

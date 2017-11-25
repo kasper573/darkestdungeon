@@ -7,8 +7,7 @@ import {autorun, computed, intercept, observable, reaction, when} from "mobx";
 import {QuestInfo} from "./QuestInfo";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
-import {Character} from "./Character";
-import {moveItem, removeItem, without} from "../../lib/Helpers";
+import {moveItem, removeItem} from "../../lib/Helpers";
 import {Hero} from "./Hero";
 import {Battler} from "./Battler";
 
@@ -58,14 +57,10 @@ export class Quest extends Battler<Hero> {
   }
 
   @computed get monsterPercentage () {
-    let allMonsters = this.map.rooms.reduce((reduction, room) => {
+    const allMonsters = this.map.rooms.reduce((reduction, room) => {
       reduction.push(...room.monsters);
       return reduction;
-    }, [] as Character[]);
-
-    if (this.inBattle) {
-      allMonsters = [...allMonsters, ...this.enemies];
-    }
+    }, [...this.enemies, ...this.deceasedEnemies]);
 
     const deadMonsters = allMonsters.filter((monster) => monster.isDead);
     return deadMonsters.length / allMonsters.length;
@@ -104,23 +99,6 @@ export class Quest extends Battler<Hero> {
     this.changeRoom(this.previousRoomId);
   }
 
-  newBattle (monsters: Character [] = []) {
-    // Move monsters from the current room to the battle
-    // NOTE this is to avoid duplicates when serializing
-    this.currentRoom.monsters = without(this.currentRoom.monsters, monsters);
-    super.newBattle(monsters);
-  }
-
-  endBattle (restoreEnemies = true) {
-    // Return monsters to the room
-    if (restoreEnemies) {
-      for (const enemy of this.enemies) {
-        this.currentRoom.monsters.push(enemy);
-      }
-    }
-    super.endBattle();
-  }
-
   useItem (item: Item, targetHero: Hero) {
     this.applyItem(item); // Apply quest stats
     targetHero.applyItem(item); // Apply hero stats
@@ -131,23 +109,24 @@ export class Quest extends Battler<Hero> {
     this.light += item.info.offsetLight;
   }
 
-  whenVictorious (callback: () => void) {
-    return when(() => this.isObjectiveMet, callback);
-  }
-
   /**
    * Initializes quest behavior
    */
   initialize () {
     return [
-      ...super.initialize(() => this.party),
+      ...super.initialize(
+        () => this.party,
+        () => this.currentRoom.monsters
+      ),
 
       // Leaving a room
       intercept(
         this,
         "currentRoomId",
         (change) => {
-          this.endBattle();
+          if (this.inBattle) {
+            this.endBattle();
+          }
           return change;
         }
       ),
@@ -174,8 +153,12 @@ export class Quest extends Battler<Hero> {
     ];
   }
 
+  whenVictorious (callback: () => void) {
+    return when(() => !this.inBattle && this.isObjectiveMet, callback);
+  }
+
   whenPartyWipes (callback: () => void) {
-    return when(() => this.party.filter((member) => member.isAlive).length === 0, callback);
+    return when(() => this.party.length === 0, callback);
   }
 }
 
