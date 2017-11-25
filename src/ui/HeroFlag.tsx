@@ -1,22 +1,26 @@
 import * as React from "react";
 import {observer} from "mobx-react";
 import {css, StyleSheet} from "aphrodite";
-import {HeroLevel} from "./HeroLevel";
+import {LevelIcon} from "./LevelIcon";
 import {StressMeter} from "./StressMeter";
 import {Hero} from "../state/types/Hero";
 import {QuirkText} from "./QuirkText";
+import {Experienced} from "../state/types/Experienced";
 
 @observer
 export class HeroFlag extends React.Component<{
-  hero: Hero
+  hero: Hero,
+  exp?: Experienced
 }> {
   render () {
+    const hero = this.props.hero;
+    const exp = this.props.exp !== undefined ? this.props.exp : hero;
     return (
       <div className={css(styles.container)}>
-        <HeroLevel hero={this.props.hero}/>
-        <StressMeter percentage={this.props.hero.stats.stressPercentage}/>
-        {this.props.hero.affliction && (
-          <QuirkText quirk={this.props.hero.affliction}/>
+        <LevelIcon exp={exp}/>
+        <StressMeter percentage={hero.stats.stressPercentage}/>
+        {hero.affliction && (
+          <QuirkText quirk={hero.affliction}/>
         )}
       </div>
     );

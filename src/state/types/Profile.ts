@@ -4,14 +4,14 @@ import {action, computed, observable, transaction} from "mobx";
 import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
 import {Hero} from "./Hero";
-import {Quest, QuestId} from "./Quest";
+import {Quest, QuestId, QuestStatus} from "./Quest";
 import {countHeirlooms, Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateQuest} from "../Generators";
 import {cap, contains, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
-import {HeirloomType, ItemType} from "./ItemInfo";
+import {HeirloomType} from "./ItemInfo";
 import {BuildingInfoId} from "./BuildingInfo";
 import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
@@ -288,6 +288,19 @@ export class Profile {
   }
 
   returnPartyFromQuest (quest: Quest) {
+    const dungeon = this.dungeons.find((d) => d.id === quest.dungeonId);
+
+    // For successful journeys we hand out experience
+    if (quest.status === QuestStatus.Victory) {
+      // Give experience to the surviving heroes
+      quest.party.forEach((hero) => hero.experience += dungeon.experienceWorth);
+
+      // Give experience to the dungeon
+      const wholeParty = [...quest.party, ...quest.deceased];
+      const partyExperienceWorth = wholeParty.reduce((sum, hero) => sum + hero.experienceWorth, 0);
+      dungeon.experience += partyExperienceWorth;
+    }
+
     // Return living heroes to roster
     while (quest.party.length) {
       moveItem(quest.party[0], quest.party, this.roster);

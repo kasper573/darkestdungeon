@@ -14,7 +14,7 @@ export class DungeonResult extends AppStateComponent {
   render () {
     const slideContent = this.slide === Slide.Items ?
       <DungeonResultItems quest={this.selectedQuest}/> :
-      <DungeonResultHeroes quest={this.selectedQuest}/>;
+      <DungeonResultHeroes quest={this.selectedQuest} dungeon={this.selectedDungeon}/>;
 
     const continueLabel = this.slide === Slide.Items ? "Next" : "Return to Town";
     const continueFn = this.slide === Slide.Items ?

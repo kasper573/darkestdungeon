@@ -58,7 +58,6 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
   const q = new Quest();
   const dungeon = randomizeItem(dungeons);
   q.dungeonId = dungeon.id;
-  q.level = dungeon.level.number;
   q.bonfires = Math.round(Math.random() * 2);
   q.map = QuestMap.generate(
     dungeon.info,

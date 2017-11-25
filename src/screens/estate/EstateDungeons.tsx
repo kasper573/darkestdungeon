@@ -73,6 +73,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
         {this.selectedQuest && (
           <QuestBreakdown
             quest={this.selectedQuest}
+            dungeon={this.selectedDungeon}
           />
         )}
         <LineupDropbox profile={this.activeProfile}/>
