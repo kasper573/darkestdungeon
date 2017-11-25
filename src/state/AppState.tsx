@@ -131,6 +131,7 @@ export class AppState {
     }
 
     localStorage.setItem("profileList", JSON.stringify(jsProfileList));
+    console.log("Saved");
   }
 
   load () {
