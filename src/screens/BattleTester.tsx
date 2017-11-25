@@ -5,7 +5,7 @@ import {HeroOverview} from "../ui/HeroOverview";
 import {Row} from "../config/styles";
 import {computed} from "mobx";
 import {CommonHeader} from "../ui/CommonHeader";
-import {randomizeItem} from "../state/Generators";
+import {randomizeItem} from "../lib/Helpers";
 import {Skill} from "../state/types/Skill";
 import {contains} from "../lib/Helpers";
 import {Hero} from "../state/types/Hero";

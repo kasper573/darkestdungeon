@@ -9,11 +9,12 @@ import {QuirkInfo} from "./QuirkInfo";
 import {CharacterStatus} from "./CharacterStatus";
 import {SkillId, SkillTargetObject} from "./SkillInfo";
 import {Stats, TurnStats} from "./Stats";
-import {cap, contains} from "../../lib/Helpers";
+import {cap, contains, removeItem} from "../../lib/Helpers";
 import uuid = require("uuid");
 import {BuildingInfoId} from "./BuildingInfo";
 import {Skill} from "./Skill";
 import {ItemType} from "./ItemInfo";
+import {randomizeItem} from "../../lib/Helpers";
 
 export type CharacterId = string;
 
@@ -212,6 +213,16 @@ export class Character extends Experienced {
     this.offsetStats(deltaStats);
 
     return deltaStats;
+  }
+
+  replaceQuirk (newQuirk: QuirkInfo) {
+    let replacedQuirk;
+    if (this.quirks.length) {
+      replacedQuirk = randomizeItem(this.quirks);
+      removeItem(this.quirks, replacedQuirk);
+    }
+    this.quirks.push(newQuirk);
+    return replacedQuirk;
   }
 
   applyBuff (buff: TurnStats, sourceName: string) {

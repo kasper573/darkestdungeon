@@ -3,8 +3,10 @@ import {identifier, list, object, serializable} from "serializr";
 import uuid = require("uuid");
 import {DungeonInfo} from "./DungeonInfo";
 import {Character} from "./Character";
-import {generateMonster} from "../Generators";
+import {generateCurio, generateMonster} from "../Generators";
 import {observable} from "mobx";
+import {count} from "../../lib/Helpers";
+import {Curio} from "./Curio";
 
 export type MapLocationId = string;
 
@@ -15,6 +17,7 @@ export class QuestRoom {
   // Mutable
   @serializable(list(object(Character))) @observable monsters: Character[] = [];
   @serializable @observable isScouted: boolean = false;
+  @serializable(list(object(Curio))) @observable curios: Curio[] = [];
 
   isConnectedTo (other: QuestRoom) {
     return this.coordinates.distance(other.coordinates) === 1;
@@ -34,10 +37,16 @@ export class QuestRoom {
     memory.set(roomId, room);
 
     if (allowMonsters(room, coordinates)) {
-      const newMonster = generateMonster(dungeonInfo, generatedMonsters);
-      generatedMonsters.push(newMonster);
-      room.monsters.push(newMonster);
+      count(2).forEach(() => {
+        const newMonster = generateMonster(dungeonInfo, generatedMonsters);
+        generatedMonsters.push(newMonster);
+        room.monsters.push(newMonster);
+      });
     }
+
+    count(Math.round(Math.random() * 3)).forEach(() => {
+      room.curios.push(generateCurio());
+    });
 
     if (stepsLeft <= 0) {
       return room;

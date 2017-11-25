@@ -4,7 +4,7 @@ import {Character} from "./Character";
 import {Skill} from "./Skill";
 import {list, object, serializable} from "serializr";
 import {cmp, contains, moveItem} from "../../lib/Helpers";
-import {randomizeItem} from "../Generators";
+import {randomizeItem} from "../../lib/Helpers";
 import {CharacterStatus} from "./CharacterStatus";
 
 type AllyOrEnemy = Character;
