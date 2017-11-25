@@ -45,9 +45,9 @@ class RoomOnMap extends React.Component<{
         style={{top: coords.y * cellSize, left: coords.x * cellSize}}
         className={css([
           styles.room,
-          isCurrentRoom && styles.current,
           isAccessible && styles.accessible,
-          room.isScouted && styles.scouted
+          room.isScouted && styles.scouted,
+          isCurrentRoom && styles.current
         ])}
       />
     );

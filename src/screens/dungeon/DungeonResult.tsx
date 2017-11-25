@@ -3,7 +3,7 @@ import {css, StyleSheet} from "aphrodite";
 import {CommonHeader} from "../../ui/CommonHeader";
 import {DungeonResultHeroes} from "./DungeonResultHeroes";
 import {DungeonResultItems} from "./DungeonResultItems";
-import {observable} from "mobx";
+import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import {AppStateComponent} from "../../AppStateComponent";
 
@@ -14,7 +14,7 @@ export class DungeonResult extends AppStateComponent {
   render () {
     const slideContent = this.slide === Slide.Items ?
       <DungeonResultItems quest={this.selectedQuest}/> :
-      <DungeonResultHeroes party={this.activeProfile.party}/>;
+      <DungeonResultHeroes quest={this.selectedQuest}/>;
 
     const continueLabel = this.slide === Slide.Items ? "Next" : "Return to Town";
     const continueFn = this.slide === Slide.Items ?
@@ -43,9 +43,11 @@ export class DungeonResult extends AppStateComponent {
     }
   }
 
+  @action
   async returnToEstate () {
-    this.checkoutQuestItems();
     await this.appState.router.goto("estateOverview");
+    this.checkoutQuestItems();
+    this.activeProfile.returnPartyFromQuest(this.selectedQuest);
     this.activeProfile.gotoNextWeek();
   }
 }

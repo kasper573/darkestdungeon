@@ -1,6 +1,6 @@
 import {date, identifier, list, object, reference, serializable} from "serializr";
 import uuid = require("uuid");
-import {computed, observable, transaction, when} from "mobx";
+import {action, computed, observable, transaction} from "mobx";
 import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
 import {Hero} from "./Hero";
@@ -25,8 +25,8 @@ nullEstateEvent.shown = true;
 export class Profile {
   @serializable(identifier()) id: ProfileId = uuid();
   @serializable difficulty: Difficulty;
-  @serializable @observable isNameFinalized: boolean;
-  @serializable @observable name: string;
+  @serializable @observable isNameFinalized: boolean = false;
+  @serializable @observable name: string = "";
   @serializable(object(Path)) @observable path: Path;
   @serializable @observable week: number = 0;
   @serializable(date()) @observable dateOfLastSave: Date = new Date();
@@ -81,25 +81,25 @@ export class Profile {
       }, new Map<HeirloomType, number>());
   }
 
-  @computed get partySlots () {
+  @computed get lineupSlots () {
     const members: Hero[] = [undefined, undefined, undefined, undefined];
-    this.party.forEach((member) => members[member.partyIndex] = member);
+    this.lineup.forEach((member) => members[member.lineupIndex] = member);
     return members;
   }
 
-  @computed get party () {
+  @computed get lineup () {
     return this.roster
-      .filter((c) => c.inParty)
+      .filter((c) => c.inLineup)
       .sort((a, b) => {
-        if (a.partyIndex === b.partyIndex) {
+        if (a.lineupIndex === b.lineupIndex) {
           return 0;
         }
-        return a.partyIndex < b.partyIndex ? -1 : 1;
+        return a.lineupIndex < b.lineupIndex ? -1 : 1;
       });
   }
 
-  @computed get isPartyFull () {
-    return this.party.length === 4;
+  @computed get isLineupFull () {
+    return this.lineup.length === 4;
   }
 
   @computed get selectedQuest () {
@@ -245,46 +245,52 @@ export class Profile {
     });
   }
 
-  joinParty (newHero: Hero, slotIndex: number = -1) {
+  joinLineup (newHero: Hero, slotIndex: number = -1) {
     if (slotIndex === -1) {
-      slotIndex = this.partySlots.findIndex((member) => !member);
+      slotIndex = this.lineupSlots.findIndex((member) => !member);
       if (slotIndex === -1) {
         throw new Error("Can't join full party");
       }
     }
 
-    const oldHero = this.partySlots[slotIndex];
+    const oldHero = this.lineupSlots[slotIndex];
 
     // Slot is free, join directly
     if (!oldHero) {
-      newHero.inParty = true;
-      newHero.partyIndex = slotIndex;
+      newHero.inLineup = true;
+      newHero.lineupIndex = slotIndex;
       return;
     }
 
     // Slot is taken, make space
-    if (newHero.inParty) {
+    if (newHero.inLineup) {
       // Hero just wants to swap places in the party
-      const oldIndex = newHero.partyIndex;
-      newHero.partyIndex = slotIndex;
-      oldHero.partyIndex = oldIndex;
+      const oldIndex = newHero.lineupIndex;
+      newHero.lineupIndex = slotIndex;
+      oldHero.lineupIndex = oldIndex;
     } else {
       // Let new hero take the old ones place
-      newHero.inParty = true;
-      newHero.partyIndex = slotIndex;
+      newHero.inLineup = true;
+      newHero.lineupIndex = slotIndex;
 
-      // Move old hero to a new slot if it exists, otherwise kick from party
-      oldHero.leaveParty();
-      const availableIndex = this.partySlots.findIndex((member) => !member);
+      // Move old hero to a new slot if it exists, otherwise kick from lineup
+      oldHero.leaveLineup();
+      const availableIndex = this.lineupSlots.findIndex((member) => !member);
       if (availableIndex !== -1) {
-        oldHero.inParty = true;
-        oldHero.partyIndex = availableIndex;
+        oldHero.inLineup = true;
+        oldHero.lineupIndex = availableIndex;
       }
     }
   }
 
-  killHero (hero: Hero) {
-    moveItem(hero, this.roster, this.graveyard);
+  sendLineupOnQuest (quest: Quest) {
+    this.lineup.forEach((member) => moveItem(member, this.roster, quest.party));
+  }
+
+  returnPartyFromQuest (quest: Quest) {
+    // Return questing heroes to roster or graveyard
+    quest.party.forEach((m) => moveItem(m, quest.party, this.roster));
+    quest.deceased.forEach((m) => moveItem(m, quest.deceased, this.graveyard));
   }
 
   recruitHero (hero: Hero) {
@@ -310,6 +316,7 @@ export class Profile {
       }, []);
   }
 
+  @action
   gotoNextWeek () {
     this.week++;
 
@@ -335,10 +342,6 @@ export class Profile {
 
   newQuest () {
     return generateQuest(this.dungeons);
-  }
-
-  whenPartyWipes (callback: () => void) {
-    return when(() => this.party.filter((member) => member.isAlive).length === 0, callback);
   }
 }
 

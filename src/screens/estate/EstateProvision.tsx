@@ -4,7 +4,7 @@ import {Path} from "../../state/types/Path";
 import {Prompt} from "../../ui/Popups";
 import {BuildingOverview} from "./buildings/BuildingOverview";
 import {StyleSheet} from "aphrodite";
-import {PartyDropbox} from "../../ui/PartyDropbox";
+import {LineupDropbox} from "../../ui/LineupDropbox";
 import {observer} from "mobx-react";
 import {Store} from "./Store";
 import {AppStateComponent} from "../../AppStateComponent";
@@ -27,6 +27,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
       if (willEmbark) {
         this.store.purchase();
         this.selectedQuest.status = QuestStatus.Started;
+        this.activeProfile.sendLineupOnQuest(this.selectedQuest);
         return true;
       }
     });
@@ -51,7 +52,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
             profile={this.activeProfile}
           />
         </BuildingOverview>
-        <PartyDropbox profile={this.activeProfile} lock/>
+        <LineupDropbox profile={this.activeProfile} lock/>
       </EstateTemplate>
     );
   }

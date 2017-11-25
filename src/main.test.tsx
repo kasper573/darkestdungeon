@@ -45,13 +45,15 @@ describe("main", () => {
 
   it (`hibernates state`, () => {
     const savedState = new AppState();
-    savedState.profiles.createProfile(Difficulty.Darkest);
+    const profileBefore = savedState.profiles.createProfile(Difficulty.Darkest);
 
     savedState.save();
 
     const loadedState = new AppState();
     loadedState.load();
 
-    expect(savedState.profiles.map).toEqual(loadedState.profiles.map);
+    const profileAfter = Array.from(loadedState.profiles.map.values())[0];
+
+    expect(profileAfter).toEqual(profileBefore);
   });
 });

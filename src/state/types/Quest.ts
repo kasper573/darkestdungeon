@@ -3,18 +3,19 @@ import uuid = require("uuid");
 import {QuestMap} from "./QuestMap";
 import {QuestObjective} from "./QuestObjective";
 import {Item} from "./Item";
-import { computed, intercept, observable,  reaction, transaction, when} from "mobx";
+import {autorun, computed, intercept, observable, reaction, when} from "mobx";
 import {QuestInfo} from "./QuestInfo";
-import {Battle} from "./Battle";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
 import {Character} from "./Character";
-import {removeItem, without} from "../../lib/Helpers";
+import {contains, moveItem, removeItem, without} from "../../lib/Helpers";
 import {Hero} from "./Hero";
+import {Battler} from "./Battler";
+import {Skill} from "./Skill";
 
 export type QuestId = string;
 
-export class Quest {
+export class Quest extends Battler<Hero> {
   @serializable(identifier()) id: QuestId = uuid();
   @serializable bonfires: number = 0;
   @serializable level: number = 0;
@@ -29,20 +30,20 @@ export class Quest {
   @serializable(list(object(Item)))
   rewards: Item[] = [];
 
+  @serializable(list(object(Hero)))
+  @observable
+  party: Hero[] = [];
+
+  @serializable(list(object(Hero)))
+  @observable
+  deceased: Hero[] = [];
+
   // Data that changes throughout a quest
   @serializable @observable status: QuestStatus = QuestStatus.Idle;
   @serializable @observable light: number = 1;
-
-  @serializable(object(Battle))
-  @observable
-  battle?: Battle;
-
-  @serializable(list(object(Item)))
-  @observable
-  items: Item[] = [];
-
-  @serializable @observable previousRoomId: MapLocationId;
-  @serializable @observable currentRoomId: MapLocationId;
+  @serializable(list(object(Item))) @observable items: Item[] = [];
+  @serializable @observable previousRoomId: MapLocationId = null;
+  @serializable @observable currentRoomId: MapLocationId = null;
 
   @computed get previousRoom () {
     return this.map.rooms.find((room) => room.id === this.previousRoomId);
@@ -58,17 +59,17 @@ export class Quest {
   }
 
   @computed get monsterPercentage () {
-    let monsters = this.map.rooms.reduce((reduction, room) => {
+    let allMonsters = this.map.rooms.reduce((reduction, room) => {
       reduction.push(...room.monsters);
       return reduction;
     }, [] as Character[]);
 
-    if (this.battle) {
-      monsters = [...monsters, ...this.battle.monsters];
+    if (this.inBattle) {
+      allMonsters = [...allMonsters, ...this.enemies];
     }
 
-    const deadMonsters = monsters.filter((monster) => monster.isDead);
-    return deadMonsters.length / monsters.length;
+    const deadMonsters = allMonsters.filter((monster) => monster.isDead);
+    return deadMonsters.length / allMonsters.length;
   }
 
   @computed get isObjectiveMet () {
@@ -88,10 +89,11 @@ export class Quest {
   changeRoom (roomId: MapLocationId) {
     this.previousRoomId = this.currentRoomId;
     this.currentRoomId = roomId;
+    this.currentRoom.isScouted = true;
   }
 
   canChangeToRoom (roomId: MapLocationId) {
-    if (this.battle) {
+    if (this.inBattle) {
       return false;
     }
 
@@ -99,41 +101,25 @@ export class Quest {
     return this.currentRoom.isConnectedTo(requestedRoom);
   }
 
-  newBattle (monsters: Character []) {
-    if (this.battle) {
-      throw new Error("Cannot initiate a new battle while already in one");
-    }
+  retreatFromBattle () {
+    this.changeRoom(this.previousRoomId);
+  }
 
+  newBattle (monsters: Character [] = []) {
     // Move monsters from the current room to the battle
     // NOTE this is to avoid duplicates when serializing
-    transaction(() => {
-      this.currentRoom.monsters = without(this.currentRoom.monsters, monsters);
-      this.battle = new Battle();
-      this.battle.monsters = monsters;
-    });
+    this.currentRoom.monsters = without(this.currentRoom.monsters, monsters);
+    super.newBattle(monsters);
   }
 
-  endBattle () {
-    if (!this.battle) {
-      return;
-    }
-
-    transaction(() => {
-      // Return monsters to the room
-      while (this.battle.monsters.length) {
-        const monster = this.battle.monsters.pop();
-        if (monster.isAlive) {
-          monster.resetMutableStats();
-        }
-        this.currentRoom.monsters.push(monster);
+  endBattle (restoreEnemies = true) {
+    // Return monsters to the room
+    if (restoreEnemies) {
+      for (const enemy of this.enemies) {
+        this.currentRoom.monsters.push(enemy);
       }
-
-      this.battle = null;
-    });
-  }
-
-  whenVictorious (callback: () => void) {
-    return when(() => this.isObjectiveMet, callback);
+    }
+    super.endBattle();
   }
 
   useItem (item: Item, targetHero: Hero) {
@@ -146,8 +132,27 @@ export class Quest {
     this.light += item.info.offsetLight;
   }
 
-  retreatFromBattle () {
-    this.changeRoom(this.previousRoomId);
+  whenVictorious (callback: () => void) {
+    return when(() => this.isObjectiveMet, callback);
+  }
+
+  // TODO this should maybe be component state in DungeonOverview.tsx
+
+  // No need to serialize since it's automated by quest behavior
+  @observable selectedHero: Hero;
+  @observable selectedEnemy: Character;
+  @observable selectedSkill: Skill;
+
+  selectHero (hero: Hero) {
+    this.selectedHero = hero;
+  }
+
+  selectEnemy (enemy: Character) {
+    this.selectedEnemy = enemy;
+  }
+
+  selectSkill (skill: Skill) {
+    this.selectedSkill = skill;
   }
 
   /**
@@ -155,6 +160,8 @@ export class Quest {
    */
   initialize () {
     return [
+      ...super.initialize(() => this.party),
+
       // Leaving a room
       intercept(
         this,
@@ -170,12 +177,48 @@ export class Quest {
         () => this.currentRoom,
         (room) => {
           // Enter a new battle with monsters encountered in new rooms
-          if (room.monsters.length) {
-            this.newBattle(room.monsters);
+          const aliveMonsters = room.monsters.filter((m) => m.isAlive);
+          if (aliveMonsters.length) {
+            this.newBattle(aliveMonsters);
           }
+        },
+        true
+      ),
+
+      // Clean up enemy selection should it disappear
+      autorun(() => {
+        if (this.selectedEnemy && !contains(this.enemies, this.selectedEnemy)) {
+          this.selectedEnemy = null;
         }
-      )
+      }),
+
+      // Always keep a hero selected. Prioritize actor
+      autorun(() => {
+        if (this.turnActor instanceof Hero) {
+          this.selectHero(this.turnActor);
+        } else if (!this.selectedHero && this.party.length > 0) {
+          this.selectHero(this.party[0]);
+        }
+      }),
+
+      // Change skill selection when changing hero
+      // Select/Deselect skills when entering/leaving battle
+      autorun(() => {
+        const hero = this.inBattle && this.selectedHero;
+        this.selectSkill(hero ? hero.selectedSkills[0] : undefined);
+      }),
+
+      // Remove deceased heroes from the party
+      autorun(() => {
+        this.party
+          .filter((m) => m.isDead)
+          .forEach((m) => moveItem(m, this.party, this.deceased));
+      })
     ];
+  }
+
+  whenPartyWipes (callback: () => void) {
+    return when(() => this.party.filter((member) => member.isAlive).length === 0, callback);
   }
 }
 

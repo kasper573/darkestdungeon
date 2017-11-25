@@ -90,6 +90,7 @@ export function addStaticState () {
   bellow.stats.accuracy.value = 90;
   bellow.stats.stress.value = 10;
   bellow.stats.criticalChance.value = 0.05;
+  bellow.statusTurns = 1;
   bellow.stats.statuses.get(CharacterStatus.Move).value = 1;
   bellow.stats.statuses.get(CharacterStatus.Stun).value = 1;
   bellow.position = [false, true, true, true];

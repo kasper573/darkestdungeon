@@ -1,4 +1,4 @@
-import {computed, observable} from "mobx";
+import {action, computed, observable} from "mobx";
 import {StaticState} from "./StaticState";
 import {Difficulty, Profile, ProfileId} from "./types/Profile";
 import {Dungeon} from "./types/Dungeon";
@@ -14,6 +14,7 @@ export class ProfileState {
     return this.map.get(this.activeProfileId);
   }
 
+  @action
   createProfile (difficulty: Difficulty) {
     const profile = new Profile();
 
@@ -39,12 +40,13 @@ export class ProfileState {
 
     // Add two random heroes to the roster
     profile.roster = [profile.newHero(), profile.newHero()];
-    profile.roster.forEach((hero) => profile.joinParty(hero));
+    profile.roster.forEach((hero) => profile.joinLineup(hero));
 
     // Set starting quest
     const startQuest = profile.newQuest();
     profile.quests = [startQuest];
     profile.selectedQuestId = startQuest.id;
+    profile.sendLineupOnQuest(startQuest);
 
     // Put profile on the path to load into the quest dungeon
     profile.path = new Path("dungeonOverview");

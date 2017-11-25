@@ -18,7 +18,7 @@ import {Abbey} from "../screens/estate/buildings/Abbey";
 import {Guild} from "../screens/estate/buildings/Guild";
 import {Blacksmith} from "../screens/estate/buildings/Blacksmith";
 import {Memoirs} from "../screens/estate/buildings/Memoirs";
-import {StatsTester} from "../screens/StatsTester";
+import {BattleTester} from "../screens/BattleTester";
 import {Route} from "../state/types/Route";
 
 export const defaultEstateAmbience = new AmbienceDefinition(
@@ -38,7 +38,7 @@ const loadingRerouter = (fromPath: Path, toPath: Path) => {
           ...toPath.args,
           bypassRerouter: true
         }
-      ),
+      )
     });
   }
 };
@@ -141,7 +141,7 @@ export const routes: {[key: string]: Route} = {
         ambience: () => new AmbienceDefinition(
           {src: require("../../assets/dd/audio/amb_town_tavern.wav")}
         )
-      }),
+      })
     }
   }),
 
@@ -171,7 +171,7 @@ export const routes: {[key: string]: Route} = {
     component: DungeonOverview,
     ambience: () => require("../../assets/dd/audio/amb_dun_weald_base.wav"),
     music: (state: AppState) => {
-      if (state.profiles.activeProfile.selectedQuest.battle) {
+      if (state.profiles.activeProfile.selectedQuest.inBattle) {
         return require("../../assets/dd/audio/mus_combat_hallway_part_a.wav");
       }
     }
@@ -192,8 +192,8 @@ export const routes: {[key: string]: Route} = {
     isMemorable: false
   }),
 
-  statsTester: new Route({
-    component: StatsTester,
+  battleTester: new Route({
+    component: BattleTester,
     isMemorable: false
   })
 };

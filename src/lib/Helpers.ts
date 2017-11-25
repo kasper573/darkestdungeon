@@ -76,3 +76,10 @@ export function cap (value: number, min: number, max: number) {
 export function compact<T> (items: T[]) {
   return items.filter((item) => item);
 }
+
+export function cmp <T> (a: T, b: T) {
+  if (a === b) {
+    return 0;
+  }
+  return a < b ? -1 : 1;
+}

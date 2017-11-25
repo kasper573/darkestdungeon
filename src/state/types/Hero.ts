@@ -6,16 +6,16 @@ import {BuildingInfoId} from "./BuildingInfo";
 
 export class Hero extends Character {
   @serializable @observable rosterIndex: number = 0;
-  @serializable @observable partyIndex: number = -1;
-  @serializable @observable inParty: boolean;
+  @serializable @observable lineupIndex: number = -1;
+  @serializable @observable inLineup: boolean;
 
   @serializable(object(HeroResidentInfo))
   @observable
   residentInfo: HeroResidentInfo = null;
 
-  leaveParty () {
-    this.inParty = false;
-    this.partyIndex = -1;
+  leaveLineup () {
+    this.inLineup = false;
+    this.lineupIndex = -1;
   }
 
   enterResidence (buildingId: BuildingInfoId, slotIndex: number) {
@@ -27,7 +27,7 @@ export class Hero extends Character {
   }
 
   lockInResidency () {
-    this.leaveParty();
+    this.leaveLineup();
     this.residentInfo.isLockedIn = true;
   }
 

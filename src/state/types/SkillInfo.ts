@@ -1,5 +1,6 @@
 import {identifier, serializable} from "serializr";
 import {IStatsSource, Stats, TurnStats} from "./Stats";
+import {Character} from "./Character";
 
 export type SkillSpots = [boolean, boolean, boolean, boolean];
 
@@ -13,6 +14,24 @@ export class SkillTarget {
     public spots?: SkillSpots,
     public object?: SkillTargetObject
   ) {}
+
+  isMatch (positionIndex: number) {
+    return this.spots[positionIndex];
+  }
+
+  select (allies: Character[], enemies: Character[]) {
+    const objects = this.object === SkillTargetObject.Ally ? allies : enemies;
+    const selected: Character[] = [];
+    for (let i = 0; i < this.spots.length; i++) {
+      if (i === objects.length) {
+        break;
+      }
+      if (this.spots[i]) {
+        selected.push(objects[i]);
+      }
+    }
+    return selected;
+  }
 
   static oneOf (
     spots: SkillSpots,

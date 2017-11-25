@@ -5,7 +5,7 @@ import {Alert, Prompt} from "../../ui/Popups";
 import {observer} from "mobx-react";
 import {DungeonBreakdown} from "../../ui/DungeonBreakdown";
 import {QuestBreakdown} from "../../ui/QuestBreakdown";
-import {PartyDropbox} from "../../ui/PartyDropbox";
+import {LineupDropbox} from "../../ui/LineupDropbox";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Quest} from "../../state/types/Quest";
 
@@ -22,12 +22,12 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
     );
   }
 
-  checkPartyBeforeContinue () {
-    if (this.activeProfile.isPartyFull) {
+  checkLineupBeforeContinue () {
+    if (this.activeProfile.isLineupFull) {
       return Promise.resolve(true);
     }
 
-    if (this.activeProfile.party.length === 0) {
+    if (this.activeProfile.lineup.length === 0) {
       return this.appState.popups.prompt(
         <Alert message="Please form a party before embarking"/>
       );
@@ -53,10 +53,10 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
     const questLookup = this.groupQuestsByDungeon(this.activeProfile.quests);
     return (
       <EstateTemplate
-        partyFeaturesInRoster={true}
+        lineupFeaturesInRoster={true}
         path={this.props.path}
         backPath="estateOverview"
-        continueCheck={() => this.checkPartyBeforeContinue()}
+        continueCheck={() => this.checkLineupBeforeContinue()}
         continueLabel="Provision"
         continuePath="estateProvision">
         {this.activeProfile.dungeons.map((d) =>
@@ -75,7 +75,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
             quest={this.selectedQuest}
           />
         )}
-        <PartyDropbox profile={this.activeProfile}/>
+        <LineupDropbox profile={this.activeProfile}/>
       </EstateTemplate>
     );
   }

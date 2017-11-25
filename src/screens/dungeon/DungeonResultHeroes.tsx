@@ -5,14 +5,20 @@ import {css} from "aphrodite";
 import {HeroFlag} from "../../ui/HeroFlag";
 import {QuirkFaces} from "../../ui/QuirkFaces";
 import {Hero} from "../../state/types/Hero";
+import {Quest} from "../../state/types/Quest";
 
 export class DungeonResultHeroes extends React.Component<{
-  party: Hero[]
+  quest: Quest
 }> {
   render () {
+    const heroes = [
+      ...this.props.quest.party,
+      ...this.props.quest.deceased
+    ];
+
     return (
       <div>
-        {this.props.party.map((hero) => (
+        {heroes.map((hero) => (
           <HeroResult key={hero.id} hero={hero}/>
         ))}
       </div>

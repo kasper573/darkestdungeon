@@ -8,15 +8,29 @@ import {observer} from "mobx-react";
 @observer
 export class SkillIcon extends React.Component<{
   skill: Skill,
+  isEnabled?: boolean,
+  isSelected?: boolean,
   onClick?: () => void
 }> {
+  static defaultProps = {
+    isEnabled: true
+  };
+
   render () {
     const lockSymbol = this.props.skill.level === 0 && (
       <span>L</span>
     );
 
-    const selectionIndicator = this.props.skill.isSelected && (
+    const isSelected = this.props.isSelected !== undefined ?
+      this.props.isSelected :
+      this.props.skill.isSelected;
+
+    const selectionIndicator = isSelected && (
       <div className={css(styles.selectionIndicator)}/>
+    );
+
+    const disabledIndicator = !this.props.isEnabled && (
+      <div className={css(styles.disabledIndicator)}/>
     );
 
     const levelIndicator = (
@@ -27,12 +41,13 @@ export class SkillIcon extends React.Component<{
 
     return (
       <TooltipArea
-        onClick={this.props.onClick}
+        onClick={this.props.isEnabled ? this.props.onClick : undefined}
         tip={<SkillBreakdown skill={this.props.skill}/>}
         classStyle={styles.container}>
         {lockSymbol}
         {levelIndicator}
         {selectionIndicator}
+        {disabledIndicator}
       </TooltipArea>
     );
   }
@@ -72,5 +87,11 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     color: "white",
     padding: 2
+  },
+
+  disabledIndicator: {
+    position: "absolute",
+    top: 0, right: 0, bottom: 0, left: 0,
+    background: "rgba(0, 0, 0, 0.5)"
   }
 });

@@ -26,7 +26,7 @@ export class EstateTemplate extends AppStateComponent<{
   continuePath: PathTypes,
   roster?: boolean,
   inventory?: boolean,
-  partyFeaturesInRoster?: boolean
+  lineupFeaturesInRoster?: boolean
 }> {
   static defaultProps = {
     roster: true,
@@ -109,7 +109,7 @@ export class EstateTemplate extends AppStateComponent<{
 
         {this.props.roster && (
           <EstateRoster
-            partyFeatures={this.props.partyFeaturesInRoster}
+            lineupFeatures={this.props.lineupFeaturesInRoster}
             portalNode={isShowingBuilding && this.appState.portalNode}
           />
         )}

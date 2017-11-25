@@ -16,7 +16,7 @@ export class QuestMap {
     const memory = new Map<string, QuestRoom>();
     const m = new QuestMap();
     m.size = size;
-    m.entrance = QuestRoom.walk(dungeonInfo, memory, 16,
+    m.entrance = QuestRoom.walk(dungeonInfo, memory, 1,
       (room, coords) => !(coords.x === 0 && coords.y === 0) // No monsters in the entrance
     );
     m.rooms = Array.from(memory.values());

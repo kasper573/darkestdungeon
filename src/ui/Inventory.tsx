@@ -15,8 +15,13 @@ export class Inventory extends AppStateComponent<{
   heroes: Hero[],
   items: Item[],
   filter?: (item: Item) => boolean,
+  isEnabled?: boolean,
   onItemRightClick?: (item: Item) => void
 }> {
+  static defaultProps = {
+    isEnabled: true
+  };
+
   @observable compareFn: CompareFunction<Item>;
 
   async promptUnequipAll () {
@@ -57,6 +62,7 @@ export class Inventory extends AppStateComponent<{
           items={this.props.items}
           filter={this.props.filter}
           compare={this.compareFn}
+          canInteractWith={() => this.props.isEnabled}
           onItemRightClick={this.props.onItemRightClick}
         />
       </div>

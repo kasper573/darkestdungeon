@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Quest, QuestStatus} from "../state/types/Quest";
-import {Row} from "../config/styles";
 import {observer} from "mobx-react";
 
 @observer
@@ -10,7 +9,7 @@ export class QuestHeader extends React.Component<{
   onLeaveRequested: (status: QuestStatus) => void
 }> {
   renderLeaveButton () {
-    if (this.props.quest.battle) {
+    if (this.props.quest.inBattle) {
       return (
         <button onClick={this.props.onRetreatRequested}>
           Retreat from combat
@@ -40,19 +39,6 @@ export class QuestHeader extends React.Component<{
         </div>
 
         {this.renderLeaveButton()}
-
-        <Row>
-          <span>Debug:</span>
-          <button onClick={() => this.props.onLeaveRequested(QuestStatus.Victory)}>
-            Victory
-          </button>
-          <button onClick={() => this.props.onLeaveRequested(QuestStatus.Escape)}>
-            Escape
-          </button>
-          <button onClick={() => this.props.onLeaveRequested(QuestStatus.Defeat)}>
-            Defeat
-          </button>
-        </Row>
       </div>
     );
   }
