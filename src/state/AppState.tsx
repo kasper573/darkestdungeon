@@ -77,7 +77,9 @@ export class AppState {
               p.selectedQuest.currentRoomId,
               p.selectedQuest.inBattle,
               p.selectedQuest.turn,
-              p.selectedQuest.turnActorIndex
+              p.selectedQuest.turnActorIndex,
+              p.selectedQuest.items.length,
+              p.selectedQuest.currentRoom.curios.filter((c) => c.hasBeenInteractedWith).length
             ])
           };
         },

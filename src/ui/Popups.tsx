@@ -74,7 +74,8 @@ export class Prompt extends React.Component<
 
     return (
       <Popup {...rest}>
-        <BannerHeader>{query}</BannerHeader>
+        {query && <BannerHeader>{query}</BannerHeader>}
+        {this.props.children}
         {responses.map((response) => (
           <LineButton
             key={response.label}
@@ -104,7 +105,9 @@ export class Alert extends React.Component<
       <Prompt {...rest}
         query={message}
         responses={[{label: dismissLabel, value: dismissValue}]}
-      />
+      >
+        {this.props.children}
+      </Prompt>
     );
   }
 }

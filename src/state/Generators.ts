@@ -8,9 +8,11 @@ import {QuestObjective} from "./types/QuestObjective";
 import {Character} from "./types/Character";
 import {DungeonInfo} from "./types/DungeonInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
-import {enumMap} from "../lib/Helpers";
+import {enumMap, randomizeItem, randomizeItems} from "../lib/Helpers";
 import {maxSelectedSkills} from "../config/general";
 import {ItemType} from "./types/ItemInfo";
+import {Curio} from "./types/Curio";
+import {TurnStats} from "./types/Stats";
 
 export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
@@ -48,10 +50,38 @@ export function decorateCharacter<T extends Character> (c: T, template: Characte
   return c;
 }
 
-export function generateItem (): Item {
-  const t = new Item();
-  t.info = randomizeItem(StaticState.instance.items);
-  return t;
+export function generateCurio (): Curio {
+  const curio = new Curio();
+  const type = Math.floor(Math.random() * 2.999);
+  const isPositive = Math.random() > 0.5;
+
+  switch (type) {
+    // Items
+    case 0:
+      curio.items = randomizeItems(StaticState.instance.items, 1, 3).map(Item.fromInfo);
+      break;
+
+    // Buff
+    case 1:
+      curio.buff = generateBuff(isPositive ? 1 : -1);
+      break;
+
+    // Quirks
+    case 2:
+      const quirkPool = StaticState.instance.quirks.filter((q) => q.stats.isPositive === isPositive);
+      curio.quirk = randomizeItem(quirkPool);
+      break;
+  }
+
+  return curio;
+}
+
+export function generateBuff (multiplier: number) {
+  const buff = new TurnStats();
+  buff.resistances.forEach((stat) => {
+    stat.value = multiplier * 0.1;
+  });
+  return buff;
 }
 
 export function generateQuest (dungeons: Dungeon[]): Quest {
@@ -100,27 +130,4 @@ export function randomizeTemplate (allTemplates: CharacterTemplate[], activeChar
   // Find rarity match
   const rarityScore = Math.random();
   return templatePool.find((t) => rarityScore <= t.rarity);
-}
-
-export function randomizeItem<T> (items: T[]): T {
-  const index = Math.floor(items.length * Math.random());
-  return items[index];
-}
-
-export function randomizeItems<T> (items: T[], min: number = 1, max: number = items.length): T[] {
-  if (max > items.length) {
-    max = items.length;
-  }
-  if (min > items.length) {
-    min = items.length;
-  }
-
-  let amount = min + Math.floor(Math.random() * (max - min));
-  const itemsLeft = items.slice();
-  const selectedItems: T[] = [];
-  while (amount-- > 0) {
-    const index = Math.floor(itemsLeft.length * Math.random());
-    selectedItems.push(itemsLeft.splice(index, 1)[0]);
-  }
-  return selectedItems;
 }

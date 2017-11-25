@@ -23,7 +23,15 @@ export class DungeonScene extends React.Component<{
           onCharacterRightClick={this.props.onHeroOverviewRequested}
         />
 
-        <CurioModel />
+        {this.props.quest.currentRoom.curios.map((curio) =>
+          <CurioModel
+            key={curio.id}
+            curio={curio}
+            inventory={this.props.quest.items}
+            selections={this.props.selections}
+            isInteractionEnabled={!this.props.quest.inBattle}
+          />
+        )}
 
         {this.props.quest.inBattle && (
           <CharacterGroup

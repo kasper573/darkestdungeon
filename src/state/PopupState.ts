@@ -44,7 +44,7 @@ export class PopupState {
   prompt <P> (arg: PopupHandlePropsOrContent<P>) {
     return new Promise ((resolve) => {
       const props = ensureProps(arg);
-      const popup = this.show({...props, modalState: ModalState.Modal});
+      const popup = this.show({modalState: ModalState.Modal, ...props});
       const disposeReaction = reaction(
         () => this.map.has(popup.id),
         (popupExists: boolean) => {
@@ -105,10 +105,6 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
     for (const key in props) {
       (this as any)[key] = (props as any)[key];
     }
-  }
-
-  reposition (position: Point) {
-    this.position = position;
   }
 
   close (resolution?: any) {

@@ -83,3 +83,26 @@ export function cmp <T> (a: T, b: T) {
   }
   return a < b ? -1 : 1;
 }
+
+export function randomizeItem<T> (items: T[]): T {
+  const index = Math.floor(items.length * Math.random());
+  return items[index];
+}
+
+export function randomizeItems<T> (items: T[], min: number = 1, max: number = items.length): T[] {
+  if (max > items.length) {
+    max = items.length;
+  }
+  if (min > items.length) {
+    min = items.length;
+  }
+
+  let amount = min + Math.floor(Math.random() * (max - min));
+  const itemsLeft = items.slice();
+  const selectedItems: T[] = [];
+  while (amount-- > 0) {
+    const index = Math.floor(itemsLeft.length * Math.random());
+    selectedItems.push(itemsLeft.splice(index, 1)[0]);
+  }
+  return selectedItems;
+}
