@@ -59,7 +59,7 @@ export class Battler<
 
     this.inBattle = this.enemies.length > 0;
     if (this.inBattle) {
-      console.info("Starting battle", this.allies, "vs", this.enemies);
+      console.log("Starting battle", this.allies, "vs", this.enemies);
     }
   }
 
@@ -70,14 +70,14 @@ export class Battler<
       return;
     }
 
-    console.info("Ending battle");
+    console.log("Ending battle");
     const killedAllEnemies = this.enemies.length === 0;
 
     // Heal/Revive and return enemies to their source
     while (this.enemies.length) {
       const enemy = this.enemies.pop();
       enemy.resetMutableStats();
-      console.info("Healing undefeated enemy", enemy);
+      console.log("Healing undefeated enemy", enemy);
       this.enemySource.push(enemy);
     }
 
@@ -85,7 +85,7 @@ export class Battler<
       const enemy = this.deceasedEnemies.pop();
       if (!killedAllEnemies) {
         enemy.resetMutableStats();
-        console.info("Reviving defeated enemy", enemy);
+        console.log("Reviving defeated enemy", enemy);
       }
       this.enemySource.push(enemy);
     }
@@ -98,7 +98,7 @@ export class Battler<
 
   performTurnAction (skill?: Skill, targets: AllyOrEnemy[] = []) {
     if (skill) {
-      console.info(this.turnActor.name, "used", skill.info.name, "on", targets.map((t) => t.name).join(", "));
+      console.log(this.turnActor.name, "used", skill.info.name, "on", targets.map((t) => t.name).join(", "));
       targets.map((target) =>
         this.emitMemento(target, this.turnActor.useSkill(skill, target))
       );
@@ -109,7 +109,7 @@ export class Battler<
 
   passTurnAction (reason = "") {
     const reasonSuffix = reason ? " (" + reason + ")" : undefined;
-    console.info(this.turnActor.name, "passed", reasonSuffix);
+    console.log(this.turnActor.name, "passed", reasonSuffix);
     this.turnActorIndex++;
   }
 
@@ -119,7 +119,7 @@ export class Battler<
   }
 
   processTurn () {
-    console.info("Finishing turn", this.turn);
+    console.log("Finishing turn", this.turn);
     [...this.allies, ...this.enemies].forEach((c) =>
       this.emitMemento(c, c.processTurn())
     );
@@ -131,7 +131,7 @@ export class Battler<
       .join(", ");
 
     if (mementoString) {
-      console.debug(target.name, "processed", mementoString);
+      console.info(target.name, "processed", mementoString);
     }
   }
 
