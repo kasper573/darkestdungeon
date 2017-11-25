@@ -10,20 +10,20 @@ import {TooltipArea} from "../lib/TooltipArea";
 import {HeroBreakdown} from "./HeroBreakdown";
 
 @observer
-export class PartyDropbox extends React.Component<{
+export class LineupDropbox extends React.Component<{
   profile: Profile,
   lock?: boolean
 }> {
   render () {
     return (
-      <Row classStyle={styles.party}>
-        {this.props.profile.partySlots.map((member, slotIndex) => (
-          <PartyDropboxSlot
+      <Row classStyle={styles.lineup}>
+        {this.props.profile.lineupSlots.map((member, slotIndex) => (
+          <LineupDropboxSlot
             key={slotIndex}
             member={member}
             lock={this.props.lock}
-            onDragEnd={(draggedHero) => draggedHero.leaveParty()}
-            onDrop={(droppedHero) => this.props.profile.joinParty(droppedHero, slotIndex)}
+            onDragEnd={(draggedHero) => draggedHero.leaveLineup()}
+            onDrop={(droppedHero) => this.props.profile.joinLineup(droppedHero, slotIndex)}
           />
         ))}
       </Row>
@@ -31,7 +31,7 @@ export class PartyDropbox extends React.Component<{
   }
 }
 
-class PartyDropboxSlot extends React.Component<{
+class LineupDropboxSlot extends React.Component<{
   member?: Hero,
   lock?: boolean,
   onDragEnd: (hero: Hero) => void
@@ -64,7 +64,7 @@ class PartyDropboxSlot extends React.Component<{
 }
 
 const styles = StyleSheet.create({
-  party: {
+  lineup: {
     minWidth: 200,
     minHeight: 60,
     position: "absolute",

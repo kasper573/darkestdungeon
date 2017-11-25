@@ -1,19 +1,19 @@
 import * as React from "react";
 import {observer} from "mobx-react";
-import {observable} from "mobx";
 import {css, StyleSheet} from "aphrodite";
 import {DungeonControlPanel} from "./DungeonControlPanel";
 import {Torch} from "../../ui/Torch";
 import {QuestHeader} from "../../ui/QuestHeader";
 import {DungeonScene} from "./DungeonScene";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Hero} from "../../state/types/Hero";
 import {QuestStatus} from "../../state/types/Quest";
 import {Alert, Prompt} from "../../ui/Popups";
+import {ModalState, PopupAlign} from "../../state/PopupState";
+import {HeroOverview} from "../../ui/HeroOverview";
+import {Hero} from "../../state/types/Hero";
 
 @observer
 export class DungeonOverview extends AppStateComponent {
-  @observable selectedHero: Hero = Array.from(this.activeProfile.party)[0];
   private reactionDisposers: Array<() => void>;
 
   componentWillMount () {
@@ -22,7 +22,7 @@ export class DungeonOverview extends AppStateComponent {
       this.selectedQuest.whenVictorious(
         () => this.endQuestPopup(QuestStatus.Victory)
       ),
-      this.activeProfile.whenPartyWipes(
+      this.selectedQuest.whenPartyWipes(
         () => this.endQuest(QuestStatus.Defeat)
       )
     ];
@@ -68,6 +68,16 @@ export class DungeonOverview extends AppStateComponent {
     }
   }
 
+  showHeroOverview (hero: Hero) {
+    this.appState.popups.show({
+      align: PopupAlign.TopLeft,
+      position: {x: 0, y: 0},
+      modalState: ModalState.Opaque,
+      id: "heroOverview",
+      content: <HeroOverview hero={hero}/>
+    });
+  }
+
   render () {
     return (
       <div className={css(styles.container)}>
@@ -80,17 +90,13 @@ export class DungeonOverview extends AppStateComponent {
 
           <Torch quest={this.selectedQuest}/>
           <DungeonScene
-            selectedHero={this.selectedHero}
-            party={this.activeProfile.party}
-            battle={this.selectedQuest.battle}
-            onHeroSelected={(hero) => this.selectedHero = hero}
+            quest={this.selectedQuest}
+            onHeroOverviewRequested={this.showHeroOverview.bind(this)}
           />
         </div>
 
         <DungeonControlPanel
           quest={this.selectedQuest}
-          profile={this.activeProfile}
-          selectedHero={this.selectedHero}
         />
       </div>
     );

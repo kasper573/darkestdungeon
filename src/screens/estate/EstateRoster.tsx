@@ -11,7 +11,7 @@ import {contains} from "../../lib/Helpers";
 
 @observer
 export class EstateRoster extends AppStateComponent<{
-  partyFeatures?: boolean,
+  lineupFeatures?: boolean,
   portalNode?: HTMLDivElement
 }> {
   receiveHero (droppedHero: Hero, slotHero: Hero) {
@@ -50,7 +50,7 @@ export class EstateRoster extends AppStateComponent<{
             <EstateRosterEntry
               key={hero.id}
               classStyle={styles.entry}
-              partyFeatures={this.props.partyFeatures}
+              lineupFeatures={this.props.lineupFeatures}
               hero={hero}
               onDrop={(droppedHero) => this.receiveHero(droppedHero, hero)}
             />

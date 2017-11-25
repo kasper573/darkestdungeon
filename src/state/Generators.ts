@@ -14,39 +14,38 @@ import {ItemType} from "./types/ItemInfo";
 
 export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
-  const monster = new Character();
-  monster.name = randomizeItem(template.characterNames);
-  monster.classInfo = template.classInfo;
-  monster.resetMutableStats();
-  return monster;
+  return decorateCharacter(new Character(), template);
 }
 
 export function generateHero (activeHeroes: Hero[]): Hero {
   const allTemplates = StaticState.instance.heroes;
   const template = randomizeTemplate(allTemplates, activeHeroes);
 
-  const hero = new Hero();
-  hero.name = randomizeItem(template.characterNames);
-  hero.classInfo = template.classInfo;
-  hero.affliction = randomizeItem(StaticState.instance.afflictions);
-  hero.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
+  return decorateCharacter(new Hero(), template);
+}
+
+export function decorateCharacter<T extends Character> (c: T, template: CharacterTemplate): T {
+  c.name = randomizeItem(template.characterNames);
+  c.classInfo = template.classInfo;
+  c.affliction = randomizeItem(StaticState.instance.afflictions);
+  c.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
 
   const allItems = StaticState.instance.items;
   const weapons = allItems.filter((item) => item.type === ItemType.Weapon);
   const armors = allItems.filter((item) => item.type === ItemType.Armor);
 
-  hero.items = [
+  c.items = [
     Item.fromInfo(randomizeItem(weapons)),
     Item.fromInfo(randomizeItem(armors))
   ];
 
-  randomizeItems(hero.skills, maxSelectedSkills, maxSelectedSkills).forEach((skill) => {
+  randomizeItems(c.skills, maxSelectedSkills, maxSelectedSkills).forEach((skill) => {
     skill.level++;
     skill.isSelected = true;
   });
 
-  hero.resetMutableStats();
-  return hero;
+  c.resetMutableStats();
+  return c;
 }
 
 export function generateItem (): Item {

@@ -80,6 +80,10 @@ export class Character extends Experienced {
     return this.classInfo.skills.map((info) => new Skill(this.skillLevels, this.skillSelections, info));
   }
 
+  get selectedSkills () {
+    return this.skills.filter((skill) => skill.isSelected);
+  }
+
   @computed get armor () {
     return this.items.find((i) => i.info.type === ItemType.Armor);
   }
@@ -257,7 +261,7 @@ export class Character extends Experienced {
 
     // Apply buff for this skill
     if (skill.buff && (isAllyTarget || willBuffHit)) {
-      this.applyBuff(skill.buff, skill.info.name);
+      target.applyBuff(skill.buff, skill.info.name);
 
       // Add buff memento
       memento.statuses.get(CharacterStatus.Buff).value = 1;
@@ -270,18 +274,15 @@ export class Character extends Experienced {
         return;
       }
 
-      // Some statuses apply damage over time
+      const turnStats = new TurnStats();
       const damageScale = actionStats.statusDamageScales.get(status).value;
-      if (damageScale) {
-        const turnStats = new TurnStats();
-        turnStats.damage.value = actionStats.damage.value * damageScale;
-        turnStats.round();
+      turnStats.turns = skill.info.statusTurns;
+      turnStats.damage.value = actionStats.damage.value * damageScale;
+      turnStats.round();
 
-        if (turnStats.damage.value) {
-          target.dots.set(status, turnStats);
-        } else {
-          return; // Skip memento since damage is irrelevant
-        }
+      // Damage or stuns last over time
+      if (turnStats.damage.value || status === CharacterStatus.Stun) {
+        target.dots.set(status, turnStats);
       }
 
       // Add status memento

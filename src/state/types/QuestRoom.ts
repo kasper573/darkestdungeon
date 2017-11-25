@@ -14,7 +14,7 @@ export class QuestRoom {
 
   // Mutable
   @serializable(list(object(Character))) @observable monsters: Character[] = [];
-  @serializable @observable isScouted: boolean;
+  @serializable @observable isScouted: boolean = false;
 
   isConnectedTo (other: QuestRoom) {
     return this.coordinates.distance(other.coordinates) === 1;
@@ -33,14 +33,14 @@ export class QuestRoom {
     room.coordinates = coordinates;
     memory.set(roomId, room);
 
-    if (stepsLeft <= 0) {
-      return room;
-    }
-
     if (allowMonsters(room, coordinates)) {
       const newMonster = generateMonster(dungeonInfo, generatedMonsters);
       generatedMonsters.push(newMonster);
       room.monsters.push(newMonster);
+    }
+
+    if (stepsLeft <= 0) {
+      return room;
     }
 
     const direction: Vector = Math.random() > 0.5 ?

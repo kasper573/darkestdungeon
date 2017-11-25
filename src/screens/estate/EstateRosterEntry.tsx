@@ -19,7 +19,7 @@ import {StaticState} from "../../state/StaticState";
 @observer
 export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
-  partyFeatures?: boolean,
+  lineupFeatures?: boolean,
   allowDrop?: (item: Hero) => boolean,
   allowDrag?: (item: Hero) => boolean,
   onDragEnd?: () => void,
@@ -41,12 +41,12 @@ export class EstateRosterEntry extends AppStateComponent<{
     const hero = this.props.hero;
 
     let extraStyle;
-    let partyElement;
+    let lineupElement;
     let residentElement;
 
-    if (this.props.partyFeatures && hero.inParty) {
-      extraStyle = styles.entryInParty;
-      partyElement = <div className={css(styles.partyIcon)}/>;
+    if (this.props.lineupFeatures && hero.inLineup) {
+      extraStyle = styles.entryInLineup;
+      lineupElement = <div className={css(styles.lineupIcon)}/>;
     }
 
     if (hero.residentInfo) {
@@ -68,7 +68,7 @@ export class EstateRosterEntry extends AppStateComponent<{
         onDrop={this.props.onDrop}>
         <Row classStyle={extraStyle}>
           <Avatar src={hero.classInfo.avatarUrl}>
-            {partyElement}
+            {lineupElement}
             {residentElement}
           </Avatar>
           <div className={css(styles.info)}>
@@ -104,11 +104,11 @@ const styles = StyleSheet.create({
     padding: 2
   },
 
-  entryInParty: {
+  entryInLineup: {
     opacity: 0.5
   },
 
-  partyIcon: {
+  lineupIcon: {
     width: 10,
     height: 20,
     background: "red"

@@ -6,20 +6,21 @@ import {Column, Row} from "../config/styles";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {PositionDots} from "./PositionDots";
-import {HeroSkills} from "./HeroSkills";
 import {HeroFlag} from "./HeroFlag";
 import {CharacterModel} from "./CharacterModel";
 import {Hero} from "../state/types/Hero";
 import {StatsTextList} from "./StatsText";
 import {Skill} from "../state/types/Skill";
 import {maxSelectedSkills} from "../config/general";
-import {HeroEquipment} from "./HeroEquipment";
+import {EquipmentDropbox} from "./EquipmentDropbox";
+import {SkillIcon} from "./SkillIcon";
 
 @observer
 export class HeroOverview extends React.Component<
   PopupProps & {
   hero: Hero,
-  onSkillSelected?: (skill: Skill) => void
+  onSkillSelected?: (skill: Skill) => void,
+  classStyle?: any
 }> {
   toggleSkillSelection (skill: Skill) {
     if (skill.level > 0) {
@@ -40,7 +41,7 @@ export class HeroOverview extends React.Component<
     const onSkillSelected = this.props.onSkillSelected || this.toggleSkillSelection.bind(this);
     return (
       <Popup {...rest}>
-        <Row classStyle={styles.heroInfo}>
+        <Row classStyle={[styles.heroInfo, this.props.classStyle]}>
           <Column>
             <Row>
               <button>EDIT</button>
@@ -77,7 +78,7 @@ export class HeroOverview extends React.Component<
                 </Row>
 
                 <CommonHeader label="Equipment"/>
-                <HeroEquipment hero={hero}/>
+                <EquipmentDropbox character={hero}/>
               </Column>
             </Row>
           </Column>
@@ -101,7 +102,15 @@ export class HeroOverview extends React.Component<
                 />
               </Column>
             </Row>
-            <HeroSkills skills={hero.skills} onSkillSelected={onSkillSelected}/>
+            <Row>
+              {hero.skills.map((skill) => (
+                <SkillIcon
+                  key={skill.info.id}
+                  skill={skill}
+                  onClick={onSkillSelected.bind(this, skill)}
+                />
+              ))}
+            </Row>
 
             <CommonHeader label="Resistances"/>
             <Row classStyle={styles.baseStats}>

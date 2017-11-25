@@ -4,7 +4,6 @@ import {StressMeter} from "./StressMeter";
 import {HealthMeter} from "./HealthMeter";
 import {TooltipArea} from "../lib/TooltipArea";
 import {Character} from "../state/types/Character";
-import {Hero} from "../state/types/Hero";
 import {QuirkText} from "./QuirkText";
 import {StatsTextList} from "./StatsText";
 import {commonStyles} from "../config/styles";
@@ -15,13 +14,13 @@ import {TurnStats} from "../state/types/Stats";
 export class CharacterModel extends React.Component<{
   character: Character,
   highlight?: boolean,
+  target?: boolean,
   classStyle?: any,
-  onClick?: () => void
+  onMouseEnter?: () => void,
+  onMouseLeave?: () => void,
+  onClick?: () => void,
+  onRightClick?: () => void
 }> {
-  get isHero () {
-    return this.props.character instanceof Hero;
-  }
-
   render () {
     const c = this.props.character;
     const dotBreakdowns: any[] = [];
@@ -32,10 +31,24 @@ export class CharacterModel extends React.Component<{
       );
     });
 
+    const targetIndicator = this.props.target && (
+      <div className={css(styles.targetIndicator)}/>
+    );
+
     return (
       <div
-        className={css(styles.model, this.props.highlight && styles.highlight, this.props.classStyle)}
-        onClick={this.props.onClick}>
+        className={css(
+          styles.model, this.props.classStyle,
+          this.props.highlight && styles.highlight
+        )}
+        onMouseLeave={this.props.onMouseLeave}
+        onMouseEnter={this.props.onMouseEnter}
+        onClick={this.props.onClick}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          this.props.onRightClick();
+          return false;
+        }}>
         <div>{c.name}</div>
 
         {c.affliction && (
@@ -43,16 +56,18 @@ export class CharacterModel extends React.Component<{
         )}
 
         <TooltipArea
-          tip={this.isHero && <HPAndStress character={c}/>}>
+          tip={<HPAndStress character={c}/>}>
           <HealthMeter percentage={c.stats.healthPercentage}/>
-          {this.isHero && (
-            <StressMeter percentage={c.stats.stressPercentage}/>
-          )}
+          <StressMeter percentage={c.stats.stressPercentage}/>
         </TooltipArea>
         
         {c.buff && <TurnBreakdown turnStats={c.buff} name={c.buff.isPositive ? "Buff" : "Debuff"}/>}
 
         {dotBreakdowns}
+
+        {targetIndicator}
+
+        {this.props.children}
       </div>
     );
   }
@@ -111,15 +126,25 @@ class HPAndStress extends React.Component<{character: Character}> {
   }
 }
 
+const targetHeight = 4;
+const targetSpacing = 2;
+const modelBorder = 2;
 const styles = StyleSheet.create({
   model: {
     background: "green",
     padding: 3,
     margin: 3,
-    border: "2px solid gray"
+    border: modelBorder + "px solid gray"
   },
 
   highlight: {
     borderColor: "gold"
+  },
+
+  targetIndicator: {
+    position: "absolute",
+    bottom: -(targetHeight + targetSpacing + modelBorder), left: -modelBorder, right: -modelBorder,
+    height: targetHeight,
+    backgroundColor: "red"
   }
 });

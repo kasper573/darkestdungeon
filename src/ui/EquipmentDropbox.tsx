@@ -1,17 +1,19 @@
 import * as React from "react";
-import {Hero} from "../state/types/Hero";
 import {equippableItems, maxEquippedItems} from "../config/general";
 import {ItemDropbox} from "./ItemDropbox";
+import {Character} from "../state/types/Character";
 
-export class HeroEquipment extends React.Component<{hero: Hero}> {
+export class EquipmentDropbox extends React.Component<{
+  character: Character
+}> {
   render () {
     return (
       <ItemDropbox
         slots={maxEquippedItems}
-        items={this.props.hero.items}
+        items={this.props.character.items}
         filter={(item) => !!equippableItems.get(item.info.type)}
         allowDrop={(droppedItem) => {
-          const itemCount = this.props.hero.items.filter(
+          const itemCount = this.props.character.items.filter(
             (heroItem) => heroItem.info.type === droppedItem.info.type
           ).length;
           return (itemCount + 1) <= equippableItems.get(droppedItem.info.type);

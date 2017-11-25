@@ -3,7 +3,9 @@ import {Row} from "../config/styles";
 import {TooltipArea} from "../lib/TooltipArea";
 import {todo} from "../config/general";
 import {Quest} from "../state/types/Quest";
+import {observer} from "mobx-react";
 
+@observer
 export class Torch extends React.Component<{
   quest: Quest
 }> {
@@ -15,7 +17,7 @@ export class Torch extends React.Component<{
           tip={todo} >
           Light: {quest.light}
         </TooltipArea>
-        <span>Battle: {quest.battle ? `Round ${quest.battle.round}` : "No battle"}</span>
+        <span>Battle: {quest.inBattle ? `Round ${quest.turn}` : "No battle"}</span>
       </Row>
     );
   }

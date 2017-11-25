@@ -38,8 +38,12 @@ export class AppState {
     this.reactionDisposers = [
       // Path changes
       reaction(
-        () => [this.router.path, this.router.route],
-        ([path, route]: [Path, Route, Route]) => {
+        () => [
+          this.router.path,
+          this.router.route,
+          this.router.route.music(this, this.router.path)
+        ],
+        ([path, route, music]: [Path, Route, IHowlProperties]) => {
           // Close all popups as soon as the path changes.
           // This avoids popups staying visible during screen transitions.
           if (previousPath.root !== path.root) {
@@ -54,7 +58,7 @@ export class AppState {
 
           // Change music and ambience
           this.ambience.activate(route.ambience(this, path));
-          this.music.play(route.music(this, path));
+          this.music.play(music);
         }
       ),
       // Save whenever interesting data changes
@@ -70,7 +74,8 @@ export class AppState {
               p.gold,
               p.heirloomCounts,
               p.selectedQuest.currentRoomId,
-              p.selectedQuest.battle && p.selectedQuest.battle.round
+              p.selectedQuest.inBattle,
+              p.selectedQuest.turn
             ])
           };
         },
