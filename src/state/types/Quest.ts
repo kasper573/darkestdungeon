@@ -8,10 +8,9 @@ import {QuestInfo} from "./QuestInfo";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
 import {Character} from "./Character";
-import {contains, moveItem, removeItem, without} from "../../lib/Helpers";
+import {moveItem, removeItem, without} from "../../lib/Helpers";
 import {Hero} from "./Hero";
 import {Battler} from "./Battler";
-import {Skill} from "./Skill";
 
 export type QuestId = string;
 
@@ -136,25 +135,6 @@ export class Quest extends Battler<Hero> {
     return when(() => this.isObjectiveMet, callback);
   }
 
-  // TODO this should maybe be component state in DungeonOverview.tsx
-
-  // No need to serialize since it's automated by quest behavior
-  @observable selectedHero: Hero;
-  @observable selectedEnemy: Character;
-  @observable selectedSkill: Skill;
-
-  selectHero (hero: Hero) {
-    this.selectedHero = hero;
-  }
-
-  selectEnemy (enemy: Character) {
-    this.selectedEnemy = enemy;
-  }
-
-  selectSkill (skill: Skill) {
-    this.selectedSkill = skill;
-  }
-
   /**
    * Initializes quest behavior
    */
@@ -184,29 +164,6 @@ export class Quest extends Battler<Hero> {
         },
         true
       ),
-
-      // Clean up enemy selection should it disappear
-      autorun(() => {
-        if (this.selectedEnemy && !contains(this.enemies, this.selectedEnemy)) {
-          this.selectedEnemy = null;
-        }
-      }),
-
-      // Always keep a hero selected. Prioritize actor
-      autorun(() => {
-        if (this.turnActor instanceof Hero) {
-          this.selectHero(this.turnActor);
-        } else if (!this.selectedHero && this.party.length > 0) {
-          this.selectHero(this.party[0]);
-        }
-      }),
-
-      // Change skill selection when changing hero
-      // Select/Deselect skills when entering/leaving battle
-      autorun(() => {
-        const hero = this.inBattle && this.selectedHero;
-        this.selectSkill(hero ? hero.selectedSkills[0] : undefined);
-      }),
 
       // Remove deceased heroes from the party
       autorun(() => {
