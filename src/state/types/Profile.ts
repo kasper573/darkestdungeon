@@ -136,8 +136,9 @@ export class Profile {
           removeItem(resident.quirks,
             resident.quirks.find((q) => q.id === resident.residentInfo.treatmentId)
           );
-          resident.residentInfo = null;
         }
+
+        resident.residentInfo = null;
       });
   }
 
