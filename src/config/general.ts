@@ -203,6 +203,7 @@ export function addStaticState () {
     "Food": {
       description: "Eat to restore health and starve off hunger.",
       value: 75,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 18,
       resetHunger: true,
       stats: {
@@ -212,11 +213,13 @@ export function addStaticState () {
     "Shovel": {
       description: "Use to clear obstacles and break into things.",
       value: 250,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 4
     },
     "Antivenom": {
       description: "Use to counter blights, poisons and toxins.",
       value: 150,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 6,
       stats: {
         statusChances: {
@@ -227,6 +230,7 @@ export function addStaticState () {
     "Bandages": {
       description: "Use to stanch the flow of bleeding.",
       value: 150,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 6,
       stats: {
         statusChances: {
@@ -238,24 +242,28 @@ export function addStaticState () {
       description: "Use to cleanse items and prevent maladies. " +
       "Can also be applied to a hero to eliminate combat debuffs.",
       value: 200,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 6,
       removeBuffs: true
     },
     "Torch": {
       description: "Increases the light level.",
       value: 75,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 18,
       offsetLight: 1
     },
     "Skeleton Key": {
       description: "Used to unlock strongboxes and doors.",
       value: 200,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 6,
       offsetLight: 1
     },
     "Holy Water": {
       description: "Use to purge evil and restore purity. Can also be applied to a hero to increase resistances",
       value: 150,
+      sellValueScale: 0.25,
       getStoreCount: (quest: Quest) => 6,
       buff: {
         resistances: {
