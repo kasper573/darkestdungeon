@@ -8,16 +8,18 @@ import {observer} from "mobx-react";
 import {DungeonMap} from "./DungeonMap";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Quest} from "../../state/types/Quest";
+import {DungeonSelections} from "./DungeonSelections";
 
 @observer
 export class DungeonControlPanel extends React.Component<{
-  quest: Quest
+  quest: Quest,
+  selections: DungeonSelections
 }> {
   @observable isMapVisible = false;
 
   renderSideContent () {
-    if (this.props.quest.selectedEnemy) {
-      return <DungeonCharacterSummary character={this.props.quest.selectedEnemy}/>;
+    if (this.props.selections.enemy) {
+      return <DungeonCharacterSummary character={this.props.selections.enemy}/>;
     }
 
     if (this.isMapVisible) {
@@ -31,7 +33,7 @@ export class DungeonControlPanel extends React.Component<{
         isEnabled={!this.props.quest.inBattle || this.props.quest.canHeroAct}
         onItemRightClick={(item) => {
           if (item.info.type === ItemType.Consumable) {
-            this.props.quest.useItem(item, this.props.quest.selectedHero);
+            this.props.quest.useItem(item, this.props.selections.hero);
           }
         }}
       />
@@ -39,19 +41,20 @@ export class DungeonControlPanel extends React.Component<{
   }
 
   render () {
-    const {quest} = this.props;
+    const quest = this.props.quest;
+    const selections = this.props.selections;
     return (
       <div className={css(styles.controlPanel)}>
         <Row>
           <Column classStyle={styles.controlPanelBox}>
-            {quest.selectedHero && (
+            {selections.hero && (
               <DungeonCharacterSummary
-                character={quest.selectedHero}
+                character={selections.hero}
                 enableSkills={quest.inBattle && quest.canHeroAct}
-                selectedSkill={quest.selectedSkill}
+                selectedSkill={selections.skill}
                 onSkillClicked={(skill) => {
                   if (skill) {
-                    quest.selectSkill(skill);
+                    selections.selectSkill(skill);
                   } else {
                     quest.passTurnAction();
                   }

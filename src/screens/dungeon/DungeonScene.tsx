@@ -7,33 +7,36 @@ import {Hero} from "../../state/types/Hero";
 import {observer} from "mobx-react";
 import {Quest} from "../../state/types/Quest";
 import {SkillTargetObject} from "../../state/types/SkillInfo";
+import {DungeonSelections} from "./DungeonSelections";
 
 @observer
 export class DungeonScene extends React.Component<{
   quest: Quest,
+  selections: DungeonSelections,
   onHeroOverviewRequested: (hero: Hero) => void
 }> {
   render () {
     const quest = this.props.quest;
+    const selections = this.props.selections;
     return (
       <Row classStyle={styles.scene}>
         <Row classStyle={styles.party}>
           {quest.party.map((member, positionIndex) => {
             let canActOn: boolean;
-            if (quest.selectedSkill) {
-              const targetInfo = quest.selectedSkill.info.target;
+            if (selections.skill) {
+              const targetInfo = selections.skill.info.target;
               canActOn = quest.canHeroAct &&
                 targetInfo.object === SkillTargetObject.Ally &&
                 targetInfo.isMatch(positionIndex);
             }
 
             const onClick = quest.inBattle ?
-              () => canActOn && quest.performTurnAction(quest.selectedSkill, [member]) :
-              () => quest.selectHero(member);
+              () => canActOn && quest.performTurnAction(selections.skill, [member]) :
+              () => selections.selectHero(member);
 
             const highlight = quest.inBattle ?
               member === quest.turnActor :
-              member === quest.selectedHero;
+              member === selections.hero;
 
             return (
               <CharacterModel
@@ -57,8 +60,8 @@ export class DungeonScene extends React.Component<{
           <Row classStyle={styles.monsters}>
             {quest.enemies.map((enemy, positionIndex) => {
               let canActOn: boolean;
-              if (quest.selectedSkill) {
-                const targetInfo = quest.selectedSkill.info.target;
+              if (selections.skill) {
+                const targetInfo = selections.skill.info.target;
                 canActOn = quest.canHeroAct &&
                   targetInfo.object === SkillTargetObject.Enemy &&
                   targetInfo.isMatch(positionIndex);
@@ -66,7 +69,7 @@ export class DungeonScene extends React.Component<{
 
               const highlight = quest.inBattle ?
                 enemy === quest.turnActor :
-                enemy === quest.selectedHero;
+                enemy === selections.hero;
 
               return (
                 <CharacterModel
@@ -74,9 +77,9 @@ export class DungeonScene extends React.Component<{
                   character={enemy}
                   highlight={highlight}
                   target={canActOn}
-                  onMouseEnter={() => quest.selectEnemy(enemy)}
-                  onMouseLeave={() => quest.selectEnemy(null)}
-                  onClick={() => canActOn && quest.performTurnAction(quest.selectedSkill, [enemy])}>
+                  onMouseEnter={() => selections.selectEnemy(enemy)}
+                  onMouseLeave={() => selections.selectEnemy(null)}
+                  onClick={() => canActOn && quest.performTurnAction(selections.skill, [enemy])}>
                   <div className={css(styles.actorIndex)}>
                     {quest.getActorIndex(enemy)}
                   </div>

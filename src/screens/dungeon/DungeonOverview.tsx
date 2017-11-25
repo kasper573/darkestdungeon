@@ -11,14 +11,17 @@ import {Alert, Prompt} from "../../ui/Popups";
 import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {Hero} from "../../state/types/Hero";
+import {DungeonSelections} from "./DungeonSelections";
 
 @observer
 export class DungeonOverview extends AppStateComponent {
   private reactionDisposers: Array<() => void>;
+  private selections = new DungeonSelections();
 
   componentWillMount () {
     this.reactionDisposers = [
       ...this.selectedQuest.initialize(),
+      ...this.selections.initialize(this.selectedQuest),
       this.selectedQuest.whenVictorious(
         () => this.endQuestPopup(QuestStatus.Victory)
       ),
@@ -91,12 +94,14 @@ export class DungeonOverview extends AppStateComponent {
           <Torch quest={this.selectedQuest}/>
           <DungeonScene
             quest={this.selectedQuest}
+            selections={this.selections}
             onHeroOverviewRequested={this.showHeroOverview.bind(this)}
           />
         </div>
 
         <DungeonControlPanel
           quest={this.selectedQuest}
+          selections={this.selections}
         />
       </div>
     );
