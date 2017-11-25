@@ -1,4 +1,4 @@
-import {autorun, observable} from "mobx";
+import {autorun, observable, reaction} from "mobx";
 import {Hero} from "../../state/types/Hero";
 import {contains} from "../../lib/Helpers";
 import {Quest} from "../../state/types/Quest";
@@ -43,15 +43,17 @@ export class DungeonSelections {
 
       // Change skill selection when changing hero
       // Select/Deselect skills when entering/leaving battle
-      autorun(() => {
-        const hero = quest.inBattle && this.hero;
-        const usableSkills = hero.selectedSkills.filter((skill) =>
-          skill.info.canUse(
-            this.hero, quest.allies, quest.enemies
-          )
-        );
-        this.selectSkill(hero ? usableSkills[0] : undefined);
-      })
+      reaction(
+        () => quest.inBattle && this.hero,
+        (hero) => {
+          this.selectSkill(
+            hero && hero.selectedSkills.filter((s) =>
+              s.info.canUse(this.hero, quest.allies, quest.enemies)
+            )[0]
+          );
+        },
+        true
+      )
     ];
   }
 }
