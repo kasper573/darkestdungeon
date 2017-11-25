@@ -114,10 +114,7 @@ export class Quest extends Battler<Hero> {
    */
   initialize () {
     return [
-      ...super.initialize(
-        () => this.party,
-        () => this.currentRoom.monsters
-      ),
+      ...super.initialize(this.party),
 
       // Leaving a room
       intercept(
@@ -131,16 +128,10 @@ export class Quest extends Battler<Hero> {
         }
       ),
 
-      // Entering a new room
+      // Entering a new room attempts to battle monsters
       reaction(
         () => this.currentRoom,
-        (room) => {
-          // Enter a new battle with monsters encountered in new rooms
-          const aliveMonsters = room.monsters.filter((m) => m.isAlive);
-          if (aliveMonsters.length) {
-            this.newBattle(aliveMonsters);
-          }
-        },
+        (room) => this.startBattle(room.monsters),
         true
       ),
 

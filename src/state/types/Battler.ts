@@ -1,4 +1,4 @@
-import {computed, observable, reaction} from "mobx";
+import {action, computed, observable, reaction} from "mobx";
 import {Stats} from "./Stats";
 import {Character} from "./Character";
 import {Skill} from "./Skill";
@@ -13,19 +13,15 @@ export class Battler<
   TAlly extends AllyOrEnemy = AllyOrEnemy,
   TEnemy extends AllyOrEnemy = AllyOrEnemy
 > {
-  @serializable @observable inBattle: boolean = false;
   @serializable @observable turn: number = 0;
   @serializable @observable turnActorIndex: number = 0;
   @serializable(list(object(Character))) @observable enemies: TEnemy[] = [];
   @serializable(list(object(Character))) @observable deceasedEnemies: TEnemy[] = [];
 
   // No need to serialize since it's automated by quest behavior
-  private getAllies: () => TAlly[];
-  private getEnemyHome: () => TEnemy[];
-
-  @computed get allies () {
-    return this.getAllies();
-  }
+  @observable public allies: TAlly[] = null;
+  @observable private enemySource: TEnemy[] = null;
+  @observable public inBattle: boolean = false;
 
   @computed get turnActorOrder (): AllyOrEnemy[] {
     return [...this.allies, ...this.enemies]
@@ -48,58 +44,63 @@ export class Battler<
     return this.turnActorOrder.indexOf(actor);
   }
 
-  newBattle (aliveEnemies: TEnemy [] = []) {
+  @action
+  startBattle (enemySource: TEnemy []) {
     if (this.inBattle) {
       console.warn("Should not initiate a new battle while already in one");
       this.endBattle();
     }
 
-    // Move monsters from their home to the battle
+    // Move monsters from their source to the battle
     // NOTE this is to avoid duplicates when serializing
-    aliveEnemies
-      .forEach((enemy) => moveItem(enemy, this.getEnemyHome(), this.enemies));
+    this.enemySource = enemySource;
+    this.enemySource.filter((e) => e.isAlive)
+      .forEach((enemy) => moveItem(enemy, this.enemySource, this.enemies));
 
-    console.debug("Starting new battle", this.allies, "vs", this.enemies);
-
-    this.turn = 0;
-    this.turnActorIndex = 0;
-    this.inBattle = true;
+    this.inBattle = this.enemies.length > 0;
+    if (this.inBattle) {
+      console.info("Starting battle", this.allies, "vs", this.enemies);
+    }
   }
 
+  @action
   endBattle () {
     if (!this.inBattle) {
       console.warn("Attempting to end a battle when not in one");
       return;
     }
 
-    console.debug("Ending battle");
+    console.info("Ending battle");
     const killedAllEnemies = this.enemies.length === 0;
 
-    // Heal/Revive and return enemies to their home
+    // Heal/Revive and return enemies to their source
     while (this.enemies.length) {
       const enemy = this.enemies.pop();
       enemy.resetMutableStats();
-      console.debug("Healing undefeated enemy", enemy);
-      this.getEnemyHome().push(enemy);
+      console.info("Healing undefeated enemy", enemy);
+      this.enemySource.push(enemy);
     }
 
     while (this.deceasedEnemies.length) {
       const enemy = this.deceasedEnemies.pop();
       if (!killedAllEnemies) {
         enemy.resetMutableStats();
-        console.debug("Reviving defeated enemy", enemy);
+        console.info("Reviving defeated enemy", enemy);
       }
-      this.getEnemyHome().push(enemy);
+      this.enemySource.push(enemy);
     }
 
+    this.turn = 0;
+    this.turnActorIndex = 0;
+    this.enemySource = null;
     this.inBattle = false;
   }
 
-  performTurnAction (action?: Skill, targets: AllyOrEnemy[] = []) {
-    if (action) {
-      console.debug(this.turnActor.name, "used", action.info.name, "on", targets.map((t) => t.name).join(", "));
+  performTurnAction (skill?: Skill, targets: AllyOrEnemy[] = []) {
+    if (skill) {
+      console.info(this.turnActor.name, "used", skill.info.name, "on", targets.map((t) => t.name).join(", "));
       targets.map((target) =>
-        this.emitMemento(target, this.turnActor.useSkill(action, target))
+        this.emitMemento(target, this.turnActor.useSkill(skill, target))
       );
     }
 
@@ -108,7 +109,7 @@ export class Battler<
 
   passTurnAction (reason = "") {
     const reasonSuffix = reason ? " (" + reason + ")" : undefined;
-    console.debug(this.turnActor.name, "passed", reasonSuffix);
+    console.info(this.turnActor.name, "passed", reasonSuffix);
     this.turnActorIndex++;
   }
 
@@ -118,7 +119,7 @@ export class Battler<
   }
 
   processTurn () {
-    console.debug("Finishing turn", this.turn);
+    console.info("Finishing turn", this.turn);
     [...this.allies, ...this.enemies].forEach((c) =>
       this.emitMemento(c, c.processTurn())
     );
@@ -130,16 +131,12 @@ export class Battler<
       .join(", ");
 
     if (mementoString) {
-      console.info(target.name, "processed", mementoString);
+      console.debug(target.name, "processed", mementoString);
     }
   }
 
-  initialize (
-    getAllies: () => TAlly[],
-    getEnemyHome: () => TEnemy[]
-  ): Array<() => void> {
-    this.getAllies = getAllies;
-    this.getEnemyHome = getEnemyHome;
+  initialize (allies: TAlly[]): Array<() => void> {
+    this.allies = allies;
 
     return [
       // Process turn as soon as it changes

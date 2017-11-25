@@ -32,10 +32,7 @@ export class BattleTester extends AppStateComponent {
 
   componentWillMount () {
     this.battler = new Battler();
-    this.reactionDisposers = this.battler.initialize(
-      () => this.teamA,
-      () => []
-    );
+    this.reactionDisposers = this.battler.initialize(this.teamA);
 
     this.newTestBattle();
   }
@@ -87,7 +84,7 @@ export class BattleTester extends AppStateComponent {
 
   newTestBattle () {
     this.battleMembers.forEach((m) => m.resetMutableStats());
-    this.battler.newBattle(this.teamB);
+    this.battler.startBattle(this.teamB);
   }
 
   endTestBattle () {
