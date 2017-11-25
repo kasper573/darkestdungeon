@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {observer} from "mobx-react";
-import {HeroLevel} from "../../ui/HeroLevel";
+import {LevelIcon} from "../../ui/LevelIcon";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
@@ -89,7 +89,7 @@ export class EstateRosterEntry extends AppStateComponent<{
           side={TooltipSide.Left}
           tip={<HeroBreakdown hero={this.props.hero}/>}
         >
-          <HeroLevel hero={hero}/>
+          <LevelIcon exp={hero}/>
         </TooltipArea>
       </DragDropSlot>
     );

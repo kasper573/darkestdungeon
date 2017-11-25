@@ -16,7 +16,6 @@ export type QuestId = string;
 export class Quest extends Battler<Hero> {
   @serializable(identifier()) id: QuestId = uuid();
   @serializable bonfires: number = 0;
-  @serializable level: number = 0;
   @serializable dungeonId: DungeonId;
 
   @serializable(object(QuestMap))

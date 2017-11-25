@@ -2,20 +2,20 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {commonStyles} from "../config/styles";
 import {observer} from "mobx-react";
-import {Hero} from "../state/types/Hero";
+import {Experienced} from "../state/types/Experienced";
 
 @observer
-export class HeroLevel extends React.Component<{
-  hero: Hero
+export class LevelIcon extends React.Component<{
+  exp: Experienced
 }> {
   render () {
     return (
       <div className={css(styles.container)}>
-        <div className={css(styles.level)}>{this.props.hero.level.number}</div>
+        <div className={css(styles.level)}>{this.props.exp.level.number}</div>
         <div className={css(styles.progressContainer, commonStyles.boxBorder)}>
           <div
             className={css(styles.progressFill)}
-            style={{height: (this.props.hero.levelProgress * 100) + "%"}}
+            style={{height: (this.props.exp.levelProgress * 100) + "%"}}
           />
         </div>
       </div>

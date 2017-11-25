@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import {AppState} from "./state/AppState";
+import {computed} from "mobx";
 
 export const appStateContext = {
   state: PropTypes.instanceOf(AppState)
@@ -20,5 +21,9 @@ export abstract class AppStateComponent<P = {}> extends React.Component<P> {
 
   get selectedQuest () {
     return this.activeProfile.selectedQuest;
+  }
+
+  @computed get selectedDungeon () {
+    return this.activeProfile.dungeons.find((d) => d.id === this.selectedQuest.dungeonId);
   }
 }

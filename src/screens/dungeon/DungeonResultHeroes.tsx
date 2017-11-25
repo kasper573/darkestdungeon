@@ -5,10 +5,13 @@ import {css} from "aphrodite";
 import {HeroFlag} from "../../ui/HeroFlag";
 import {QuirkFaces} from "../../ui/QuirkFaces";
 import {Hero} from "../../state/types/Hero";
-import {Quest} from "../../state/types/Quest";
+import {Quest, QuestStatus} from "../../state/types/Quest";
+import {Experienced} from "../../state/types/Experienced";
+import {Dungeon} from "../../state/types/Dungeon";
 
 export class DungeonResultHeroes extends React.Component<{
-  quest: Quest
+  quest: Quest,
+  dungeon: Dungeon
 }> {
   render () {
     const heroes = [
@@ -16,10 +19,18 @@ export class DungeonResultHeroes extends React.Component<{
       ...this.props.quest.deceased
     ];
 
+    const gainedExperience = this.props.quest.status === QuestStatus.Victory ?
+      this.props.dungeon.experienceWorth :
+      0;
+
     return (
       <div>
         {heroes.map((hero) => (
-          <HeroResult key={hero.id} hero={hero}/>
+          <HeroResult
+            key={hero.id}
+            hero={hero}
+            exp={hero.projectExperience(gainedExperience)}
+          />
         ))}
       </div>
     );
@@ -27,7 +38,8 @@ export class DungeonResultHeroes extends React.Component<{
 }
 
 class HeroResult extends React.Component<{
-  hero: Hero
+  hero: Hero,
+  exp: Experienced
 }> {
   render () {
     return (
@@ -41,7 +53,7 @@ class HeroResult extends React.Component<{
             <QuirkFaces/>
           </Row>
         </Column>
-        {this.props.hero.isAlive ? <HeroFlag hero={this.props.hero} /> : "Dead"}
+        {this.props.hero.isAlive ? <HeroFlag hero={this.props.hero} exp={this.props.exp} /> : "Dead"}
       </Row>
     );
   }

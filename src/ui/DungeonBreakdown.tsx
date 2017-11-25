@@ -1,7 +1,7 @@
 
 import * as React from "react";
 import {css} from "aphrodite";
-import {commonStyles} from "../config/styles";
+import {commonStyles, Row} from "../config/styles";
 import {QuestSelector} from "./QuestSelector";
 import {Quest, QuestId} from "../state/types/Quest";
 
@@ -20,7 +20,11 @@ export class DungeonBreakdown extends React.Component<{
   render () {
     return (
       <div style={{textAlign: "center"}}>
-        <h1 className={css(commonStyles.dungeonName)}>{this.props.name}</h1>
+        <Row>
+          <span className={css(commonStyles.dungeonName)}>{this.props.name}</span>
+          <span>Level {this.props.level}</span>
+          <span>({Math.round(this.props.progress * 100)}%)</span>
+        </Row>
         <ul style={{flexDirection: "row"}}>
           {this.props.quests.map((quest) =>
             <QuestSelector

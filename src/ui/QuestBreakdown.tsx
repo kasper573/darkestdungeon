@@ -5,9 +5,11 @@ import {Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemIcon} from "./ItemIcon";
 import {Quest} from "../state/types/Quest";
+import {Dungeon} from "../state/types/Dungeon";
 
 export class QuestBreakdown extends React.Component<{
-  quest: Quest
+  quest: Quest,
+  dungeon: Dungeon
 }> {
   render () {
     const quest = this.props.quest;
@@ -24,7 +26,7 @@ export class QuestBreakdown extends React.Component<{
         <Row>
           <span>Bonfires: {quest.bonfires}</span>
           <span>{quest.map.size}</span>
-          <span>Level {quest.level}</span>
+          <span>Level {this.props.dungeon.level.number}</span>
         </Row>
 
         <CommonHeader label="Objective"/>
