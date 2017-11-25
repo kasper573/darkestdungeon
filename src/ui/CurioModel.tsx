@@ -94,7 +94,10 @@ export class CurioModel extends AppStateComponent<{
       <div
         className={css(styles.model)}
         onClick={this.allowInteraction ? this.interactWith.bind(this) : undefined}>
-        Curio
+        <div>Curio</div>
+        {this.props.curio.hasBeenInteractedWith && (
+          <div>X</div>
+        )}
       </div>
     );
   }
