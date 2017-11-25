@@ -42,11 +42,6 @@ export class Battler<
     return contains(this.enemies, this.turnActor);
   }
 
-  @computed get isLastTurnActor () {
-    const lastIndex = this.turnActorOrder.length - 1;
-    return lastIndex === this.turnActorIndex;
-  }
-
   getActorIndex (actor: AllyOrEnemy) {
     return this.turnActorOrder.indexOf(actor);
   }
@@ -81,22 +76,18 @@ export class Battler<
       );
     }
 
-    this.nextActorOrTurn();
+    this.turnActorIndex++;
   }
 
   passTurnAction (reason = "") {
     const reasonSuffix = reason ? " (" + reason + ")" : undefined;
     console.log(this.turnActor.name, "passed", reasonSuffix);
-    this.nextActorOrTurn();
+    this.turnActorIndex++;
   }
 
-  nextActorOrTurn () {
-    if (this.isLastTurnActor) {
-      this.turnActorIndex = 0;
-      this.turn++;
-    } else {
-      this.turnActorIndex++;
-    }
+  gotoNextTurn () {
+    this.turnActorIndex = 0;
+    this.turn++;
   }
 
   processTurn () {
@@ -132,6 +123,13 @@ export class Battler<
         () => this.endBattle(),
         true
       ),
+
+      // After an action or death we may want to chance turn
+      reaction(
+        () => this.turnActorIndex >= (this.turnActorOrder.length - 1),
+        (isEndOfTurn) => isEndOfTurn && this.gotoNextTurn(),
+        true
+      ),
       
       // Turn automation
       reaction(
@@ -151,15 +149,13 @@ export class Battler<
           }
 
           // Enemy AI
-          const isAlly = contains(this.allies, this.turnActor);
-          const relativeAllies = isAlly ? this.allies : this.enemies;
-          const relativeEnemies = isAlly ? this.enemies : this.allies;
           const usableSkills = this.turnActor.selectedSkills.filter((s) =>
-            s.info.target.select(relativeAllies, relativeEnemies).length > 0
+            s.info.canUse(this.turnActor, this.enemies, this.allies)
           );
+
           const skill = randomizeItem(usableSkills);
           if (skill) {
-            const targets = skill ? skill.info.target.select(relativeAllies, relativeEnemies) : [];
+            const targets = skill.info.target.select(this.enemies, this.allies);
             this.performTurnAction(skill, targets);
           } else {
             // TODO move towards closest applicable position

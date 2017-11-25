@@ -50,12 +50,16 @@ export class DungeonControlPanel extends React.Component<{
             {selections.hero && (
               <DungeonCharacterSummary
                 character={selections.hero}
-                enableSkills={quest.inBattle && quest.canHeroAct}
                 selectedSkill={selections.skill}
+                enableSkill={(skill) =>
+                  quest.inBattle && quest.canHeroAct && skill.info.canUse(
+                    quest.turnActor, quest.allies, quest.enemies
+                  )
+                }
                 onSkillClicked={(skill) => {
                   if (skill) {
                     selections.selectSkill(skill);
-                  } else {
+                  } else if (quest.canHeroAct) {
                     quest.passTurnAction();
                   }
                 }}

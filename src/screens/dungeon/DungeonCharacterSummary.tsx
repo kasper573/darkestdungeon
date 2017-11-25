@@ -14,10 +14,11 @@ import {Skill} from "../../state/types/Skill";
 export class DungeonCharacterSummary extends React.Component<{
   character: Character,
   selectedSkill?: Skill,
-  enableSkills?: boolean,
+  enableSkill?: (skill: Skill) => boolean,
   onSkillClicked?: (skill: Skill) => void
 }> {
   static defaultProps = {
+    enableSkill: () => false,
     onSkillClicked: (): null => null
   };
 
@@ -39,7 +40,7 @@ export class DungeonCharacterSummary extends React.Component<{
               <SkillIcon
                 key={skill.info.id}
                 skill={skill}
-                isEnabled={this.props.enableSkills}
+                isEnabled={this.props.enableSkill(skill)}
                 isSelected={this.props.selectedSkill ? skill.info.id === this.props.selectedSkill.info.id : false}
                 onClick={() => this.props.onSkillClicked(skill)}
               />

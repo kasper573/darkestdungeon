@@ -19,20 +19,27 @@ import {SkillIcon} from "./SkillIcon";
 export class HeroOverview extends React.Component<
   PopupProps & {
   hero: Hero,
+  enableSkillSelection?: () => boolean,
   onSkillSelected?: (skill: Skill) => void,
   classStyle?: any
 }> {
+  static defaultProps = {
+    enableSkillSelection: () => true
+  };
+
   toggleSkillSelection (skill: Skill) {
-    if (skill.level > 0) {
-      const numSelected = this.props.hero.skills.filter((s) => s.isSelected).length;
-      const isSelecting = !skill.isSelected;
-      if (isSelecting) {
-        if (numSelected < maxSelectedSkills) {
-          skill.isSelected = true;
-        }
-      } else {
-        skill.isSelected = false;
+    if (skill.level === 0 || !this.props.enableSkillSelection()) {
+      return;
+    }
+
+    const numSelected = this.props.hero.skills.filter((s) => s.isSelected).length;
+    const isSelecting = !skill.isSelected;
+    if (isSelecting) {
+      if (numSelected < maxSelectedSkills) {
+        skill.isSelected = true;
       }
+    } else {
+      skill.isSelected = false;
     }
   }
 
@@ -98,7 +105,7 @@ export class HeroOverview extends React.Component<
                 <h1 style={{whiteSpace: "nowrap"}}>Targets</h1>
                 <PositionDots
                   color="red"
-                  innerValues={PositionDots.getHostileValues(hero.skills)}
+                  innerValues={PositionDots.getHostileValues(hero.skills).reverse()}
                 />
               </Column>
             </Row>
