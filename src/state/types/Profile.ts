@@ -290,7 +290,7 @@ export class Profile {
   returnPartyFromQuest (quest: Quest) {
     const dungeon = this.dungeons.find((d) => d.id === quest.dungeonId);
 
-    // For successful journeys we hand out experience
+    // For successful journeys we hand out experience and rewards
     if (quest.status === QuestStatus.Victory) {
       // Give experience to the surviving heroes
       quest.party.forEach((hero) => hero.experience += dungeon.experienceWorth);
@@ -299,6 +299,11 @@ export class Profile {
       const wholeParty = [...quest.party, ...quest.deceased];
       const partyExperienceWorth = wholeParty.reduce((sum, hero) => sum + hero.experienceWorth, 0);
       dungeon.experience += partyExperienceWorth;
+
+      // Add rewards to profile inventory
+      while (quest.rewards.length) {
+        this.items.push(quest.rewards.pop());
+      }
     }
 
     // Return living heroes to roster
