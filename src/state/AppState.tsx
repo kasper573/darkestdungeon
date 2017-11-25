@@ -75,7 +75,8 @@ export class AppState {
               p.heirloomCounts,
               p.selectedQuest.currentRoomId,
               p.selectedQuest.inBattle,
-              p.selectedQuest.turn
+              p.selectedQuest.turn,
+              p.selectedQuest.turnActorIndex
             ])
           };
         },
