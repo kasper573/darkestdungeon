@@ -77,7 +77,12 @@ export class DungeonOverview extends AppStateComponent {
       position: {x: 0, y: 0},
       modalState: ModalState.Opaque,
       id: "heroOverview",
-      content: <HeroOverview hero={hero}/>
+      content: (
+        <HeroOverview
+          hero={hero}
+          enableSkillSelection={() => !this.selectedQuest.inBattle}
+        />
+      )
     });
   }
 

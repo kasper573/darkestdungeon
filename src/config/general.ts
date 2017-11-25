@@ -68,7 +68,7 @@ export function addStaticState () {
   crush.stats.statuses.get(CharacterStatus.Bleed).value = 0.5;
   crush.stats.statusDamageScales.get(CharacterStatus.Bleed).value = 0.5;
   crush.position = [false, false, true, true];
-  crush.target = SkillTarget.oneOf([false, true, true, true]);
+  crush.target = SkillTarget.oneOf([false, true, false, true]);
 
   const rampart = new SkillInfo();
   rampart.id = rampart.name = "Rampart";
@@ -80,7 +80,7 @@ export function addStaticState () {
   rampart.stats.statuses.get(CharacterStatus.Move).value = 1;
   rampart.stats.statuses.get(CharacterStatus.Stun).value = 1;
   rampart.position = [false, true, true, true];
-  rampart.target = SkillTarget.oneOf([false, true, true, true]);
+  rampart.target = SkillTarget.oneOf([true, false, true, false]);
 
   const bellow = new SkillInfo();
   bellow.id = bellow.name = "Bellow";
@@ -93,7 +93,7 @@ export function addStaticState () {
   bellow.statusTurns = 1;
   bellow.stats.statuses.get(CharacterStatus.Move).value = 1;
   bellow.stats.statuses.get(CharacterStatus.Stun).value = 1;
-  bellow.position = [false, true, true, true];
+  bellow.position = [false, true, true, false];
   bellow.target = SkillTarget.anyOne(SkillTargetObject.Enemy);
   bellow.stats.statuses.get(CharacterStatus.Buff).value = 0.8;
   bellow.buff = new TurnStats();

@@ -45,7 +45,12 @@ export class DungeonSelections {
       // Select/Deselect skills when entering/leaving battle
       autorun(() => {
         const hero = quest.inBattle && this.hero;
-        this.selectSkill(hero ? hero.selectedSkills[0] : undefined);
+        const usableSkills = hero.selectedSkills.filter((skill) =>
+          skill.info.canUse(
+            this.hero, quest.allies, quest.enemies
+          )
+        );
+        this.selectSkill(hero ? usableSkills[0] : undefined);
       })
     ];
   }

@@ -8,7 +8,34 @@ import {PositionDots} from "./PositionDots";
 import {Skill} from "../state/types/Skill";
 import {removeItem} from "../lib/Helpers";
 
-export class SkillBreakdown extends React.Component<{skill: Skill}> {
+export class SkillBreakdown extends React.Component<{
+  skill: Skill
+}> {
+  renderPositions () {
+    const values = PositionDots.getPositionValues([this.props.skill]).map((value) => value * 3);
+
+    return (
+      <PositionDots color="yellow" innerValues={values} size={7}/>
+    );
+  }
+
+  renderTargets () {
+    const skill = this.props.skill;
+    const isSupport = skill.info.target.object === SkillTargetObject.Ally;
+    const values = isSupport ?
+      PositionDots.getSupportValues([skill]) :
+      PositionDots.getHostileValues([skill]);
+
+    const dotColor = isSupport ? "green" : "red";
+    const dotInnerValues = values.map((value) => value * 3).reverse();
+
+    return (
+      <div className={css(styles.targets)}>
+        <PositionDots color={dotColor} innerValues={dotInnerValues} size={7}/>
+      </div>
+    );
+  }
+
   render () {
     const skill = this.props.skill;
     const displayedStats = skill.stats.nonNeutral.slice();
@@ -19,18 +46,12 @@ export class SkillBreakdown extends React.Component<{skill: Skill}> {
       displayedStats.find((stat) => stat.info.id === buffStat.info.id)
     );
 
-    const dotColor = skill.info.target.object === SkillTargetObject.Enemy ? "red" : "yellow";
-    const dotInnerValues = skill.info.target.spots.map((spot) => spot ? 3 : 0);
-
     return (
       <div>
-        <PositionDots
-          color={dotColor}
-          classStyle={styles.dots}
-          innerValues={dotInnerValues}
-          size={7}
-        />
-
+        <Row>
+          {this.renderPositions()}
+          {this.renderTargets()}
+        </Row>
         <div className={css(commonStyles.positiveText)}>
           {skill.info.name}
         </div>
@@ -56,8 +77,8 @@ export class SkillBreakdown extends React.Component<{skill: Skill}> {
 }
 
 const styles = StyleSheet.create({
-  dots: {
-    position: "absolute",
-    top: 0, right: 0
+  targets: {
+    flex: 1,
+    alignItems: "flex-end"
   }
 });

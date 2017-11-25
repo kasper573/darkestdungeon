@@ -46,7 +46,9 @@ export class CharacterModel extends React.Component<{
         onClick={this.props.onClick}
         onContextMenu={(e) => {
           e.preventDefault();
-          this.props.onRightClick();
+          if (this.props.onRightClick) {
+            this.props.onRightClick();
+          }
           return false;
         }}>
         <div>{c.name}</div>
