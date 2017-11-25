@@ -73,6 +73,7 @@ export class AppState {
               p.estateEvent.shown,
               p.gold,
               p.heirloomCounts,
+              p.selectedQuest.status,
               p.selectedQuest.currentRoomId,
               p.selectedQuest.inBattle,
               p.selectedQuest.turn,
