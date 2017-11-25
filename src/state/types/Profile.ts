@@ -5,7 +5,7 @@ import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
 import {Hero} from "./Hero";
 import {Quest, QuestId} from "./Quest";
-import {Item} from "./Item";
+import {countHeirlooms, Item} from "./Item";
 import {Dungeon} from "./Dungeon";
 import {generateHero, generateQuest} from "../Generators";
 import {cap, contains, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
@@ -73,12 +73,7 @@ export class Profile {
   }
 
   @computed get heirloomCounts () {
-    return this.items
-      .filter((item) => item.info.type === ItemType.Heirloom)
-      .reduce((sum, item) => {
-        sum.set(item.info.heirloomType, (sum.get(item.info.heirloomType) || 0) + 1);
-        return sum;
-      }, new Map<HeirloomType, number>());
+    return countHeirlooms(this.items);
   }
 
   @computed get lineupSlots () {
@@ -155,6 +150,11 @@ export class Profile {
   purchaseItem (item: Item, inventory: Item[]) {
     this.gold -= item.info.value;
     inventory.push(item);
+  }
+
+  sellItem (item: Item, inventory: Item[]) {
+    this.gold += item.info.sellValue;
+    removeItem(inventory, item);
   }
 
   getResidencyCost (residency: HeroResidentInfo) {
@@ -288,9 +288,25 @@ export class Profile {
   }
 
   returnPartyFromQuest (quest: Quest) {
-    // Return questing heroes to roster or graveyard
-    quest.party.forEach((m) => moveItem(m, quest.party, this.roster));
-    quest.deceased.forEach((m) => moveItem(m, quest.deceased, this.graveyard));
+    // Return living heroes to roster
+    while (quest.party.length) {
+      moveItem(quest.party[0], quest.party, this.roster);
+    }
+
+    // Send dead heroes to the graveyard
+    while (quest.deceased.length) {
+      moveItem(quest.deceased[0], quest.deceased, this.graveyard);
+    }
+
+    // Sell all sellables
+    quest.items
+      .filter((item) => item.info.isSellable)
+      .forEach((item) => this.sellItem(item, quest.items));
+
+    // Add remaining items to profile inventory
+    quest.items.forEach(
+      (item) => moveItem(item, quest.items, this.items)
+    );
   }
 
   recruitHero (hero: Hero) {

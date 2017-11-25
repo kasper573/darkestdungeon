@@ -41,7 +41,7 @@ class HeroResult extends React.Component<{
             <QuirkFaces/>
           </Row>
         </Column>
-        <HeroFlag hero={this.props.hero} />
+        {this.props.hero.isAlive ? <HeroFlag hero={this.props.hero} /> : "Dead"}
       </Row>
     );
   }

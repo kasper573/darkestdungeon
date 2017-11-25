@@ -35,18 +35,11 @@ export class DungeonResult extends AppStateComponent {
     );
   }
 
-  checkoutQuestItems () {
-    while (this.activeProfile.selectedQuest.items.length) {
-      this.activeProfile.items.push(
-        this.activeProfile.selectedQuest.items.pop()
-      );
-    }
-  }
-
   @action
   async returnToEstate () {
     await this.appState.router.goto("estateOverview");
-    this.checkoutQuestItems();
+
+    // Update all state at the very end of the dungeon session
     this.activeProfile.returnPartyFromQuest(this.selectedQuest);
     this.activeProfile.gotoNextWeek();
   }
