@@ -117,10 +117,10 @@ class HPAndStress extends React.Component<{character: Character}> {
   render () {
     return (
       <div>
-        <span style={{whiteSpace: "nowrap"}}>
+        <span className={css(commonStyles.nowrap)}>
           HP: {this.props.character.stats.health.value} / {this.props.character.stats.maxHealth.value}
         </span>
-        <span style={{whiteSpace: "nowrap"}}>
+        <span className={css(commonStyles.nowrap)}>
           Stress: {this.props.character.stats.stress.value} / {this.props.character.stats.maxStress.value}
         </span>
       </div>

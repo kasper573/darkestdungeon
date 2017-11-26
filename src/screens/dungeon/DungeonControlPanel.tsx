@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Column, Row} from "../../config/styles";
+import {Column, commonStyles, Row} from "../../config/styles";
 import {DungeonCharacterSummary} from "./DungeonCharacterSummary";
 import {css, StyleSheet} from "aphrodite";
 import {Inventory} from "../../ui/Inventory";
@@ -67,11 +67,11 @@ export class DungeonControlPanel extends React.Component<{
             )}
           </Column>
           <Column classStyle={styles.controlPanelBox}>
-            <Row style={{flex: 1}}>
+            <Row classStyle={commonStyles.fill}>
               <Column>
                 {this.renderSideContent()}
               </Column>
-              <div style={{borderLeft: "2px solid gray", paddingLeft: 2, width: 50}}>
+              <div className={css(styles.sideMenu)}>
                 <span onClick={() => this.isMapVisible = true}>[MAP]</span>
                 <span onClick={() => this.isMapVisible = false}>[INV]</span>
               </div>
@@ -93,5 +93,11 @@ const styles = StyleSheet.create({
     border: "2px solid gray",
     margin: 2,
     padding: 2
+  },
+
+  sideMenu: {
+    borderLeft: "2px solid gray",
+    paddingLeft: 2,
+    width: 50
   }
 });

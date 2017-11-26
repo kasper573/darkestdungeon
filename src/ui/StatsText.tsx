@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Column, commonStyles} from "../config/styles";
+import {Column, commonStyles, Row} from "../config/styles";
 import {StatItem} from "../state/types/StatItem";
 import {TooltipArea} from "../lib/TooltipArea";
 import {StatsBreakdown} from "./StatsBreakdown";
@@ -27,21 +27,22 @@ export class StatsText extends React.Component<{stats: StatItem, long?: boolean}
 
     return (
       <TooltipArea
+        classStyle={classStyle}
         tip={this.props.stats.mods.length > 0 && (
           <StatsBreakdown stats={this.props.stats}/>
-        )}
-        style={{flexDirection: "row"}}
-        classStyle={classStyle}>
-        <Column style={{whiteSpace: "nowrap"}}>
-          {
-            this.props.long ?
-              this.props.stats.info.longName :
-              this.props.stats.info.shortName
-          }
+        )}>
+        <Row>
+          <Column classStyle={commonStyles.nowrap}>
+            {
+              this.props.long ?
+                this.props.stats.info.longName :
+                this.props.stats.info.shortName
+            }
+            </Column>
+          <Column classStyle={commonStyles.resetFlex}>
+            {this.props.stats.toString()}
           </Column>
-        <Column style={{flex: "inherit"}}>
-          {this.props.stats.toString()}
-        </Column>
+        </Row>
       </TooltipArea>
     );
   }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
-import {Row} from "../config/styles";
+import {commonStyles, Row} from "../config/styles";
 import {Profile} from "../state/types/Profile";
 import {observer} from "mobx-react";
 import {DragDropSlot} from "../lib/DragDropSlot";
@@ -41,7 +41,7 @@ class LineupDropboxSlot extends React.Component<{
   render () {
     const member = this.props.member;
     return (
-      <TooltipArea style={{flex: 1}} tip={member && <HeroBreakdown hero={member}/>}>
+      <TooltipArea classStyle={commonStyles.fill} tip={member && <HeroBreakdown hero={member}/>}>
         <DragDropSlot
           type={Hero}
           item={member}
