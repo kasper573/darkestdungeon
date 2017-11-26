@@ -6,6 +6,7 @@ import {DungeonResultItems} from "./DungeonResultItems";
 import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import {AppStateComponent} from "../../AppStateComponent";
+import {CommonButton} from "../../ui/CommonButton";
 
 @observer
 export class DungeonResult extends AppStateComponent {
@@ -28,9 +29,9 @@ export class DungeonResult extends AppStateComponent {
 
         {slideContent}
 
-        <button onClick={continueFn}>
+        <CommonButton onClick={continueFn}>
           {continueLabel}
-        </button>
+        </CommonButton>
       </div>
     );
   }

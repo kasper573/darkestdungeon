@@ -2,20 +2,14 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {Path} from "../../state/types/Path";
 import {PauseMenu} from "../../ui/PauseMenu";
-import {Inventory} from "../../ui/Inventory";
 import {EstateRoster} from "./EstateRoster";
-import {ModalState} from "../../state/PopupState";
 import {observer} from "mobx-react";
-import {Popup} from "../../ui/Popups";
-import {HeirloomTrader} from "../../ui/HeirloomTrader";
-import {commonStyles, Row} from "../../config/styles";
 import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
 import {PathTypes} from "../../state/types/Path";
-import {Heirlooms} from "../../ui/Heirlooms";
-import {TooltipArea} from "../../lib/TooltipArea";
-import {ItemType} from "../../state/types/ItemInfo";
+import {EstateFooter} from "./EstateFooter";
+import {commonStyles} from "../../config/styles";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -49,7 +43,7 @@ export class EstateTemplate extends AppStateComponent<{
   render () {
     const isShowingBuilding = this.props.path.parts.length > 1;
     return (
-      <div className={css(styles.container)}>
+      <div className={css(commonStyles.fill)}>
         <InputBindings list={[
           [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
         ]}/>
@@ -63,49 +57,12 @@ export class EstateTemplate extends AppStateComponent<{
           {this.props.children}
         </div>
 
-        <div className={css(styles.footer)}>
-          <Row classStyle={styles.footerLeft}>
-            <span>Gold: {this.activeProfile.goldAfterDebt}</span>
-            <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
-            <TooltipArea
-              tip={<span className={css(commonStyles.nowrap)}>Trade heirlooms</span>}
-              onClick={() => this.appState.popups.show({
-                content: <Popup><HeirloomTrader/></Popup>,
-                modalState: ModalState.Opaque,
-                id: "heirloomTrader"
-              })}
-            >
-              [⇅]
-            </TooltipArea>
-          </Row>
-          <div className={css(styles.footerCenter)}>
-            <button onClick={() => this.onContinueSelected()}>
-              {this.props.continueLabel}
-            </button>
-          </div>
-          <div className={css(styles.footerRight)}>
-            {this.props.inventory && (
-              <span onClick={() => this.appState.popups.show({
-                id: "inventory",
-                modalState: ModalState.Opaque,
-                content: (
-                  <Popup>
-                    <Inventory
-                      heroes={this.activeProfile.roster}
-                      items={this.activeProfile.items}
-                      filter={(i) => i.info.type !== ItemType.Heirloom}
-                    />
-                  </Popup>
-                )
-              })}>
-              [INVENTORY]
-            </span>
-            )}
-            <span onClick={() => this.pause()}>
-              [PAUSE MENU]
-            </span>
-          </div>
-        </div>
+        <EstateFooter
+          continueLabel={this.props.continueLabel}
+          inventory={this.props.inventory}
+          onContinueRequested={() => this.continueToNextScreen()}
+          onPauseRequested={() => this.pause()}
+        />
 
         {this.props.roster && (
           <EstateRoster
@@ -117,7 +74,7 @@ export class EstateTemplate extends AppStateComponent<{
     );
   }
 
-  onContinueSelected () {
+  continueToNextScreen () {
     this.props.continueCheck()
       .then((okToContinue) => {
         if (okToContinue === undefined || okToContinue) {
@@ -128,11 +85,6 @@ export class EstateTemplate extends AppStateComponent<{
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30
-  },
-
   header: {
     position: "absolute",
     top: 0, left: 0,
@@ -144,31 +96,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
-  },
-
-  footer: {
-    height: 60,
-    flexDirection: "row",
-    backgroundColor: "black",
-    borderTop: "2px solid #333",
-    borderBottom: "2px solid #333",
-    padding: 10,
-    marginBottom: 20,
-    alignItems: "center"
-  },
-
-  footerLeft: {
-    flex: 1
-  },
-
-  footerCenter: {
-    marginLeft: 20,
-    marginRight: 20
-  },
-
-  footerRight: {
-    flex: 1,
-    justifyContent: "flex-end",
-    flexDirection: "row"
   }
 });
