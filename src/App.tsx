@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     width: grid.outerWidth,
     height: grid.outerHeight,
     overflow: "hidden",
-    background: "#222",
+    background: "#ab36ff",
     color: "white"
   }
 });
