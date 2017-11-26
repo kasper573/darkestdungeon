@@ -8,7 +8,7 @@ import {ModalState} from "../../state/PopupState";
 import {observer} from "mobx-react";
 import {Popup} from "../../ui/Popups";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
-import {Row} from "../../config/styles";
+import {commonStyles, Row} from "../../config/styles";
 import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
@@ -68,7 +68,7 @@ export class EstateTemplate extends AppStateComponent<{
             <span>Gold: {this.activeProfile.goldAfterDebt}</span>
             <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
             <TooltipArea
-              tip={<span style={{whiteSpace: "nowrap"}}>Trade heirlooms</span>}
+              tip={<span className={css(commonStyles.nowrap)}>Trade heirlooms</span>}
               onClick={() => this.appState.popups.show({
                 content: <Popup><HeirloomTrader/></Popup>,
                 modalState: ModalState.Opaque,

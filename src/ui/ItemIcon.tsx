@@ -32,7 +32,7 @@ export class ItemIcon extends React.Component<{
         classStyle={containerStyle}
         style={this.props.style}>
         <div
-          style={{flex: 1}}
+          className={css(commonStyles.fill)}
           onClick={this.props.onClick.bind(this)}
           onContextMenu={(e) => {
             e.preventDefault();

@@ -2,6 +2,18 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 
 export const commonStyles = StyleSheet.create({
+  fill: {
+    flex: 1
+  },
+
+  nowrap: {
+    whiteSpace: "nowrap"
+  },
+
+  resetFlex: {
+    flex: "inherit"
+  },
+
   heroName: {
     fontWeight: "bold",
     color: "rgb(200, 180, 110)"

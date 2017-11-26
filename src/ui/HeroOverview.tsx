@@ -1,8 +1,8 @@
 import * as React from "react";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
-import {StyleSheet} from "aphrodite";
-import {Column, Row} from "../config/styles";
+import {css, StyleSheet} from "aphrodite";
+import {Column, commonStyles, Row} from "../config/styles";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {PositionDots} from "./PositionDots";
@@ -74,7 +74,7 @@ export class HeroOverview extends React.Component<
                   <Column>
                     {hero.perks.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
-                  <Column style={{textAlign: "right"}}>
+                  <Column classStyle={styles.flaws}>
                     {hero.flaws.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
                 </Row>
@@ -93,16 +93,16 @@ export class HeroOverview extends React.Component<
           <Column>
             <CommonHeader label="Skills"/>
             <Row>
-              <Column style={{alignItems: "center"}}>
-                <h1 style={{whiteSpace: "nowrap"}}>Positions</h1>
+              <Column classStyle={styles.positionDots}>
+                <h1 className={css(commonStyles.nowrap)}>Positions</h1>
                 <PositionDots
                   color="gold"
                   innerValues={PositionDots.getPositionValues(hero.skills)}
                   outerValues={PositionDots.getSupportValues(hero.skills)}
                 />
               </Column>
-              <Column style={{alignItems: "center"}}>
-                <h1 style={{whiteSpace: "nowrap"}}>Targets</h1>
+              <Column classStyle={styles.positionDots}>
+                <h1 className={css(commonStyles.nowrap)}>Targets</h1>
                 <PositionDots
                   color="red"
                   innerValues={PositionDots.getHostileValues(hero.skills).reverse()}
@@ -138,6 +138,14 @@ export class HeroOverview extends React.Component<
 const styles = StyleSheet.create({
   heroInfo: {
     minWidth: 450
+  },
+
+  flaws: {
+    textAlign: "right"
+  },
+
+  positionDots: {
+    alignItems: "center"
   },
 
   model: {

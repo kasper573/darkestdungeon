@@ -7,6 +7,7 @@ import {smoke} from "../../assets/sprites";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {grid} from "../config/Grid";
+import {commonStyles} from "../config/styles";
 
 @observer
 export class Loading extends AppStateComponent<{target: Path}> {
@@ -37,7 +38,7 @@ export class Loading extends AppStateComponent<{target: Path}> {
         <div className={css(styles.box)}>
           {this.props.target ? this.props.target.toString() : "Loading"}
         </div>
-        <div style={{flex: 1}}/>
+        <div className={css(commonStyles.fill)}/>
         <div className={css(styles.box, styles.footer)}>
           <p>Lorem ipsum dolor sit amet.</p>
           <Sprite {...smoke} classStyle={styles.torch}/>

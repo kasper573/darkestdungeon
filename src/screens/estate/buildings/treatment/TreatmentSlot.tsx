@@ -2,7 +2,7 @@ import * as React from "react";
 import {GoldText} from "../../../../ui/GoldText";
 import {TooltipArea} from "../../../../lib/TooltipArea";
 import {Avatar} from "../../../../ui/Avatar";
-import {Row} from "../../../../config/styles";
+import {commonStyles, Row} from "../../../../config/styles";
 import {css, StyleSheet} from "aphrodite";
 import {Hero} from "../../../../state/types/Hero";
 import {DragDropSlot} from "../../../../lib/DragDropSlot";
@@ -64,7 +64,7 @@ export class TreatmentSlot extends React.Component<{
           return (
             <div className={css(styles.slotInner, this.getSlotStyle(draggedHero))}>
               {this.props.resident && (
-                <Row style={{flex: 1}}>
+                <Row classStyle={commonStyles.fill}>
                   <Avatar
                     classStyle={styles.slotAvatar}
                     src={this.props.resident.classInfo.avatarUrl}/>

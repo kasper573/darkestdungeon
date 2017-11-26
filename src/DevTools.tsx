@@ -26,13 +26,13 @@ export class DevTools extends AppStateComponent {
                 onChange={() => this.gotoSelectedPath()}>
           {pathOptions}
         </select>
-        <button style={{width: 50}} onClick={() => this.gotoSelectedPath()}>
+        <button onClick={() => this.gotoSelectedPath()}>
           Go
         </button>
-        <button style={{width: 50}} onClick={() => this.appState.save()}>
+        <button onClick={() => this.appState.save()}>
           Save
         </button>
-        <button style={{width: 50}} onClick={() => this.appState.load()}>
+        <button onClick={() => this.appState.load()}>
           Load
         </button>
         {!this.appState.isRunningJest && <AppStats/>}

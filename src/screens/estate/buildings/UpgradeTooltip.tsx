@@ -11,15 +11,15 @@ export class UpgradeTooltip extends React.Component<{
   render () {
     return (
       <div>
-        <Row style={{whiteSpace: "nowrap"}}>
+        <Row classStyle={commonStyles.nowrap}>
           <span>Cost: </span>
           {this.props.cost}
         </Row>
         {this.props.children}
         {!this.props.isAvailable && (
-          <div style={{whiteSpace: "nowrap"}}>
+          <div className={css(commonStyles.nowrap)}>
             <div className={css(commonStyles.commonName)}>Prerequisites:</div>
-            <span style={{color: "red"}}>
+            <span className={css(commonStyles.negativeText)}>
               {this.props.prerequisiteName} Level {this.props.prerequisiteLevel}
             </span>
           </div>

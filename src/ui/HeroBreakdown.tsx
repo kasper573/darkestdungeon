@@ -26,9 +26,7 @@ export class HeroBreakdown extends React.Component<{hero: Hero}> {
     return (
       <ul className={css(styles.container)}>
         <li>{c.classInfo.name} (Level {c.level.number})</li>
-        <li style={{flexDirection: "row"}}>
-          Resolve XP: {experience}
-        </li>
+        <Row>Resolve XP: {experience}</Row>
         {afflictionItem}
         <li>Stress {c.stats.stress.value}/{c.stats.maxStress.value}</li>
       </ul>

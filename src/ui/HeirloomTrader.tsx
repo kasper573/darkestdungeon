@@ -1,6 +1,6 @@
 import * as React from "react";
 import {StaticState} from "../state/StaticState";
-import {Column, Row} from "../config/styles";
+import {Column, commonStyles, Row} from "../config/styles";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {without} from "../lib/Helpers";
@@ -8,6 +8,7 @@ import {ItemInfo} from "../state/types/ItemInfo";
 import {AppStateComponent} from "../AppStateComponent";
 import {cap} from "../lib/Helpers";
 import {Heirloom} from "./Heirloom";
+import {css, StyleSheet} from "aphrodite";
 
 @observer
 export class HeirloomTrader extends AppStateComponent {
@@ -56,20 +57,24 @@ export class HeirloomTrader extends AppStateComponent {
     const canDecrease = (this.tradeAmount - 1) >= this.minTradableHeirlooms;
     return (
       <Row>
-        <Column style={{flex: 1}}>
-          <span style={{flex: 1}} onClick={() => this.offsetSelectedHeirloom(1)}>[^]</span>
+        <Column classStyle={commonStyles.fill}>
+          <span className={css(commonStyles.fill)} onClick={() => this.offsetSelectedHeirloom(1)}>[^]</span>
           <span>{this.selectedHeirloom.name}</span>
-          <span style={{flex: 1, justifyContent: "flex-end"}} onClick={() => this.offsetSelectedHeirloom(-1)}>[v]</span>
+          <span
+            className={css(commonStyles.fill, styles.end)}
+            onClick={() => this.offsetSelectedHeirloom(-1)}>
+            [v]
+          </span>
         </Column>
 
-        <Column style={{flex: 1}}>
-          <span style={{flex: 1}}>
+        <Column classStyle={commonStyles.fill}>
+          <span className={css(commonStyles.fill)}>
             {canIncrease && (
               <span onClick={() => this.tradeAmount++}>[+]</span>
             )}
           </span>
           <span>x{this.tradeAmount}</span>
-          <span style={{flex: 1, justifyContent: "flex-end"}}>
+          <span className={css(commonStyles.fill, styles.end)}>
             {canDecrease && (
               <span onClick={() => this.tradeAmount--}>[-]</span>
             )}
@@ -82,14 +87,14 @@ export class HeirloomTrader extends AppStateComponent {
               this.tradeAmount, this.selectedHeirloom.heirloomType, targetHeirloom.heirloomType
             );
             return (
-              <Row style={{flex: 1}} key={targetHeirloom.id}>
-                <span style={{flex: 1, justifyContent: "center"}}>
+              <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
+                <span className={css(commonStyles.fill, styles.center)}>
                   <Heirloom info={targetHeirloom}/>
                 </span>
-                <span style={{justifyContent: "center", marginLeft: 10, marginRight: 10}}>
+                <span className={css(commonStyles.fill, styles.center, styles.amount)}>
                   x{convertedAmount}
                 </span>
-                <span style={{width: 25, height: 22}}>
+                <span className={css(styles.convertButton)}>
                   {convertedAmount > 0 && (
                     <button onClick={() => this.tradeSelectedHeirlooms(targetHeirloom)}>
                       >
@@ -104,3 +109,23 @@ export class HeirloomTrader extends AppStateComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  end: {
+    justifyContent: "flex-end"
+  },
+
+  center: {
+    justifyContent: "center"
+  },
+
+  amount: {
+    marginLeft: 10,
+    marginRight: 10
+  },
+
+  convertButton: {
+    width: 25,
+    height: 22
+  }
+});

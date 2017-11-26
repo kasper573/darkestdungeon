@@ -19,13 +19,13 @@ export class DungeonBreakdown extends React.Component<{
 
   render () {
     return (
-      <div style={{textAlign: "center"}}>
+      <div>
         <Row>
           <span className={css(commonStyles.dungeonName)}>{this.props.name}</span>
           <span>Level {this.props.level}</span>
           <span>({Math.round(this.props.progress * 100)}%)</span>
         </Row>
-        <ul style={{flexDirection: "row"}}>
+        <Row>
           {this.props.quests.map((quest) =>
             <QuestSelector
               key={quest.id}
@@ -34,7 +34,7 @@ export class DungeonBreakdown extends React.Component<{
               onSelected={() => this.props.onQuestSelected(quest)}
             />
           )}
-        </ul>
+        </Row>
       </div>
     );
   }

@@ -73,7 +73,7 @@ export class BattleTester extends AppStateComponent {
 
         <div>
           <CommonHeader label="Battle Info"/>
-          <div style={{width: 200}}>
+          <div>
             Turn: {this.battler.turn}<br/>
             Actor: {this.battler.turnActorIndex}
           </div>

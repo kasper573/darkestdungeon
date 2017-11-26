@@ -7,6 +7,7 @@ import {observer} from "mobx-react";
 import {Popup, Prompt} from "../ui/Popups";
 import {AppStateComponent} from "../AppStateComponent";
 import {enumMap, mapMap} from "../lib/Helpers";
+import {commonStyles, Row} from "../config/styles";
 
 @observer
 export class PopupTester extends AppStateComponent {
@@ -42,43 +43,43 @@ export class PopupTester extends AppStateComponent {
 
     return (
       <div className={css(styles.fill)} onClick={(e) => this.pop(e)}>
-        <div style={{flexDirection: "row"}}>
+        <Row>
           <TooltipArea
             side={TooltipSide.Right}
             show={this.popupQueue.length > 0}
             tip="Click to place popup. Ctrl+click for default position.">
             Modal Popups
           </TooltipArea>
-          <div style={{flex: 1}}/>
-        </div>
+          <div className={css(commonStyles.fill)}/>
+        </Row>
         <br/>
-        <div style={{flexDirection: "row"}}>
+        <Row>
           <span>Align: </span>
           {this.renderPlacementButtons(ModalState.Modal)}
-        </div>
+        </Row>
         <br/>
 
         <h1>Modal Popups (dismissable)</h1>
         <br/>
-        <div style={{flexDirection: "row"}}>
+        <Row>
           <span>Align: </span>
           {this.renderPlacementButtons(ModalState.ModalDismiss)}
-        </div>
+        </Row>
         <br/>
 
         <h1>Opaque Popups</h1>
         <br/>
-        <div style={{flexDirection: "row"}}>
+        <Row>
           <span>Align: </span>
           {this.renderPlacementButtons(ModalState.Opaque)}
-        </div>
+        </Row>
         <br/>
 
         <h1>Tooltips</h1>
         <br/>
-        <div style={{flexDirection: "row"}}>
+        <Row>
           {tooltipAreas}
-        </div>
+        </Row>
         <br/>
 
         <button onClick={() => this.prompt()}>Prompt</button>
@@ -135,7 +136,7 @@ class Tip extends React.Component {
 
   render () {
     return (
-      <div style={{maxWidth: 300, maxHeight: 300, overflow: "hidden"}}>
+      <div className={css(styles.tip)}>
         {this.messages.map((msg, index) => (
           <div key={index}>{msg}</div>
         ))}
@@ -148,6 +149,12 @@ const styles = StyleSheet.create({
   fill: {
     flex: 1,
     backgroundColor: "#999"
+  },
+
+  tip: {
+    maxWidth: 300,
+    maxHeight: 300,
+    overflow: "hidden"
   },
 
   anything: {
