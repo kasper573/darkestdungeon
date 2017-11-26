@@ -11,7 +11,7 @@ export class HeroBreakdown extends React.Component<{hero: Hero}> {
     const c = this.props.hero;
 
     const afflictionItem = c.affliction && (
-      <Row classStyle={commonStyles.afflictionText}>
+      <Row classStyle={commonStyles.negativeText}>
         <span>Affliction:</span>
         <QuirkText quirk={c.affliction}/>
       </Row>

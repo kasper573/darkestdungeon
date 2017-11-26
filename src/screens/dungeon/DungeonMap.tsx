@@ -4,6 +4,7 @@ import {QuestRoom} from "../../state/types/QuestRoom";
 import {grid} from "../../config/Grid";
 import {Quest} from "../../state/types/Quest";
 import {observer} from "mobx-react";
+import {commonStyleFn} from "../../config/styles";
 
 @observer
 export class DungeonMap extends React.Component<{
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     width: cellSize,
     height: cellSize,
     background: "gray",
-    border: "1px solid gray",
+    border: commonStyleFn.outline(),
     opacity: 0.5
   },
 

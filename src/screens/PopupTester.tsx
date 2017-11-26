@@ -7,7 +7,7 @@ import {observer} from "mobx-react";
 import {Popup, Prompt} from "../ui/Popups";
 import {AppStateComponent} from "../AppStateComponent";
 import {enumMap, mapMap} from "../lib/Helpers";
-import {commonStyles, Row} from "../config/styles";
+import {commonStyleFn, commonStyles, Row} from "../config/styles";
 
 @observer
 export class PopupTester extends AppStateComponent {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
 
   anything: {
-    border: "2px solid green",
+    border: commonStyleFn.border("green"),
     backgroundColor: "black",
     color: "white",
     padding: 10

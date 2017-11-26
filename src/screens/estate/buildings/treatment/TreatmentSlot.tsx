@@ -2,10 +2,11 @@ import * as React from "react";
 import {GoldText} from "../../../../ui/GoldText";
 import {TooltipArea} from "../../../../lib/TooltipArea";
 import {Avatar} from "../../../../ui/Avatar";
-import {commonStyles, Row} from "../../../../config/styles";
+import {commonStyleFn, commonStyles, Row} from "../../../../config/styles";
 import {css, StyleSheet} from "aphrodite";
 import {Hero} from "../../../../state/types/Hero";
 import {DragDropSlot} from "../../../../lib/DragDropSlot";
+import {grid} from "../../../../config/Grid";
 
 export class TreatmentSlot extends React.Component<{
   goldRequired?: number,
@@ -87,10 +88,9 @@ export class TreatmentSlot extends React.Component<{
 const styles = StyleSheet.create({
   slotContainer: {
     flex: 1,
-    border: "2px solid gray",
-    marginRight: 5,
-    "last-child": {
-      marginRight: 0
+    border: commonStyleFn.border(),
+    ":not(last-child)": {
+      marginRight: grid.gutter / 2
     }
   },
 

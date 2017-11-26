@@ -5,6 +5,10 @@ export class Grid {
     return this.gutterWidth || this.gutterHeight;
   }
 
+  get border () {
+    return this.gutter / 5;
+  }
+
   get columnWidth () {
     return (this.width - this.gutterWidth * (this.columns - 1)) / this.columns;
   }

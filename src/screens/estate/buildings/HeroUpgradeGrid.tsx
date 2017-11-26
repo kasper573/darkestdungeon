@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Hero} from "../../../state/types/Hero";
-import {Column, commonStyles, Row} from "../../../config/styles";
+import {Column, commonStyleFn, commonStyles, Row} from "../../../config/styles";
 import {HeroUpgradeType} from "./HeroUpgradeShop";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../../../AppStateComponent";
@@ -161,7 +161,7 @@ class HeroUpgradeCell extends React.Component<{
 
 const styles = StyleSheet.create({
   upgrade: {
-    border: "2px solid gray"
+    border: commonStyleFn.border()
   },
 
   upgradeOverlay: {

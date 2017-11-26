@@ -45,7 +45,7 @@ class HeroResult extends React.Component<{
     return (
       <Row>
         <Column>
-          <div className={css(commonStyles.heroName)}>
+          <div className={css(commonStyles.commonName)}>
             {this.props.hero.name}
             </div>
           <Row>

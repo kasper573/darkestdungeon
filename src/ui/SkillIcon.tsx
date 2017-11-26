@@ -4,6 +4,8 @@ import {TooltipArea} from "../lib/TooltipArea";
 import {SkillBreakdown} from "./SkillBreakdown";
 import {Skill} from "../state/types/Skill";
 import {observer} from "mobx-react";
+import {commonColors, commonStyleFn} from "../config/styles";
+import {grid} from "../config/Grid";
 
 @observer
 export class SkillIcon extends React.Component<{
@@ -63,9 +65,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    marginRight: 2,
-    ":last-child": {
-      marginRight: 0
+    ":not(:last-child)": {
+      marginRight: grid.border
     },
 
     ":hover": {
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
   selectionIndicator: {
     position: "absolute",
     top: 0, right: 0, bottom: 0, left: 0,
-    border: "2px solid gold",
-    boxShadow: "inset 0 0 10px #000000"
+    border: commonStyleFn.border(commonColors.gold),
+    boxShadow: commonStyleFn.innerShadow()
   },
 
   levelIndicator: {

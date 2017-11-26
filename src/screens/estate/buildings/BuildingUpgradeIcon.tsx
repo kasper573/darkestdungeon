@@ -8,6 +8,7 @@ import {Heirlooms} from "../../../ui/Heirlooms";
 import {TooltipArea} from "../../../lib/TooltipArea";
 import {UpgradeTooltip} from "./UpgradeTooltip";
 import {StyleSheet} from "aphrodite";
+import {commonColors, commonStyleFn} from "../../../config/styles";
 
 @observer
 export class BuildingUpgradeIcon extends AppStateComponent<{
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   step: {
     width: stepSize,
     height: stepSize,
-    border: "1px solid gray",
+    border: commonStyleFn.outline("black"),
 
     ":hover": {
       boxShadow: "0px 0px 4px white"
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
 
   stepOwned: {
     backgroundColor: "gold",
-    border: "1px solid gold"
+    border: commonStyleFn.outline(commonColors.gold)
   },
 
   stepAvailable: {

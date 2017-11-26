@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Quest} from "../state/types/Quest";
 import {css, StyleSheet} from "aphrodite";
+import {commonStyleFn} from "../config/styles";
 
 export class QuestSelector extends React.Component<{
   quest: Quest,
@@ -24,6 +25,6 @@ const styles = StyleSheet.create({
   },
 
   selected: {
-    border: "2px solid black"
+    border: commonStyleFn.border("black")
   }
 });

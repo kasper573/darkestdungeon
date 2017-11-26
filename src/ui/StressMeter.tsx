@@ -1,5 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
+import {commonStyleFn} from "../config/styles";
+import {grid} from "../config/Grid";
 
 export class StressMeter extends React.Component<{
   percentage: number,
@@ -49,10 +51,10 @@ const styles = StyleSheet.create({
     width: 6,
     height: 10,
     backgroundColor: "black",
-    border: "2px solid",
-    marginRight: 2,
-    ":last-child": {
-      marginRight: 0
+    border: commonStyleFn.border("transparent"),
+    
+    ":not(:last-child)": {
+      marginRight: grid.border
     }
   },
 

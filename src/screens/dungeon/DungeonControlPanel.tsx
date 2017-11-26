@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Column, commonStyles, Row} from "../../config/styles";
+import {Column, commonStyleFn, commonStyles, Row} from "../../config/styles";
 import {DungeonCharacterSummary} from "./DungeonCharacterSummary";
 import {css, StyleSheet} from "aphrodite";
 import {Inventory} from "../../ui/Inventory";
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
 
   controlPanelBox: {
-    border: "2px solid gray",
+    border: commonStyleFn.border(),
     margin: 2,
     padding: 2
   },

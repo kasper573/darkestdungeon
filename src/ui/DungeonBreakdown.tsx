@@ -21,7 +21,7 @@ export class DungeonBreakdown extends React.Component<{
     return (
       <div>
         <Row>
-          <span className={css(commonStyles.dungeonName)}>{this.props.name}</span>
+          <span className={css(commonStyles.commonName)}>{this.props.name}</span>
           <span>Level {this.props.level}</span>
           <span>({Math.round(this.props.progress * 100)}%)</span>
         </Row>
