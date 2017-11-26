@@ -5,12 +5,23 @@ import {grid} from "./Grid";
 export const commonColors = {
   bloodRed: "rgba(38, 0, 0, 1)",
   gold: "rgb(200, 180, 110)",
-  red: "red"
+  red: "rgb(177, 25, 0)",
+  gray: "#333",
+  darkGray: "#111"
 };
 
 export const commonStyleFn = {
+  boxShadow (inset: boolean = false, color = "#000000", size: number = grid.gutter) {
+    const prefix = inset ? "inset " : "";
+    return prefix + `0 0 ${size}px ${color}`;
+  },
+
   innerShadow (color = "#000000", size: number = grid.gutter) {
-    return `inset 0 0 ${size}px ${color}`;
+    return this.boxShadow(true, color, size);
+  },
+
+  outerShadow (color = "#000000", size: number = grid.gutter) {
+    return this.boxShadow(false, color, size);
   },
 
   border (color = "#333", size: number = grid.border) {
@@ -23,6 +34,24 @@ export const commonStyleFn = {
 
   textShadow (color = commonColors.gold, size: number = grid.gutter / 2) {
     return `0px 0px ${size}px ${color}`;
+  },
+
+  dockWithPadding (xPadding: number, yPadding: number): any {
+    return {
+      position: "absolute",
+      top: yPadding, right: xPadding, bottom: yPadding, left: xPadding
+    };
+  },
+
+  dock (side?: string) {
+    const style: any = {position: "absolute", top: 0, right: 0, bottom: 0, left: 0};
+    switch (side) {
+      case "top": delete style.bottom; break;
+      case "right": delete style.left; break;
+      case "bottom": delete style.top; break;
+      case "left": delete style.right; break;
+    }
+    return style;
   }
 };
 
