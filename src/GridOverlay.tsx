@@ -9,17 +9,15 @@ import {Column, Row} from "./config/styles";
 export class GridOverlay extends React.Component {
   render () {
     return (
-      <div className={css(styles.margin)}>
-        <div className={css(styles.clipper)}>
-          <div className={css(styles.grid)}>
-            {count(grid.rows).map((rowNumber) => (
-              <Row key={rowNumber} classStyle={styles.row}>
-                {count(grid.columns).map((columnNumber) => (
-                  <Column key={columnNumber} classStyle={styles.cell}/>
-                ))}
-              </Row>
-            ))}
-          </div>
+      <div className={css(styles.gridOverlay)}>
+        <div className={css(styles.grid)}>
+          {count(grid.rows).map((rowNumber) => (
+            <Row key={rowNumber} classStyle={styles.row}>
+              {count(grid.columns).map((columnNumber) => (
+                <Column key={columnNumber} classStyle={styles.cell}/>
+              ))}
+            </Row>
+          ))}
         </div>
       </div>
     );
@@ -27,7 +25,7 @@ export class GridOverlay extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  margin: {
+  gridOverlay: {
     position: "absolute",
     top: 0, right: 0, bottom: 0, left: 0,
 
