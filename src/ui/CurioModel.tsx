@@ -9,7 +9,7 @@ import {moveItem} from "../lib/Helpers";
 import {DungeonSelections} from "../screens/dungeon/DungeonSelections";
 import {StatsTextList} from "./StatsText";
 import {QuirkText} from "./QuirkText";
-import {Row} from "../config/styles";
+import {commonStyleFn, Row} from "../config/styles";
 import {computed, when} from "mobx";
 import {observer} from "mobx-react";
 import {ModalState} from "../state/PopupState";
@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
     background: "purple",
     padding: 3,
     margin: 3,
-    border: "2px solid gray"
+    border: commonStyleFn.border()
   }
 });

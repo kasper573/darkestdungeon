@@ -28,7 +28,7 @@ export class BuildingUpgradeCategory extends React.Component<{
 
     return (
       <div className={css(styles.upgrade)}>
-        <h1 className={css(commonStyles.upgradeName)}>{this.props.category.name}</h1>
+        <h1 className={css(commonStyles.commonName)}>{this.props.category.name}</h1>
         <Row classStyle={styles.upgradeSequence}>
           <TooltipArea
             tip={this.props.category.description}

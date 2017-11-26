@@ -7,6 +7,7 @@ import {BannerHeader} from "./BannerHeader";
 import {grid} from "../config/Grid";
 import {Input} from "../config/Input";
 import {InputBinding} from "../state/InputState";
+import {commonColors, commonStyleFn} from "../config/styles";
 
 export type PopupProps = {
   handle?: PopupHandle,
@@ -40,8 +41,8 @@ export class Popup extends React.Component<PopupProps> {
 
     return (
       <div className={css(styles.popup)} style={dynamicStyle}>
-        {this.props.children}
         {closeButton}
+        {this.props.children}
       </div>
     );
   }
@@ -117,14 +118,13 @@ type PromptResponse = {
   value: any
 };
 
-const borderColor = "#333";
-const closeButtonSize = 25;
+const closeButtonSize = grid.gutter * 3;
 const styles = StyleSheet.create({
   popup: {
     background: "linear-gradient(to bottom, #352813 0%,#0e0e0e 33%,#222222 100%)",
-    padding: 10,
-    boxShadow: "inset 0 0 10px #000000",
-    border: "2px solid " + borderColor,
+    padding: grid.gutter,
+    boxShadow: commonStyleFn.innerShadow(),
+    border: commonStyleFn.border(),
     minWidth: grid.vw(25),
     maxWidth: grid.vw(75),
     color: "#aaa"
@@ -136,28 +136,28 @@ const styles = StyleSheet.create({
     right: -closeButtonSize / 2,
     width: closeButtonSize,
     height: closeButtonSize,
+    zIndex: 1,
 
     fontFamily: fonts.Darkest,
 
-    border: "2px solid " + borderColor,
+    border: commonStyleFn.border(),
     borderRadius: closeButtonSize / 2,
-    backgroundColor: "rgba(38, 0, 0, 1)",
-    boxShadow: "inset 0 0 10px #000000",
+    backgroundColor: commonColors.bloodRed,
+    boxShadow: commonStyleFn.innerShadow(),
     color: "black",
 
     justifyContent: "center",
     alignItems: "center",
 
-    textShadow: "0px 0px 5px rgb(210, 90, 90)",
+    textShadow: commonStyleFn.textShadow(),
     ":hover": {
-      textShadow: "0px 0px 5px rgb(255, 255, 255)"
+      textShadow: commonStyleFn.textShadow("white")
     }
   },
 
   promptButton: {
-    marginBottom: 10,
-    ":last-child": {
-      marginBottom: 0
+    ":not(:last-child)": {
+      marginBottom: grid.gutter
     }
   }
 });

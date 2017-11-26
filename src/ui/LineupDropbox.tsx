@@ -1,13 +1,14 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
-import {commonStyles, Row} from "../config/styles";
+import {commonStyleFn, commonStyles, Row} from "../config/styles";
 import {Profile} from "../state/types/Profile";
 import {observer} from "mobx-react";
 import {DragDropSlot} from "../lib/DragDropSlot";
 import {Hero} from "../state/types/Hero";
 import {TooltipArea} from "../lib/TooltipArea";
 import {HeroBreakdown} from "./HeroBreakdown";
+import {grid} from "../config/Grid";
 
 @observer
 export class LineupDropbox extends React.Component<{
@@ -71,16 +72,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: "33%",
     background: "black",
-    border: "2px solid gray",
+    border: commonStyleFn.border(),
     padding: 4
   },
 
   slot: {
     flex: 1,
-    marginRight: 10,
-    border: "2px solid gray",
-    ":last-child": {
-      marginRight: 0
+    border: commonStyleFn.border("black"),
+    ":not(:last-child)": {
+      marginRight: grid.gutter
     }
   }
 });

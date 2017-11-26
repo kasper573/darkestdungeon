@@ -1,5 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
+import {commonColors, commonStyleFn} from "../config/styles";
 
 export const Tooltip = ({children}: any) => (
   <div className={css(styles.tooltip)}>
@@ -9,7 +10,7 @@ export const Tooltip = ({children}: any) => (
 
 const styles = StyleSheet.create({
   tooltip: {
-    border: "2px solid red",
+    border: commonStyleFn.border(commonColors.red),
     margin: 2,
     padding: 10,
     backgroundColor: "black",

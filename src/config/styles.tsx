@@ -1,5 +1,30 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
+import {grid} from "./Grid";
+
+export const commonColors = {
+  bloodRed: "rgba(38, 0, 0, 1)",
+  gold: "rgb(200, 180, 110)",
+  red: "red"
+};
+
+export const commonStyleFn = {
+  innerShadow (color = "#000000", size: number = grid.gutter) {
+    return `inset 0 0 ${size}px ${color}`;
+  },
+
+  border (color = "#333", size: number = grid.border) {
+    return size + "px solid " + color;
+  },
+
+  outline (color?: string) {
+    return this.border(color, 1);
+  },
+
+  textShadow (color = commonColors.gold, size: number = grid.gutter / 2) {
+    return `0px 0px ${size}px ${color}`;
+  }
+};
 
 export const commonStyles = StyleSheet.create({
   fill: {
@@ -14,42 +39,23 @@ export const commonStyles = StyleSheet.create({
     flex: "inherit"
   },
 
-  heroName: {
-    fontWeight: "bold",
-    color: "rgb(200, 180, 110)"
-  },
-
-  upgradeName: {
-    fontWeight: "bold",
-    color: "rgb(200, 180, 110)"
-  },
-
-  dungeonName: {
-    fontWeight: "bold",
-    color: "rgb(200, 180, 110)"
-  },
-
   commonName: {
     fontWeight: "bold",
-    color: "rgb(200, 180, 110)"
+    color: commonColors.gold
   },
 
   boxBorder: {
-    border: "2px solid gray"
-  },
-
-  afflictionText: {
-    color: "red"
+    border: commonStyleFn.border()
   },
 
   positiveText: {
     whiteSpace: "nowrap",
-    color: "rgb(200, 180, 110)"
+    color: commonColors.gold
   },
 
   negativeText: {
     whiteSpace: "nowrap",
-    color: "red"
+    color: commonColors.red
   },
 
   row: {

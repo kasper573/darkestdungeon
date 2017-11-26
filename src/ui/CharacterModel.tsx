@@ -6,7 +6,7 @@ import {TooltipArea} from "../lib/TooltipArea";
 import {Character} from "../state/types/Character";
 import {QuirkText} from "./QuirkText";
 import {StatsTextList} from "./StatsText";
-import {commonStyles} from "../config/styles";
+import {commonStyleFn, commonStyles} from "../config/styles";
 import {observer} from "mobx-react";
 import {TurnStats} from "../state/types/Stats";
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     background: "green",
     padding: 3,
     margin: 3,
-    border: modelBorder + "px solid gray"
+    border: commonStyleFn.border(undefined, modelBorder)
   },
 
   highlight: {

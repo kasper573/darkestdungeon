@@ -6,6 +6,7 @@ import {StressMeter} from "./StressMeter";
 import {Hero} from "../state/types/Hero";
 import {QuirkText} from "./QuirkText";
 import {Experienced} from "../state/types/Experienced";
+import {commonStyleFn} from "../config/styles";
 
 @observer
 export class HeroFlag extends React.Component<{
@@ -30,7 +31,7 @@ export class HeroFlag extends React.Component<{
 const styles = StyleSheet.create({
   container: {
     background: "black",
-    border: "2px solid gray",
+    border: commonStyleFn.border(),
     padding: 3
   }
 });

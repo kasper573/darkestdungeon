@@ -5,7 +5,7 @@ import {LevelIcon} from "../../ui/LevelIcon";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
-import {commonStyles, Row} from "../../config/styles";
+import {commonStyleFn, commonStyles, Row} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
@@ -72,7 +72,7 @@ export class EstateRosterEntry extends AppStateComponent<{
             {residentElement}
           </Avatar>
           <div className={css(styles.info)}>
-            <span className={css(commonStyles.heroName)}>
+            <span className={css(commonStyles.commonName)}>
               {hero.name}
             </span>
             <StressMeter
@@ -99,7 +99,7 @@ export class EstateRosterEntry extends AppStateComponent<{
 const styles = StyleSheet.create({
   entry: {
     flexDirection: "row",
-    border: "2px solid gray",
+    border: commonStyleFn.border(),
     backgroundColor: "black",
     padding: 2
   },

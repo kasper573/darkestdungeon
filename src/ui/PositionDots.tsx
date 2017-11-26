@@ -2,6 +2,7 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {SkillTargetObject} from "../state/types/SkillInfo";
 import {Skill} from "../state/types/Skill";
+import {grid} from "../config/Grid";
 
 export class PositionDots extends React.Component<{
   color: string,
@@ -113,9 +114,8 @@ const styles = StyleSheet.create({
     background: "gray",
     boxShadow: "0px 0px 5px black",
 
-    marginRight: 5,
-    ":last-child": {
-      marginRight: 0
+    ":not(:last-child)": {
+      marginRight: grid.gutter / 2
     }
   },
 
