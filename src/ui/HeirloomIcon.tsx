@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ItemInfo} from "../state/types/ItemInfo";
 
-export class Heirloom extends React.Component<{
+export class HeirloomIcon extends React.Component<{
   info: ItemInfo
 }> {
   render () {

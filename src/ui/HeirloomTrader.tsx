@@ -7,7 +7,7 @@ import {without} from "../lib/Helpers";
 import {ItemInfo} from "../state/types/ItemInfo";
 import {AppStateComponent} from "../AppStateComponent";
 import {cap} from "../lib/Helpers";
-import {Heirloom} from "./Heirloom";
+import {HeirloomIcon} from "./HeirloomIcon";
 import {css, StyleSheet} from "aphrodite";
 
 @observer
@@ -89,7 +89,7 @@ export class HeirloomTrader extends AppStateComponent {
             return (
               <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
                 <span className={css(commonStyles.fill, styles.center)}>
-                  <Heirloom info={targetHeirloom}/>
+                  <HeirloomIcon info={targetHeirloom}/>
                 </span>
                 <span className={css(commonStyles.fill, styles.center, styles.amount)}>
                   x{convertedAmount}

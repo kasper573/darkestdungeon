@@ -3,7 +3,7 @@ import {HeirloomType} from "../state/types/ItemInfo";
 import {StaticState} from "../state/StaticState";
 import {Row} from "../config/styles";
 import {StyleSheet} from "aphrodite";
-import {Heirloom} from "./Heirloom";
+import {HeirloomIcon} from "./HeirloomIcon";
 import {TooltipArea} from "../lib/TooltipArea";
 
 export class Heirlooms extends React.Component<{
@@ -35,7 +35,7 @@ export class Heirlooms extends React.Component<{
               tip={heirloom.pluralName}
               key={heirloom.id}
               classStyle={[styles.heirloom, compareStyle]}>
-              <Heirloom info={heirloom}/>
+              <HeirloomIcon info={heirloom}/>
               <span>: {amount}</span>
             </TooltipArea>
           );
