@@ -20,7 +20,11 @@ export class PopupEntry extends React.Component<{
   @observable private contentHeight: number = 0;
 
   @computed get alignedPosition () {
-    const p = this.props.handle.position || grid.center;
+    const p = this.props.handle.position || {
+      x: grid.outerWidth / 2,
+      y: grid.outerHeight / 2
+    };
+
     switch (this.props.handle.align) {
       case PopupAlign.Top:
         return {
