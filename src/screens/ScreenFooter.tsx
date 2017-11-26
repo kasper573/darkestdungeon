@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   screenFooter: {
     position: "absolute",
     left: 0, right: 0,
-    bottom: grid.paddingBottom,
+    bottom: grid.paddingBottom - borderSpacing - borderSize,
     height: grid.ySpan(1) + borderSpacing * 2 + borderSize * 2,
 
     backgroundColor: commonColors.gray,
