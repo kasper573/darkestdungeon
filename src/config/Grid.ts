@@ -1,6 +1,7 @@
-import {Point} from "../Bounds";
-
 export class Grid {
+
+  // Grid
+
   get gutter () {
     return this.gutterWidth || this.gutterHeight;
   }
@@ -17,24 +18,31 @@ export class Grid {
     return (this.height - this.gutterHeight * (this.rows - 1)) / this.rows;
   }
 
-  get aspectRatio () {
-    return this.width / this.height;
+  // Screen
+  
+  get width () {
+    return this.outerWidth - this.paddingLeft - this.paddingRight;
+  }
+  
+  get height () {
+    return this.outerHeight - this.paddingTop - this.paddingBottom;
   }
 
-  get center (): Point {
-    return {
-      x: this.width / 2,
-      y: this.height / 2
-    };
+  get aspectRatio () {
+    return this.outerWidth / this.outerHeight;
   }
 
   constructor (
-    public width: number,
-    public height: number,
+    public outerWidth: number,
+    public outerHeight: number,
     public columns: number,
     public rows: number,
     public gutterWidth: number = 0,
-    public gutterHeight: number = gutterWidth
+    public gutterHeight: number = gutterWidth,
+    public paddingTop: number,
+    public paddingRight: number = paddingTop,
+    public paddingBottom: number = paddingTop,
+    public paddingLeft: number = paddingRight
   ) {}
 
   fontSize (rows: number) {
@@ -66,4 +74,14 @@ export class Grid {
   }
 }
 
-export const grid: Grid = new Grid(1920, 1080, 16, 16, 10);
+const screenWidth = 1920;
+const screenHeight = 1080;
+const commonMargin = screenHeight * 0.05;
+const pTop = commonMargin;
+const pBottom = commonMargin / 2;
+const pHorizontal = commonMargin;
+
+export const grid: Grid = new Grid(
+  screenWidth, screenHeight, 16, 16, 10, 10,
+  pTop, pHorizontal, pBottom, pHorizontal
+);

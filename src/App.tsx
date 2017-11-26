@@ -86,7 +86,7 @@ export class App extends React.Component<{
               popups={this.props.state.popups}
               portalNodeRef={(node) => this.props.state.portalNode = node}
             />
-            <GridOverlay level={this.props.state.gridOverlayLevel}/>
+            {this.props.state.showGridOverlay && <GridOverlay/>}
           </div>
           <SizeObserver
             onSizeChanged={(size) => this.props.state.bounds.realSize = size}
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   },
 
   game: {
-    width: grid.xSpan(grid.columns),
-    height: grid.ySpan(grid.rows),
+    width: grid.outerWidth,
+    height: grid.outerHeight,
     overflow: "hidden",
     background: "#222",
     color: "white"

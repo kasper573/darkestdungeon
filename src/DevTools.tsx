@@ -3,12 +3,24 @@ import {css, StyleSheet} from "aphrodite";
 import {AppStats} from "./ui/AppStats";
 import {AppStateComponent} from "./AppStateComponent";
 import {observer} from "mobx-react";
+import {InputBinding} from "./state/InputState";
+import {observable} from "mobx";
 
 @observer
 export class DevTools extends AppStateComponent {
   pathSelect: HTMLSelectElement;
 
+  @observable isVisible = true;
+
   render () {
+    const inputBindings = (
+      <InputBinding match="§" callback={() => this.isVisible = !this.isVisible}/>
+    );
+
+    if (!this.isVisible) {
+      return inputBindings;
+    }
+
     const pathOptions = [];
     for (const path of this.appState.router.routes.keys()) {
       pathOptions.push(
@@ -39,6 +51,7 @@ export class DevTools extends AppStateComponent {
           Grid
         </button>
         {!this.appState.isRunningJest && <AppStats/>}
+        {inputBindings}
       </div>
     );
   }

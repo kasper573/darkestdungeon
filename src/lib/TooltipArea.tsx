@@ -60,11 +60,11 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
 
     if (projectedBounds.left < 0) {
       return TooltipSide.Right;
-    } else if (projectedBounds.right > grid.width) {
+    } else if (projectedBounds.right > grid.outerWidth) {
       return TooltipSide.Left;
     } else if (projectedBounds.top < 0) {
       return TooltipSide.Below;
-    } else if (projectedBounds.bottom > grid.height) {
+    } else if (projectedBounds.bottom > grid.outerHeight) {
       return TooltipSide.Above;
     }
     return this.props.side;

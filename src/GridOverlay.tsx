@@ -6,41 +6,51 @@ import {count} from "./lib/Helpers";
 import {Column, Row} from "./config/styles";
 
 @observer
-export class GridOverlay extends React.Component<{level?: number}> {
+export class GridOverlay extends React.Component {
   render () {
-    const dynamicStyle = gridOverlayLevels[this.props.level];
-    if (!dynamicStyle) {
-      return null;
-    }
-
     return (
-      <div className={css(styles.gridOverlay)} style={dynamicStyle}>
-        {count(grid.rows).map((rowNumber) => (
-          <Row key={rowNumber} classStyle={styles.row}>
-            {count(grid.columns).map((columnNumber) => (
-              <Column key={columnNumber} classStyle={styles.cell}/>
+      <div className={css(styles.margin)}>
+        <div className={css(styles.clipper)}>
+          <div className={css(styles.grid)}>
+            {count(grid.rows).map((rowNumber) => (
+              <Row key={rowNumber} classStyle={styles.row}>
+                {count(grid.columns).map((columnNumber) => (
+                  <Column key={columnNumber} classStyle={styles.cell}/>
+                ))}
+              </Row>
             ))}
-          </Row>
-        ))}
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export const gridOverlayLevels = [
-  undefined,
-  {opacity: 0.2},
-  {opacity: 0.6}
-];
-
 const styles = StyleSheet.create({
-  gridOverlay: {
-    width: grid.width,
-    height: grid.height,
+  margin: {
     position: "absolute",
-    top: 0, left: 0,
+    top: 0, right: 0, bottom: 0, left: 0,
+
+    paddingTop: grid.paddingTop,
+    paddingRight: grid.paddingRight,
+    paddingBottom: grid.paddingBottom,
+    paddingLeft: grid.paddingLeft,
+
+    opacity: 0.4,
+    background: "red",
     zIndex: 2,
     pointerEvents: "none"
+  },
+
+  clipper: {
+    overflow: "hidden",
+    flex: 1
+  },
+
+  grid: {
+    background: "blue",
+    width: grid.width,
+    height: grid.height
   },
 
   row: {
@@ -50,8 +60,8 @@ const styles = StyleSheet.create({
   },
 
   cell: {
-    width: grid.xSpan(1),
-    height: grid.ySpan(1),
+    width: grid.columnWidth,
+    height: grid.rowHeight,
     background: "green",
     ":not(:last-child)": {
       marginRight: grid.gutterWidth

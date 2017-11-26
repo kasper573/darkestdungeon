@@ -11,7 +11,7 @@ export class AppBounds {
   }
 
   @computed get scale (): number {
-    return this.scaledSize.width / grid.width;
+    return this.scaledSize.width / grid.outerWidth;
   }
 
   @computed get arcSize (): Size {
