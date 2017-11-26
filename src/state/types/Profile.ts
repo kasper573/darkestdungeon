@@ -307,9 +307,11 @@ export class Profile {
       }
     }
 
-    // Return living heroes to roster
+    // Return living heroes to roster with refreshed health
     while (quest.party.length) {
-      moveItem(quest.party[0], quest.party, this.roster);
+      const hero = quest.party[0];
+      moveItem(hero, quest.party, this.roster);
+      hero.resetMutableStats();
     }
 
     // Send dead heroes to the graveyard
