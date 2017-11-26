@@ -6,10 +6,6 @@ export class Grid {
     return this.gutterWidth || this.gutterHeight;
   }
 
-  get border () {
-    return this.gutter / 5;
-  }
-
   get columnWidth () {
     return (this.width - this.gutterWidth * (this.columns - 1)) / this.columns;
   }
@@ -39,6 +35,7 @@ export class Grid {
     public rows: number,
     public gutterWidth: number = 0,
     public gutterHeight: number = gutterWidth,
+    public border: number = gutterWidth / 5,
     public paddingTop: number,
     public paddingRight: number = paddingTop,
     public paddingBottom: number = paddingTop,
@@ -82,6 +79,6 @@ const pBottom = commonMargin / 2;
 const pHorizontal = commonMargin;
 
 export const grid: Grid = new Grid(
-  screenWidth, screenHeight, 16, 16, 10, 10,
+  screenWidth, screenHeight, 16, 16, 10, 10, 3,
   pTop, pHorizontal, pBottom, pHorizontal
 );
