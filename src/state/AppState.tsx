@@ -12,6 +12,7 @@ import {Difficulty, Profile} from "./types/Profile";
 import {Route} from "./types/Route";
 import {Path} from "./types/Path";
 import {Popup} from "../ui/Popups";
+import {gridOverlayLevels} from "../GridOverlay";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -26,9 +27,14 @@ export class AppState {
   public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
+  @observable gridOverlayLevel: number = 0;
 
   // A react portal node placed above the first layer of popups
   @observable public portalNode: HTMLDivElement; // HACK this probably shouldn't be part of state
+
+  toggleGridOverlay () {
+    this.gridOverlayLevel = (this.gridOverlayLevel + 1) % gridOverlayLevels.length;
+  }
 
   /**
    * Starts composite state behavior

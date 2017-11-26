@@ -12,6 +12,7 @@ import {appStateContext} from "./AppStateComponent";
 import {fonts} from "../assets/fonts";
 import {grid} from "./config/Grid";
 import {InputRoot} from "./state/InputState";
+import {GridOverlay} from "./GridOverlay";
 
 @observer
 export class App extends React.Component<{
@@ -85,6 +86,7 @@ export class App extends React.Component<{
               popups={this.props.state.popups}
               portalNodeRef={(node) => this.props.state.portalNode = node}
             />
+            <GridOverlay level={this.props.state.gridOverlayLevel}/>
           </div>
           <SizeObserver
             onSizeChanged={(size) => this.props.state.bounds.realSize = size}
