@@ -35,6 +35,9 @@ export class DevTools extends AppStateComponent {
         <button onClick={() => this.appState.load()}>
           Load
         </button>
+        <button onClick={() => this.appState.toggleGridOverlay()}>
+          Grid
+        </button>
         {!this.appState.isRunningJest && <AppStats/>}
       </div>
     );
