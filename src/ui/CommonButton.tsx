@@ -2,7 +2,8 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../../assets/fonts";
 import {grid} from "../config/Grid";
-import {commonColors, commonStyleFn} from "../config/styles";
+import {commonColors} from "../config/styles";
+import {VerticalOutlineBox} from "./VerticalOutlineBox";
 
 export enum CommonButtonSize {
   Medium
@@ -34,10 +35,11 @@ export class CommonButton extends React.Component<{
         className={css(styles.commonButton, this.props.classStyle)}
         style={dynamicStyle}
         onClick={this.props.onClick}>
-        <div className={css(styles.bar, styles.above)}/>
+
         {this.props.label}
         {this.props.children}
-        <div className={css(styles.bar, styles.below)}/>
+
+        <VerticalOutlineBox color={commonColors.brightRed}/>
       </div>
     );
   }
@@ -64,14 +66,5 @@ const styles = StyleSheet.create({
     ":not(:hover)": {
       opacity: 0.8
     }
-  },
-
-  bar: {
-    background: "linear-gradient(to right, rgba(85,3,1,1) 0%,rgba(246,46,17,1) 50%,rgba(85,3,1,1) 100%)",
-    height: grid.border,
-    borderRadius: grid.border
-  },
-
-  above: commonStyleFn.dock("top"),
-  below: commonStyleFn.dock("bottom")
+  }
 });

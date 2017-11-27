@@ -3,6 +3,7 @@ import {TooltipArea} from "../lib/TooltipArea";
 import {css, StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {commonStyles, Row} from "../config/styles";
+import {LineButton} from "./LineButton";
 
 export class Icon extends React.Component<{
   tip?: any,
@@ -28,11 +29,12 @@ export class Icon extends React.Component<{
     return (
       <TooltipArea
         tip={this.props.tip}
-        classStyle={[commonStyles.commonName, this.props.classStyle]}
-        onClick={this.props.onClick}>
+        classStyle={[commonStyles.commonName, this.props.classStyle]}>
         <Row classStyle={styles.icon}>
-          <div
-            className={css(styles.image, this.props.iconStyle)}
+          <LineButton
+            outlineScale={1 / this.props.scale}
+            onClick={this.props.onClick}
+            classStyle={[styles.image, this.props.iconStyle]}
             style={dynamicIconStyle}
           />
           {hasExtra && (

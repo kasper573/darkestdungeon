@@ -1,45 +1,50 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
+import {observer} from "mobx-react";
+import {observable} from "mobx";
+import {grid} from "../config/Grid";
+import {VerticalOutlineBox} from "./VerticalOutlineBox";
 
+@observer
 export class LineButton extends React.Component<{
-  label: string,
+  label?: string,
   classStyle?: any,
+  style?: any,
+  outlineScale?: number,
   onClick?: () => void
 }> {
+  @observable isHovered = false;
+
   render () {
+    const isHoverEnabled = this.props.onClick !== undefined;
     return (
-      <span className={css(styles.lineButton, this.props.classStyle)}
-            onClick={this.props.onClick}>
+      <span
+        style={this.props.style}
+        className={css(styles.lineButton, this.props.classStyle)}
+        onMouseEnter={isHoverEnabled ? () => this.isHovered = true : undefined}
+        onMouseLeave={isHoverEnabled ? () => this.isHovered = false : undefined}
+        onClick={this.props.onClick}>
         {this.props.label}
+        {this.props.children}
+        {isHoverEnabled && this.isHovered && (
+          <VerticalOutlineBox scale={this.props.outlineScale}/>
+        )}
       </span>
     );
   }
 }
 
-function dynamicStyle (borderColor: string, shadowColor: string, glowSize: number) {
-  return {
-    borderTop: `2px solid ${borderColor}`,
-    borderBottom: `2px solid ${borderColor}`,
-    textShadow: `0px 0px ${glowSize}px ${shadowColor}`,
-  };
-}
-
 const styles = StyleSheet.create({
   lineButton: {
-    ...dynamicStyle("transparent", "transparent", 0),
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: grid.gutter,
+    paddingBottom: grid.gutter,
     fontWeight: "bold",
     textAlign: "center",
-    overflow: "hidden",
 
-    transition: [
-      "border .1s ease-out",
-      "text-shadow .1s ease-out"
-    ].join(","),
-
+    transition: "text-shadow .1s ease-out",
+    textShadow: `0px 0px 0px transparent`,
     ":hover": {
-      ...dynamicStyle("#352813", "#ffffff", 35),
+      textShadow: `0px 0px 35px #ffffff`
     }
   }
 });
