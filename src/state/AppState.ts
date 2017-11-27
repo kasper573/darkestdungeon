@@ -1,8 +1,7 @@
-import * as React from "react";
 import {RouterState} from "./RouterState";
 import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
-import {PopupAlign, PopupHandle, PopupState} from "./PopupState";
+import {PopupState} from "./PopupState";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
@@ -11,11 +10,9 @@ import {AppBounds} from "../AppBounds";
 import {Difficulty, Profile} from "./types/Profile";
 import {Route} from "./types/Route";
 import {Path} from "./types/Path";
-import {Popup} from "../ui/Popups";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
-  private routePopup: PopupHandle;
 
   public bounds: AppBounds = new AppBounds();
   public router: RouterState = new RouterState();
@@ -89,37 +86,8 @@ export class AppState {
           };
         },
         () => this.save()
-      ),
-      // Display child routes as popups
-      reaction(
-        () => [
-          this.router.path,
-          this.router.route
-        ],
-        ([path, route]: [Path, Route]) => {
-          if (path.parts.length > 1) {
-            this.showRoutePopup(route);
-          } else if (this.routePopup) {
-            this.routePopup.close();
-            delete this.routePopup;
-          }
-        }
       )
     ];
-  }
-
-  private showRoutePopup (route: Route) {
-    this.routePopup = this.popups.show({
-      align: PopupAlign.TopLeft,
-      position: {x: 25, y: 25},
-      id: "routePopup",
-      onClose: () => this.router.goto(route.path.root),
-      content: (
-        <Popup padding={false}>
-          {React.createElement(route.component, {path: route.path})}
-        </Popup>
-      )
-    });
   }
 
   ensureProfile () {
