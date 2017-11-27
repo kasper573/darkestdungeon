@@ -4,6 +4,7 @@ import uuid = require("uuid");
 import {StaticState} from "../StaticState";
 import {HeirloomType, ItemInfo, ItemType} from "./ItemInfo";
 import {IStatsSource, Stats} from "./Stats";
+import {cmp} from "../../lib/Helpers";
 
 export type ItemId = string;
 
@@ -30,6 +31,10 @@ export class Item implements IStatsSource {
   }
 
   static comparers = {
+    type (a: Item, b: Item) {
+      return cmp(a.info.type, b.info.type);
+    },
+
     name (a: Item, b: Item) {
       return a.info.name.localeCompare(b.info.name);
     }

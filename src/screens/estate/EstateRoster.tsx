@@ -9,6 +9,13 @@ import {Hero} from "../../state/types/Hero";
 import {Alert} from "../../ui/Popups";
 import {contains} from "../../lib/Helpers";
 
+const heroCompareIcons = {
+  level: require("../../../assets/dd/images/campaign/town/roster/roster_sort_level.png"),
+  stress: require("../../../assets/dd/images/campaign/town/roster/roster_sort_stress.png"),
+  className: require("../../../assets/dd/images/campaign/town/roster/roster_sort_class.png"),
+  activity: require("../../../assets/dd/images/campaign/town/roster/roster_sort_building.png")
+};
+
 @observer
 export class EstateRoster extends AppStateComponent<{
   lineupFeatures?: boolean,
@@ -42,6 +49,7 @@ export class EstateRoster extends AppStateComponent<{
           </span>
           <SortOptions
             comparers={Hero.visibleComparers}
+            icons={heroCompareIcons}
             onChange={(fn) => this.activeProfile.sortHeroes(fn)}
           />
         </div>

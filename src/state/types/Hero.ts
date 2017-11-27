@@ -3,6 +3,7 @@ import {object, serializable} from "serializr";
 import {observable, transaction} from "mobx";
 import {HeroResidentInfo} from "./HeroResidentInfo";
 import {BuildingInfoId} from "./BuildingInfo";
+import {cmp} from "../../lib/Helpers";
 
 export class Hero extends Character {
   @serializable @observable rosterIndex: number = 0;
@@ -36,12 +37,22 @@ export class Hero extends Character {
   }
 
   static comparers = {
-    name (a: Hero, b: Hero) {
-      return a.name.localeCompare(b.name);
+    level (a: Hero, b: Hero) {
+      return cmp(a.level.number, b.level.number);
+    },
+
+    stress (a: Hero, b: Hero) {
+      return cmp(a.stats.stress.value, b.stats.stress.value);
     },
 
     className (a: Hero, b: Hero) {
       return a.classInfo.name.localeCompare(b.classInfo.name);
+    },
+
+    activity (a: Hero, b: Hero) {
+      const activityA = a.residentInfo && a.residentInfo.buildingId;
+      const activityB = b.residentInfo && b.residentInfo.buildingId;
+      return cmp(activityA, activityB);
     },
 
     rosterIndex (a: Hero, b: Hero) {

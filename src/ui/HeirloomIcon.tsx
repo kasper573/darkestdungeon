@@ -19,9 +19,9 @@ export class HeirloomIcon extends React.Component<{
       <Icon
         tip={tip}
         src={this.props.info.iconUrl}
-        classStyle={this.props.classStyle}>
-        {this.props.amount}
-      </Icon>
+        classStyle={this.props.classStyle}
+        side={this.props.amount}
+      />
     );
   }
 }

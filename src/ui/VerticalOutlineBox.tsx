@@ -5,10 +5,14 @@ import {commonStyleFn} from "../config/styles";
 
 export class VerticalOutlineBox extends React.Component<{
   color?: string,
-  scale?: number
+  scale?: number,
+  above?: boolean,
+  below?: boolean
 }> {
   static defaultProps = {
-    scale: 1
+    scale: 1,
+    above: true,
+    below: true
   };
 
   render () {
@@ -19,8 +23,8 @@ export class VerticalOutlineBox extends React.Component<{
 
     return (
       <div className={css(styles.box)}>
-        <div className={css(styles.bar, styles.above)} style={barStyle}/>
-        <div className={css(styles.bar, styles.below)} style={barStyle}/>
+        {this.props.above && <div className={css(styles.bar, styles.above)} style={barStyle}/>}
+        {this.props.below && <div className={css(styles.bar, styles.below)} style={barStyle}/>}
       </div>
     );
   }
