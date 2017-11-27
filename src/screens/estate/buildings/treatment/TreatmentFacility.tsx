@@ -30,9 +30,9 @@ export class TreatmentFacility extends AppStateComponent<{
     const cost = this.activeProfile.getResidencyCost(resident.residentInfo);
     const proceed = await this.appState.popups.prompt(
       <Prompt query={
-        <span>
-          Do you wish to pay <GoldIcon amount={cost}/> for this residency?
-        </span>
+        <Row>
+          Do you wish to pay {<GoldIcon amount={cost}/>} for this residency?
+        </Row>
       }/>
     );
 
