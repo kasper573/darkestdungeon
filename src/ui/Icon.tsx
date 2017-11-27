@@ -4,7 +4,15 @@ import {css, StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {commonStyles, Row} from "../config/styles";
 import {LineButton} from "./LineButton";
+import {observable} from "mobx";
+import {observer} from "mobx-react";
 
+export enum IconHighlightType {
+  Lines,
+  Opacity
+}
+
+@observer
 export class Icon extends React.Component<{
   tip?: any,
   src?: string,
@@ -15,13 +23,18 @@ export class Icon extends React.Component<{
   height?: number,
   scale?: number,
 
+  highlight?: IconHighlightType,
+
   iconStyle?: any,
   classStyle?: any,
   onClick?: () => void
 }> {
   static defaultProps = {
-    scale: 1
+    scale: 1,
+    highlight: IconHighlightType.Opacity
   };
+
+  @observable isHovered = false;
 
   render () {
     const hasSide = this.props.side !== undefined;
@@ -29,7 +42,7 @@ export class Icon extends React.Component<{
     const customWidth = this.props.width !== undefined ? this.props.width : customSize;
     const customHeight = this.props.height !== undefined ? this.props.height : customSize;
 
-    const dynamicIconStyle = {
+    let dynamicIconStyle = {
       backgroundImage: this.props.src ? `url(${this.props.src})` : undefined,
       transform: `scale(${this.props.scale})`,
       transformOrigin: "50% 100%",
@@ -38,19 +51,44 @@ export class Icon extends React.Component<{
       height: customHeight
     };
 
+    let iconElement;
+    switch (this.props.highlight) {
+      case IconHighlightType.Lines:
+        iconElement = (
+          <LineButton
+            outlineScale={1 / this.props.scale}
+            onClick={this.props.onClick}
+            classStyle={[styles.icon, this.props.iconStyle]}
+            style={dynamicIconStyle}>
+            {this.props.children}
+          </LineButton>
+        );
+        break;
+      case IconHighlightType.Opacity:
+        dynamicIconStyle = {
+          ...(dynamicIconStyle as any),
+          opacity: this.isHovered ? 1 : 0.8
+        };
+
+        iconElement = (
+          <div
+            onMouseEnter={() => this.isHovered = true}
+            onMouseLeave={() => this.isHovered = false}
+            onClick={this.props.onClick}
+            className={css([styles.icon, this.props.iconStyle])}
+            style={dynamicIconStyle}>
+            {this.props.children}
+          </div>
+        );
+        break;
+    }
+
     return (
       <TooltipArea
         tip={this.props.tip}
         classStyle={[commonStyles.commonName, this.props.classStyle]}>
-        <Row classStyle={styles.icon}>
-          <LineButton
-            outlineScale={1 / this.props.scale}
-            onClick={this.props.onClick}
-            classStyle={[styles.image, this.props.iconStyle]}
-            style={dynamicIconStyle}
-          >
-            {this.props.children}
-          </LineButton>
+        <Row classStyle={styles.container}>
+          {iconElement}
           {hasSide && (
             <div className={css(styles.side)}>
               {this.props.side}
@@ -63,11 +101,11 @@ export class Icon extends React.Component<{
 }
 
 const styles = StyleSheet.create({
-  icon: {
+  container: {
     alignItems: "center"
   },
 
-  image: {
+  icon: {
     backgroundSize: "contain",
     backgroundPosition: "50% 50%",
     backgroundRepeat: "no-repeat",
