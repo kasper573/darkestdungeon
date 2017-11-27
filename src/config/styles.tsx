@@ -98,6 +98,8 @@ export const commonStyles = StyleSheet.create({
 });
 
 type CellProps = {
+  valign?: string,
+  align?: string,
   baseClassStyle?: any,
   classStyle?: any,
   children?: any,
@@ -114,9 +116,13 @@ export const Cell = ({baseClassStyle, children, classStyle, ...rest}: CellProps)
 };
 
 export const Row = (props: CellProps) => {
-  return <Cell {...props} baseClassStyle={commonStyles.row}/>;
+  const {align, valign, style, ...rest} = props;
+  const updatedStyle = {justifyContent: align, alignItems: valign, ...style};
+  return <Cell {...rest} baseClassStyle={commonStyles.row} style={updatedStyle}/>;
 };
 
 export const Column = (props: CellProps) => {
-  return <Cell {...props} baseClassStyle={commonStyles.column}/>;
+  const {align, valign, style, ...rest} = props;
+  const updatedStyle = {justifyContent: valign, alignItems: align, ...style};
+  return <Cell {...rest} baseClassStyle={commonStyles.column} style={updatedStyle}/>;
 };

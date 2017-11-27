@@ -1,5 +1,4 @@
 import * as React from "react";
-import {GoldText} from "../../../../ui/GoldText";
 import {TooltipArea} from "../../../../lib/TooltipArea";
 import {Avatar} from "../../../../ui/Avatar";
 import {commonStyleFn, commonStyles, Row} from "../../../../config/styles";
@@ -7,6 +6,7 @@ import {css, StyleSheet} from "aphrodite";
 import {Hero} from "../../../../state/types/Hero";
 import {DragDropSlot} from "../../../../lib/DragDropSlot";
 import {grid} from "../../../../config/Grid";
+import {GoldIcon} from "../../../../ui/GoldIcon";
 
 export class TreatmentSlot extends React.Component<{
   goldRequired?: number,
@@ -75,7 +75,7 @@ export class TreatmentSlot extends React.Component<{
                 </Row>
               )}
               {showCost && (
-                <GoldText amount={this.props.goldRequired} compareWith={this.props.goldAvailable}/>
+                <GoldIcon amount={this.props.goldRequired} compareWith={this.props.goldAvailable}/>
               )}
             </div>
           );

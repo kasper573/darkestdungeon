@@ -16,8 +16,8 @@ import {SkillIcon} from "../../../ui/SkillIcon";
 import {BuildingUpgradeEffects} from "../../../state/types/BuildingUpgradeEffects";
 import {TooltipArea, TooltipSide} from "../../../lib/TooltipArea";
 import {UpgradeTooltip} from "./UpgradeTooltip";
-import {GoldText} from "../../../ui/GoldText";
 import {Prompt} from "../../../ui/Popups";
+import {GoldIcon} from "../../../ui/GoldIcon";
 
 @observer
 export class HeroUpgradeGrid extends AppStateComponent<{
@@ -70,7 +70,7 @@ export class HeroUpgradeGrid extends AppStateComponent<{
     const proceed = await this.appState.popups.prompt(
       <Prompt query={
         <span>
-          Do you wish to pay <GoldText amount={this.unlockedEffects.cost}/> for this upgrade?
+          Do you wish to pay <GoldIcon amount={this.unlockedEffects.cost}/> for this upgrade?
         </span>
       }/>
     );
@@ -137,7 +137,7 @@ class HeroUpgradeCell extends React.Component<{
         tip={!isUpgraded && (
           <UpgradeTooltip
             isAvailable={isAvailable}
-            cost={<GoldText amount={this.props.unlockedEffects.cost} children={this.props.goldAvailable}/>}
+            cost={<GoldIcon amount={this.props.unlockedEffects.cost} compareWith={this.props.goldAvailable}/>}
             prerequisiteName={this.props.buildingInfo.name}
             prerequisiteLevel={this.props.level - 1}
           />

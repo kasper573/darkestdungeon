@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...itemSize,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    fontSize: 10,
+    fontSize: grid.fontSize(0.25),
     justifyContent: "center",
     alignItems: "center"
   }

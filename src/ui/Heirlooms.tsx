@@ -1,10 +1,10 @@
 import * as React from "react";
 import {HeirloomType} from "../state/types/ItemInfo";
 import {StaticState} from "../state/StaticState";
-import {Row} from "../config/styles";
+import {commonStyles, Row} from "../config/styles";
 import {StyleSheet} from "aphrodite";
 import {HeirloomIcon} from "./HeirloomIcon";
-import {TooltipArea} from "../lib/TooltipArea";
+import {grid} from "../config/Grid";
 
 export class Heirlooms extends React.Component<{
   counts: Map<HeirloomType, number>,
@@ -28,16 +28,15 @@ export class Heirlooms extends React.Component<{
           const amount = this.props.counts.get(heirloom.heirloomType) || 0;
           if (this.props.compare) {
             const compareAmount = this.props.compare.get(heirloom.heirloomType) || 0;
-            compareStyle = amount <= compareAmount ? styles.compareEnough : styles.compareLess;
+            compareStyle = amount > compareAmount ? commonStyles.negativeText : undefined;
           }
           return (
-            <TooltipArea
-              tip={heirloom.pluralName}
+            <HeirloomIcon
               key={heirloom.id}
-              classStyle={[styles.heirloom, compareStyle]}>
-              <HeirloomIcon info={heirloom}/>
-              <span>: {amount}</span>
-            </TooltipArea>
+              info={heirloom}
+              amount={amount}
+              classStyle={[styles.heirloom, compareStyle]}
+            />
           );
         })}
       </Row>
@@ -47,14 +46,8 @@ export class Heirlooms extends React.Component<{
 
 const styles = StyleSheet.create({
   heirloom: {
-    flexDirection: "row"
-  },
-
-  compareEnough: {
-    color: "green"
-  },
-
-  compareLess: {
-    color: "red"
+    ":not(:last-child)": {
+      marginRight: grid.gutter
+    }
   }
 });

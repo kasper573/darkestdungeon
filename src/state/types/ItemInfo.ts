@@ -23,6 +23,7 @@ export class ItemInfo {
 
   name: string = "[single name]";
   pluralName: string = "[plural name]";
+  iconUrl?: string;
   description: string = "";
   type: ItemType = ItemType.Consumable;
   heirloomType?: HeirloomType;

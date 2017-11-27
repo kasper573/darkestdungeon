@@ -3,10 +3,12 @@ import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {commonColors, commonStyleFn, Row} from "../config/styles";
 
-export class ScreenFooter extends React.Component {
+export class ScreenFooter extends React.Component<{
+  classStyle?: any
+}> {
   render () {
     return (
-      <Row classStyle={styles.screenFooter}>
+      <Row classStyle={[styles.screenFooter, this.props.classStyle]}>
         <Row classStyle={styles.inner}>
           {this.props.children}
         </Row>

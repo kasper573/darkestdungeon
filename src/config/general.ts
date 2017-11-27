@@ -11,7 +11,6 @@ import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo, createId as createBuildingInfoId} from "../state/types/BuildingInfo";
-import {enumMap} from "../lib/Helpers";
 import {Quest} from "../state/types/Quest";
 import {StatItem} from "../state/types/StatItem";
 
@@ -146,19 +145,6 @@ export function addStaticState () {
     StaticState.instance.add((i) => i.dungeons, info);
   });
 
-  let heirloomIndex = 0;
-  enumMap<HeirloomType>(HeirloomType)
-    .forEach((heirloomType, name) => {
-      addItem("heirloom" + heirloomType, {
-        name,
-        pluralName: name + "s",
-        type: ItemType.Heirloom,
-        heirloomType,
-        value: 1 + heirloomIndex++,
-        description: "Use for building upgrades"
-      });
-    });
-
   ["Excalibur", "Teddy bear", "Unicorn", "Magic Wand", "Torn Wing", "Banana", "Happy Thoughts",
     "Balloon", "Longsword", "Dagger", "Shield", "Helmet", "Furnace", "Cape", "Feather", "Pen", "Bow & Arrow"
   ].forEach((name, index) => {
@@ -200,6 +186,45 @@ export function addStaticState () {
   });
 
   addItems({
+    // Heirlooms
+    "Bust": {
+      name: "Bust",
+      pluralName: "Busts",
+      iconUrl: require("../../assets/dd/images/shared/estate/currency.bust.icon.png"),
+      type: ItemType.Heirloom,
+      heirloomType: HeirloomType.Bust,
+      value: 1,
+      description: "Use for building upgrades"
+    },
+    "Portrait": {
+      name: "Portrait",
+      pluralName: "Portraits",
+      iconUrl: require("../../assets/dd/images/shared/estate/currency.portrait.icon.png"),
+      type: ItemType.Heirloom,
+      heirloomType: HeirloomType.Portrait,
+      value: 2,
+      description: "Use for building upgrades"
+    },
+    "Deed": {
+      name: "Deed",
+      pluralName: "Deeds",
+      iconUrl: require("../../assets/dd/images/shared/estate/currency.deed.icon.png"),
+      type: ItemType.Heirloom,
+      heirloomType: HeirloomType.Deed,
+      value: 3,
+      description: "Use for building upgrades"
+    },
+    "Crest": {
+      name: "Crest",
+      pluralName: "Crests",
+      iconUrl: require("../../assets/dd/images/shared/estate/currency.crest.icon.png"),
+      type: ItemType.Heirloom,
+      heirloomType: HeirloomType.Crest,
+      value: 4,
+      description: "Use for building upgrades"
+    },
+
+    // Store items
     "Food": {
       description: "Eat to restore health and starve off hunger.",
       value: 75,
@@ -589,7 +614,7 @@ function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoR
 function addItems (rawInfo: any, defaultType = ItemType.Consumable) {
   for (const itemId in rawInfo) {
     const info = addItem(itemId, rawInfo[itemId]);
-    if (info.type !== undefined) {
+    if (info.type === undefined) {
       info.type = defaultType;
     }
   }

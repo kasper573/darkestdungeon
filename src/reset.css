@@ -37,7 +37,7 @@ time, mark, audio, video, input {
     min-width: 0;
 
     user-select: none;
-    cursor: default;
+    cursor: url(../assets/dd/images/cursors/arrow.png), default;
 }
 
 input {
