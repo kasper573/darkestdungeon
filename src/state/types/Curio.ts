@@ -16,5 +16,5 @@ export class Curio {
   @serializable @observable hasBeenInteractedWith: boolean = false;
 
   @serializable(reference(QuirkInfo, StaticState.lookup((i) => i.quirks)))
-  quirk: QuirkInfo;
+  quirk: QuirkInfo = null;
 }
