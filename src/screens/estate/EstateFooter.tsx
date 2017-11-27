@@ -1,8 +1,8 @@
 import * as React from "react";
 import {Heirlooms} from "../../ui/Heirlooms";
-import {commonStyles, Row} from "../../config/styles";
+import {Row} from "../../config/styles";
 import {ScreenFooter} from "../ScreenFooter";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {Popup} from "../../ui/Popups";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
 import {ModalState} from "../../state/PopupState";
@@ -32,7 +32,7 @@ export class EstateFooter extends AppStateComponent<{
           <Icon
             src={require("../../../assets/dd/images/campaign/town/heirloom_exchange/he_icon_idle.png")}
             iconStyle={styles.swapIcon}
-            tip={<span className={css(commonStyles.nowrap)}>Trade heirlooms</span>}
+            tip="Trade heirlooms"
             onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
