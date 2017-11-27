@@ -14,6 +14,10 @@ import {grid} from "./config/Grid";
 import {InputRoot} from "./state/InputState";
 import {GridOverlay} from "./GridOverlay";
 import {commonColors} from "./config/styles";
+import {Path} from "./state/types/Path";
+import {Route} from "./state/types/Route";
+import {PopupAlign, PopupHandle} from "./state/PopupState";
+import {Popup} from "./ui/Popups";
 
 @observer
 export class App extends React.Component<{
@@ -27,7 +31,8 @@ export class App extends React.Component<{
     };
   }
 
-  private disposeReactions: IReactionDisposer;
+  private reactionDisposers: IReactionDisposer[] = [];
+  private routePopup: PopupHandle;
   private inputRoot: InputRoot;
 
   /**
@@ -60,19 +65,55 @@ export class App extends React.Component<{
     if (this.props.setupRoutes) {
       this.props.state.router.addRoutes(routes);
     }
+
+    // Display child routes as popups
+    this.reactionDisposers.push(
+      reaction(
+        () => [
+          this.props.state.router.path,
+          this.props.state.router.route
+        ],
+        ([path, route]: [Path, Route]) => {
+          if (path.parts.length > 1) {
+            this.showRoutePopup(route);
+          } else if (this.routePopup) {
+            this.routePopup.close();
+            delete this.routePopup;
+          }
+        }
+      )
+    );
   }
 
   componentDidMount () {
     // Let the top popup layer be the input layer
-    this.disposeReactions = reaction(
-      () => this.props.state.popups.top,
-      (topPopup) => this.inputRoot.inputHandler.layerId = topPopup ? topPopup.id : null,
-      true
+    this.reactionDisposers.push(
+      reaction(
+        () => this.props.state.popups.top,
+        (topPopup) => this.inputRoot.inputHandler.layerId = topPopup ? topPopup.id : null,
+        true
+      )
     );
   }
 
   componentWillUnmount () {
-    this.disposeReactions();
+    while (this.reactionDisposers.length) {
+      this.reactionDisposers.pop()();
+    }
+  }
+
+  private showRoutePopup (route: Route) {
+    this.routePopup = this.props.state.popups.show({
+      align: PopupAlign.TopLeft,
+      position: {x: 25, y: 25},
+      id: "routePopup",
+      onClose: () => this.props.state.router.goto(route.path.root),
+      content: (
+        <Popup padding={false}>
+          {React.createElement(route.component, {path: route.path})}
+        </Popup>
+      )
+    });
   }
 
   render () {
