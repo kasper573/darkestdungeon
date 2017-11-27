@@ -8,6 +8,7 @@ import {LineButton} from "./LineButton";
 export class Icon extends React.Component<{
   tip?: any,
   src?: string,
+  side?: any,
 
   size?: number,
   width?: number,
@@ -23,7 +24,7 @@ export class Icon extends React.Component<{
   };
 
   render () {
-    const hasExtra = this.props.children !== undefined;
+    const hasSide = this.props.side !== undefined;
     const customSize = this.props.size !== undefined ? this.props.size : undefined;
     const customWidth = this.props.width !== undefined ? this.props.width : customSize;
     const customHeight = this.props.height !== undefined ? this.props.height : customSize;
@@ -32,7 +33,7 @@ export class Icon extends React.Component<{
       backgroundImage: this.props.src ? `url(${this.props.src})` : undefined,
       transform: `scale(${this.props.scale})`,
       transformOrigin: "50% 100%",
-      marginRight: hasExtra ? (this.props.scale - 1) * grid.gutter * 4 : undefined,
+      marginRight: hasSide ? (this.props.scale - 1) * grid.gutter * 4 : undefined,
       width: customWidth,
       height: customHeight
     };
@@ -47,10 +48,12 @@ export class Icon extends React.Component<{
             onClick={this.props.onClick}
             classStyle={[styles.image, this.props.iconStyle]}
             style={dynamicIconStyle}
-          />
-          {hasExtra && (
-            <div className={css(styles.extra)}>
-              {this.props.children}
+          >
+            {this.props.children}
+          </LineButton>
+          {hasSide && (
+            <div className={css(styles.side)}>
+              {this.props.side}
             </div>
           )}
         </Row>
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
     height: grid.gutter * 4
   },
 
-  extra: {
+  side: {
     marginLeft: grid.gutter / 2,
     justifyContent: "center"
   }

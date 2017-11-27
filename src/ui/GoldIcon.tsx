@@ -35,13 +35,13 @@ export class GoldIcon extends React.Component<{
         src={src}
         iconStyle={isLarge ? styles.largeIcon : styles.smallIcon}
         scale={isLarge ? 2 : 1}
+        side={amountString}
         classStyle={[
           isLarge ? styles.largeText : styles.smallText,
           notEnough && commonStyles.negativeText,
           this.props.classStyle
-        ]}>
-        {amountString}
-      </Icon>
+        ]}
+      />
     );
   }
 }

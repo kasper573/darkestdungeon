@@ -4,13 +4,19 @@ import {observer} from "mobx-react";
 import {BannerHeader} from "./BannerHeader";
 import {CompareFunction, SortOptions} from "./SortOptions";
 import {observable, transaction} from "mobx";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {Item} from "../state/types/Item";
 import {ItemDropbox} from "./ItemDropbox";
 import {Hero} from "../state/types/Hero";
 import {grid} from "../config/Grid";
 import {Icon} from "./Icon";
+import {Row} from "../config/styles";
+
+const itemCompareIcons = {
+  name: require("../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_sort_alphabetical.png"),
+  type: require("../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_sort_class.png")
+};
 
 @observer
 export class Inventory extends AppStateComponent<{
@@ -51,18 +57,20 @@ export class Inventory extends AppStateComponent<{
         <BannerHeader>
           Inventory
         </BannerHeader>
-        <div className={css(styles.buttonBar)}>
+        <Row>
           <Icon
             tip="Unequip items on all heroes"
+            classStyle={styles.unequip}
             size={grid.gutter * 3}
             src={require("../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_unequip_trinkets.png")}
             onClick={() => this.promptUnequipAll()}
           />
           <SortOptions
             comparers={Item.comparers}
+            icons={itemCompareIcons}
             onChange={(compareFn) => this.compareFn = compareFn}
           />
-        </div>
+        </Row>
         <ItemDropbox
           items={this.props.items}
           filter={this.props.filter}
@@ -76,7 +84,7 @@ export class Inventory extends AppStateComponent<{
 }
 
 const styles = StyleSheet.create({
-  buttonBar: {
-    flexDirection: "row"
+  unequip: {
+    marginRight: grid.gutter / 2
   }
 });
