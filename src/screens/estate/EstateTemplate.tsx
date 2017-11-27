@@ -14,6 +14,8 @@ import {ItemType} from "../../state/types/ItemInfo";
 import {Inventory} from "../../ui/Inventory";
 import {Popup} from "../../ui/Popups";
 import {ModalState} from "../../state/PopupState";
+import {Icon} from "../../ui/Icon";
+import {grid} from "../../config/Grid";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -69,7 +71,13 @@ export class EstateTemplate extends AppStateComponent<{
         ]}/>
 
         <div className={css(styles.header)}>
-          {this.mayGoBack && <span onClick={() => this.goBack()}>[BACK]</span>}
+          {this.mayGoBack && (
+            <Icon
+              size={grid.gutter * 3}
+              src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
+              onClick={() => this.goBack()}
+            />
+          )}
           {this.activeProfile.name} Estate
         </div>
 

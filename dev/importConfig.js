@@ -4,7 +4,12 @@ module.exports = {
     "**/*candle*.png",
     "**/*icon*.png",
     "**/*heirloom*.png",
-    "**/*arrow*.png"
+    "**/*arrow*.png",
+    "**/*sort*.png",
+    "**/*progression*.png",
+    "**/*map*.png",
+    "**/*inventory*.png",
+    "**/*pass*.png",
   ],
 
   audioQuery: {
