@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: grid.fontSize(1),
     fontFamily: fonts.Darkest,
-    textShadow: "0px 0px .25em red",
-    color: "#aaa"
+    textShadow: "0px 0px .25em red"
   }
 });

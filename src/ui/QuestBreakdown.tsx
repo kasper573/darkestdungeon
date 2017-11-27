@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0, left: 0, bottom: 40,
     background: "black",
-    color: "white",
     padding: 10
   },
 

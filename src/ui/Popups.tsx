@@ -126,8 +126,7 @@ const styles = StyleSheet.create({
     boxShadow: commonStyleFn.innerShadow(),
     border: commonStyleFn.border(),
     minWidth: grid.vw(25),
-    maxWidth: grid.vw(75),
-    color: "#aaa"
+    maxWidth: grid.vw(75)
   },
 
   popupCloseButton: {
