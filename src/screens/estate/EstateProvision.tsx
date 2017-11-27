@@ -36,6 +36,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
   render () {
     return (
       <EstateTemplate
+        background={require("../../../assets/dd/images/campaign/town/provision/provision.background.png")}
         path={this.props.path}
         backPath="estateDungeons"
         roster={false}
