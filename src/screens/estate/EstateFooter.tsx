@@ -30,7 +30,7 @@ export class EstateFooter extends AppStateComponent<{
           />
           <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
           <Icon
-            src={require("../../../assets/images/swap.png")}
+            src={require("../../../assets/dd/images/campaign/town/heirloom_exchange/he_icon_idle.png")}
             iconStyle={styles.swapIcon}
             tip={<span className={css(commonStyles.nowrap)}>Trade heirlooms</span>}
             onClick={() => this.appState.popups.show({
@@ -70,8 +70,8 @@ export class EstateFooter extends AppStateComponent<{
 
 const styles = StyleSheet.create({
   swapIcon: {
-    width: grid.gutter * 2,
-    height: grid.gutter * 2,
+    width: grid.gutter * 6,
+    height: grid.gutter * 6,
     marginLeft: grid.gutter * 3
   },
 
