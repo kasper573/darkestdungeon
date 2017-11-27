@@ -47,9 +47,9 @@ export class Popup extends React.Component<PopupProps> {
       <div className={css(styles.popup, this.props.classStyle)}>
         <div className={css(styles.splash)}/>
         <div className={css(styles.content)}>
-          {closeButton}
           {headerIcon}
           {this.props.children}
+          {closeButton}
         </div>
       </div>
     );
@@ -134,14 +134,17 @@ type PromptResponse = {
 
 const headerIconScale = 2;
 const splashSize = grid.ySpan(2);
+export const popupBorder1Size = grid.gutter / 2;
+export const popupBorder2Size = grid.border;
 export const popupContentPadding = grid.gutter;
+export const popupOffset = popupBorder1Size + popupBorder2Size + popupContentPadding;
 const styles = StyleSheet.create({
   popup: {
     background: "black",
-    padding: grid.gutter / 2,
+    padding: popupBorder1Size,
     boxShadow: commonStyleFn.outerShadow(),
     minWidth: grid.vw(25),
-    maxWidth: grid.vw(75)
+    maxWidth: grid.vw(85)
   },
 
   splash: {
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    border: commonStyleFn.border(commonColors.gold),
+    border: commonStyleFn.border(commonColors.gold, popupBorder2Size),
     boxShadow: commonStyleFn.innerShadow(undefined, grid.gutter * 4),
     padding: popupContentPadding
   },
@@ -188,8 +191,7 @@ const styles = StyleSheet.create({
   },
 
   closeButton: {
-    ...commonStyleFn.dock("topRight", popupContentPadding),
-    zIndex: 1
+    ...commonStyleFn.dock("topRight", popupContentPadding)
   },
 
   prompt: {
