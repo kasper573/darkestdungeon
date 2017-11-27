@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: grid.gutter * 2,
     textAlign: "center",
-    whiteSpace: "pre"
+    whiteSpace: "pre-wrap"
   },
 
   promptButton: {
