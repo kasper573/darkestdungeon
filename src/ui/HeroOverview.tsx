@@ -97,15 +97,15 @@ export class HeroOverview extends React.Component<
                 <h1 className={css(commonStyles.nowrap)}>Positions</h1>
                 <PositionDots
                   color="gold"
-                  innerValues={PositionDots.getPositionValues(hero.skills)}
-                  outerValues={PositionDots.getSupportValues(hero.skills)}
+                  innerValues={PositionDots.getPositionValues(hero.selectedSkills)}
+                  outerValues={PositionDots.getSupportValues(hero.selectedSkills)}
                 />
               </Column>
               <Column classStyle={styles.positionDots}>
                 <h1 className={css(commonStyles.nowrap)}>Targets</h1>
                 <PositionDots
                   color="red"
-                  innerValues={PositionDots.getHostileValues(hero.skills).reverse()}
+                  innerValues={PositionDots.getHostileValues(hero.selectedSkills).reverse()}
                 />
               </Column>
             </Row>
