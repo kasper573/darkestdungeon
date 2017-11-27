@@ -6,7 +6,7 @@ import {observable, transaction} from "mobx";
 import {observer} from "mobx-react";
 import {CompareFunction, SortOptions} from "../../ui/SortOptions";
 import {Item} from "../../state/types/Item";
-import {Popup, popupPadding, Prompt} from "../../ui/Popups";
+import {Popup, popupContentPadding, Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
 import {commonStyleFn, Row} from "../../config/styles";
 import {Icon} from "../../ui/Icon";
@@ -80,7 +80,7 @@ export class EstateInventory extends AppStateComponent {
 
 const styles = StyleSheet.create({
   icons: {
-    ...commonStyleFn.dock("topRight", popupPadding),
+    ...commonStyleFn.dock("topRight", popupContentPadding),
     marginRight: grid.gutter * 4 // Adjustment to not cover close button
   },
 

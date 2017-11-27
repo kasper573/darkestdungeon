@@ -109,7 +109,7 @@ export class App extends React.Component<{
       id: "routePopup",
       onClose: () => this.props.state.router.goto(route.path.root),
       content: (
-        <Popup padding={false}>
+        <Popup>
           {React.createElement(route.component, {path: route.path})}
         </Popup>
       )

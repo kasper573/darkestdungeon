@@ -12,6 +12,7 @@ import {Icon, IconHighlightType} from "../../ui/Icon";
 import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
 import {grid} from "../../config/Grid";
 import {inventoryIcon} from "./EstateInventory";
+import {pauseIcon} from "../../ui/PauseMenu";
 
 export class EstateFooter extends AppStateComponent<{
   continueLabel: string,
@@ -60,7 +61,7 @@ export class EstateFooter extends AppStateComponent<{
             />
           )}
           <Icon
-            src={require("../../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png")}
+            src={pauseIcon}
             scale={2}
             highlight={IconHighlightType.Lines}
             onClick={this.props.onPauseRequested}
