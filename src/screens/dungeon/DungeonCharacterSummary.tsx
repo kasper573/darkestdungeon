@@ -5,10 +5,11 @@ import {StatsTextList} from "../../ui/StatsText";
 import {QuirkText} from "../../ui/QuirkText";
 import {EquipmentDropbox} from "../../ui/EquipmentDropbox";
 import {observer} from "mobx-react";
-import {TooltipArea} from "../../lib/TooltipArea";
 import {SkillIcon} from "../../ui/SkillIcon";
 import {Character} from "../../state/types/Character";
 import {Skill} from "../../state/types/Skill";
+import {grid} from "../../config/Grid";
+import {Icon} from "../../ui/Icon";
 
 @observer
 export class DungeonCharacterSummary extends React.Component<{
@@ -45,9 +46,13 @@ export class DungeonCharacterSummary extends React.Component<{
                 onClick={() => this.props.onSkillClicked(skill)}
               />
             ))}
-            <TooltipArea onClick={() => this.props.onSkillClicked(null)}>
-              [PASS]
-            </TooltipArea>
+            <Icon
+              tip="Pass"
+              width={grid.gutter * 2}
+              height={grid.gutter * 7}
+              src={require("../../../assets/dd/images/panels/icons_ability/ability_pass.png")}
+              onClick={() => this.props.onSkillClicked(null)}
+            />
           </Row>
         </Row>
         <Row>

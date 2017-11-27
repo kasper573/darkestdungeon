@@ -9,6 +9,8 @@ import {DungeonMap} from "./DungeonMap";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Quest} from "../../state/types/Quest";
 import {DungeonSelections} from "./DungeonSelections";
+import {grid} from "../../config/Grid";
+import {Icon} from "../../ui/Icon";
 
 @observer
 export class DungeonControlPanel extends React.Component<{
@@ -72,8 +74,18 @@ export class DungeonControlPanel extends React.Component<{
                 {this.renderSideContent()}
               </Column>
               <div className={css(styles.sideMenu)}>
-                <span onClick={() => this.isMapVisible = true}>[MAP]</span>
-                <span onClick={() => this.isMapVisible = false}>[INV]</span>
+                <Icon
+                  width={grid.gutter * 4}
+                  height={grid.gutter * 8}
+                  src={require("../../../assets/dd/images/scrolls/use_inventory.png")}
+                  onClick={() => this.isMapVisible = true}
+                />
+                <Icon
+                  width={grid.gutter * 4}
+                  height={grid.gutter * 8}
+                  src={require("../../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_map.png")}
+                  onClick={() => this.isMapVisible = false}
+                />
               </div>
             </Row>
           </Column>

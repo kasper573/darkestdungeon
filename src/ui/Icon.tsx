@@ -8,8 +8,13 @@ import {LineButton} from "./LineButton";
 export class Icon extends React.Component<{
   tip?: any,
   src?: string,
-  iconStyle?: any,
+
+  size?: number,
+  width?: number,
+  height?: number,
   scale?: number,
+
+  iconStyle?: any,
   classStyle?: any,
   onClick?: () => void
 }> {
@@ -19,11 +24,17 @@ export class Icon extends React.Component<{
 
   render () {
     const hasExtra = this.props.children !== undefined;
+    const customSize = this.props.size !== undefined ? this.props.size : undefined;
+    const customWidth = this.props.width !== undefined ? this.props.width : customSize;
+    const customHeight = this.props.height !== undefined ? this.props.height : customSize;
+
     const dynamicIconStyle = {
       backgroundImage: this.props.src ? `url(${this.props.src})` : undefined,
       transform: `scale(${this.props.scale})`,
       transformOrigin: "50% 100%",
-      marginRight: hasExtra ? (this.props.scale - 1) * grid.gutter * 4 : undefined
+      marginRight: hasExtra ? (this.props.scale - 1) * grid.gutter * 4 : undefined,
+      width: customWidth,
+      height: customHeight
     };
 
     return (

@@ -9,6 +9,8 @@ import {AppStateComponent} from "../AppStateComponent";
 import {Item} from "../state/types/Item";
 import {ItemDropbox} from "./ItemDropbox";
 import {Hero} from "../state/types/Hero";
+import {grid} from "../config/Grid";
+import {Icon} from "./Icon";
 
 @observer
 export class Inventory extends AppStateComponent<{
@@ -50,9 +52,12 @@ export class Inventory extends AppStateComponent<{
           Inventory
         </BannerHeader>
         <div className={css(styles.buttonBar)}>
-          <span onClick={() => this.promptUnequipAll()}>
-            [UNEQUIP]
-          </span>
+          <Icon
+            tip="Unequip items on all heroes"
+            size={grid.gutter * 3}
+            src={require("../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_unequip_trinkets.png")}
+            onClick={() => this.promptUnequipAll()}
+          />
           <SortOptions
             comparers={Item.comparers}
             onChange={(compareFn) => this.compareFn = compareFn}
