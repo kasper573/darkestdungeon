@@ -84,6 +84,10 @@ export function cmp <T> (a: T, b: T) {
   return a < b ? -1 : 1;
 }
 
+export function thousands (n: number) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function randomizeItem<T> (items: T[]): T {
   const index = Math.floor(items.length * Math.random());
   return items[index];

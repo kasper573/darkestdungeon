@@ -1,5 +1,4 @@
 import * as React from "react";
-import {TooltipArea} from "../../lib/TooltipArea";
 import {Heirlooms} from "../../ui/Heirlooms";
 import {commonStyles, Row} from "../../config/styles";
 import {ScreenFooter} from "../ScreenFooter";
@@ -8,80 +7,79 @@ import {Popup} from "../../ui/Popups";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
 import {ModalState} from "../../state/PopupState";
 import {CommonButton, CommonButtonSize} from "../../ui/CommonButton";
-import {Inventory} from "../../ui/Inventory";
-import {ItemType} from "../../state/types/ItemInfo";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Icon} from "../../ui/Icon";
+import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
+import {grid} from "../../config/Grid";
 
 export class EstateFooter extends AppStateComponent<{
   continueLabel: string,
   inventory: boolean,
+  onInventoryRequested: () => void,
   onContinueRequested: () => void,
   onPauseRequested: () => void
 }> {
   render () {
     return (
       <ScreenFooter>
-        <Row classStyle={styles.footerLeft}>
-          <span>Gold: {this.activeProfile.goldAfterDebt}</span>
+        <Row valign="center" style={{flex: 1}}>
+          <GoldIcon
+            size={GoldIconSize.Large}
+            amount={this.activeProfile.goldAfterDebt}
+            classStyle={styles.gold}
+          />
           <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
-          <TooltipArea
+          <Icon
+            src={require("../../../assets/images/swap.png")}
+            iconStyle={styles.swapIcon}
             tip={<span className={css(commonStyles.nowrap)}>Trade heirlooms</span>}
             onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
               id: "heirloomTrader"
             })}
-          >
-            [⇅]
-          </TooltipArea>
-        </Row>
-        <div className={css(styles.footerCenter)}>
-          <CommonButton
-            size={CommonButtonSize.Medium}
-            label={this.props.continueLabel}
-            onClick={this.props.onContinueRequested}
           />
-        </div>
-        <div className={css(styles.footerRight)}>
+        </Row>
+
+        <CommonButton
+          size={CommonButtonSize.Medium}
+          label={this.props.continueLabel}
+          onClick={this.props.onContinueRequested}
+        />
+
+        <Row valign="center" align="flex-end" style={{flex: 1}}>
           {this.props.inventory && (
-            <span onClick={() => this.appState.popups.show({
-              id: "inventory",
-              modalState: ModalState.Opaque,
-              content: (
-                <Popup>
-                  <Inventory
-                    heroes={this.activeProfile.roster}
-                    items={this.activeProfile.items}
-                    filter={(i) => i.info.type !== ItemType.Heirloom}
-                  />
-                </Popup>
-              )
-            })}>
-              [INVENTORY]
-            </span>
+            <Icon
+              src={require("../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory.icon.png")}
+              scale={2}
+              onClick={this.props.onInventoryRequested}
+              classStyle={styles.iconOnRight}
+            />
           )}
-          <span onClick={this.props.onPauseRequested}>
-            [PAUSE MENU]
-          </span>
-        </div>
+          <Icon
+            src={require("../../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png")}
+            scale={2}
+            onClick={this.props.onPauseRequested}
+            classStyle={styles.iconOnRight}
+          />
+        </Row>
       </ScreenFooter>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  footerLeft: {
-    flex: 1
+  swapIcon: {
+    width: grid.gutter * 2,
+    height: grid.gutter * 2,
+    marginLeft: grid.gutter * 3
   },
 
-  footerCenter: {
-    marginLeft: 20,
-    marginRight: 20
+  iconOnRight: {
+    marginLeft: grid.gutter * 4
   },
 
-  footerRight: {
-    flex: 1,
-    justifyContent: "flex-end",
-    flexDirection: "row"
+  gold: {
+    marginRight: grid.xSpan(1)
   }
 });

@@ -6,12 +6,12 @@ import {Column, Row} from "../../../../config/styles";
 import {StaticState} from "../../../../state/StaticState";
 import {observer} from "mobx-react";
 import {Hero} from "../../../../state/types/Hero";
-import {GoldText} from "../../../../ui/GoldText";
 import {AppStateComponent} from "../../../../AppStateComponent";
 import {Alert, Prompt} from "../../../../ui/Popups";
 import {BuildingUpgradeEffects} from "../../../../state/types/BuildingUpgradeEffects";
 import {QuirkPicker} from "./QuirkPicker";
 import {TreatmentSlot} from "./TreatmentSlot";
+import {GoldIcon} from "../../../../ui/GoldIcon";
 
 @observer
 export class TreatmentFacility extends AppStateComponent<{
@@ -31,7 +31,7 @@ export class TreatmentFacility extends AppStateComponent<{
     const proceed = await this.appState.popups.prompt(
       <Prompt query={
         <span>
-          Do you wish to pay <GoldText amount={cost}/> for this residency?
+          Do you wish to pay <GoldIcon amount={cost}/> for this residency?
         </span>
       }/>
     );

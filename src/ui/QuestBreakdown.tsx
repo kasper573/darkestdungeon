@@ -6,6 +6,7 @@ import {CommonHeader} from "./CommonHeader";
 import {ItemIcon} from "./ItemIcon";
 import {Quest} from "../state/types/Quest";
 import {Dungeon} from "../state/types/Dungeon";
+import {grid} from "../config/Grid";
 
 export class QuestBreakdown extends React.Component<{
   quest: Quest,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   },
 
   headerLabel: {
-    fontSize: "1.2em",
+    fontSize: grid.fontSize(1),
     margin: 10
   }
 });

@@ -10,6 +10,10 @@ import {Input} from "../../config/Input";
 import {PathTypes} from "../../state/types/Path";
 import {EstateFooter} from "./EstateFooter";
 import {commonStyles} from "../../config/styles";
+import {ItemType} from "../../state/types/ItemInfo";
+import {Inventory} from "../../ui/Inventory";
+import {Popup} from "../../ui/Popups";
+import {ModalState} from "../../state/PopupState";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -40,6 +44,22 @@ export class EstateTemplate extends AppStateComponent<{
     this.appState.router.goto(this.props.backPath);
   }
 
+  showInventory () {
+    this.appState.popups.show({
+      id: "inventory",
+      modalState: ModalState.Opaque,
+      content: (
+        <Popup>
+          <Inventory
+            heroes={this.activeProfile.roster}
+            items={this.activeProfile.items}
+            filter={(i) => i.info.type !== ItemType.Heirloom}
+          />
+        </Popup>
+      )
+    });
+  }
+
   render () {
     const isShowingBuilding = this.props.path.parts.length > 1;
     return (
@@ -60,6 +80,7 @@ export class EstateTemplate extends AppStateComponent<{
         <EstateFooter
           continueLabel={this.props.continueLabel}
           inventory={this.props.inventory}
+          onInventoryRequested={() => this.showInventory()}
           onContinueRequested={() => this.continueToNextScreen()}
           onPauseRequested={() => this.pause()}
         />

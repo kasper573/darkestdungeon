@@ -1,6 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../../assets/fonts";
+import {grid} from "../config/Grid";
 
 export class BannerHeader extends React.Component {
   render () {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     marginBottom: 10,
-    fontSize: "1.2em",
+    fontSize: grid.fontSize(1),
     fontFamily: fonts.Darkest,
     textShadow: "0px 0px .25em red",
     color: "#aaa"
