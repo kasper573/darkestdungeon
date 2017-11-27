@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     width: grid.outerWidth,
     height: grid.outerHeight,
     overflow: "hidden",
-    background: "#ab36ff",
+    background: "black",
     color: commonColors.lightGray,
     fontSize: grid.fontSize(0.5)
   }

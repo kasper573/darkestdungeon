@@ -10,6 +10,10 @@ module.exports = {
     "**/*map*.png",
     "**/*inventory*.png",
     "**/*pass*.png",
+    "**/*background*.png",
+    "**/*_bg*.png",
+    "**/*estate*.png",
+    "**/*town*.png",
   ],
 
   audioQuery: {

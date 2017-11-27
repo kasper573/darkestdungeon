@@ -52,6 +52,7 @@ export class EstateOverview extends AppStateComponent<{path: Path}> {
     return (
       <EstateTemplate
         path={this.props.path}
+        background={require("../../../assets/dd/images/campaign/town/town_bg.png")}
         continueLabel="Embark"
         continuePath="estateDungeons">
         {buildings.map((component: any) => (

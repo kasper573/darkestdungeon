@@ -8,7 +8,6 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
 import {EstateFooter} from "./EstateFooter";
-import {commonStyles} from "../../config/styles";
 import {ModalState} from "../../state/PopupState";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
@@ -16,6 +15,7 @@ import {EstateInventory} from "./EstateInventory";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
+  background: string,
   path: Path,
   backPath?: PathTypes,
   continueCheck?: () => Promise<any>,
@@ -54,7 +54,10 @@ export class EstateTemplate extends AppStateComponent<{
   render () {
     const isShowingBuilding = this.props.path.parts.length > 1;
     return (
-      <div className={css(commonStyles.fill)}>
+      <div
+        className={css(styles.container)}
+        style={{background: `url(${this.props.background})`}}>
+
         <InputBindings list={[
           [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
         ]}/>
@@ -108,6 +111,12 @@ const styles = StyleSheet.create({
     top: 0, left: 0,
     flexDirection: "row",
     zIndex: 1
+  },
+
+  container: {
+    flex: 1,
+    backgroundSize: "cover",
+    backgroundPosition: "50% 50%"
   },
 
   content: {

@@ -53,6 +53,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
     const questLookup = this.groupQuestsByDungeon(this.activeProfile.quests);
     return (
       <EstateTemplate
+        background={require("../../../assets/dd/images/campaign/town/quest_select/quest_select.background.png")}
         lineupFeaturesInRoster={true}
         path={this.props.path}
         backPath="estateOverview"
