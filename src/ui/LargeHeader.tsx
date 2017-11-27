@@ -5,6 +5,7 @@ import {Avatar} from "./Avatar";
 import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {VerticalOutlineBox} from "./VerticalOutlineBox";
+import {fonts} from "../../assets/fonts";
 
 export class LargeHeader extends React.Component<{
   label: string,
@@ -14,7 +15,7 @@ export class LargeHeader extends React.Component<{
 }> {
   render () {
     const icon = this.props.icon && (
-      <Avatar src={this.props.icon} onClick={this.props.onClick}>
+      <Avatar src={this.props.icon} classStyle={styles.headerIcon} onClick={this.props.onClick}>
         {this.props.iconChildren}
       </Avatar>
     );
@@ -31,11 +32,19 @@ export class LargeHeader extends React.Component<{
 }
 
 const styles = StyleSheet.create({
+  headerIcon: {
+    width: grid.ySpan(2),
+    height: grid.ySpan(2)
+  },
+
   headerLabel: {
     marginTop: grid.gutter,
     marginBottom: grid.gutter,
-    padding: grid.gutter,
-    paddingRight: grid.gutter * 2,
+    padding: grid.gutter * 2,
+    paddingRight: grid.gutter * 4,
+    fontSize: grid.fontSize(1),
+    fontFamily: fonts.Darkest,
+    fontWeight: "normal",
     background: "linear-gradient(to right, #000 0%, #100 75%, rgba(0,0,0,0) 100%)"
   }
 });

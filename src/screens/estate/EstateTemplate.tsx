@@ -15,6 +15,7 @@ import {EstateInventory} from "./EstateInventory";
 import {fonts} from "../../../assets/fonts";
 import {screenFooterHeight} from "../ScreenFooter";
 import {Row} from "../../config/styles";
+import {popupOffset} from "../../ui/Popups";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -65,20 +66,6 @@ export class EstateTemplate extends AppStateComponent<{
           [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
         ]}/>
 
-        <div className={css(styles.header)}>
-          <Row classStyle={styles.headerContent}>
-            {this.mayGoBack && (
-              <Icon
-                classStyle={styles.backButton}
-                iconStyle={styles.backButtonIcon}
-                src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
-                onClick={() => this.goBack()}
-              />
-            )}
-            {this.activeProfile.name} Estate
-          </Row>
-        </div>
-
         <div className={css(styles.content, this.appState.showGridOverlay && styles.contentOverlay)}>
           {this.props.children}
         </div>
@@ -97,6 +84,20 @@ export class EstateTemplate extends AppStateComponent<{
             portalNode={isShowingBuilding && this.appState.portalNode}
           />
         )}
+
+        <div className={css(styles.header)}>
+          <Row classStyle={styles.headerContent}>
+            {this.mayGoBack && (
+              <Icon
+                classStyle={styles.backButton}
+                iconStyle={styles.backButtonIcon}
+                src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
+                onClick={() => this.goBack()}
+              />
+            )}
+            {this.activeProfile.name} Estate
+          </Row>
+        </div>
       </div>
     );
   }
@@ -112,8 +113,8 @@ export class EstateTemplate extends AppStateComponent<{
 }
 
 export const estateContentPosition = {
-  x: grid.paddingLeft + grid.xSpan(1) + grid.gutter,
-  y: grid.paddingTop + grid.ySpan(1) + grid.gutter
+  x: grid.paddingLeft + grid.xSpan(1) + grid.gutter - popupOffset,
+  y: grid.paddingTop + grid.ySpan(1) + grid.gutter - popupOffset
 };
 
 const headerOffset = grid.gutter * 2.5;
@@ -130,7 +131,6 @@ const styles = StyleSheet.create({
     height: grid.ySpan(5),
     width: grid.xSpan(9),
     flexDirection: "row",
-    zIndex: 1,
     pointerEvents: "none"
   },
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Column, Row} from "../../../config/styles";
+import {Column, commonStyleFn, Row} from "../../../config/styles";
 import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {BuildingUpgradeShop} from "./BuildingUpgradeShop";
@@ -37,6 +37,7 @@ export class BuildingOverview extends React.Component<{
       <Row
         classStyle={[styles.container, this.props.classStyle]}
         style={{backgroundImage: `url(${this.props.info.backgroundUrl})`}}>
+        <div className={css(styles.coverup)}/>
         <Column>
           <LargeHeader
             icon={this.props.info.avatarUrl}
@@ -58,9 +59,28 @@ const styles = StyleSheet.create({
   container: {
     backgroundSize: "cover",
     backgroundPosition: "50% 50%",
-    width: grid.xSpan(grid.columns * 0.8),
-    height: grid.ySpan(grid.rows * 0.8),
-    padding: 10
+    width: grid.xSpan(12),
+    height: grid.ySpan(13)
+  },
+
+  coverup: {
+    ...commonStyleFn.dock(),
+    background: commonStyleFn.gradient("right", [
+      [0, "transparent"],
+      [30, "transparent"],
+      [45, "black"],
+      [100, "black"]
+    ]),
+
+    ":after": {
+      ...commonStyleFn.dock(),
+      content: "' '",
+      background: commonStyleFn.gradient("bottom", [
+        [0, "black"],
+        [20, "black"],
+        [30, "transparent"]
+      ])
+    }
   },
 
   upgradeSign: {

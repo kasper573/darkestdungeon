@@ -331,13 +331,17 @@ export function addStaticState () {
   addBuildings({
     abbey: {
       name: "Abbey",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/abbey-bg.jpg")
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/abbey/abbey.character_background.png"
+      )
     },
     blacksmith: {
       name: "Blacksmith",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/blacksmith-bg.jpg"),
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character_background.png")
+      ,
       children: {
         mastery: {
           name: "Smithing",
@@ -367,13 +371,17 @@ export function addStaticState () {
     },
     graveyard: {
       name: "Graveyard",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/graveyard-bg.jpg")
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.character_background.png"
+      )
     },
     guild: {
       name: "Guild",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/guild-bg.jpg"),
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/guild/guild.character_background.png"
+      ),
       children: {
         mastery: {
           name: "Treatment Ward",
@@ -408,8 +416,10 @@ export function addStaticState () {
     },
     sanitarium: {
       name: "Sanitarium",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/sanitarium-bg.jpg"),
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character_background.png"
+      ),
       children: {
         quirks: {
           name: "Treatment Ward",
@@ -437,8 +447,10 @@ export function addStaticState () {
     },
     coach: {
       name: "Stage Coach",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/coach-bg.jpg"),
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
+      backgroundUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character_background.png"
+      ),
       description: "Upgrading the Stage Coach increases the available" +
       " heroes for hire each week or increases your roster size.",
       children: {
@@ -478,8 +490,8 @@ export function addStaticState () {
     },
     tavern: {
       name: "Tavern",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/tavern-bg.jpg"),
+      avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
+      backgroundUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character_background.png"),
       description: "Upgrading the Tavern increases the number of available stress treatments and their effectiveness",
       children: {
         bar: {
@@ -521,8 +533,8 @@ export function addStaticState () {
     },
     provision: {
       name: "Provision",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/provision-bg.jpg")
+      avatarUrl: require("../../assets/dd/images/campaign/town/provision/provision.icon.png"),
+      backgroundUrl: require("../../assets/dd/images/campaign/town/provision/provision.character_background.png")
     }
   });
 }
