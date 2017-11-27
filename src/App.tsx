@@ -18,6 +18,7 @@ import {Path} from "./state/types/Path";
 import {Route} from "./state/types/Route";
 import {PopupAlign, PopupHandle} from "./state/PopupState";
 import {Popup} from "./ui/Popups";
+import {estateContentPosition} from "./screens/estate/EstateTemplate";
 
 @observer
 export class App extends React.Component<{
@@ -104,9 +105,9 @@ export class App extends React.Component<{
 
   private showRoutePopup (route: Route) {
     this.routePopup = this.props.state.popups.show({
-      align: PopupAlign.TopLeft,
-      position: {x: 25, y: 25},
       id: "routePopup",
+      align: PopupAlign.TopLeft,
+      position: estateContentPosition,
       onClose: () => this.props.state.router.goto(route.path.root),
       content: (
         <Popup>

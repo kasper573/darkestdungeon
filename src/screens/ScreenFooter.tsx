@@ -19,12 +19,14 @@ export class ScreenFooter extends React.Component<{
 
 const borderSize = grid.border;
 const borderSpacing = grid.border * 2;
+export const screenFooterHeight = grid.ySpan(1) + borderSpacing * 2 + borderSize * 2;
+
 const styles = StyleSheet.create({
   screenFooter: {
     position: "absolute",
     left: 0, right: 0,
     bottom: grid.paddingBottom - borderSpacing - borderSize,
-    height: grid.ySpan(1) + borderSpacing * 2 + borderSize * 2,
+    height: screenFooterHeight,
 
     backgroundColor: commonColors.gray,
     boxShadow: commonStyleFn.outerShadow("black", grid.gutter * 2)

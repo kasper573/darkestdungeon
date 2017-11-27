@@ -12,6 +12,9 @@ import {ModalState} from "../../state/PopupState";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
 import {EstateInventory} from "./EstateInventory";
+import {fonts} from "../../../assets/fonts";
+import {screenFooterHeight} from "../ScreenFooter";
+import {Row} from "../../config/styles";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -63,17 +66,20 @@ export class EstateTemplate extends AppStateComponent<{
         ]}/>
 
         <div className={css(styles.header)}>
-          {this.mayGoBack && (
-            <Icon
-              size={grid.gutter * 3}
-              src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
-              onClick={() => this.goBack()}
-            />
-          )}
-          {this.activeProfile.name} Estate
+          <Row classStyle={styles.headerContent}>
+            {this.mayGoBack && (
+              <Icon
+                classStyle={styles.backButton}
+                iconStyle={styles.backButtonIcon}
+                src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
+                onClick={() => this.goBack()}
+              />
+            )}
+            {this.activeProfile.name} Estate
+          </Row>
         </div>
 
-        <div className={css(styles.content)}>
+        <div className={css(styles.content, this.appState.showGridOverlay && styles.contentOverlay)}>
           {this.props.children}
         </div>
 
@@ -105,12 +111,48 @@ export class EstateTemplate extends AppStateComponent<{
   }
 }
 
+export const estateContentPosition = {
+  x: grid.paddingLeft + grid.xSpan(1) + grid.gutter,
+  y: grid.paddingTop + grid.ySpan(1) + grid.gutter
+};
+
+const headerOffset = grid.gutter * 2.5;
+const backButtonSize = grid.gutter * 3;
 const styles = StyleSheet.create({
   header: {
     position: "absolute",
-    top: 0, left: 0,
+    top: -headerOffset, left: 0,
+    paddingTop: headerOffset,
+    background: `url(${require("../../../assets/dd/images/campaign/town/estate_title/estate_nameplate.png")})`,
+    backgroundSize: "auto 100%",
+    backgroundPosition: "0 50%",
+    backgroundRepeat: "no-repeat",
+    height: grid.ySpan(5),
+    width: grid.xSpan(9),
     flexDirection: "row",
-    zIndex: 1
+    zIndex: 1,
+    pointerEvents: "none"
+  },
+
+  headerContent: {
+    height: grid.ySpan(1),
+    maxWidth: grid.xSpan(5),
+    marginTop: grid.paddingTop,
+    marginLeft: grid.paddingLeft + grid.xSpan(2) + grid.gutter,
+    alignItems: "center",
+    fontSize: grid.fontSize(1),
+    fontFamily: fonts.Darkest,
+    pointerEvents: "all"
+  },
+
+  backButton: {
+    position: "absolute",
+    left: -(backButtonSize + grid.gutter)
+  },
+
+  backButtonIcon: {
+    width: backButtonSize,
+    height: backButtonSize
   },
 
   container: {
@@ -122,6 +164,14 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: grid.paddingTop + grid.ySpan(1) + grid.gutter,
+    marginRight: grid.paddingRight + grid.xSpan(3) + grid.gutter,
+    marginBottom: grid.paddingBottom + screenFooterHeight,
+    marginLeft: grid.paddingLeft + grid.xSpan(1) + grid.gutter
+  },
+
+  contentOverlay: {
+    backgroundColor: "rgba(200, 200, 50, 0.5)"
   }
 });

@@ -85,11 +85,11 @@ export class Icon extends React.Component<{
     return (
       <TooltipArea
         tip={this.props.tip}
-        classStyle={[commonStyles.commonName, this.props.classStyle]}>
-        <Row classStyle={styles.container}>
+        classStyle={[styles.container, this.props.classStyle]}>
+        <Row valign="center">
           {iconElement}
           {hasSide && (
-            <div className={css(styles.side)}>
+            <div className={css(styles.side, commonStyles.commonName)}>
               {this.props.side}
             </div>
           )}
@@ -101,7 +101,7 @@ export class Icon extends React.Component<{
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center"
+    justifyContent: "center"
   },
 
   icon: {
