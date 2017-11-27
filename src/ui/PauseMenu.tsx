@@ -3,6 +3,10 @@ import {Popup, PopupProps} from "./Popups";
 import {LineButton} from "./LineButton";
 import {AppStateComponent} from "../AppStateComponent";
 
+export const pauseIcon = require(
+  "../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png"
+);
+
 export class PauseMenu extends AppStateComponent<
   PopupProps & {
   mainMenu?: boolean
@@ -22,7 +26,7 @@ export class PauseMenu extends AppStateComponent<
     );
 
     return (
-      <Popup {...rest}>
+      <Popup headerIcon={pauseIcon} {...rest}>
         <LineButton label="Controls" onClick={() => popups.show(<Popup>Controls</Popup>)}/>
         <LineButton label="Credits" onClick={() => popups.show(<Popup>Credits</Popup>)}/>
         <LineButton label="Glossary" onClick={() => popups.show(<Popup>Glossary</Popup>)}/>

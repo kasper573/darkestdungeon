@@ -70,6 +70,11 @@ export const commonStyleFn = {
     const parsedColor = new Color(color);
     const sideColor = parsedColor.darken(0.5);
     return `linear-gradient(to right, ${sideColor} 0%, ${color} 50%, ${sideColor} 100%)`;
+  },
+
+  gradient (direction: string, steps: Array<[number, string | Color]>) {
+    const stepsString = steps.map(([p, color]) => `${color} ${p}%`).join(",");
+    return `linear-gradient(to ${direction}, ${stepsString})`;
   }
 };
 

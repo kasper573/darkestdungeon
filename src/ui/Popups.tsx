@@ -2,24 +2,22 @@ import * as React from "react";
 import {ModalState, PopupHandle} from "../state/PopupState";
 import {css, StyleSheet} from "aphrodite";
 import {LineButton} from "./LineButton";
-import {BannerHeader} from "./BannerHeader";
 import {grid} from "../config/Grid";
 import {Input} from "../config/Input";
 import {InputBinding} from "../state/InputState";
 import {commonColors, commonStyleFn} from "../config/styles";
 import {Icon} from "./Icon";
+import {VerticalOutlineBox} from "./VerticalOutlineBox";
+import Color = require("color");
 
 export type PopupProps = {
+  headerIcon?: string,
   handle?: PopupHandle,
   closeable?: boolean,
-  padding?: boolean;
+  classStyle?: any
 };
 
 export class Popup extends React.Component<PopupProps> {
-  static defaultProps = {
-    padding: true
-  };
-
   render () {
     const isDismissable = this.props.handle && this.props.handle.modalState !== ModalState.Modal;
     const hasCloseButton = this.props.handle && (this.props.closeable || isDismissable);
@@ -36,15 +34,21 @@ export class Popup extends React.Component<PopupProps> {
       </Icon>
     );
 
-    const dynamicStyle = !this.props.padding ? {
-      padding: 0
-    } : undefined;
+    const headerIcon = this.props.headerIcon && (
+      <div className={css(styles.header)}>
+        <div className={css(styles.headerInner)}>
+          <VerticalOutlineBox/>
+          <Icon src={this.props.headerIcon} scale={headerIconScale}/>
+        </div>
+      </div>
+    );
 
     return (
-      <div className={css(styles.popup)} style={dynamicStyle}>
+      <div className={css(styles.popup, this.props.classStyle)}>
         <div className={css(styles.splash)}/>
         <div className={css(styles.content)}>
           {closeButton}
+          {headerIcon}
           {this.props.children}
         </div>
       </div>
@@ -52,6 +56,7 @@ export class Popup extends React.Component<PopupProps> {
   }
 }
 
+const promptIcon = require("../../assets/dd/images/modes/base/fe_flow/mode_select_dialog_icon.png");
 export class Prompt extends React.Component<
   PopupProps & {
   query?: any,
@@ -72,15 +77,21 @@ export class Prompt extends React.Component<
   }
   render () {
     // noinspection TsLint
-    let {query, responses, ...rest} = this.props;
+    let {query, responses, classStyle, ...rest} = this.props;
     if (!responses) {
       responses = this.getDefaultResponses();
     }
 
     return (
-      <Popup {...rest}>
-        {query && <BannerHeader>{query}</BannerHeader>}
+      <Popup headerIcon={promptIcon} classStyle={[styles.prompt, classStyle]} {...rest}>
+        {query && (
+          <div className={css(styles.promptQuery)}>
+            {query}
+          </div>
+        )}
+
         {this.props.children}
+
         {responses.map((response) => (
           <LineButton
             key={response.label}
@@ -121,12 +132,13 @@ type PromptResponse = {
   value: any
 };
 
+const headerIconScale = 2;
 const splashSize = grid.ySpan(2);
-export const popupPadding = grid.gutter / 2;
+export const popupContentPadding = grid.gutter;
 const styles = StyleSheet.create({
   popup: {
     background: "black",
-    padding: popupPadding,
+    padding: grid.gutter / 2,
     boxShadow: commonStyleFn.outerShadow(),
     minWidth: grid.vw(25),
     maxWidth: grid.vw(75)
@@ -146,12 +158,49 @@ const styles = StyleSheet.create({
     flex: 1,
     border: commonStyleFn.border(commonColors.gold),
     boxShadow: commonStyleFn.innerShadow(undefined, grid.gutter * 4),
-    padding: popupPadding
+    padding: popupContentPadding
+  },
+
+  header: {
+    marginBottom: popupContentPadding,
+    background: commonStyleFn.gradient("bottom", [
+      [0, new Color(commonColors.gold).darken(1)],
+      [20, new Color(commonColors.gold).darken(0.85)],
+      [50, new Color(commonColors.gold).darken(0.85)],
+      [100, new Color(commonColors.gold).darken(1)]
+    ]),
+
+    ":before": {
+      ...commonStyleFn.dock(),
+      content: '" "',
+      background: commonStyleFn.gradient("right", [
+        [0, "black"],
+        [50, "transparent"],
+        [100, "black"]
+      ])
+    }
+  },
+
+  headerInner: {
+    marginLeft: "25%",
+    marginRight: "25%",
+    alignItems: "center"
   },
 
   closeButton: {
-    ...commonStyleFn.dock("topRight", popupPadding),
+    ...commonStyleFn.dock("topRight", popupContentPadding),
     zIndex: 1
+  },
+
+  prompt: {
+    maxWidth: grid.vw(33)
+  },
+
+  promptQuery: {
+    fontWeight: "bold",
+    marginBottom: grid.gutter * 2,
+    textAlign: "center",
+    whiteSpace: "pre"
   },
 
   promptButton: {
