@@ -8,6 +8,7 @@ export const commonColors = {
   brightRed: "rgba(246,46,17,1)",
   gold: "rgb(200, 180, 110)",
   red: "rgb(177, 25, 0)",
+  lightGray: "rgb(173, 171, 161)",
   gray: "#333",
   darkGray: "#111"
 };

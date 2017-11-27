@@ -1,7 +1,6 @@
 import * as React from "react";
 import {ItemInfo} from "../state/types/ItemInfo";
 import {Icon} from "./Icon";
-import {commonStyles, Row} from "../config/styles";
 
 export class HeirloomIcon extends React.Component<{
   info: ItemInfo,
@@ -9,15 +8,10 @@ export class HeirloomIcon extends React.Component<{
   classStyle?: any
 }> {
   render () {
-    const tip = this.props.amount !== undefined && (
-      <Row classStyle={commonStyles.nowrap}>
-        {this.props.info.pluralName}: {this.props.amount} (Used to upgrade town buildings)
-      </Row>
-    );
-
+    const amountString = this.props.amount !== undefined && (": " + this.props.amount) + " ";
     return (
       <Icon
-        tip={tip}
+        tip={`${this.props.info.pluralName}${amountString}(Used to upgrade town buildings)`}
         src={this.props.info.iconUrl}
         classStyle={this.props.classStyle}
         side={this.props.amount}

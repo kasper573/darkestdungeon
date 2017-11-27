@@ -8,6 +8,7 @@ import {Bounds, Point, Size} from "../Bounds";
 import {grid} from "../config/Grid";
 import {observer} from "mobx-react";
 import {SizeObserver} from "./SizeObserver";
+import {commonStyles} from "../config/styles";
 
 export enum TooltipSide {
   Above,
@@ -106,10 +107,16 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
     }
   }
 
+  wrapTooltip (tip: any) {
+    if (typeof tip === "string") {
+      tip = <span className={css(commonStyles.nowrap)}>{tip}</span>;
+    }
+
+    return <Tooltip>{tip}</Tooltip>;
+  }
+
   render () {
-    const tip = this.isTooltipVisible && (
-      <Tooltip>{this.props.tip}</Tooltip>
-    );
+    const tip = this.isTooltipVisible && this.wrapTooltip(this.props.tip);
 
     return (
       <div
