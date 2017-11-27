@@ -15,6 +15,7 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {StaticState} from "../../state/StaticState";
+import {estateContentPosition} from "./EstateTemplate";
 
 @observer
 export class EstateRosterEntry extends AppStateComponent<{
@@ -30,7 +31,7 @@ export class EstateRosterEntry extends AppStateComponent<{
   showHeroOverview () {
     this.appState.popups.show({
       align: PopupAlign.TopLeft,
-      position: {x: 0, y: 0},
+      position: estateContentPosition,
       modalState: ModalState.Opaque,
       id: "heroOverview",
       content: <HeroOverview hero={this.props.hero}/>
