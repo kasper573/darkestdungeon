@@ -1,21 +1,19 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Path} from "../../state/types/Path";
+import {Path, PathTypes} from "../../state/types/Path";
 import {PauseMenu} from "../../ui/PauseMenu";
 import {EstateRoster} from "./EstateRoster";
 import {observer} from "mobx-react";
 import {AppStateComponent} from "../../AppStateComponent";
 import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
-import {PathTypes} from "../../state/types/Path";
 import {EstateFooter} from "./EstateFooter";
 import {commonStyles} from "../../config/styles";
-import {ItemType} from "../../state/types/ItemInfo";
-import {Inventory} from "../../ui/Inventory";
 import {Popup} from "../../ui/Popups";
 import {ModalState} from "../../state/PopupState";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
+import {EstateInventory} from "./EstateInventory";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -52,11 +50,7 @@ export class EstateTemplate extends AppStateComponent<{
       modalState: ModalState.Opaque,
       content: (
         <Popup>
-          <Inventory
-            heroes={this.activeProfile.roster}
-            items={this.activeProfile.items}
-            filter={(i) => i.info.type !== ItemType.Heirloom}
-          />
+          <EstateInventory/>
         </Popup>
       )
     });
