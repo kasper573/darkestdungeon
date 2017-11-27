@@ -1,9 +1,11 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {grid} from "./Grid";
+import * as Color from "color";
 
 export const commonColors = {
   bloodRed: "rgba(38, 0, 0, 1)",
+  brightRed: "rgba(246,46,17,1)",
   gold: "rgb(200, 180, 110)",
   red: "rgb(177, 25, 0)",
   gray: "#333",
@@ -52,6 +54,12 @@ export const commonStyleFn = {
       case "left": delete style.right; break;
     }
     return style;
+  },
+
+  shineGradient (color = "rgb(196, 176, 108)") {
+    const parsedColor = new Color(color);
+    const sideColor = parsedColor.darken(0.5);
+    return `linear-gradient(to right, ${sideColor} 0%, ${color} 50%, ${sideColor} 100%)`;
   }
 };
 
