@@ -13,6 +13,7 @@ import {fonts} from "../assets/fonts";
 import {grid} from "./config/Grid";
 import {InputRoot} from "./state/InputState";
 import {GridOverlay} from "./GridOverlay";
+import {commonColors} from "./config/styles";
 
 @observer
 export class App extends React.Component<{
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     height: grid.outerHeight,
     overflow: "hidden",
     background: "#ab36ff",
-    color: "white",
+    color: commonColors.lightGray,
     fontSize: grid.fontSize(0.5)
   }
 });
