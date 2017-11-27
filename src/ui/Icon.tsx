@@ -42,7 +42,7 @@ export class Icon extends React.Component<{
     const customWidth = this.props.width !== undefined ? this.props.width : customSize;
     const customHeight = this.props.height !== undefined ? this.props.height : customSize;
 
-    let dynamicIconStyle = {
+    const dynamicIconStyle = {
       backgroundImage: this.props.src ? `url(${this.props.src})` : undefined,
       transform: `scale(${this.props.scale})`,
       transformOrigin: "50% 100%",
@@ -65,10 +65,9 @@ export class Icon extends React.Component<{
         );
         break;
       case IconHighlightType.Opacity:
-        dynamicIconStyle = {
-          ...(dynamicIconStyle as any),
-          opacity: this.isHovered ? 1 : 0.8
-        };
+        if (this.props.onClick && !this.isHovered) {
+          (dynamicIconStyle as any).opacity = 0.6;
+        }
 
         iconElement = (
           <div

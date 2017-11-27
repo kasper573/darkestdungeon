@@ -11,6 +11,7 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {Icon, IconHighlightType} from "../../ui/Icon";
 import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
 import {grid} from "../../config/Grid";
+import {inventoryIcon} from "./EstateInventory";
 
 export class EstateFooter extends AppStateComponent<{
   continueLabel: string,
@@ -51,7 +52,7 @@ export class EstateFooter extends AppStateComponent<{
         <Row valign="center" align="flex-end" style={{flex: 1}}>
           {this.props.inventory && (
             <Icon
-              src={require("../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory.icon.png")}
+              src={inventoryIcon}
               scale={2}
               highlight={IconHighlightType.Lines}
               onClick={this.props.onInventoryRequested}

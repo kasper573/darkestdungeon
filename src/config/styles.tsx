@@ -46,10 +46,19 @@ export const commonStyleFn = {
     };
   },
 
-  dock (side?: string) {
-    const style: any = {position: "absolute", top: 0, right: 0, bottom: 0, left: 0};
+  dock (side?: string, padding = 0) {
+    const style: any = {
+      position: "absolute",
+      top: padding, right: padding,
+      bottom: padding, left: padding
+    };
+
     switch (side) {
       case "top": delete style.bottom; break;
+      case "topRight":
+        delete style.bottom;
+        delete style.left;
+        break;
       case "right": delete style.left; break;
       case "bottom": delete style.top; break;
       case "left": delete style.right; break;

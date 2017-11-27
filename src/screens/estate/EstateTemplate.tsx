@@ -9,7 +9,6 @@ import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
 import {EstateFooter} from "./EstateFooter";
 import {commonStyles} from "../../config/styles";
-import {Popup} from "../../ui/Popups";
 import {ModalState} from "../../state/PopupState";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
@@ -48,11 +47,7 @@ export class EstateTemplate extends AppStateComponent<{
     this.appState.popups.show({
       id: "inventory",
       modalState: ModalState.Opaque,
-      content: (
-        <Popup>
-          <EstateInventory/>
-        </Popup>
-      )
+      content: <EstateInventory/>
     });
   }
 

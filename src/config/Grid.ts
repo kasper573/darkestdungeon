@@ -79,6 +79,6 @@ const pBottom = commonMargin / 2;
 const pHorizontal = commonMargin;
 
 export const grid: Grid = new Grid(
-  screenWidth, screenHeight, 16, 16, 10, 10, 3,
+  screenWidth, screenHeight, 16, 16, 10, 10, 2,
   pTop, pHorizontal, pBottom, pHorizontal
 );
