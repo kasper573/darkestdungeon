@@ -8,7 +8,7 @@ import {HeirloomTrader} from "../../ui/HeirloomTrader";
 import {ModalState} from "../../state/PopupState";
 import {CommonButton, CommonButtonSize} from "../../ui/CommonButton";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Icon} from "../../ui/Icon";
+import {Icon, IconHighlightType} from "../../ui/Icon";
 import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
 import {grid} from "../../config/Grid";
 
@@ -33,6 +33,7 @@ export class EstateFooter extends AppStateComponent<{
             src={require("../../../assets/dd/images/campaign/town/heirloom_exchange/he_icon_idle.png")}
             iconStyle={styles.swapIcon}
             tip="Trade heirlooms"
+            highlight={IconHighlightType.Lines}
             onClick={() => this.appState.popups.show({
               content: <Popup><HeirloomTrader/></Popup>,
               modalState: ModalState.Opaque,
@@ -52,6 +53,7 @@ export class EstateFooter extends AppStateComponent<{
             <Icon
               src={require("../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory.icon.png")}
               scale={2}
+              highlight={IconHighlightType.Lines}
               onClick={this.props.onInventoryRequested}
               classStyle={styles.iconOnRight}
             />
@@ -59,6 +61,7 @@ export class EstateFooter extends AppStateComponent<{
           <Icon
             src={require("../../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png")}
             scale={2}
+            highlight={IconHighlightType.Lines}
             onClick={this.props.onPauseRequested}
             classStyle={styles.iconOnRight}
           />
