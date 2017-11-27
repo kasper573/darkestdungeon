@@ -2,12 +2,12 @@ import * as React from "react";
 import {ModalState, PopupHandle} from "../state/PopupState";
 import {css, StyleSheet} from "aphrodite";
 import {LineButton} from "./LineButton";
-import {fonts} from "../../assets/fonts";
 import {BannerHeader} from "./BannerHeader";
 import {grid} from "../config/Grid";
 import {Input} from "../config/Input";
 import {InputBinding} from "../state/InputState";
 import {commonColors, commonStyleFn} from "../config/styles";
+import {Icon} from "./Icon";
 
 export type PopupProps = {
   handle?: PopupHandle,
@@ -24,15 +24,16 @@ export class Popup extends React.Component<PopupProps> {
     const isDismissable = this.props.handle && this.props.handle.modalState !== ModalState.Modal;
     const hasCloseButton = this.props.handle && (this.props.closeable || isDismissable);
     const closeButton = hasCloseButton && (
-      <span
-        className={css(styles.popupCloseButton)}
+      <Icon
+        src={require("../../assets/dd/images/shared/progression/progression_close.png")}
+        size={grid.gutter * 3}
+        classStyle={styles.closeButton}
         onClick={() => this.props.handle.close()}>
-        X
         <InputBinding
           match={Input.back}
           callback={() => this.props.handle.close()}
         />
-      </span>
+      </Icon>
     );
 
     const dynamicStyle = !this.props.padding ? {
@@ -41,8 +42,11 @@ export class Popup extends React.Component<PopupProps> {
 
     return (
       <div className={css(styles.popup)} style={dynamicStyle}>
-        {closeButton}
-        {this.props.children}
+        <div className={css(styles.splash)}/>
+        <div className={css(styles.content)}>
+          {closeButton}
+          {this.props.children}
+        </div>
       </div>
     );
   }
@@ -105,8 +109,7 @@ export class Alert extends React.Component<
     return (
       <Prompt {...rest}
         query={message}
-        responses={[{label: dismissLabel, value: dismissValue}]}
-      >
+        responses={[{label: dismissLabel, value: dismissValue}]}>
         {this.props.children}
       </Prompt>
     );
@@ -118,40 +121,37 @@ type PromptResponse = {
   value: any
 };
 
-const closeButtonSize = grid.gutter * 3;
+const splashSize = grid.ySpan(2);
+export const popupPadding = grid.gutter / 2;
 const styles = StyleSheet.create({
   popup: {
-    background: "linear-gradient(to bottom, #352813 0%,#0e0e0e 33%,#222222 100%)",
-    padding: grid.gutter,
-    boxShadow: commonStyleFn.innerShadow(),
-    border: commonStyleFn.border(),
+    background: "black",
+    padding: popupPadding,
+    boxShadow: commonStyleFn.outerShadow(),
     minWidth: grid.vw(25),
     maxWidth: grid.vw(75)
   },
 
-  popupCloseButton: {
-    position: "absolute",
-    top: -closeButtonSize / 2,
-    right: -closeButtonSize / 2,
-    width: closeButtonSize,
-    height: closeButtonSize,
-    zIndex: 1,
+  splash: {
+    ...commonStyleFn.dock("topRight", -splashSize / 2),
+    width: splashSize,
+    height: splashSize,
+    background: `url(${require("../../assets/images/splash1.png")})`,
+    backgroundSize: "contain",
+    backgroundPosition: "50% 50%",
+    backgroundRepeat: "no-repeat"
+  },
 
-    fontFamily: fonts.Darkest,
+  content: {
+    flex: 1,
+    border: commonStyleFn.border(commonColors.gold),
+    boxShadow: commonStyleFn.innerShadow(undefined, grid.gutter * 4),
+    padding: popupPadding
+  },
 
-    border: commonStyleFn.border(),
-    borderRadius: closeButtonSize / 2,
-    backgroundColor: commonColors.bloodRed,
-    boxShadow: commonStyleFn.innerShadow(),
-    color: "black",
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    textShadow: commonStyleFn.textShadow(),
-    ":hover": {
-      textShadow: commonStyleFn.textShadow("white")
-    }
+  closeButton: {
+    ...commonStyleFn.dock("topRight", popupPadding),
+    zIndex: 1
   },
 
   promptButton: {

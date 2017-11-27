@@ -6,13 +6,16 @@ import {observable, transaction} from "mobx";
 import {observer} from "mobx-react";
 import {CompareFunction, SortOptions} from "../../ui/SortOptions";
 import {Item} from "../../state/types/Item";
-import {Prompt} from "../../ui/Popups";
+import {Popup, popupPadding, Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
-import {BannerHeader} from "../../ui/BannerHeader";
-import {Row} from "../../config/styles";
+import {commonStyleFn, Row} from "../../config/styles";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
+import {LargeHeader} from "../../ui/LargeHeader";
 
+export const inventoryIcon = require(
+  "../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory.icon.png"
+);
 const unequipIcon = require(
   "../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_unequip_trinkets.png"
 );
@@ -46,11 +49,12 @@ export class EstateInventory extends AppStateComponent {
 
   render () {
     return (
-      <div>
-        <BannerHeader>
-          Inventory
-        </BannerHeader>
-        <Row>
+      <Popup {...this.props}>
+        <LargeHeader
+          icon={inventoryIcon}
+          label="Inventory"
+        />
+        <Row classStyle={styles.icons}>
           <Icon
             tip="Unequip items on all heroes"
             classStyle={styles.unequip}
@@ -69,12 +73,17 @@ export class EstateInventory extends AppStateComponent {
           items={this.activeProfile.items}
           filter={(i) => i.info.type !== ItemType.Heirloom}
         />
-      </div>
+      </Popup>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  icons: {
+    ...commonStyleFn.dock("topRight", popupPadding),
+    marginRight: grid.gutter * 4 // Adjustment to not cover close button
+  },
+
   unequip: {
     marginRight: grid.gutter / 2
   }
