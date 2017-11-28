@@ -411,11 +411,6 @@ export function addStaticState () {
         }
       }
     },
-    memoirs: {
-      name: "Memoirs",
-      avatarUrl: require("../../assets/images/avatar.jpg"),
-      backgroundUrl: require("../../assets/images/memoirs-bg.jpg")
-    },
     sanitarium: {
       name: "Sanitarium",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),

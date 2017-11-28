@@ -17,7 +17,6 @@ import {Sanitarium} from "../screens/estate/buildings/Sanitarium";
 import {Abbey} from "../screens/estate/buildings/Abbey";
 import {Guild} from "../screens/estate/buildings/Guild";
 import {Blacksmith} from "../screens/estate/buildings/Blacksmith";
-import {Memoirs} from "../screens/estate/buildings/Memoirs";
 import {BattleTester} from "../screens/BattleTester";
 import {Route} from "../state/types/Route";
 
@@ -134,12 +133,6 @@ export const routes: {[key: string]: Route} = {
             {src: require("../../assets/dd/audio/amb_town_blacksmith_os_02.wav")},
             {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")}
           ]
-        )
-      }),
-      "Memoirs": new Route({
-        component: Memoirs,
-        ambience: () => new AmbienceDefinition(
-          {src: require("../../assets/dd/audio/amb_town_tavern.wav")}
         )
       })
     }
