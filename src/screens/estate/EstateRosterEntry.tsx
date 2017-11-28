@@ -16,62 +16,91 @@ import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {StaticState} from "../../state/StaticState";
 import {estateContentPosition} from "./EstateTemplate";
+import {grid} from "../../config/Grid";
+import {Icon} from "../../ui/Icon";
+
+const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
 @observer
 export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
+  index?: number,
   lineupFeatures?: boolean,
   allowDrop?: (item: Hero) => boolean,
   allowDrag?: (item: Hero) => boolean,
   onDragEnd?: (item: Hero, monitor: any) => void,
   onDrop?: (droppedHero: Hero) => void,
   onSelect?: (hero: Hero) => void,
-  classStyle?: any
+  classStyle?: any,
+
+  // Hover offset settings
+  isShownInOverview?: boolean,
+  enableHoverOffset?: boolean,
+  onOverviewOpened?: () => void,
+  onOverviewClosed?: () => void
 }> {
+  static defaultProps = {
+    index: 0
+  };
+
   showHeroOverview () {
     this.appState.popups.show({
       align: PopupAlign.TopLeft,
       position: estateContentPosition,
       modalState: ModalState.Opaque,
       id: "heroOverview",
-      content: <HeroOverview hero={this.props.hero}/>
+      content: <HeroOverview hero={this.props.hero}/>,
+      onClose: this.props.onOverviewClosed
     });
+
+    if (this.props.onOverviewOpened) {
+      this.props.onOverviewOpened();
+    }
   }
 
   render () {
     const hero = this.props.hero;
 
-    let extraStyle;
-    let lineupElement;
-    let residentElement;
+    let overlayIconUrl;
 
     if (this.props.lineupFeatures && hero.inLineup) {
-      extraStyle = styles.entryInLineup;
-      lineupElement = <div className={css(styles.lineupIcon)}/>;
+      overlayIconUrl = inLineupIconUrl;
+    } else if (hero.residentInfo) {
+      const buildingInfo = StaticState.instance.buildingInfoRoot.get(hero.residentInfo.buildingId);
+      overlayIconUrl = buildingInfo.parent.iconUrl;
     }
 
-    if (hero.residentInfo) {
-      const buildingInfo = StaticState.instance.buildingInfoRoot.get(hero.residentInfo.buildingId);
-      residentElement = (
-        <div>{buildingInfo.name}</div>
-      );
+    const dynamicStyles = [];
+    if (this.props.enableHoverOffset) {
+      dynamicStyles.push(styles.entryOffsetable);
+      if (this.props.isShownInOverview) {
+        dynamicStyles.push(styles.entryOffsetForced);
+      }
     }
 
     return (
       <DragDropSlot
         type={Hero}
         item={hero}
-        classStyle={[styles.entry, this.props.classStyle]}
+        classStyle={[styles.entry, ...dynamicStyles, this.props.classStyle]}
+        style={{borderColor: borderColors[this.props.index % 2]}}
         allowDrag={this.props.allowDrag}
         allowDrop={this.props.allowDrop}
         onDragEnd={this.props.onDragEnd}
         onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
-        <Row classStyle={extraStyle}>
-          <Avatar src={hero.classInfo.avatarUrl}>
-            {lineupElement}
-            {residentElement}
-          </Avatar>
+        <Row>
+          <Avatar
+            classStyle={[styles.avatar, overlayIconUrl ? styles.avatarDimmed : false]}
+            src={hero.classInfo.avatarUrl}
+          />
+          {overlayIconUrl && (
+            <Icon
+              src={overlayIconUrl}
+              classStyle={styles.overlayIconContainer}
+              iconStyle={styles.overlayIcon}
+            />
+          )}
           <div className={css(styles.info)}>
             <span className={css(commonStyles.commonName)}>
               {hero.name}
@@ -80,16 +109,18 @@ export class EstateRosterEntry extends AppStateComponent<{
               classStyle={styles.stress}
               percentage={hero.stats.stressPercentage}
             />
+            <div className={css(commonStyles.fill)}/>
             <div className={css(styles.equipment)}>
-              {hero.armor && <ItemLevel type={ItemType.Armor} level={hero.armor.level}/>}
+              {hero.armor && <ItemLevel type={ItemType.Armor} level={hero.armor.level}
+                                        style={{marginRight: grid.border}}/>}
               {hero.weapon && <ItemLevel type={ItemType.Weapon} level={hero.weapon.level}/>}
             </div>
           </div>
         </Row>
         <TooltipArea
           side={TooltipSide.Left}
-          tip={<HeroBreakdown hero={this.props.hero}/>}
-        >
+          classStyle={styles.levelIconContainer}
+          tip={<HeroBreakdown hero={this.props.hero}/>}>
           <LevelIcon exp={hero}/>
         </TooltipArea>
       </DragDropSlot>
@@ -97,16 +128,35 @@ export class EstateRosterEntry extends AppStateComponent<{
   }
 }
 
+const borderColors = [
+  "rgb(33,33,33)",
+  "rgb(68, 72, 79)"
+];
+
+export const rosterEntryHoverOffset = grid.xSpan(0.5);
+const entryHeight = grid.ySpan(1.75);
+const entryBorderSize = grid.border;
+const entryPadding = grid.border;
+const entryAvatarSize = entryHeight - entryBorderSize * 2 - entryPadding * 2;
 const styles = StyleSheet.create({
   entry: {
     flexDirection: "row",
-    border: commonStyleFn.border(),
+    border: commonStyleFn.border(undefined, entryBorderSize),
+    borderRight: 0,
     backgroundColor: "black",
-    padding: 2
+    padding: entryPadding,
+    height: entryHeight
   },
 
-  entryInLineup: {
-    opacity: 0.5
+  entryOffsetable: {
+    transition: "margin-left 0.2s ease-out",
+    ":hover": {
+      marginLeft: -rosterEntryHoverOffset
+    }
+  },
+
+  entryOffsetForced: {
+    marginLeft: -rosterEntryHoverOffset
   },
 
   lineupIcon: {
@@ -115,17 +165,43 @@ const styles = StyleSheet.create({
     background: "red"
   },
 
+  avatar: {
+    width: entryAvatarSize,
+    height: entryAvatarSize
+  },
+
+  avatarDimmed: {
+    opacity: 0.5
+  },
+
+  overlayIconContainer: {
+    ...commonStyleFn.dock("left")
+  },
+
+  overlayIcon: {
+    width: entryAvatarSize,
+    height: entryAvatarSize
+  },
+
   info: {
-    marginLeft: 10,
-    marginRight: 10
+    margin: grid.gutter,
+    width: grid.xSpan(1.5)
   },
 
   stress: {
-    marginTop: 3,
-    marginBottom: 3
+    marginTop: grid.border,
+    marginBottom: grid.border
   },
 
   equipment: {
     flexDirection: "row"
+  },
+
+  levelIconContainer: {
+    margin: grid.gutter,
+    marginLeft: 0,
+    paddingRight: rosterEntryHoverOffset,
+    marginRight: grid.gutter - rosterEntryHoverOffset,
+    justifyContent: "flex-end"
   }
 });

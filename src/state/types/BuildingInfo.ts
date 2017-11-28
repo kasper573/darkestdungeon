@@ -8,6 +8,7 @@ export class BuildingInfo {
   key: string;
   name: string;
   description: string;
+  iconUrl: string;
   avatarUrl: string;
   npcImageUrl: string;
   backgroundUrl: string;
