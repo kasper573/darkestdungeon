@@ -48,8 +48,8 @@ export class DungeonCharacterSummary extends React.Component<{
             ))}
             <Icon
               tip="Pass"
-              width={grid.gutter * 2}
-              height={grid.gutter * 7}
+              width={grid.xSpan(0.25)}
+              height={grid.ySpan(1)}
               src={require("../../../assets/dd/images/panels/icons_ability/ability_pass.png")}
               onClick={() => this.props.onSkillClicked(null)}
             />

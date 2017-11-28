@@ -1,6 +1,7 @@
 import * as React from "react";
 import {ItemInfo} from "../state/types/ItemInfo";
 import {Icon} from "./Icon";
+import {grid} from "../config/Grid";
 
 export class HeirloomIcon extends React.Component<{
   info: ItemInfo,
@@ -13,6 +14,7 @@ export class HeirloomIcon extends React.Component<{
       <Icon
         tip={`${this.props.info.pluralName}${amountString}(Used to upgrade town buildings)`}
         src={this.props.info.iconUrl}
+        size={grid.ySpan(0.75)}
         classStyle={this.props.classStyle}
         side={this.props.amount}
       />

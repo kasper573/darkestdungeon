@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
 
   smallIcon: {
-    height: grid.gutter * 2.5,
-    width: grid.gutter * 2.5
+    height: grid.ySpan(0.5),
+    width: grid.ySpan(0.5)
   }
 });

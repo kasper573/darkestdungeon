@@ -58,7 +58,6 @@ export class EstateInventory extends AppStateComponent {
           <Icon
             tip="Unequip items on all heroes"
             classStyle={styles.unequip}
-            size={grid.gutter * 3}
             src={unequipIcon}
             onClick={() => this.promptUnequipAll()}
           />

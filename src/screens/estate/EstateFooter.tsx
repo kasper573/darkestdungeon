@@ -54,6 +54,7 @@ export class EstateFooter extends AppStateComponent<{
           {this.props.inventory && (
             <Icon
               src={inventoryIcon}
+              size={grid.ySpan(0.75)}
               scale={2}
               highlight={IconHighlightType.Lines}
               onClick={this.props.onInventoryRequested}
@@ -62,6 +63,7 @@ export class EstateFooter extends AppStateComponent<{
           )}
           <Icon
             src={pauseIcon}
+            size={grid.ySpan(0.75)}
             scale={2}
             highlight={IconHighlightType.Lines}
             onClick={this.props.onPauseRequested}
@@ -75,8 +77,8 @@ export class EstateFooter extends AppStateComponent<{
 
 const styles = StyleSheet.create({
   swapIcon: {
-    width: grid.gutter * 6,
-    height: grid.gutter * 6,
+    width: grid.ySpan(1),
+    height: grid.ySpan(1),
     marginLeft: grid.gutter * 3
   },
 

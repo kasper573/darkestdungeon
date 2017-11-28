@@ -118,7 +118,7 @@ export const estateContentPosition = {
 };
 
 const headerOffset = grid.gutter * 2.5;
-const backButtonSize = grid.gutter * 3;
+const backButtonSize = grid.ySpan(0.66);
 const styles = StyleSheet.create({
   header: {
     position: "absolute",

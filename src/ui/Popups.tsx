@@ -24,7 +24,6 @@ export class Popup extends React.Component<PopupProps> {
     const closeButton = hasCloseButton && (
       <Icon
         src={require("../../assets/dd/images/shared/progression/progression_close.png")}
-        size={grid.gutter * 3}
         classStyle={styles.closeButton}
         onClick={() => this.props.handle.close()}>
         <InputBinding
