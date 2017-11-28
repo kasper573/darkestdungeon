@@ -14,6 +14,7 @@ import {Skill} from "../state/types/Skill";
 import {maxSelectedSkills} from "../config/general";
 import {EquipmentDropbox} from "./EquipmentDropbox";
 import {SkillIcon} from "./SkillIcon";
+import {grid} from "../config/Grid";
 
 @observer
 export class HeroOverview extends React.Component<
@@ -48,7 +49,7 @@ export class HeroOverview extends React.Component<
     const onSkillSelected = this.props.onSkillSelected || this.toggleSkillSelection.bind(this);
     return (
       <Popup {...rest}>
-        <Row classStyle={[styles.heroInfo, this.props.classStyle]}>
+        <Row classStyle={[styles.heroOverview, this.props.classStyle]}>
           <Column>
             <Row>
               <button>EDIT</button>
@@ -136,8 +137,10 @@ export class HeroOverview extends React.Component<
 }
 
 const styles = StyleSheet.create({
-  heroInfo: {
-    minWidth: 450
+  heroOverview: {
+    width: grid.xSpan(12),
+    height: grid.ySpan(13)
+
   },
 
   flaws: {
