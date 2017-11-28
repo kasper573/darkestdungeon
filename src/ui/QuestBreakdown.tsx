@@ -1,12 +1,12 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Avatar} from "./Avatar";
 import {Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemIcon} from "./ItemIcon";
 import {Quest} from "../state/types/Quest";
 import {Dungeon} from "../state/types/Dungeon";
 import {grid} from "../config/Grid";
+import {LargeHeader} from "./LargeHeader";
 
 export class QuestBreakdown extends React.Component<{
   quest: Quest,
@@ -16,10 +16,10 @@ export class QuestBreakdown extends React.Component<{
     const quest = this.props.quest;
     return (
       <div className={css(styles.container)}>
-        <Row classStyle={styles.header}>
-          <Avatar src={require("../../assets/images/avatar.jpg")}/>
-          <div className={css(styles.headerLabel)}>Estate Map</div>
-        </Row>
+        <LargeHeader
+          label="Estate Map"
+          icon={require("../../assets/dd/images/campaign/town/quest_select/quest_select.icon.png")}
+        />
         <CommonHeader label={quest.info.type}/>
         <p>
           {quest.info.description}
