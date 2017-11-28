@@ -1,7 +1,7 @@
 import * as React from "react";
 import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "../../state/types/Path";
-import {Prompt} from "../../ui/Popups";
+import {Popup, popupOffset, Prompt} from "../../ui/Popups";
 import {BuildingOverview} from "./buildings/BuildingOverview";
 import {StyleSheet} from "aphrodite";
 import {LineupDropbox} from "../../ui/LineupDropbox";
@@ -44,15 +44,15 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         continueCheck={() => this.checkItemsBeforeContinue()}
         continueLabel="Embark"
         continuePath="dungeonOverview">
-        <BuildingOverview
-          classStyle={styles.container}
-          info={StaticState.instance.buildings.get("provision")}>
-          <Store
-            ref={(store) => this.store = store}
-            initialStoreItems={this.initialStoreItems}
-            profile={this.activeProfile}
-          />
-        </BuildingOverview>
+        <Popup classStyle={styles.fakePopup}>
+          <BuildingOverview info={StaticState.instance.buildings.get("provision")}>
+            <Store
+              ref={(store) => this.store = store}
+              initialStoreItems={this.initialStoreItems}
+              profile={this.activeProfile}
+            />
+          </BuildingOverview>
+        </Popup>
         <LineupDropbox profile={this.activeProfile} lock/>
       </EstateTemplate>
     );
@@ -60,8 +60,8 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    top: 0, left: 0, right: "70%", bottom: 0
+  fakePopup: {
+    marginTop: -popupOffset,
+    marginLeft: -popupOffset
   }
 });
