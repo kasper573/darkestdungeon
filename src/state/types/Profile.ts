@@ -331,7 +331,21 @@ export class Profile {
   }
 
   recruitHero (hero: Hero) {
-    moveItem(hero, this.coach, this.roster);
+    if (!this.isRosterFull) {
+      moveItem(hero, this.coach, this.roster);
+    }
+  }
+
+  @action
+  positionHeroInRoster (hero: Hero, newIndex: number) {
+    const currentIndex = this.roster.indexOf(hero);
+    if (currentIndex === -1) {
+      throw new Error("Hero does not exist in roster");
+    }
+
+    this.roster.splice(currentIndex, 1); // Remove
+    this.roster.splice(newIndex, 0, hero); // Insert
+    this.roster.forEach((m, updatedIndex) => m.rosterIndex = updatedIndex);
   }
 
   sortHeroes (compareFn: (a: Hero, b: Hero) => number) {
