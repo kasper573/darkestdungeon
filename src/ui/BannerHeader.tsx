@@ -1,6 +1,5 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {fonts} from "../../assets/fonts";
 import {grid} from "../config/Grid";
 import {commonColors, commonStyleFn} from "../config/styles";
 
@@ -18,9 +17,7 @@ const styles = StyleSheet.create({
   bannerHeader: {
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: grid.fontSize(1),
-    fontFamily: fonts.Darkest,
-    padding: grid.gutter,
+    padding: grid.gutter / 2,
     color: commonColors.gold,
     border: commonStyleFn.border(undefined, grid.border * 2),
     backgroundColor: "black",

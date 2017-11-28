@@ -34,7 +34,9 @@ export class LargeHeader extends React.Component<{
 const styles = StyleSheet.create({
   headerIcon: {
     width: grid.ySpan(2),
-    height: grid.ySpan(2)
+    height: grid.ySpan(2),
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   headerLabel: {

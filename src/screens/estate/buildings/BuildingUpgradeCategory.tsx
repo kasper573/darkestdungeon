@@ -3,9 +3,9 @@ import {observer} from "mobx-react";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {BuildingUpgradeIcon, stepSize} from "./BuildingUpgradeIcon";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyles, Row} from "../../../config/styles";
-import {TooltipArea} from "../../../lib/TooltipArea";
-import {Avatar} from "../../../ui/Avatar";
+import {commonStyleFn, commonStyles, Row} from "../../../config/styles";
+import {Icon} from "../../../ui/Icon";
+import {grid} from "../../../config/Grid";
 
 @observer
 export class BuildingUpgradeCategory extends React.Component<{
@@ -15,7 +15,7 @@ export class BuildingUpgradeCategory extends React.Component<{
     const steps: any[] = [];
     this.props.category.items.forEach((itemInfo, index) => {
       const prerequisite = this.props.category.items[index - 1];
-      steps.push(<Line key={"line" + index}/>);
+      steps.push(<Dash key={"line" + index}/>);
       steps.push(
         <BuildingUpgradeIcon
           key={itemInfo.id}
@@ -27,14 +27,16 @@ export class BuildingUpgradeCategory extends React.Component<{
     });
 
     return (
-      <div className={css(styles.upgrade)}>
-        <h1 className={css(commonStyles.commonName)}>{this.props.category.name}</h1>
-        <Row classStyle={styles.upgradeSequence}>
-          <TooltipArea
+      <div className={css(styles.container)}>
+        <h1 className={css(commonStyles.commonName)}>
+          {this.props.category.name}
+        </h1>
+        <Row classStyle={styles.sequence}>
+          <Icon
+            size={stepSize * 1.5}
             tip={this.props.category.description}
-            classStyle={styles.upgradeAvatar}>
-            <Avatar src={this.props.category.avatarUrl}/>
-          </TooltipArea>
+            src={this.props.category.avatarUrl}
+          />
           {steps}
         </Row>
       </div>
@@ -42,35 +44,28 @@ export class BuildingUpgradeCategory extends React.Component<{
   }
 }
 
-const Line = () => (
-  <div className={css(styles.lineContainer)}>
-    <div className={css(styles.line)}/>
-  </div>
-);
+const Dash = () => <div className={css(styles.dash)}/>;
 
 const styles = StyleSheet.create({
-  upgrade: {
+  container: {
     marginBottom: 3,
-    paddingBottom: 3,
-    borderBottom: "2px solid gray"
+    paddingBottom: 3
   },
 
-  upgradeAvatar: {
-    height: "100%"
-  },
-
-  upgradeSequence: {
+  sequence: {
+    marginTop: grid.gutter,
     height: stepSize * 1.5,
     alignItems: "center"
   },
 
-  lineContainer: {
-    justifyContent: "center"
-  },
+  dash: {
+    justifyContent: "center",
 
-  line: {
-    width: stepSize / 2,
-    height: 2,
-    backgroundColor: "gold"
+    ":after": {
+      content: "' '",
+      width: stepSize / 2,
+      height: grid.border,
+      background: commonStyleFn.shineGradient()
+    }
   }
 });

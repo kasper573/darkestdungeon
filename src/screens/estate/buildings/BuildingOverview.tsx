@@ -7,6 +7,10 @@ import {BuildingUpgradeShop} from "./BuildingUpgradeShop";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {grid} from "../../../config/Grid";
 import {LargeHeader} from "../../../ui/LargeHeader";
+import {Icon} from "../../../ui/Icon";
+
+const moreInfoIconUrl = require("../../../../assets/dd/images/shared/progression/more_info_icon.png");
+const lessInfoIconUrl = require("../../../../assets/dd/images/shared/progression/less_info_icon.png");
 
 @observer
 export class BuildingOverview extends React.Component<{
@@ -15,23 +19,10 @@ export class BuildingOverview extends React.Component<{
 }> {
   @observable areUpgradesVisible = false;
 
-  renderUpgradeSign () {
-    return (
-      <div
-        className={
-          css(
-            styles.upgradeSign, this.areUpgradesVisible ?
-              styles.upgradeSignClose :
-              styles.upgradeSignShow
-          )
-        }
-      />
-    );
-  }
-
   render () {
     const areUpgradesEnabled = this.props.info.children.size > 0;
     const shouldRenderUpgrades = areUpgradesEnabled && this.areUpgradesVisible;
+    const upgradeIconUrl = this.areUpgradesVisible ? lessInfoIconUrl : moreInfoIconUrl;
 
     return (
       <Row
@@ -46,9 +37,9 @@ export class BuildingOverview extends React.Component<{
             />
           )}
           <LargeHeader
-            icon={this.props.info.avatarUrl}
-            iconChildren={areUpgradesEnabled && this.renderUpgradeSign()}
             label={this.props.info.name}
+            icon={this.props.info.avatarUrl}
+            iconChildren={areUpgradesEnabled && (<Icon src={upgradeIconUrl} iconStyle={styles.upgradeIcon}/>)}
             onClick={areUpgradesEnabled ? () => this.areUpgradesVisible = !this.areUpgradesVisible : undefined}
           />
           {shouldRenderUpgrades && <BuildingUpgradeShop upgrades={this.props.info} />}
@@ -98,12 +89,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  upgradeSign: {
-    width: "25%",
-    height: "25%",
-    position: "absolute",
-    bottom: "-12.5%",
-    left: "37.5%"
+  upgradeIcon: {
+    width: grid.ySpan(1),
+    height: grid.ySpan(1)
   },
 
   upgradeSignClose: {
