@@ -37,7 +37,7 @@ export class Popup extends React.Component<PopupProps> {
       <div className={css(styles.header)}>
         <div className={css(styles.headerInner)}>
           <VerticalOutlineBox/>
-          <Icon src={this.props.headerIcon} scale={headerIconScale}/>
+          <Icon size={grid.ySpan(1)} src={this.props.headerIcon} scale={headerIconScale}/>
         </div>
       </div>
     );
