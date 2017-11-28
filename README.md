@@ -26,5 +26,8 @@ This project is purely for fun and educational purposes, not to create a competi
 - Clone this repository
 - Run `npm install` in the project root folder
 - Run `node .\dev\importAssetsFromDD.js <path-to-steam-directory>`
+
+> The import script is known to run into various race conditions with the file system. If it fails with file system errors you can try running it again until it succeeds.
+
 - Run `npm run dev-server` in the project root folder
 - Visit `localhost:8080` in your browser
