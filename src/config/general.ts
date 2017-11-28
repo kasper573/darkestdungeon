@@ -340,10 +340,48 @@ export function addStaticState () {
   addBuildings({
     abbey: {
       name: "Abbey",
+      iconUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/abbey/abbey.character_background.png"
-      )
+      ),
+      children: {
+        bar: {
+          name: "Cloister",
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.meditation.icon.png"),
+          description: "Peace through meditation",
+          items: [
+            {cost: null, effects: {size: 1, cost: 500}},
+            {cost: {[HeirloomType.Deed]: 2, [HeirloomType.Crest]: 3}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {size: 1}},
+            {cost: {[HeirloomType.Deed]: 4, [HeirloomType.Crest]: 7}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {size: 1}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
+          ]
+        },
+        gambling: {
+          name: "Trancept",
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.prayer.icon.png"),
+          description: "Pray to a Higher Power",
+          items: [
+            {cost: null, effects: {size: 1, cost: 2500}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
+          ]
+        },
+        recruits: {
+          name: "Penance Hall",
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.flagellation.icon.png"),
+          description: "Flagellation brings absolution",
+          items: [
+            {cost: null, effects: {size: 1, cost: 500}},
+            {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {recovery: 0.2}},
+            {cost: {[HeirloomType.Deed]: 6, [HeirloomType.Crest]: 8}, effects: {cost: -100}},
+            {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
+          ]
+        }
+      }
     },
     blacksmith: {
       name: "Blacksmith",
@@ -422,6 +460,7 @@ export function addStaticState () {
     },
     sanitarium: {
       name: "Sanitarium",
+      iconUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
       backgroundUrl: require(
@@ -504,6 +543,7 @@ export function addStaticState () {
     },
     tavern: {
       name: "Tavern",
+      iconUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
       backgroundUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character_background.png"),
