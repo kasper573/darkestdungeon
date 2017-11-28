@@ -14,19 +14,19 @@ import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
 import {TurnStats} from "./types/Stats";
 
-export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[]): Character {
+export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[], level = 0): Character {
   const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
-  return decorateCharacter(new Character(), template);
+  return decorateCharacter(new Character(), template, level);
 }
 
-export function generateHero (activeHeroes: Hero[]): Hero {
+export function generateHero (activeHeroes: Hero[], level = 0): Hero {
   const allTemplates = StaticState.instance.heroes;
   const template = randomizeTemplate(allTemplates, activeHeroes);
 
-  return decorateCharacter(new Hero(), template);
+  return decorateCharacter(new Hero(), template, level);
 }
 
-export function decorateCharacter<T extends Character> (c: T, template: CharacterTemplate): T {
+export function decorateCharacter<T extends Character> (c: T, template: CharacterTemplate, level: number): T {
   c.name = randomizeItem(template.characterNames);
   c.classInfo = template.classInfo;
   c.affliction = randomizeItem(StaticState.instance.afflictions);
@@ -45,6 +45,8 @@ export function decorateCharacter<T extends Character> (c: T, template: Characte
     skill.level++;
     skill.isSelected = true;
   });
+
+  c.experience = StaticState.instance.levels.find((l) => l.number === level).experience;
 
   c.resetMutableStats();
   return c;
