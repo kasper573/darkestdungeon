@@ -56,7 +56,7 @@ export class EstateTemplate extends AppStateComponent<{
   }
 
   render () {
-    const isShowingBuilding = this.props.path.parts.length > 1;
+    const isShowingBuilding = this.appState.router.path.parts.length > 1;
     return (
       <div
         className={css(styles.container)}
