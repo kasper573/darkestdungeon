@@ -122,13 +122,21 @@ export function addStaticState () {
     "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev", "Kfirba2"
   ];
 
-  addHero("Ninja", commonHeroNames);
-  addHero("Superhero", commonHeroNames);
-  addHero("Magician", commonHeroNames);
-  addHero("Baller", commonHeroNames);
-  addHero("Chad", commonHeroNames);
+  const ninja = addHero("Ninja", commonHeroNames);
+  ninja.classInfo.avatarUrl = require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png");
+  const superHero = addHero("Superhero", commonHeroNames);
+  superHero.classInfo.avatarUrl = require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png");
+  const magician = addHero("Magician", commonHeroNames);
+  magician.classInfo.avatarUrl = require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png");
+  const baller = addHero("Baller", commonHeroNames);
+  baller.classInfo.avatarUrl = require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png");
+  const chad = addHero("Chad", commonHeroNames);
+  chad.classInfo.avatarUrl = require(
+    "../../assets/dd/images/heroes/bounty_hunter/bounty_hunter_A/bounty_hunter_portrait_roster.png"
+  );
 
-  addHero("Master of Everything", ["Noob"], 0.1, true);
+  const noob = addHero("Master of Everything", ["Noob"], 0.1, true);
+  noob.classInfo.avatarUrl = require("../../assets/dd/images/heroes/crusader/crusader_A/crusader_portrait_roster.png");
 
   addMonster("Skeleton");
   addMonster("Demon");
