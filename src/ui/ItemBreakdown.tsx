@@ -1,29 +1,57 @@
 import * as React from "react";
 import {Item} from "../state/types/Item";
-import {ItemType} from "../state/types/ItemInfo";
 import {ItemLevel} from "./ItemLevel";
 import {StatsTextList} from "./StatsText";
+import {commonStyles, Row} from "../config/styles";
+import {css, StyleSheet} from "aphrodite";
+import {grid} from "../config/Grid";
+import {equippableItems} from "../config/general";
 
 export class ItemBreakdown extends React.Component<{
   item: Item
 }> {
   render () {
     const item = this.props.item;
-
-    if (item.info.type === ItemType.Consumable && item.info.description) {
-      return item.info.description;
-    }
-
-    const showLevel = item.info.type === ItemType.Armor || item.info.type === ItemType.Weapon;
+    const isEquippable = equippableItems.get(item.info.type);
 
     return (
-      <div>
+      <div className={css(styles.container)}>
+        <Row>
+          <div className={css(commonStyles.commonName)}>
+            {item.info.name}
+          </div>
+          {isEquippable && (
+            <ItemLevel
+              classStyle={styles.level}
+              type={item.info.type}
+              level={item.level}
+            />
+          )}
+        </Row>
+
         {item.info.description}
-        {showLevel && (
-          <ItemLevel type={item.info.type} level={item.level}/>
+
+        {isEquippable && (
+          <StatsTextList stats={item.stats.nonNeutral}/>
         )}
-        <StatsTextList stats={item.stats.nonNeutral}/>
       </div>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    maxWidth: grid.xSpan(3),
+    minWidth: grid.xSpan(2),
+    alignItems: "center",
+    textAlign: "center"
+  },
+
+  level: {
+    marginLeft: grid.gutter
+  },
+
+  stats: {
+    marginTop: grid.gutter
+  }
+});
