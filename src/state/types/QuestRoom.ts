@@ -1,12 +1,12 @@
 import {Vector} from "./Vector";
 import {identifier, list, object, serializable} from "serializr";
 import uuid = require("uuid");
-import {DungeonInfo} from "./DungeonInfo";
 import {Character} from "./Character";
 import {generateCurio, generateMonster} from "../Generators";
 import {observable} from "mobx";
 import {count} from "../../lib/Helpers";
 import {Curio} from "./Curio";
+import {Dungeon} from "./Dungeon";
 
 export type MapLocationId = string;
 
@@ -24,7 +24,7 @@ export class QuestRoom {
   }
 
   static walk (
-    dungeonInfo: DungeonInfo,
+    dungeon: Dungeon,
     memory: Map<string, QuestRoom> = new Map<string, QuestRoom>(),
     stepsLeft: number = 10,
     allowMonsters: (room: QuestRoom, coords: Vector) => boolean = () => true,
@@ -38,7 +38,7 @@ export class QuestRoom {
 
     if (allowMonsters(room, coordinates)) {
       count(2).forEach(() => {
-        const newMonster = generateMonster(dungeonInfo, generatedMonsters);
+        const newMonster = generateMonster(dungeon, generatedMonsters);
         generatedMonsters.push(newMonster);
         room.monsters.push(newMonster);
       });
@@ -58,7 +58,7 @@ export class QuestRoom {
 
     const nextCoordinate = coordinates.add(direction);
 
-    QuestRoom.walk(dungeonInfo, memory, stepsLeft - 1, allowMonsters, nextCoordinate, generatedMonsters);
+    QuestRoom.walk(dungeon, memory, stepsLeft - 1, allowMonsters, nextCoordinate, generatedMonsters);
 
     return room;
   }

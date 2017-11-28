@@ -6,7 +6,6 @@ import {Quest} from "./types/Quest";
 import {MapSize, QuestMap} from "./types/QuestMap";
 import {QuestObjective} from "./types/QuestObjective";
 import {Character} from "./types/Character";
-import {DungeonInfo} from "./types/DungeonInfo";
 import {CharacterTemplate} from "./types/CharacterTemplate";
 import {enumMap, randomizeItem, randomizeItems} from "../lib/Helpers";
 import {maxSelectedSkills} from "../config/general";
@@ -14,9 +13,9 @@ import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
 import {TurnStats} from "./types/Stats";
 
-export function generateMonster (dungeonInfo: DungeonInfo, activeMonsters: Character[], level = 0): Character {
-  const template = randomizeTemplate(dungeonInfo.monsters, activeMonsters);
-  return decorateCharacter(new Character(), template, level);
+export function generateMonster (dungeon: Dungeon, activeMonsters: Character[]): Character {
+  const template = randomizeTemplate(dungeon.info.monsters, activeMonsters);
+  return decorateCharacter(new Character(), template, dungeon.level.number);
 }
 
 export function generateHero (activeHeroes: Hero[], level = 0): Hero {
@@ -92,7 +91,7 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
   q.dungeonId = dungeon.id;
   q.bonfires = Math.round(Math.random() * 2);
   q.map = QuestMap.generate(
-    dungeon.info,
+    dungeon,
     randomizeItem(Array.from(enumMap<MapSize>(MapSize).values()))
   );
   q.changeRoom(q.map.entrance.id);
