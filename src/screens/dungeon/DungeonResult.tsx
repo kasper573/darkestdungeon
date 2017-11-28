@@ -7,6 +7,7 @@ import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import {AppStateComponent} from "../../AppStateComponent";
 import {CommonButton} from "../../ui/CommonButton";
+import {QuestStatus} from "../../state/types/Quest";
 
 @observer
 export class DungeonResult extends AppStateComponent {
@@ -42,7 +43,10 @@ export class DungeonResult extends AppStateComponent {
 
     // Update all state at the very end of the dungeon session
     this.activeProfile.returnPartyFromQuest(this.selectedQuest);
-    this.activeProfile.gotoNextWeek();
+
+    if (this.selectedQuest.status === QuestStatus.Victory) {
+      this.activeProfile.gotoNextWeek();
+    }
   }
 }
 
