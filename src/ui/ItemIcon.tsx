@@ -39,7 +39,7 @@ export class ItemIcon extends React.Component<{
             this.props.onRightClick();
             return false;
           }}>
-          {this.props.item.info.name}
+          {this.props.item.info.name.substr(0, 3)}
           {this.props.children}
         </div>
       </TooltipArea>
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     flex: 1,
     ...itemSize,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    fontSize: grid.fontSize(0.25),
     justifyContent: "center",
     alignItems: "center"
   }
