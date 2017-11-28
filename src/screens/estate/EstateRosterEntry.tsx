@@ -23,7 +23,7 @@ export class EstateRosterEntry extends AppStateComponent<{
   lineupFeatures?: boolean,
   allowDrop?: (item: Hero) => boolean,
   allowDrag?: (item: Hero) => boolean,
-  onDragEnd?: () => void,
+  onDragEnd?: (item: Hero, monitor: any) => void,
   onDrop?: (droppedHero: Hero) => void,
   onSelect?: (hero: Hero) => void,
   classStyle?: any
