@@ -13,7 +13,9 @@ import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
 import {grid} from "../../config/Grid";
 import {inventoryIcon} from "./EstateInventory";
 import {pauseIcon} from "../../ui/PauseMenu";
+import {observer} from "mobx-react";
 
+@observer
 export class EstateFooter extends AppStateComponent<{
   continueLabel: string,
   inventory: boolean,
