@@ -9,6 +9,7 @@ import {TooltipArea} from "../../../lib/TooltipArea";
 import {UpgradeTooltip} from "./UpgradeTooltip";
 import {StyleSheet} from "aphrodite";
 import {commonColors, commonStyleFn} from "../../../config/styles";
+import {grid} from "../../../config/Grid";
 
 @observer
 export class BuildingUpgradeIcon extends AppStateComponent<{
@@ -63,12 +64,20 @@ export class BuildingUpgradeIcon extends AppStateComponent<{
   }
 }
 
-export const stepSize = 15;
+const iconUrls = {
+  owned: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_purchased_icon.png"),
+  locked: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_locked_icon.png"),
+  available: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_purchasable_icon.png")
+};
+
+export const stepSize = grid.ySpan(0.75);
 const styles = StyleSheet.create({
   step: {
     width: stepSize,
     height: stepSize,
     border: commonStyleFn.outline("black"),
+    backgroundSize: "contain",
+    backgroundPosition: "50% 50%",
 
     ":hover": {
       boxShadow: "0px 0px 4px white"
@@ -76,15 +85,15 @@ const styles = StyleSheet.create({
   },
 
   stepOwned: {
-    backgroundColor: "gold",
+    backgroundImage: `url(${iconUrls.owned})`,
     border: commonStyleFn.outline(commonColors.gold)
   },
 
   stepAvailable: {
-    backgroundColor: "gray"
+    backgroundImage: `url(${iconUrls.available})`
   },
 
   stepLocked: {
-    backgroundColor: "red"
+    backgroundImage: `url(${iconUrls.locked})`
   }
 });
