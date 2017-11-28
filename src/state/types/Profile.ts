@@ -368,13 +368,14 @@ export class Profile {
     this.selectedQuestId = this.quests[0].id;
 
     // Randomize coach each week
-    this.coach = count(this.coachSize).map(() => this.newHero());
+    const recruitLevel = this.getUpgradeEffects("coach").level;
+    this.coach = count(this.coachSize).map(() => this.newHero(recruitLevel));
 
     this.processResidencyEffects();
   }
 
-  newHero () {
-    return generateHero([...this.roster, ...this.coach]);
+  newHero (startingLevel = 0) {
+    return generateHero([...this.roster, ...this.coach], startingLevel);
   }
 
   newQuest () {
