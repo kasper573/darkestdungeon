@@ -38,6 +38,9 @@ export class DevTools extends AppStateComponent {
                 onChange={() => this.gotoSelectedPath()}>
           {pathOptions}
         </select>
+        <button onClick={() => this.activeProfile.gotoNextWeek()}>
+          Week++
+        </button>
         <button onClick={() => this.gotoSelectedPath()}>
           Go
         </button>
