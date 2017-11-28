@@ -7,9 +7,9 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {when} from "mobx";
 import {Route} from "../../state/types/Route";
 import {StaticState} from "../../state/StaticState";
-import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
 import {css, StyleSheet} from "aphrodite";
+import {Avatar} from "../../ui/Avatar";
 
 export class EstateOverview extends AppStateComponent<{
   path: Path,
@@ -42,8 +42,8 @@ export class EstateOverview extends AppStateComponent<{
             const buildingRoute = this.props.route.children[buildingKey] as Route;
             const building = StaticState.instance.buildings.get(buildingRoute.component.id);
             return (
-              <Icon
-                iconStyle={styles.buildingIcon}
+              <Avatar
+                classStyle={styles.buildingIcon}
                 key={building.id}
                 src={building.avatarUrl}
                 tip={building.name}
