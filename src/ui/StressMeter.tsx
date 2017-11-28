@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   },
 
   stressBox: {
-    width: 6,
-    height: 10,
+    width: grid.gutter - grid.border * 2,
+    height: grid.gutter - grid.border,
     backgroundColor: "black",
     border: commonStyleFn.border("transparent"),
     
