@@ -2,24 +2,28 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {fonts} from "../../assets/fonts";
 import {grid} from "../config/Grid";
+import {commonColors, commonStyleFn} from "../config/styles";
 
 export class BannerHeader extends React.Component {
   render () {
     return (
-      <span className={css(styles.banner)}>
+      <div className={css(styles.bannerHeader)}>
         {this.props.children}
-      </span>
+      </div>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  banner: {
+  bannerHeader: {
     textAlign: "center",
     fontWeight: "bold",
-    marginBottom: 10,
     fontSize: grid.fontSize(1),
     fontFamily: fonts.Darkest,
-    textShadow: "0px 0px .25em red"
+    padding: grid.gutter,
+    color: commonColors.gold,
+    border: commonStyleFn.border(undefined, grid.border * 2),
+    backgroundColor: "black",
+    boxShadow: commonStyleFn.boxShadow()
   }
 });
