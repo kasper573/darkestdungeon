@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   },
 
   stressBox: {
+    borderRadius: grid.border,
     width: grid.gutter - grid.border * 2,
     height: grid.gutter - grid.border,
     backgroundColor: "black",
