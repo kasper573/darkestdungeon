@@ -339,13 +339,14 @@ export function addStaticState () {
     blacksmith: {
       name: "Blacksmith",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character_background.png")
       ,
       children: {
         mastery: {
           name: "Smithing",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.weapon.icon.png"),
           description: "Allows upgrading equipment to higher levels",
           items: [
             {cost: null, effects: {cost: 1000, level: 1}},
@@ -357,7 +358,7 @@ export function addStaticState () {
         },
         training: {
           name: "Furnace",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.cost.icon.png"),
           description: "Reduces cost of upgrading equipment",
           items: [
             {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {cost: -100}},
@@ -379,13 +380,14 @@ export function addStaticState () {
     guild: {
       name: "Guild",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.character.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/guild/guild.character_background.png"
       ),
       children: {
         mastery: {
-          name: "Treatment Ward",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          name: "Instructor Mastery",
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.skill_levels.icon.png"),
           description: "Allows upgrading hero combat skills to higher ranks",
           items: [
             {cost: null, effects: {cost: 1000, level: 1}},
@@ -397,7 +399,7 @@ export function addStaticState () {
         },
         training: {
           name: "Training Regiment",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.cost.icon.png"),
           description: "Reduces cost of upgrading hero skills",
           items: [
             {cost: {[HeirloomType.Deed]: 1, [HeirloomType.Crest]: 2}, effects: {cost: -100}},
@@ -417,13 +419,14 @@ export function addStaticState () {
     sanitarium: {
       name: "Sanitarium",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character_background.png"
       ),
       children: {
         quirks: {
           name: "Treatment Ward",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.cost.icon.png"),
           description: "Treat Quirks and other problematic behaviors.",
           items: [
             {cost: null, effects: {size: 1, cost: 500, treatFlaw: 1}},
@@ -434,7 +437,9 @@ export function addStaticState () {
         },
         diseases: {
           name: "Medical Ward",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require(
+            "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.disease_quirk_cost.icon.png"
+          ),
           description: "Treat Diseases, humours, and other physical maladies.",
           items: [
             {cost: null, effects: {size: 1, cost: 500, treatDisease: 1}},
@@ -448,6 +453,7 @@ export function addStaticState () {
     coach: {
       name: "Stage Coach",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character_background.png"
       ),
@@ -456,7 +462,7 @@ export function addStaticState () {
       children: {
         network: {
           name: "Stagecoach Network",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
           description: "Increases the number of recruits available for hire",
           items: [
             {cost: null, effects: {size: 2}},
@@ -467,7 +473,9 @@ export function addStaticState () {
         },
         roster: {
           name: "Hero Barracks",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require(
+            "../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.rostersize.icon.png"
+          ),
           description: "Increases the size of the hero roster",
           items: [
             {cost: null, effects: {size: 6}},
@@ -478,7 +486,9 @@ export function addStaticState () {
         },
         recruits: {
           name: "Experienced Recruits",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require(
+            "../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.upgraded_recruits.icon.png"
+          ),
           description: "Provides a chance of higher level recruits",
           items: [
             {cost: {[HeirloomType.Deed]: 3, [HeirloomType.Crest]: 4}, effects: {level: 1}},
@@ -491,12 +501,13 @@ export function addStaticState () {
     tavern: {
       name: "Tavern",
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
       backgroundUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character_background.png"),
       description: "Upgrading the Tavern increases the number of available stress treatments and their effectiveness",
       children: {
         bar: {
           name: "Bar",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.bar.icon.png"),
           description: "Improves the bar facilities",
           items: [
             {cost: null, effects: {size: 1, cost: 500}},
@@ -509,7 +520,7 @@ export function addStaticState () {
         },
         gambling: {
           name: "Gambling",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.gambling.icon.png"),
           description: "Improves the gambling facilities",
           items: [
             {cost: null, effects: {size: 1, cost: 2500}},
@@ -520,7 +531,7 @@ export function addStaticState () {
         },
         recruits: {
           name: "Brothel",
-          avatarUrl: require("../../assets/images/avatar.jpg"),
+          avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.brothel.icon.png"),
           description: "Improves the brothel facilities",
           items: [
             {cost: null, effects: {size: 1, cost: 500}},
@@ -534,6 +545,7 @@ export function addStaticState () {
     provision: {
       name: "Provision",
       avatarUrl: require("../../assets/dd/images/campaign/town/provision/provision.icon.png"),
+      npcImageUrl: require("../../assets/dd/images/campaign/town/provision/provision.character.png"),
       backgroundUrl: require("../../assets/dd/images/campaign/town/provision/provision.character_background.png")
     }
   });

@@ -9,6 +9,7 @@ export class BuildingInfo {
   name: string;
   description: string;
   avatarUrl: string;
+  npcImageUrl: string;
   backgroundUrl: string;
 
   children = new Map<string, BuildingInfo>();
