@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   iconOnRight: {
-    marginLeft: grid.gutter * 4
+    marginLeft: grid.gutter * 6
   },
 
   gold: {
