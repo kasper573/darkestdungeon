@@ -12,7 +12,8 @@ export class Router extends React.Component<{router: RouterState}> {
   render () {
     const router = this.props.router;
     const content = React.createElement(router.route.root.component, {
-      path: router.path,
+      path: router.route.root.path,
+      route: router.route.root,
       ...router.path.args
     });
 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
 
   transitionGroup: {
     flex: 1,
-    position: "relative",
+    position: "relative"
   },
 
   screen: {
