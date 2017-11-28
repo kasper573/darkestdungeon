@@ -60,7 +60,7 @@ export class EstateTemplate extends AppStateComponent<{
     return (
       <div
         className={css(styles.container)}
-        style={{background: `url(${this.props.background})`}}>
+        style={{backgroundImage: `url(${this.props.background})`}}>
 
         <InputBindings list={[
           [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
