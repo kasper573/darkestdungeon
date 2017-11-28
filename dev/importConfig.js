@@ -16,6 +16,9 @@ module.exports = {
     "**/*town*.png",
     "**/*character*.png",
     "**/*portrait*.png",
+    "**/*roster*.png",
+    "**/*sword*.png",
+    "**/*shield*.png"
   ],
 
   audioQuery: {

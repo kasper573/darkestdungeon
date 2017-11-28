@@ -1,11 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {css, StyleSheet} from "aphrodite";
-import {EstateRosterEntry} from "./EstateRosterEntry";
+import {EstateRosterEntry, rosterEntryHoverOffset} from "./EstateRosterEntry";
 import {observer} from "mobx-react";
 import {SortOptions} from "../../ui/SortOptions";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
+import {grid} from "../../config/Grid";
+import {commonStyles} from "../../config/styles";
+import {observable} from "mobx";
 
 const heroCompareIcons = {
   level: require("../../../assets/dd/images/campaign/town/roster/roster_sort_level.png"),
@@ -19,6 +22,8 @@ export class EstateRoster extends AppStateComponent<{
   lineupFeatures?: boolean,
   portalNode?: HTMLDivElement
 }> {
+  @observable heroShownInOverview: Hero;
+
   positionHero (droppedHero: Hero, slotHero: Hero) {
     this.activeProfile.positionHeroInRoster(droppedHero,
       this.activeProfile.roster.indexOf(slotHero)
@@ -27,10 +32,11 @@ export class EstateRoster extends AppStateComponent<{
 
   render () {
     const sortedHeroes = this.activeProfile.roster.slice().sort(Hero.comparers.rosterIndex);
+
     const roster = (
       <div className={css(styles.roster)}>
         <div className={css(styles.header)}>
-          <span>
+          <span className={css(styles.rosterSize, commonStyles.commonName)}>
             {this.activeProfile.roster.length} / {this.activeProfile.rosterSize}
           </span>
           <SortOptions
@@ -40,13 +46,18 @@ export class EstateRoster extends AppStateComponent<{
           />
         </div>
         <ul>
-          {sortedHeroes.map((hero) => (
+          {sortedHeroes.map((hero, index) => (
             <EstateRosterEntry
-              key={hero.id}
+              key={hero.id + "-" + index}
               classStyle={styles.entry}
-              lineupFeatures={this.props.lineupFeatures}
+              index={index}
               hero={hero}
+              enableHoverOffset={true}
+              lineupFeatures={this.props.lineupFeatures}
+              isShownInOverview={this.heroShownInOverview === hero}
               onDrop={(droppedHero) => this.positionHero(droppedHero, hero)}
+              onOverviewOpened={() => this.heroShownInOverview = hero}
+              onOverviewClosed={() => this.heroShownInOverview = null}
             />
           ))}
         </ul>
@@ -66,15 +77,33 @@ export class EstateRoster extends AppStateComponent<{
 const styles = StyleSheet.create({
   roster: {
     position: "absolute",
-    top: 0, right: 0
+    top: grid.paddingTop,
+    width: grid.paddingRight + grid.xSpan(3) - rosterEntryHoverOffset,
+    right: 0
   },
 
   header: {
     flexDirection: "row",
-    alignItems: "center"
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    height: grid.ySpan(1),
+
+    marginBottom: grid.gutter / 2,
+    paddingLeft: grid.xSpan(0.3),
+    paddingRight: grid.paddingRight,
+    paddingBottom: grid.gutter * 1.5 + grid.border,
+
+    backgroundImage: `url(${require("../../../assets/images/stick.png")})`,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "100% 100%"
+  },
+
+  rosterSize: {
+    flex: 1
   },
 
   entry: {
-    marginBottom: 5
+
   }
 });
