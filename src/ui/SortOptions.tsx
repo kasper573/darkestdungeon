@@ -41,7 +41,6 @@ export class SortOptions<T> extends React.Component<{
           key={name}
           src={this.props.icons[name]}
           classStyle={styles.option}
-          iconStyle={styles.optionIcon}
           onClick={() => this.changeSort(name)}>
           {isActive && (
             <VerticalOutlineBox above={isInverted} below={!isInverted}/>
@@ -63,11 +62,6 @@ const styles = StyleSheet.create({
     ":not(:last-child)": {
       marginRight: grid.gutter / 2
     }
-  },
-
-  optionIcon: {
-    width: grid.gutter * 3,
-    height: grid.gutter * 3
   }
 });
 

@@ -75,14 +75,14 @@ export class DungeonControlPanel extends React.Component<{
               </Column>
               <div className={css(styles.sideMenu)}>
                 <Icon
-                  width={grid.gutter * 4}
-                  height={grid.gutter * 8}
+                  width={grid.xSpan(0.5)}
+                  height={grid.ySpan(2)}
                   src={require("../../../assets/dd/images/scrolls/use_inventory.png")}
                   onClick={() => this.isMapVisible = false}
                 />
                 <Icon
-                  width={grid.gutter * 4}
-                  height={grid.gutter * 8}
+                  width={grid.xSpan(0.5)}
+                  height={grid.ySpan(2)}
                   src={require("../../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_map.png")}
                   onClick={() => this.isMapVisible = true}
                 />

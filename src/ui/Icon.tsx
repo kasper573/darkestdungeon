@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     backgroundSize: "contain",
     backgroundPosition: "50% 50%",
     backgroundRepeat: "no-repeat",
-    width: grid.gutter * 4,
-    height: grid.gutter * 4
+    width: grid.ySpan(0.5),
+    height: grid.ySpan(0.5)
   },
 
   side: {
