@@ -143,7 +143,8 @@ export function addStaticState () {
   addMonster("Devil");
   addMonster("Snake");
 
-  addMonster("Destruction of Everything", ["jQuery"], 0.1, true);
+  const jQuery = addMonster("Destruction of Everything", ["jQuery"], 0.1, true);
+  jQuery.classInfo.avatarUrl = require("../../assets/images/unicorn.jpg");
 
   ["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
     const info = new DungeonInfo();
