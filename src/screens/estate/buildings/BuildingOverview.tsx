@@ -39,6 +39,12 @@ export class BuildingOverview extends React.Component<{
         style={{backgroundImage: `url(${this.props.info.backgroundUrl})`}}>
         <div className={css(styles.coverup)}/>
         <Column>
+          {this.props.info.npcImageUrl && (
+            <div
+              className={css(styles.npc)}
+              style={{backgroundImage: `url(${this.props.info.npcImageUrl})`}}
+            />
+          )}
           <LargeHeader
             icon={this.props.info.avatarUrl}
             iconChildren={areUpgradesEnabled && this.renderUpgradeSign()}
@@ -81,6 +87,15 @@ const styles = StyleSheet.create({
         [30, "transparent"]
       ])
     }
+  },
+
+  npc: {
+    ...commonStyleFn.dock(),
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "contain",
+    backgroundPosition: "50% 100%",
+    marginRight: -grid.xSpan(1),
+    flex: 1
   },
 
   upgradeSign: {
