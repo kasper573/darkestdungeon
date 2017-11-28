@@ -3,33 +3,18 @@ import {EstateTemplate} from "./EstateTemplate";
 import {Path} from "../../state/types/Path";
 import {EstateEvent} from "../../state/types/EstateEvent";
 import {Popup, PopupProps} from "../../ui/Popups";
-import {StageCoach} from "./buildings/StageCoach";
-import {Graveyard} from "./buildings/Graveyard";
-import {Tavern} from "./buildings/Tavern";
-import {Sanitarium} from "./buildings/Sanitarium";
-import {Abbey} from "./buildings/Abbey";
-import {Blacksmith} from "./buildings/Blacksmith";
-import {Guild} from "./buildings/Guild";
-import {Memoirs} from "./buildings/Memoirs";
 import {AppStateComponent} from "../../AppStateComponent";
 import {when} from "mobx";
+import {Route} from "../../state/types/Route";
+import {StaticState} from "../../state/StaticState";
+import {Icon} from "../../ui/Icon";
+import {grid} from "../../config/Grid";
+import {css, StyleSheet} from "aphrodite";
 
-const buildings: Array<{id: string}> = [
-  StageCoach,
-  Graveyard,
-  Tavern,
-  Sanitarium,
-  Abbey,
-  Guild,
-  Blacksmith,
-  Memoirs
-];
-
-function getBuildingId (component: any) {
-  return component.prototype.constructor.name;
-}
-
-export class EstateOverview extends AppStateComponent<{path: Path}> {
+export class EstateOverview extends AppStateComponent<{
+  path: Path,
+  route: Route
+}> {
   private stopWaitingForEstateEvents: () => void;
 
   componentWillMount () {
@@ -44,10 +29,6 @@ export class EstateOverview extends AppStateComponent<{path: Path}> {
     this.stopWaitingForEstateEvents();
   }
 
-  gotoBuilding (component: any) {
-    this.appState.router.goto("estateOverview/" + getBuildingId(component));
-  }
-
   render () {
     return (
       <EstateTemplate
@@ -55,13 +36,22 @@ export class EstateOverview extends AppStateComponent<{path: Path}> {
         background={require("../../../assets/dd/images/campaign/town/town_bg.png")}
         continueLabel="Embark"
         continuePath="estateDungeons">
-        {buildings.map((component: any) => (
-          <span
-            key={getBuildingId(component)}
-            onClick={() => this.gotoBuilding(component)}>
-            [{getBuildingId(component)}]
-          </span>
-        ))}
+        <div className={css(styles.buildingIcons)}>
+          {Object.keys(this.props.route.children).map((buildingKey) => {
+            const buildingPath = this.props.path.value + Path.separator + buildingKey;
+            const buildingRoute = this.props.route.children[buildingKey] as Route;
+            const building = StaticState.instance.buildings.get(buildingRoute.component.id);
+            return (
+              <Icon
+                iconStyle={styles.buildingIcon}
+                key={building.id}
+                src={building.avatarUrl}
+                tip={building.name}
+                onClick={() => this.appState.router.goto(buildingPath)}
+              />
+            );
+          })}
+        </div>
       </EstateTemplate>
     );
   }
@@ -80,3 +70,19 @@ class EstateEventPopup extends React.Component<
     );
   }
 }
+
+const buildingIconSize = grid.ySpan(1);
+const styles = StyleSheet.create({
+  buildingIcons: {
+    position: "absolute",
+    top: grid.ySpan(3) + grid.gutter,
+    left: -grid.xSpan(1) - grid.gutter,
+    zIndex: 1
+  },
+
+  buildingIcon: {
+    width: buildingIconSize,
+    height: buildingIconSize,
+    marginBottom: grid.gutter
+  }
+});
