@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     background: "black",
     color: commonColors.lightGray,
-    fontSize: grid.fontSize(0.5)
+    fontSize: grid.fontSize(0.5),
+    lineHeight: grid.fontSize(0.6) + "px"
   }
 });
