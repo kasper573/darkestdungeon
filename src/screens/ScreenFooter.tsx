@@ -4,13 +4,17 @@ import {grid} from "../config/Grid";
 import {commonColors, commonStyleFn, Row} from "../config/styles";
 
 export class ScreenFooter extends React.Component<{
+  behind?: any,
   classStyle?: any
 }> {
   render () {
     return (
       <Row classStyle={[styles.screenFooter, this.props.classStyle]}>
-        <Row classStyle={styles.inner}>
-          {this.props.children}
+        {this.props.behind}
+        <Row classStyle={styles.inner1}>
+          <Row classStyle={styles.inner2}>
+            {this.props.children}
+          </Row>
         </Row>
       </Row>
     );
@@ -28,11 +32,22 @@ const styles = StyleSheet.create({
     bottom: grid.paddingBottom - borderSpacing - borderSize,
     height: screenFooterHeight,
 
+    ":after": {
+      ...commonStyleFn.dock("bottom"),
+      content: "' '",
+      background: "black",
+      height: grid.paddingBottom,
+      bottom: -grid.paddingBottom
+    }
+  },
+
+  inner1: {
+    ...commonStyleFn.dock(),
     backgroundColor: commonColors.gray,
     boxShadow: commonStyleFn.outerShadow("black", grid.gutter * 2)
   },
 
-  inner: {
+  inner2: {
     ...commonStyleFn.dockWithPadding(0, borderSize),
 
     paddingLeft: grid.paddingLeft,

@@ -3,9 +3,7 @@ import {Heirlooms} from "../../ui/Heirlooms";
 import {Row} from "../../config/styles";
 import {ScreenFooter} from "../ScreenFooter";
 import {StyleSheet} from "aphrodite";
-import {Popup} from "../../ui/Popups";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
-import {ModalState} from "../../state/PopupState";
 import {CommonButton, CommonButtonSize} from "../../ui/CommonButton";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Icon, IconHighlightType} from "../../ui/Icon";
@@ -14,6 +12,7 @@ import {grid} from "../../config/Grid";
 import {inventoryIcon} from "./EstateInventory";
 import {pauseIcon} from "../../ui/PauseMenu";
 import {observer} from "mobx-react";
+import {observable} from "mobx";
 
 @observer
 export class EstateFooter extends AppStateComponent<{
@@ -23,9 +22,14 @@ export class EstateFooter extends AppStateComponent<{
   onContinueRequested: () => void,
   onPauseRequested: () => void
 }> {
+  @observable private showHeirloomTrader: boolean;
+  toggleHeirloomTrader () {
+    this.showHeirloomTrader = !this.showHeirloomTrader;
+  }
+
   render () {
     return (
-      <ScreenFooter>
+      <ScreenFooter behind={<HeirloomTrader isVisible={this.showHeirloomTrader}/>}>
         <Row valign="center" style={{flex: 1}}>
           <GoldIcon
             size={GoldIconSize.Large}
@@ -38,11 +42,7 @@ export class EstateFooter extends AppStateComponent<{
             iconStyle={styles.swapIcon}
             tip="Trade heirlooms"
             highlight={IconHighlightType.Lines}
-            onClick={() => this.appState.popups.show({
-              content: <Popup><HeirloomTrader/></Popup>,
-              modalState: ModalState.Opaque,
-              id: "heirloomTrader"
-            })}
+            onClick={() => this.toggleHeirloomTrader()}
           />
         </Row>
 

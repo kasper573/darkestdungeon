@@ -1,6 +1,6 @@
 import * as React from "react";
 import {StaticState} from "../state/StaticState";
-import {Column, commonStyles, Row} from "../config/styles";
+import {Column, commonStyleFn, commonStyles, Row} from "../config/styles";
 import {computed, observable} from "mobx";
 import {observer} from "mobx-react";
 import {without} from "../lib/Helpers";
@@ -8,10 +8,20 @@ import {ItemInfo} from "../state/types/ItemInfo";
 import {AppStateComponent} from "../AppStateComponent";
 import {cap} from "../lib/Helpers";
 import {HeirloomIcon} from "./HeirloomIcon";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
+import {Icon} from "./Icon";
+import {grid} from "../config/Grid";
+import {Popup} from "./Popups";
+import {screenFooterHeight} from "../screens/ScreenFooter";
+
+const iconUrls = {
+  up: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_up.png"),
+  down: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_down.png"),
+  confirm: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.confirm.png")
+};
 
 @observer
-export class HeirloomTrader extends AppStateComponent {
+export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
   heirloomList = StaticState.instance.heirlooms;
   @observable heirloomIndex: number = 0;
   @observable tradeAmount: number = this.minTradableHeirlooms;
@@ -56,76 +66,77 @@ export class HeirloomTrader extends AppStateComponent {
     const canIncrease = (this.tradeAmount + 1) <= this.maxTradableHeirlooms;
     const canDecrease = (this.tradeAmount - 1) >= this.minTradableHeirlooms;
     return (
-      <Row>
-        <Column classStyle={commonStyles.fill}>
-          <span className={css(commonStyles.fill)} onClick={() => this.offsetSelectedHeirloom(1)}>[^]</span>
-          <span>{this.selectedHeirloom.name}</span>
-          <span
-            className={css(commonStyles.fill, styles.end)}
-            onClick={() => this.offsetSelectedHeirloom(-1)}>
-            [v]
-          </span>
-        </Column>
+      <Popup classStyle={[styles.container, this.props.isVisible && styles.visible]}>
+        <Row>
+          <Column align="center" valign="center" style={{flex: 1}}>
+            <Icon src={iconUrls.up} onClick={() => this.offsetSelectedHeirloom(1)}/>
+            <HeirloomIcon info={this.selectedHeirloom}/>
+            <Icon src={iconUrls.down} onClick={() => this.offsetSelectedHeirloom(-1)}/>
+          </Column>
 
-        <Column classStyle={commonStyles.fill}>
-          <span className={css(commonStyles.fill)}>
-            {canIncrease && (
-              <span onClick={() => this.tradeAmount++}>[+]</span>
-            )}
-          </span>
-          <span>x{this.tradeAmount}</span>
-          <span className={css(commonStyles.fill, styles.end)}>
-            {canDecrease && (
-              <span onClick={() => this.tradeAmount--}>[-]</span>
-            )}
-          </span>
-        </Column>
+          <Column align="center" valign="center" style={{flex: 1}}>
+            <Icon src={iconUrls.up} onClick={canIncrease ? () => this.tradeAmount++ : undefined}/>
+            <span>x{this.tradeAmount}</span>
+            <Icon src={iconUrls.down} onClick={canDecrease ? () => this.tradeAmount-- : undefined}/>
+          </Column>
 
-        <Column style={{flex: 2}}>
-          {this.otherHeirlooms.map((targetHeirloom) => {
-            const convertedAmount = this.activeProfile.getConvertedHeirloomValue(
-              this.tradeAmount, this.selectedHeirloom.heirloomType, targetHeirloom.heirloomType
-            );
-            return (
-              <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
-                <span className={css(commonStyles.fill, styles.center)}>
-                  <HeirloomIcon info={targetHeirloom}/>
-                </span>
-                <span className={css(commonStyles.fill, styles.center, styles.amount)}>
-                  x{convertedAmount}
-                </span>
-                <span className={css(styles.convertButton)}>
-                  {convertedAmount > 0 && (
-                    <button onClick={() => this.tradeSelectedHeirlooms(targetHeirloom)}>
-                      >
-                    </button>
-                  )}
-                </span>
-              </Row>
-            );
-          })}
-        </Column>
-      </Row>
+          <Column align="flex-end" valign="center" style={{flex: 2}}>
+            {this.otherHeirlooms.map((targetHeirloom) => {
+              const convertedAmount = this.activeProfile.getConvertedHeirloomValue(
+                this.tradeAmount, this.selectedHeirloom.heirloomType, targetHeirloom.heirloomType
+              );
+              const canTrade = convertedAmount > 0;
+              return (
+                <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
+                  <HeirloomIcon info={targetHeirloom} amount={convertedAmount}/>
+                  <Icon
+                    iconStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
+                    src={iconUrls.confirm}
+                    onClick={canTrade ? () => this.tradeSelectedHeirlooms(targetHeirloom) : undefined}
+                  />
+                </Row>
+              );
+            })}
+          </Column>
+        </Row>
+      </Popup>
     );
   }
 }
 
+const traderHeight = grid.ySpan(2.5);
+const acceptHeight = grid.ySpan(0.5);
 const styles = StyleSheet.create({
-  end: {
-    justifyContent: "flex-end"
+  container: {
+    position: "absolute",
+    height: traderHeight,
+    minWidth: grid.xSpan(3),
+    bottom: screenFooterHeight,
+    left: grid.paddingLeft + grid.xSpan(2.5),
+    background: commonStyleFn.shineGradient("#220b2e"),
+    transform: `translate(0, ${traderHeight}px)`,
+    opacity: 0,
+
+    transition: [
+      "opacity 0.3s cubic-bezier(0,0,.58,1)",
+      "transform 0.3s cubic-bezier(0,0,.58,1)"
+    ].join(",")
   },
 
-  center: {
-    justifyContent: "center"
+  visible: {
+    opacity: 1,
+    transform: "translate(0, 0)"
   },
 
-  amount: {
-    marginLeft: 10,
-    marginRight: 10
+  acceptIcon: {
+    height: acceptHeight,
+    width: acceptHeight * 2,
+    backgroundColor: "green",
+    opacity: 0.3,
+    marginLeft: grid.gutter
   },
 
-  convertButton: {
-    width: 25,
-    height: 22
+  acceptIconEnabled: {
+    opacity: 1
   }
 });
