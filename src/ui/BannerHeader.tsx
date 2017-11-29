@@ -3,10 +3,12 @@ import {css, StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {commonColors, commonStyleFn} from "../config/styles";
 
-export class BannerHeader extends React.Component {
+export class BannerHeader extends React.Component<{
+  classStyle?: any
+}> {
   render () {
     return (
-      <div className={css(styles.bannerHeader)}>
+      <div className={css(styles.bannerHeader, this.props.classStyle)}>
         {this.props.children}
       </div>
     );
