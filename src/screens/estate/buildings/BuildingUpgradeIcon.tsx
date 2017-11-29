@@ -64,7 +64,7 @@ export class BuildingUpgradeIcon extends AppStateComponent<{
   }
 }
 
-const iconUrls = {
+export const upgradeIconUrls = {
   owned: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_purchased_icon.png"),
   locked: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_locked_icon.png"),
   available: require("../../../../assets/dd/images/campaign/town/buildings/upgrade/requirement_purchasable_icon.png")
@@ -80,20 +80,20 @@ const styles = StyleSheet.create({
     backgroundPosition: "50% 50%",
 
     ":hover": {
-      boxShadow: "0px 0px 4px white"
+      boxShadow: commonStyleFn.outerShadow("white")
     }
   },
 
   stepOwned: {
-    backgroundImage: `url(${iconUrls.owned})`,
+    backgroundImage: `url(${upgradeIconUrls.owned})`,
     border: commonStyleFn.outline(commonColors.gold)
   },
 
   stepAvailable: {
-    backgroundImage: `url(${iconUrls.available})`
+    backgroundImage: `url(${upgradeIconUrls.available})`
   },
 
   stepLocked: {
-    backgroundImage: `url(${iconUrls.locked})`
+    backgroundImage: `url(${upgradeIconUrls.locked})`
   }
 });

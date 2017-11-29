@@ -18,6 +18,8 @@ import {TooltipArea, TooltipSide} from "../../../lib/TooltipArea";
 import {UpgradeTooltip} from "./UpgradeTooltip";
 import {Prompt} from "../../../ui/Popups";
 import {GoldIcon} from "../../../ui/GoldIcon";
+import {upgradeIconUrls} from "./BuildingUpgradeIcon";
+import {grid} from "../../../config/Grid";
 
 @observer
 export class HeroUpgradeGrid extends AppStateComponent<{
@@ -69,9 +71,9 @@ export class HeroUpgradeGrid extends AppStateComponent<{
     // Confirm purchase before proceeding
     const proceed = await this.appState.popups.prompt(
       <Prompt query={
-        <span>
+        <Row>
           Do you wish to pay <GoldIcon amount={this.unlockedEffects.cost}/> for this upgrade?
-        </span>
+        </Row>
       }/>
     );
 
@@ -86,16 +88,20 @@ export class HeroUpgradeGrid extends AppStateComponent<{
 
   render () {
     return (
-      <Row>
-        <Column>
+      <Row classStyle={styles.container}>
+        <Column classStyle={styles.description}>
           <h1 className={css(commonStyles.commonName)}>
             {this.props.hero.classInfo.name}
           </h1>
           <p>{this.upgradeDescription}</p>
         </Column>
-        <Column>
+        <Column classStyle={styles.grid}>
           {this.upgrades.map((row, rowIndex) => (
-            <Row key={rowIndex}>
+            <Row key={rowIndex} classStyle={styles.row} valign="center">
+              {row[0] instanceof Item ?
+                <ItemIcon classStyle={styles.skillOrItem} item={row[0] as Item}/> :
+                <SkillIcon classStyle={[styles.skillOrItem, styles.skill]} skill={row[0] as Skill}/>}
+
               {row.map((target, colIndex) => {
                 return (
                   <HeroUpgradeCell
@@ -130,9 +136,11 @@ class HeroUpgradeCell extends React.Component<{
     const isUpgraded = this.props.thing.level >= this.props.level;
     const canUpgrade = isAvailable && !isUpgraded;
     const canAfford = this.props.goldAvailable >= this.props.unlockedEffects.cost;
+    const canPurchase = canUpgrade && canAfford;
     return (
       <TooltipArea
-        classStyle={styles.upgrade}
+        onClick={canPurchase ? this.props.onPurchase : undefined}
+        classStyle={styles.cell}
         side={TooltipSide.Left}
         tip={!isUpgraded && (
           <UpgradeTooltip
@@ -142,40 +150,77 @@ class HeroUpgradeCell extends React.Component<{
             prerequisiteLevel={this.props.level - 1}
           />
         )}>
-        <div>
-          {this.props.thing instanceof Item ?
-            <ItemIcon item={this.props.thing.asLevel(this.props.level)}/> :
-            <SkillIcon skill={this.props.thing.asLevel(this.props.level)}/>}
-          {canUpgrade && (
-            <TooltipArea tip={!canAfford && "Not enough gold"}>
-              <button onClick={() => canAfford && this.props.onPurchase()}>Upgrade</button>
-            </TooltipArea>
-          )}
-          {!isAvailable && <div className={css(styles.upgradeOverlay, styles.unavailable)}/>}
-          {isUpgraded && <div className={css(styles.upgradeOverlay, styles.upgraded)}/>}
-        </div>
+        {this.props.thing instanceof Item ?
+          <ItemIcon classStyle={styles.hiddenSkillOrItem} item={this.props.thing.asLevel(this.props.level)}/> :
+          <SkillIcon classStyle={styles.hiddenSkillOrItem} skill={this.props.thing.asLevel(this.props.level)}/>}
+
+        {!isAvailable && <div className={css(styles.upgradeOverlay, styles.unavailable)}/>}
+        {isUpgraded && <div className={css(styles.upgradeOverlay, styles.upgraded)}/>}
+        {canUpgrade && canAfford && (<div className={css([styles.upgradeOverlay, styles.available])}/>)}
       </TooltipArea>
     );
   }
 }
 
+const upgradeSize = grid.ySpan(0.9);
 const styles = StyleSheet.create({
-  upgrade: {
-    border: commonStyleFn.border()
+  container: {
+    marginTop: grid.gutter
+  },
+
+  description: {
+    paddingRight: grid.xSpan(0.5)
+  },
+
+  grid: {
+    flex: "none"
+  },
+
+  row: {
+    marginBottom: grid.gutter
+  },
+
+  cell: {
+    width: upgradeSize,
+    height: upgradeSize,
+    marginRight: grid.gutter,
+
+    ":hover": {
+      boxShadow: commonStyleFn.outerShadow("white")
+    }
+  },
+
+  skill: {
+    width: grid.ySpan(1.2),
+    height: grid.ySpan(1.2)
+  },
+
+  skillOrItem: {
+    marginRight: grid.gutter
+  },
+
+  // Hidden behind upgrade icons to provide tooltip information
+  hiddenSkillOrItem: {
+    flex: 1,
+    width: "auto",
+    height: "auto"
   },
 
   upgradeOverlay: {
-    position: "absolute",
-    top: 0, right: 0, bottom: 0, left: 0,
-    opacity: 0.5,
+    ...commonStyleFn.dock(),
+    ...commonStyleFn.singleBackground(),
     pointerEvents: "none"
   },
 
+  available: {
+    backgroundImage: `url(${upgradeIconUrls.available})`
+  },
+
   unavailable: {
-    background: "red"
+    backgroundImage: `url(${upgradeIconUrls.locked})`
   },
 
   upgraded: {
-    background: "green"
+    backgroundImage: `url(${upgradeIconUrls.owned})`
   }
 });

@@ -9,7 +9,7 @@ export class Guild extends React.Component {
   render () {
     const info = StaticState.instance.buildings.get(Guild.id);
     return (
-      <BuildingOverview info={info}>
+      <BuildingOverview coverupRight={false} info={info}>
         <HeroUpgradeShop type={HeroUpgradeType.Skills} info={info}/>
       </BuildingOverview>
     );
