@@ -10,6 +10,7 @@ import {Character} from "../../state/types/Character";
 import {Skill} from "../../state/types/Skill";
 import {grid} from "../../config/Grid";
 import {Icon} from "../../ui/Icon";
+import {TooltipArea} from "../../lib/TooltipArea";
 
 @observer
 export class DungeonCharacterSummary extends React.Component<{
@@ -46,13 +47,14 @@ export class DungeonCharacterSummary extends React.Component<{
                 onClick={() => this.props.onSkillClicked(skill)}
               />
             ))}
-            <Icon
-              tip="Pass"
-              width={grid.xSpan(0.25)}
-              height={grid.ySpan(1)}
-              src={require("../../../assets/dd/images/panels/icons_ability/ability_pass.png")}
-              onClick={() => this.props.onSkillClicked(null)}
-            />
+            <TooltipArea tip="Pass">
+              <Icon
+                width={grid.xSpan(0.25)}
+                height={grid.ySpan(1)}
+                src={require("../../../assets/dd/images/panels/icons_ability/ability_pass.png")}
+                onClick={() => this.props.onSkillClicked(null)}
+              />
+            </TooltipArea>
           </Row>
         </Row>
         <Row>

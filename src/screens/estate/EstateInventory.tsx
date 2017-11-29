@@ -9,9 +9,10 @@ import {Item} from "../../state/types/Item";
 import {Popup, popupContentPadding, Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
 import {commonStyleFn, Row} from "../../config/styles";
-import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
 import {LargeHeader} from "../../ui/LargeHeader";
+import {TooltipArea} from "../../lib/TooltipArea";
+import {Icon} from "../../ui/Icon";
 
 export const inventoryIcon = require(
   "../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory.icon.png"
@@ -55,12 +56,9 @@ export class EstateInventory extends AppStateComponent {
           label="Inventory"
         />
         <Row classStyle={styles.icons}>
-          <Icon
-            tip="Unequip items on all heroes"
-            classStyle={styles.unequip}
-            src={unequipIcon}
-            onClick={() => this.promptUnequipAll()}
-          />
+          <TooltipArea classStyle={styles.unequip} tip="Unequip items on all heroes">
+            <Icon src={unequipIcon} onClick={() => this.promptUnequipAll()}/>
+          </TooltipArea>
           <SortOptions
             comparers={Item.comparers}
             icons={itemCompareIcons}

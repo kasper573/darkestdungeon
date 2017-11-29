@@ -97,8 +97,7 @@ export class EstateRosterEntry extends AppStateComponent<{
           {overlayIconUrl && (
             <Icon
               src={overlayIconUrl}
-              classStyle={styles.overlayIconContainer}
-              iconStyle={styles.overlayIcon}
+              classStyle={styles.overlayIcon}
             />
           )}
           <div className={css(styles.info)}>
@@ -174,11 +173,8 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
 
-  overlayIconContainer: {
-    ...commonStyleFn.dock("left")
-  },
-
   overlayIcon: {
+    ...commonStyleFn.dock("left"),
     width: entryAvatarSize,
     height: entryAvatarSize
   },

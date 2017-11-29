@@ -39,7 +39,7 @@ export class BuildingOverview extends React.Component<{
           <LargeHeader
             label={this.props.info.name}
             icon={this.props.info.avatarUrl}
-            iconChildren={areUpgradesEnabled && (<Icon src={upgradeIconUrl} iconStyle={styles.upgradeIcon}/>)}
+            iconChildren={areUpgradesEnabled && (<Icon src={upgradeIconUrl} classStyle={styles.upgradeIcon}/>)}
             onClick={areUpgradesEnabled ? () => this.areUpgradesVisible = !this.areUpgradesVisible : undefined}
           />
           {shouldRenderUpgrades && <BuildingUpgradeShop upgrades={this.props.info} />}

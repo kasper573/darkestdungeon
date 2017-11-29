@@ -9,10 +9,10 @@ import {AppStateComponent} from "../AppStateComponent";
 import {cap} from "../lib/Helpers";
 import {HeirloomIcon} from "./HeirloomIcon";
 import {StyleSheet} from "aphrodite";
-import {Icon} from "./Icon";
 import {grid} from "../config/Grid";
 import {Popup} from "./Popups";
 import {screenFooterHeight} from "../screens/ScreenFooter";
+import {Icon} from "./Icon";
 
 const iconUrls = {
   up: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_up.png"),
@@ -90,7 +90,7 @@ export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
                 <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
                   <HeirloomIcon info={targetHeirloom} amount={convertedAmount}/>
                   <Icon
-                    iconStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
+                    classStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
                     src={iconUrls.confirm}
                     onClick={canTrade ? () => this.tradeSelectedHeirlooms(targetHeirloom) : undefined}
                   />

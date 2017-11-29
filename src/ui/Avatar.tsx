@@ -1,8 +1,9 @@
 import * as React from "react";
 import {StyleSheet} from "aphrodite";
 import {commonStyleFn} from "../config/styles";
-import {Icon} from "./Icon";
 import {grid} from "../config/Grid";
+import {Icon} from "./Icon";
+import {TooltipArea} from "../lib/TooltipArea";
 
 export class Avatar extends React.Component<{
   src: string,
@@ -13,11 +14,12 @@ export class Avatar extends React.Component<{
   render () {
     return (
       <Icon
-        tip={this.props.tip}
         src={this.props.src}
-        iconStyle={[styles.avatar, this.props.classStyle]}
+        classStyle={[styles.avatar, this.props.classStyle]}
         onClick={this.props.onClick}>
-        {this.props.children}
+        <TooltipArea tip={this.props.tip} style={{flex: 1}}>
+          {this.props.children}
+        </TooltipArea>
       </Icon>
     );
   }

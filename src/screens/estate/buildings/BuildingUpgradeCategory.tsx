@@ -4,8 +4,9 @@ import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {BuildingUpgradeIcon, stepSize} from "./BuildingUpgradeIcon";
 import {css, StyleSheet} from "aphrodite";
 import {commonStyleFn, commonStyles, Row} from "../../../config/styles";
-import {Icon} from "../../../ui/Icon";
 import {grid} from "../../../config/Grid";
+import {TooltipArea} from "../../../lib/TooltipArea";
+import {Icon} from "../../../ui/Icon";
 
 @observer
 export class BuildingUpgradeCategory extends React.Component<{
@@ -32,11 +33,9 @@ export class BuildingUpgradeCategory extends React.Component<{
           {this.props.category.name}
         </h1>
         <Row classStyle={styles.sequence}>
-          <Icon
-            size={stepSize * 1.5}
-            tip={this.props.category.description}
-            src={this.props.category.avatarUrl}
-          />
+          <TooltipArea tip={this.props.category.description}>
+            <Icon size={stepSize * 1.5} src={this.props.category.avatarUrl}/>
+          </TooltipArea>
           {steps}
         </Row>
       </div>

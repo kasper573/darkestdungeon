@@ -6,13 +6,14 @@ import {StyleSheet} from "aphrodite";
 import {HeirloomTrader} from "../../ui/HeirloomTrader";
 import {CommonButton, CommonButtonSize} from "../../ui/CommonButton";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Icon, IconHighlightType} from "../../ui/Icon";
 import {GoldIcon, GoldIconSize} from "../../ui/GoldIcon";
 import {grid} from "../../config/Grid";
 import {inventoryIcon} from "./EstateInventory";
 import {pauseIcon} from "../../ui/PauseMenu";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
+import {Icon, IconHighlightType} from "../../ui/Icon";
+import {TooltipArea} from "../../lib/TooltipArea";
 
 @observer
 export class EstateFooter extends AppStateComponent<{
@@ -37,13 +38,14 @@ export class EstateFooter extends AppStateComponent<{
             classStyle={styles.gold}
           />
           <Heirlooms counts={this.activeProfile.heirloomCounts} showAll/>
-          <Icon
-            src={require("../../../assets/dd/images/campaign/town/heirloom_exchange/he_icon_idle.png")}
-            iconStyle={styles.swapIcon}
-            tip="Trade heirlooms"
-            highlight={IconHighlightType.Lines}
-            onClick={() => this.toggleHeirloomTrader()}
-          />
+          <TooltipArea tip="Trade heirlooms">
+            <Icon
+              src={require("../../../assets/dd/images/campaign/town/heirloom_exchange/he_icon_idle.png")}
+              classStyle={styles.swapIcon}
+              highlight={IconHighlightType.Lines}
+              onClick={() => this.toggleHeirloomTrader()}
+            />
+          </TooltipArea>
         </Row>
 
         <CommonButton
@@ -56,7 +58,6 @@ export class EstateFooter extends AppStateComponent<{
           {this.props.inventory && (
             <Icon
               src={inventoryIcon}
-              size={grid.ySpan(0.75)}
               scale={2}
               highlight={IconHighlightType.Lines}
               onClick={this.props.onInventoryRequested}
@@ -65,7 +66,6 @@ export class EstateFooter extends AppStateComponent<{
           )}
           <Icon
             src={pauseIcon}
-            size={grid.ySpan(0.75)}
             scale={2}
             highlight={IconHighlightType.Lines}
             onClick={this.props.onPauseRequested}
@@ -85,7 +85,9 @@ const styles = StyleSheet.create({
   },
 
   iconOnRight: {
-    marginLeft: grid.gutter * 6
+    marginLeft: grid.gutter * 6,
+    width: grid.ySpan(0.75),
+    height: grid.ySpan(0.75)
   },
 
   gold: {

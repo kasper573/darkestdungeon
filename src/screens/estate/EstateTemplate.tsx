@@ -9,13 +9,13 @@ import {InputBindings} from "../../state/InputState";
 import {Input} from "../../config/Input";
 import {EstateFooter} from "./EstateFooter";
 import {ModalState} from "../../state/PopupState";
-import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
 import {EstateInventory} from "./EstateInventory";
 import {fonts} from "../../../assets/fonts";
 import {screenFooterHeight} from "../ScreenFooter";
 import {Row} from "../../config/styles";
 import {popupOffset} from "../../ui/Popups";
+import {Icon} from "../../ui/Icon";
 
 @observer
 export class EstateTemplate extends AppStateComponent<{
@@ -90,7 +90,6 @@ export class EstateTemplate extends AppStateComponent<{
             {this.mayGoBack && (
               <Icon
                 classStyle={styles.backButton}
-                iconStyle={styles.backButtonIcon}
                 src={require("../../../assets/dd/images/shared/progression/progression_back.png")}
                 onClick={() => this.goBack()}
               />
@@ -147,10 +146,7 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: "absolute",
-    left: -(backButtonSize + grid.gutter)
-  },
-
-  backButtonIcon: {
+    left: -(backButtonSize + grid.gutter),
     width: backButtonSize,
     height: backButtonSize
   },
