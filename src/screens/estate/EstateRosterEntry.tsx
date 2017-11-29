@@ -26,6 +26,7 @@ export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
   index?: number,
   lineupFeatures?: boolean,
+  transparent?: boolean,
   allowDrop?: (item: Hero) => boolean,
   allowDrag?: (item: Hero) => boolean,
   onDragEnd?: (item: Hero, monitor: any) => void,
@@ -76,6 +77,9 @@ export class EstateRosterEntry extends AppStateComponent<{
       if (this.props.isShownInOverview) {
         dynamicStyles.push(styles.entryOffsetForced);
       }
+    }
+    if (this.props.transparent) {
+      dynamicStyles.push(styles.entryTransparent);
     }
 
     return (
@@ -145,6 +149,11 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     padding: entryPadding,
     height: entryHeight
+  },
+
+  entryTransparent: {
+    background: "transparent",
+    border: 0
   },
 
   entryOffsetable: {
