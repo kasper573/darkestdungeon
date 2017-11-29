@@ -342,6 +342,7 @@ export function addStaticState () {
       name: "Abbey",
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon.png"),
+      slotImageUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.locked_hero_slot_overlay.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/abbey/abbey.character_background.png"
       ),
@@ -463,6 +464,9 @@ export function addStaticState () {
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
+      slotImageUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.locked_hero_slot_overlay.png"
+      ),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character_background.png"
       ),
@@ -546,6 +550,9 @@ export function addStaticState () {
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
+      slotImageUrl: require(
+        "../../assets/dd/images/campaign/town/buildings/tavern/tavern.locked_hero_slot_overlay.png"
+      ),
       backgroundUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character_background.png"),
       description: "Upgrading the Tavern increases the number of available stress treatments and their effectiveness",
       children: {

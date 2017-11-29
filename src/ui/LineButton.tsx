@@ -11,14 +11,14 @@ export class LineButton extends React.Component<{
   classStyle?: any,
   style?: any,
   outlineScale?: number,
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }> {
   @observable isHovered = false;
 
   render () {
     const isHoverEnabled = this.props.onClick !== undefined;
     return (
-      <span
+      <div
         style={this.props.style}
         className={css(styles.lineButton, this.props.classStyle)}
         onMouseEnter={isHoverEnabled ? () => this.isHovered = true : undefined}
@@ -29,7 +29,7 @@ export class LineButton extends React.Component<{
         {isHoverEnabled && this.isHovered && (
           <VerticalOutlineBox scale={this.props.outlineScale}/>
         )}
-      </span>
+      </div>
     );
   }
 }

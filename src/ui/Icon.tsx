@@ -20,8 +20,16 @@ export type IconProps = {
   scale?: number,
 
   classStyle?: any,
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 };
+
+export const confirmIconUrl = require(
+  "../../assets/dd/images/campaign/town/buildings/hero_activity/hero_activity.confirm_button.png"
+);
+
+export const cancelIconUrl = require(
+  "../../assets/dd/images/campaign/town/buildings/hero_activity/hero_activity.cancel_button.png"
+);
 
 @observer
 export class Icon extends React.Component<IconProps> {
@@ -81,6 +89,8 @@ const styles = StyleSheet.create({
     backgroundPosition: "50% 50%",
     backgroundRepeat: "no-repeat",
     width: grid.ySpan(0.5),
-    height: grid.ySpan(0.5)
+    height: grid.ySpan(0.5),
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

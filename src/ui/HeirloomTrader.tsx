@@ -12,12 +12,11 @@ import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {Popup} from "./Popups";
 import {screenFooterHeight} from "../screens/ScreenFooter";
-import {Icon} from "./Icon";
+import {confirmIconUrl, Icon} from "./Icon";
 
 const iconUrls = {
   up: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_up.png"),
-  down: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_down.png"),
-  confirm: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.confirm.png")
+  down: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_down.png")
 };
 
 @observer
@@ -91,7 +90,7 @@ export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
                   <HeirloomIcon info={targetHeirloom} amount={convertedAmount}/>
                   <Icon
                     classStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
-                    src={iconUrls.confirm}
+                    src={confirmIconUrl}
                     onClick={canTrade ? () => this.tradeSelectedHeirlooms(targetHeirloom) : undefined}
                   />
                 </Row>

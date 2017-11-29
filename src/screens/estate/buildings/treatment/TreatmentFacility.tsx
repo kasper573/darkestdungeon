@@ -12,6 +12,8 @@ import {BuildingUpgradeEffects} from "../../../../state/types/BuildingUpgradeEff
 import {QuirkPicker} from "./QuirkPicker";
 import {TreatmentSlot} from "./TreatmentSlot";
 import {GoldIcon} from "../../../../ui/GoldIcon";
+import {css, StyleSheet} from "aphrodite";
+import {grid} from "../../../../config/Grid";
 
 @observer
 export class TreatmentFacility extends AppStateComponent<{
@@ -72,19 +74,18 @@ export class TreatmentFacility extends AppStateComponent<{
 
   render () {
     return (
-      <div>
+      <div className={css(styles.treatmentFacilities)}>
         <div>
           {mapMap(this.props.info.children, (info) => {
             const unlockedEffects = this.activeProfile.getUpgradeEffects(info.id);
             const maximumSize = StaticState.instance.getUpgradeEffects([info.id]).size;
             return (
-              <Row key={info.id}>
-                <Column style={{flex: 1}}>
+              <Row key={info.id} classStyle={styles.treatmentFacility}>
+                <Column classStyle={styles.description}>
                   <CommonHeader label={info.name}/>
                   <p>{info.description}</p>
-                  <p>{unlockedEffects.size} / {maximumSize}</p>
                 </Column>
-                <Row style={{flex: 3}}>
+                <Row>
                   {count(maximumSize).map((c, slotIndex) => {
                     const resident = this.activeProfile.findResident(info.id, slotIndex);
                     const slotCost = !unlockedEffects.hasTreatments ? unlockedEffects.cost : (
@@ -96,6 +97,7 @@ export class TreatmentFacility extends AppStateComponent<{
                     return (
                       <TreatmentSlot
                         key={slotIndex}
+                        buildingInfo={info}
                         goldAvailable={this.activeProfile.gold}
                         goldRequired={slotCost}
                         onRemove={() => resident.leaveResidence()}
@@ -118,3 +120,19 @@ export class TreatmentFacility extends AppStateComponent<{
     );
   }
 }
+
+const styles = StyleSheet.create({
+  treatmentFacilities: {
+    padding: grid.gutter,
+    marginBottom: grid.gutter
+  },
+
+  treatmentFacility: {
+    marginBottom: grid.gutter
+  },
+
+  description: {
+    flex: 1,
+    marginRight: grid.gutter
+  }
+});

@@ -4,7 +4,7 @@ import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {fonts} from "../../assets/fonts";
 import {thousands} from "../lib/Helpers";
-import {commonStyles} from "../config/styles";
+import {commonStyleFn, commonStyles} from "../config/styles";
 
 export enum GoldIconSize {
   Small,
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
   largeText: {
     fontSize: grid.fontSize(1),
     fontFamily: fonts.Darkest,
-    fontWeight: "normal"
+    fontWeight: "normal",
+    textShadow: commonStyleFn.textShadow("black")
   },
 
   largeIcon: {
@@ -61,7 +62,8 @@ const styles = StyleSheet.create({
   smallText: {
     fontSize: grid.fontSize(0.5),
     fontFamily: fonts.Darkest,
-    fontWeight: "normal"
+    fontWeight: "normal",
+    textShadow: commonStyleFn.textShadow("black")
   },
 
   smallIcon: {
