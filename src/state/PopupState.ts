@@ -37,7 +37,10 @@ export class PopupState {
 
   show <P> (arg: PopupHandlePropsOrContent<P>): PopupHandle<P> {
     const popup = new PopupHandle<P>(ensureProps(arg), this);
+
     this.map.set(popup.id, popup);
+    this.bringToFront(popup.id);
+
     return popup;
   }
 
