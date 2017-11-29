@@ -2,8 +2,8 @@ import * as React from "react";
 import {StyleSheet} from "aphrodite";
 import {ItemType} from "../state/types/ItemInfo";
 import {commonColors, commonStyleFn, Row} from "../config/styles";
-import {IconWithSide} from "./IconWithSide";
 import {grid} from "../config/Grid";
+import {Icon} from "./Icon";
 
 const itemIcons: {[key: string]: string} = {
   [ItemType.Weapon]: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+swordsmans_crest.png"),
@@ -19,7 +19,7 @@ export class ItemLevel extends React.Component<{
   render () {
     return (
       <Row classStyle={[styles.itemLevel, this.props.classStyle]} style={this.props.style}>
-        <IconWithSide iconStyle={styles.icon} src={itemIcons[this.props.type]}/>
+        <Icon classStyle={styles.icon} src={itemIcons[this.props.type]}/>
         <span>{this.props.level}</span>
       </Row>
     );

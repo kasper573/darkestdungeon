@@ -8,21 +8,24 @@ import {Icon, IconProps} from "./Icon";
 @observer
 export class IconWithSide extends React.Component<
   IconProps & {
-  side?: any,
-  iconStyle?: any
+  side: any,
+  iconStyle?: any,
+  style?: any
 }> {
+  static defaultProps = Icon.defaultProps;
+
   render () {
-    const {side, iconStyle, classStyle, ...rest} = this.props;
-    const hasSide = side !== undefined;
+    const {side, iconStyle, classStyle, style, ...rest} = this.props;
+    const dynamicStyle = {
+      marginLeft: (this.props.scale - 1) * grid.gutter * 4
+    };
 
     return (
-      <Row valign="center" classStyle={classStyle}>
+      <Row valign="center" classStyle={classStyle} style={style}>
         <Icon classStyle={iconStyle} {...rest}/>
-        {hasSide && (
-          <div className={css(styles.side, commonStyles.commonName)}>
-            {side}
-          </div>
-        )}
+        <div className={css(styles.side, commonStyles.commonName)} style={dynamicStyle}>
+          {side}
+        </div>
       </Row>
     );
   }
