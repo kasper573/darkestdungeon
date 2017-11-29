@@ -203,7 +203,7 @@ export class Profile {
 
   hasEnoughHeirlooms (requiredAmounts: Map<HeirloomType, number>) {
     for (const [type, requiredAmount] of requiredAmounts.entries()) {
-      if (this.heirloomCounts.get(type) < requiredAmount) {
+      if ((this.heirloomCounts.get(type) || 0) < requiredAmount) {
         return false;
       }
     }
