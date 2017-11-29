@@ -15,8 +15,15 @@ const lessInfoIconUrl = require("../../../../assets/dd/images/shared/progression
 @observer
 export class BuildingOverview extends React.Component<{
   info: BuildingInfo,
-  classStyle?: any
+  classStyle?: any,
+  coverupRight?: boolean,
+  coverupTop?: boolean
 }> {
+  static defaultProps = {
+    coverupRight: true,
+    coverupTop: true
+  };
+
   @observable areUpgradesVisible = false;
 
   render () {
@@ -28,7 +35,8 @@ export class BuildingOverview extends React.Component<{
       <Row
         classStyle={[styles.container, this.props.classStyle]}
         style={{backgroundImage: `url(${this.props.info.backgroundUrl})`}}>
-        <div className={css(styles.coverup)}/>
+        {this.props.coverupRight && <div className={css(styles.coverupRight)}/>}
+        {this.props.coverupTop && <div className={css(styles.coverupTop)}/>}
         <Column>
           {this.props.info.npcImageUrl && (
             <div
@@ -60,7 +68,7 @@ const styles = StyleSheet.create({
     height: grid.ySpan(13)
   },
 
-  coverup: {
+  coverupRight: {
     ...commonStyleFn.dock(),
     background: commonStyleFn.gradient("right", [
       [0, "transparent"],
@@ -68,16 +76,15 @@ const styles = StyleSheet.create({
       [45, "black"],
       [100, "black"]
     ]),
+  },
 
-    ":after": {
-      ...commonStyleFn.dock(),
-      content: "' '",
-      background: commonStyleFn.gradient("bottom", [
-        [0, "black"],
-        [20, "black"],
-        [30, "transparent"]
-      ])
-    }
+  coverupTop: {
+    ...commonStyleFn.dock(),
+    background: commonStyleFn.gradient("bottom", [
+      [0, "black"],
+      [20, "black"],
+      [30, "transparent"]
+    ])
   },
 
   npc: {

@@ -6,6 +6,7 @@ import {observer} from "mobx-react";
 import {StaticState} from "../../../state/StaticState";
 import {Hero} from "../../../state/types/Hero";
 import {Alert} from "../../../ui/Popups";
+import {css, StyleSheet} from "aphrodite";
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -26,16 +27,30 @@ export class StageCoach extends AppStateComponent {
 
   render () {
     return (
-      <BuildingOverview info={StaticState.instance.buildings.get(StageCoach.id)}>
-        {this.activeProfile.coach.map((hero) => (
-          <EstateRosterEntry
-            key={hero.id}
-            hero={hero}
-            onDragEnd={this.tryRecruitHero.bind(this)}
-            allowDrop={() => false}
-          />
-        ))}
+      <BuildingOverview coverupRight={false} info={StaticState.instance.buildings.get(StageCoach.id)}>
+        <div className={css(styles.coachList)}>
+          {this.activeProfile.coach.map((hero) => (
+            <EstateRosterEntry
+              key={hero.id}
+              hero={hero}
+              transparent={true}
+              onDragEnd={this.tryRecruitHero.bind(this)}
+              allowDrop={() => false}
+              classStyle={styles.coachEntry}
+            />
+          ))}
+        </div>
       </BuildingOverview>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  coachList: {
+    alignItems: "flex-end"
+  },
+
+  coachEntry: {
+    flex: "none"
+  }
+});
