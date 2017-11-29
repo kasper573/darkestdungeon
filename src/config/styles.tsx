@@ -14,6 +14,14 @@ export const commonColors = {
 };
 
 export const commonStyleFn = {
+  singleBackground () {
+    return {
+      backgroundSize: "contain",
+      backgroundPosition: "50% 50%",
+      backgroundRepeat: "no-repeat"
+    };
+  },
+
   boxShadow (inset: boolean = false, color = "#000000", size: number = grid.gutter) {
     const prefix = inset ? "inset " : "";
     return prefix + `0 0 ${size}px ${color}`;
@@ -54,13 +62,25 @@ export const commonStyleFn = {
     };
 
     switch (side) {
+      case "topLeft":
+        delete style.bottom;
+        delete style.right;
+        break;
       case "top": delete style.bottom; break;
       case "topRight":
         delete style.bottom;
         delete style.left;
         break;
       case "right": delete style.left; break;
+      case "bottomRight":
+        delete style.top;
+        delete style.left;
+        break;
       case "bottom": delete style.top; break;
+      case "bottomLeft":
+        delete style.top;
+        delete style.right;
+        break;
       case "left": delete style.right; break;
     }
     return style;
@@ -80,7 +100,9 @@ export const commonStyleFn = {
 
 export const commonStyles = StyleSheet.create({
   fill: {
-    flex: 1
+    flex: 1,
+    width: "auto",
+    height: "auto"
   },
 
   nowrap: {

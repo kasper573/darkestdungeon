@@ -2,10 +2,12 @@ import * as React from "react";
 import {computed} from "mobx";
 import {observer} from "mobx-react";
 import {QuirkText} from "../../../../ui/QuirkText";
-import {Row} from "../../../../config/styles";
+import {commonStyleFn, Row} from "../../../../config/styles";
 import {CommonHeader} from "../../../../ui/CommonHeader";
 import {Profile} from "../../../../state/types/Profile";
 import {StyleSheet} from "aphrodite";
+import {cancelIconUrl, Icon} from "../../../../ui/Icon";
+import {grid} from "../../../../config/Grid";
 
 @observer
 export class QuirkPicker extends React.Component<{
@@ -45,12 +47,13 @@ export class QuirkPicker extends React.Component<{
               classStyle={isSelected && styles.selectedQuirk}>
               <QuirkText quirk={q}/>
               {isSelected && (
-                <button onClick={(e) => {
-                  e.stopPropagation();
-                  this.pendingResident.residentInfo.treatmentId = null;
-                }}>
-                  X
-                </button>
+                <Icon
+                  src={cancelIconUrl}
+                  classStyle={styles.cancelButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.pendingResident.residentInfo.treatmentId = null;
+                  }}/>
               )}
             </Row>
           );
@@ -62,6 +65,11 @@ export class QuirkPicker extends React.Component<{
 
 const styles = StyleSheet.create({
   selectedQuirk: {
-    backgroundColor: "#ff60a9"
+    background: commonStyleFn.shineGradient("#480405")
+  },
+
+  cancelButton: {
+    width: grid.ySpan(1),
+    height: grid.ySpan(0.5)
   }
 });

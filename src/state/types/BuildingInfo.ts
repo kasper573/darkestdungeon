@@ -11,6 +11,7 @@ export class BuildingInfo {
   iconUrl: string;
   avatarUrl: string;
   npcImageUrl: string;
+  slotImageUrl: string;
   backgroundUrl: string;
 
   children = new Map<string, BuildingInfo>();
