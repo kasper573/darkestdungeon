@@ -9,6 +9,7 @@ import {css, StyleSheet} from "aphrodite";
 import {grid} from "../../../config/Grid";
 import Color = require("color");
 import {fonts} from "../../../../assets/fonts";
+import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 
 export class BuildingUpgradeShop extends AppStateComponent<{
   upgrades: BuildingInfo
@@ -23,7 +24,7 @@ export class BuildingUpgradeShop extends AppStateComponent<{
       );
       if (index++ !== lastIndex) {
         categories.push(
-          <div key={"divider" + index} className={css(styles.categoryDivider)}/>
+          <HorizontalDivider key={"divider" + index}/>
         );
       }
     });
@@ -89,16 +90,5 @@ const styles = StyleSheet.create({
     fontSize: grid.fontSize(1),
     fontFamily: fonts.Darkest,
     marginTop: grid.gutter
-  },
-
-  categoryDivider: {
-    background: commonStyleFn.shineGradient(commonColors.gray),
-    boxShadow: commonStyleFn.boxShadow(),
-    borderTop: commonStyleFn.border("black", 1),
-    borderBottom: commonStyleFn.border("black", 1),
-    height: grid.border * 2,
-    marginTop: grid.gutter,
-    marginBottom: grid.gutter,
-    borderRadius: grid.border
   }
 });
