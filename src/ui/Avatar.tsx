@@ -3,11 +3,9 @@ import {StyleSheet} from "aphrodite";
 import {commonStyleFn} from "../config/styles";
 import {grid} from "../config/Grid";
 import {Icon} from "./Icon";
-import {TooltipArea} from "../lib/TooltipArea";
 
 export class Avatar extends React.Component<{
   src: string,
-  tip?: any,
   classStyle?: any,
   onClick?: () => void
 }> {
@@ -17,9 +15,7 @@ export class Avatar extends React.Component<{
         src={this.props.src}
         classStyle={[styles.avatar, this.props.classStyle]}
         onClick={this.props.onClick}>
-        <TooltipArea tip={this.props.tip} style={{flex: 1}}>
-          {this.props.children}
-        </TooltipArea>
+        {this.props.children}
       </Icon>
     );
   }

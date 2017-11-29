@@ -10,6 +10,8 @@ import {StaticState} from "../../state/StaticState";
 import {grid} from "../../config/Grid";
 import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "../../ui/Avatar";
+import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
+import {commonStyles} from "../../config/styles";
 
 export class EstateOverview extends AppStateComponent<{
   path: Path,
@@ -46,9 +48,9 @@ export class EstateOverview extends AppStateComponent<{
                 classStyle={styles.buildingIcon}
                 key={building.id}
                 src={building.avatarUrl}
-                tip={building.name}
-                onClick={() => this.appState.router.goto(buildingPath)}
-              />
+                onClick={() => this.appState.router.goto(buildingPath)}>
+                <TooltipArea side={TooltipSide.Right} tip={building.name} classStyle={commonStyles.fill}/>
+              </Avatar>
             );
           })}
         </div>
