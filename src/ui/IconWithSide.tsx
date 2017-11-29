@@ -21,9 +21,11 @@ export class IconWithSide extends React.Component<
     };
 
     return (
-      <Row valign="center" classStyle={classStyle} style={style}>
-        <Icon classStyle={iconStyle} {...rest}/>
-        <div className={css(styles.side, commonStyles.commonName)} style={dynamicStyle}>
+      <Row valign="center" classStyle={[commonStyles.commonName, classStyle]} style={style}>
+        <Icon classStyle={iconStyle} {...rest}>
+          {this.props.children}
+        </Icon>
+        <div className={css(styles.side)} style={dynamicStyle}>
           {side}
         </div>
       </Row>
