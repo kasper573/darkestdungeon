@@ -87,7 +87,7 @@ export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
               );
               const canTrade = convertedAmount > 0;
               return (
-                <Row classStyle={commonStyles.fill} key={targetHeirloom.id}>
+                <Row classStyle={commonStyles.fill} key={targetHeirloom.id} valign="center">
                   <HeirloomIcon info={targetHeirloom} amount={convertedAmount}/>
                   <Icon
                     classStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
