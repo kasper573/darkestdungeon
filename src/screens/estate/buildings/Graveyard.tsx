@@ -4,10 +4,10 @@ import {EstateRosterEntry} from "../EstateRosterEntry";
 import {AppStateComponent} from "../../../AppStateComponent";
 import {observer} from "mobx-react";
 import {StaticState} from "../../../state/StaticState";
-import {BannerHeader} from "../../../ui/BannerHeader";
 import {css, StyleSheet} from "aphrodite";
 import {grid} from "../../../config/Grid";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
+import {BuildingMessage} from "./BuildingMessage";
 
 @observer
 export class Graveyard extends AppStateComponent {
@@ -16,9 +16,9 @@ export class Graveyard extends AppStateComponent {
   renderMessage () {
     if (this.activeProfile.graveyard.length === 0) {
       return (
-        <BannerHeader classStyle={styles.graveyardMessage}>
+        <BuildingMessage>
           None of your heroes have died! Yet...
-        </BannerHeader>
+        </BuildingMessage>
       );
     }
   }
