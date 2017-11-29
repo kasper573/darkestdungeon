@@ -5,9 +5,8 @@ import {EstateRosterEntry} from "../EstateRosterEntry";
 import {observer} from "mobx-react";
 import {StaticState} from "../../../state/StaticState";
 import {css, StyleSheet} from "aphrodite";
-import {BannerHeader} from "../../../ui/BannerHeader";
-import {grid} from "../../../config/Grid";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
+import {BuildingMessage} from "./BuildingMessage";
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -16,19 +15,19 @@ export class StageCoach extends AppStateComponent {
   renderMessage () {
     if (this.activeProfile.coach.length === 0) {
       return (
-        <BannerHeader classStyle={styles.coachMessage}>
+        <BuildingMessage>
           All heroes have been recruited. <br/>
           New recruits will arrive next week.
-        </BannerHeader>
+        </BuildingMessage>
       );
     }
 
     if (this.activeProfile.isRosterFull) {
       return (
-        <BannerHeader classStyle={styles.coachMessage}>
+        <BuildingMessage>
           The Hero Barracks is full. <br/>
           You can upgrade the barracks at the Stage Coach.
-        </BannerHeader>
+        </BuildingMessage>
       );
     }
   }
@@ -75,9 +74,5 @@ const styles = StyleSheet.create({
 
   coachEntry: {
     flex: "none"
-  },
-
-  coachMessage: {
-    margin: grid.ySpan(1)
   }
 });

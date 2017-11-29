@@ -6,6 +6,7 @@ import {HeroUpgradeGrid} from "./HeroUpgradeGrid";
 import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {EstateRosterEntry} from "../EstateRosterEntry";
 import {DragDropSlot} from "../../../lib/DragDropSlot";
+import {BuildingMessage} from "./BuildingMessage";
 
 export enum HeroUpgradeType {
   Skills,
@@ -39,11 +40,9 @@ class SlotOrHero extends React.Component<{
   hero: Hero,
   onChange: (hero?: Hero) => void
 }> {
-  render () {
-    let slotContent: any = "Drag a hero from the roster here";
-
+  renderContent () {
     if (this.props.hero) {
-      slotContent = (
+      return (
         <EstateRosterEntry
           allowDrop={() => false}
           onDragEnd={() => this.props.onChange(null)}
@@ -53,13 +52,21 @@ class SlotOrHero extends React.Component<{
     }
 
     return (
+      <BuildingMessage>
+        Drag a hero from the roster here
+      </BuildingMessage>
+    );
+  }
+
+  render () {
+    return (
       <DragDropSlot
         type={Hero}
         item={this.props.hero}
         allowDrag={() => false}
         allowDrop={(hero: Hero) => !(hero.residentInfo && hero.residentInfo.isLockedIn)}
         onDrop={this.props.onChange}>
-        {slotContent}
+        {this.renderContent()}
       </DragDropSlot>
     );
   }
