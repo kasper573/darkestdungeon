@@ -35,7 +35,7 @@ export class PopupList extends React.Component<{
     const popups = this.renderPopups();
 
     // Expose a react portal node above the first layer of popups
-    popups.splice(1, 0, (
+    popups.push((
       <Transition key="portal" timeout={0}>
         <div style={{pointerEvents: "all"}} ref={this.props.portalNodeRef}/>
       </Transition>
