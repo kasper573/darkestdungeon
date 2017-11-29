@@ -23,7 +23,7 @@ export class BuildingUpgradeShop extends AppStateComponent<{
       );
       if (index++ !== lastIndex) {
         categories.push(
-          <div className={css(styles.categoryDivider)}/>
+          <div key={"divider" + index} className={css(styles.categoryDivider)}/>
         );
       }
     });
