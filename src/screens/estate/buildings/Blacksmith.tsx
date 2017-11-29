@@ -9,7 +9,7 @@ export class Blacksmith extends React.Component {
   render () {
     const info = StaticState.instance.buildings.get(Blacksmith.id);
     return (
-      <BuildingOverview info={info}>
+      <BuildingOverview coverupRight={false} info={info}>
         <HeroUpgradeShop type={HeroUpgradeType.Equipment} info={info}/>
       </BuildingOverview>
     );

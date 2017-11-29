@@ -12,6 +12,7 @@ export class SkillIcon extends React.Component<{
   skill: Skill,
   isEnabled?: boolean,
   isSelected?: boolean,
+  classStyle?: any,
   onClick?: () => void
 }> {
   static defaultProps = {
@@ -45,7 +46,7 @@ export class SkillIcon extends React.Component<{
       <TooltipArea
         onClick={this.props.isEnabled ? this.props.onClick : undefined}
         tip={<SkillBreakdown skill={this.props.skill}/>}
-        classStyle={styles.container}>
+        classStyle={[styles.container, this.props.classStyle]}>
         {lockSymbol}
         {levelIndicator}
         {selectionIndicator}
@@ -65,8 +66,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    ":not(:last-child)": {
-      marginRight: grid.border
+    marginRight: grid.border,
+    ":last-child": {
+      marginRight: 0
     },
 
     ":hover": {
