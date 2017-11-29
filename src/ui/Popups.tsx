@@ -6,9 +6,9 @@ import {grid} from "../config/Grid";
 import {Input} from "../config/Input";
 import {InputBinding} from "../state/InputState";
 import {commonColors, commonStyleFn} from "../config/styles";
-import {Icon} from "./Icon";
 import {VerticalOutlineBox} from "./VerticalOutlineBox";
 import Color = require("color");
+import {Icon} from "./Icon";
 
 export type PopupProps = {
   headerIcon?: string,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Icon} from "./Icon";
+import {IconWithSide} from "./IconWithSide";
 import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {fonts} from "../../assets/fonts";
@@ -31,7 +31,7 @@ export class GoldIcon extends React.Component<{
     const notEnough = this.props.compareWith !== undefined && (this.props.amount > this.props.compareWith);
 
     return (
-      <Icon
+      <IconWithSide
         src={src}
         iconStyle={isLarge ? styles.largeIcon : styles.smallIcon}
         scale={isLarge ? 2 : 1}

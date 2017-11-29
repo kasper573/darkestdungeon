@@ -2,7 +2,7 @@ import * as React from "react";
 import {StyleSheet} from "aphrodite";
 import {ItemType} from "../state/types/ItemInfo";
 import {commonColors, commonStyleFn, Row} from "../config/styles";
-import {Icon} from "./Icon";
+import {IconWithSide} from "./IconWithSide";
 import {grid} from "../config/Grid";
 
 const itemIcons: {[key: string]: string} = {
@@ -19,7 +19,7 @@ export class ItemLevel extends React.Component<{
   render () {
     return (
       <Row classStyle={[styles.itemLevel, this.props.classStyle]} style={this.props.style}>
-        <Icon iconStyle={styles.icon} src={itemIcons[this.props.type]}/>
+        <IconWithSide iconStyle={styles.icon} src={itemIcons[this.props.type]}/>
         <span>{this.props.level}</span>
       </Row>
     );
