@@ -35,7 +35,7 @@ export class BuildingOverview extends React.Component<{
       <Row
         classStyle={[styles.container, this.props.classStyle]}
         style={{backgroundImage: `url(${this.props.info.backgroundUrl})`}}>
-        {this.props.coverupRight && <div className={css(styles.coverupRight)}/>}
+        <div className={css(this.props.coverupRight ? styles.coverupRight : styles.coverupRightSmall)}/>
         {this.props.coverupTop && <div className={css(styles.coverupTop)}/>}
         <Column>
           {this.props.info.npcImageUrl && (
@@ -75,7 +75,15 @@ const styles = StyleSheet.create({
       [30, "transparent"],
       [45, "black"],
       [100, "black"]
-    ]),
+    ])
+  },
+
+  coverupRightSmall: {
+    ...commonStyleFn.dock(),
+    background: commonStyleFn.gradient("right", [
+      [85, "transparent"],
+      [100, "black"]
+    ])
   },
 
   coverupTop: {
