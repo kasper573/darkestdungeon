@@ -31,7 +31,6 @@ export class EstateRosterEntry extends AppStateComponent<{
   allowDrag?: (item: Hero) => boolean,
   onDragEnd?: (item: Hero, monitor: any) => void,
   onDrop?: (droppedHero: Hero) => void,
-  onSelect?: (hero: Hero) => void,
   classStyle?: any,
 
   // Hover offset settings
@@ -91,9 +90,14 @@ export class EstateRosterEntry extends AppStateComponent<{
         allowDrag={this.props.allowDrag}
         allowDrop={this.props.allowDrop}
         onDragEnd={this.props.onDragEnd}
-        onClick={() => this.showHeroOverview()}
         onDrop={this.props.onDrop}>
-        <Row>
+        <div
+          className={css(commonStyles.row)}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            this.showHeroOverview();
+            return false;
+          }}>
           <Avatar
             classStyle={[styles.avatar, overlayIconUrl ? styles.avatarDimmed : false]}
             src={hero.classInfo.avatarUrl}
@@ -119,7 +123,7 @@ export class EstateRosterEntry extends AppStateComponent<{
               {hero.weapon && <ItemLevel type={ItemType.Weapon} level={hero.weapon.level}/>}
             </div>
           </div>
-        </Row>
+        </div>
         <TooltipArea
           side={TooltipSide.Left}
           classStyle={styles.levelIconContainer}
