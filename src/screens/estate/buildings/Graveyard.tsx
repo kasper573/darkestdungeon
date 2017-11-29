@@ -5,7 +5,7 @@ import {AppStateComponent} from "../../../AppStateComponent";
 import {observer} from "mobx-react";
 import {StaticState} from "../../../state/StaticState";
 import {BannerHeader} from "../../../ui/BannerHeader";
-import {StyleSheet} from "aphrodite";
+import {css, StyleSheet} from "aphrodite";
 import {grid} from "../../../config/Grid";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 
@@ -16,7 +16,7 @@ export class Graveyard extends AppStateComponent {
   renderMessage () {
     if (this.activeProfile.graveyard.length === 0) {
       return (
-        <BannerHeader classStyle={styles.coachMessage}>
+        <BannerHeader classStyle={styles.graveyardMessage}>
           None of your heroes have died! Yet...
         </BannerHeader>
       );
@@ -31,6 +31,8 @@ export class Graveyard extends AppStateComponent {
       elements.push(
         <EstateRosterEntry
           key={hero.id} hero={hero}
+          classStyle={styles.heroEntry}
+          transparent={true}
           allowDrop={() => false}
           allowDrag={() => false}
         />
@@ -45,15 +47,25 @@ export class Graveyard extends AppStateComponent {
 
     return (
       <BuildingOverview coverupRight={false} info={StaticState.instance.buildings.get(Graveyard.id)}>
-        {this.renderMessage()}
-        {elements}
+        <div className={css(styles.heroList)}>
+          {this.renderMessage()}
+          {elements}
+        </div>
       </BuildingOverview>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  coachMessage: {
+  heroList: {
+    alignItems: "flex-end"
+  },
+
+  heroEntry: {
+    flex: "none"
+  },
+
+  graveyardMessage: {
     margin: grid.ySpan(1)
   }
 });
