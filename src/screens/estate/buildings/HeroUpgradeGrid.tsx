@@ -20,6 +20,7 @@ import {Prompt} from "../../../ui/Popups";
 import {GoldIcon} from "../../../ui/GoldIcon";
 import {upgradeIconUrls} from "./BuildingUpgradeIcon";
 import {grid} from "../../../config/Grid";
+import {BuildingMessage} from "./BuildingMessage";
 
 @observer
 export class HeroUpgradeGrid extends AppStateComponent<{
@@ -87,6 +88,15 @@ export class HeroUpgradeGrid extends AppStateComponent<{
   }
 
   render () {
+    if (this.upgrades.length === 0 && this.props.type === HeroUpgradeType.Equipment) {
+      return (
+        <BuildingMessage>
+          {this.props.hero.name} has nothing available for upgrade. <br/>
+          Equip a weapon or armor to enable upgrades.
+        </BuildingMessage>
+      );
+    }
+
     return (
       <Row classStyle={styles.container}>
         <Column classStyle={styles.description}>
