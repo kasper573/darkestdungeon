@@ -74,7 +74,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   @computed get tooltipStyle (): any {
     const {x, y} = this.getTooltipOffset(this.adjustedSide);
     return {
-      zIndex: 1,
+      zIndex: 2,
       position: "absolute",
       left: x,
       top: y,
