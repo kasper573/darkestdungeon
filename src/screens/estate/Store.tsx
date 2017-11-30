@@ -30,7 +30,9 @@ export class Store extends React.Component<{
 
   componentWillUnmount () {
     // Return all items that has not been checked out
-    this.cart.forEach((item) => this.returnItem(item));
+    transaction(() => {
+      this.cart.slice().forEach((item) => this.returnItem(item));
+    });
     this.stopManagingDebt();
   }
 
