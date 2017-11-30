@@ -96,11 +96,8 @@ export function generateQuest (dungeons: Dungeon[]): Quest {
   );
   q.changeRoom(q.map.entrance.id);
 
-  q.rewards = [
-    Item.fromInfo(randomizeItem(StaticState.instance.items)),
-    Item.fromInfo(randomizeItem(StaticState.instance.items)),
-    Item.fromInfo(randomizeItem(StaticState.instance.items))
-  ];
+  const allRewards = StaticState.instance.items.filter((info) => info.isReward);
+  q.rewards = randomizeItems(allRewards, 1, 4).map(Item.fromInfo);
 
   const o = new QuestObjective();
   if (Math.random() > 0.5) {
