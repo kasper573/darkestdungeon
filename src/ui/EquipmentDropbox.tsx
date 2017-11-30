@@ -2,6 +2,9 @@ import * as React from "react";
 import {equippableItems, maxEquippedItems} from "../config/general";
 import {ItemDropbox} from "./ItemDropbox";
 import {Character} from "../state/types/Character";
+import {itemSize} from "./ItemIcon";
+import {grid} from "../config/Grid";
+import {StyleSheet} from "aphrodite";
 
 export class EquipmentDropbox extends React.Component<{
   character: Character
@@ -9,6 +12,7 @@ export class EquipmentDropbox extends React.Component<{
   render () {
     return (
       <ItemDropbox
+        classStyle={styles.equipmentDropbox}
         slots={maxEquippedItems}
         items={this.props.character.items}
         filter={(item) => !!equippableItems.get(item.info.type)}
@@ -22,3 +26,10 @@ export class EquipmentDropbox extends React.Component<{
     );
   }
 }
+
+const styles = StyleSheet.create({
+  equipmentDropbox: {
+    width: maxEquippedItems * itemSize.width + grid.gutter * (maxEquippedItems - 1),
+    flexWrap: "nowrap"
+  }
+});

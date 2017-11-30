@@ -20,7 +20,8 @@ export class ItemDropbox extends React.Component<{
   slots?: number,
 
   onItemClick?: (item: Item) => void
-  onItemRightClick?: (item: Item) => void
+  onItemRightClick?: (item: Item) => void,
+  classStyle?: any
 }> {
   static defaultProps = {
     filter: () => true,
@@ -81,7 +82,7 @@ export class ItemDropbox extends React.Component<{
     count(freeSlots).forEach(() => stacks.push(null));
 
     return (
-      <div className={css(styles.dropbox)}>
+      <div className={css(styles.dropbox, this.props.classStyle)}>
         {stacks.map((stack, index) => {
           const item = stack && stack[0];
           return (
