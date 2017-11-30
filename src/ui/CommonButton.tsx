@@ -1,9 +1,9 @@
 import * as React from "react";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {fonts} from "../../assets/fonts";
 import {grid} from "../config/Grid";
 import {commonColors} from "../config/styles";
-import {VerticalOutlineBox} from "./VerticalOutlineBox";
+import {LineButton} from "./LineButton";
 
 export enum CommonButtonSize {
   Medium
@@ -34,16 +34,16 @@ export class CommonButton extends React.Component<{
     };
 
     return (
-      <div
-        className={css(styles.commonButton, this.props.classStyle)}
+      <LineButton
+        defaultColor={this.props.color}
+        hoverColor={this.props.color}
+        textGlow={false}
+        classStyle={[styles.commonButton, this.props.classStyle]}
         style={dynamicStyle}
         onClick={this.props.onClick}>
-
         {this.props.label}
         {this.props.children}
-
-        <VerticalOutlineBox color={this.props.color}/>
-      </div>
+      </LineButton>
     );
   }
 }
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     background: "linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 20%,rgba(0,0,0,1) 80%,rgba(0,0,0,0) 100%)",
 
     ":not(:hover)": {
-      opacity: 0.8
+      opacity: 0.6
     }
   }
 });

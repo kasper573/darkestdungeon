@@ -1,5 +1,5 @@
 import * as React from "react";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {LineButton} from "./LineButton";
 import {observable} from "mobx";
@@ -20,7 +20,8 @@ export type IconProps = {
   scale?: number,
 
   classStyle?: any,
-  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void,
+  onRightClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 };
 
 export const confirmIconUrl = require(
@@ -38,7 +39,7 @@ export class Icon extends React.Component<IconProps> {
     highlight: IconHighlightType.Opacity
   };
 
-  @observable isHovered = false;
+  hoverState = observable(false);
 
   render () {
     const customSize = this.props.size !== undefined ? this.props.size : undefined;
@@ -53,33 +54,30 @@ export class Icon extends React.Component<IconProps> {
       height: customHeight
     };
 
+    let hoverLineColor = "transparent";
     switch (this.props.highlight) {
       case IconHighlightType.Lines:
-        return (
-          <LineButton
-            outlineScale={1 / this.props.scale}
-            onClick={this.props.onClick}
-            classStyle={[styles.icon, this.props.classStyle]}
-            style={dynamicIconStyle}>
-            {this.props.children}
-          </LineButton>
-        );
+        hoverLineColor = LineButton.defaultProps.hoverColor;
+        break;
       case IconHighlightType.Opacity:
-        if (this.props.onClick && !this.isHovered) {
+        if (this.props.onClick && !this.hoverState.get()) {
           (dynamicIconStyle as any).opacity = 0.6;
         }
-
-        return (
-          <div
-            onMouseEnter={() => this.isHovered = true}
-            onMouseLeave={() => this.isHovered = false}
-            onClick={this.props.onClick}
-            className={css([styles.icon, this.props.classStyle])}
-            style={dynamicIconStyle}>
-            {this.props.children}
-          </div>
-        );
+        break;
     }
+
+    return (
+      <LineButton
+        hoverState={this.hoverState}
+        outlineScale={1 / this.props.scale}
+        hoverColor={hoverLineColor}
+        onClick={this.props.onClick}
+        onRightClick={this.props.onRightClick}
+        classStyle={[styles.icon, this.props.classStyle]}
+        style={dynamicIconStyle}>
+        {this.props.children}
+      </LineButton>
+    );
   }
 }
 

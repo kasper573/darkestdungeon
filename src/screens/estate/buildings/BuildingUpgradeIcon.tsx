@@ -8,8 +8,9 @@ import {Heirlooms} from "../../../ui/Heirlooms";
 import {TooltipArea} from "../../../lib/TooltipArea";
 import {UpgradeTooltip} from "./UpgradeTooltip";
 import {StyleSheet} from "aphrodite";
-import {commonColors, commonStyleFn} from "../../../config/styles";
+import {commonStyleFn} from "../../../config/styles";
 import {grid} from "../../../config/Grid";
+import {Icon} from "../../../ui/Icon";
 
 @observer
 export class BuildingUpgradeIcon extends AppStateComponent<{
@@ -32,6 +33,16 @@ export class BuildingUpgradeIcon extends AppStateComponent<{
     }
   }
 
+  getIconUrl (isUpgraded: boolean, isAvailable: boolean) {
+    if (isUpgraded) {
+      return upgradeIconUrls.owned;
+    }
+    if (isAvailable) {
+      return upgradeIconUrls.available;
+    }
+    return upgradeIconUrls.locked;
+  }
+
   render () {
     const {item} = this.props;
 
@@ -40,25 +51,26 @@ export class BuildingUpgradeIcon extends AppStateComponent<{
     const isAvailable = !this.props.prerequisite || this.activeProfile.ownsUpgrade(this.props.prerequisite);
     const canBuy = canAfford && isAvailable && !isUpgraded;
 
-    const dynStyle = isUpgraded ? styles.stepOwned : (isAvailable ? styles.stepAvailable : styles.stepLocked);
-    const onClick = canBuy ? () => this.promptUnlock() : undefined;
+    const tooltip = (
+      <UpgradeTooltip
+        cost={<Heirlooms counts={item.cost} compare={this.activeProfile.heirloomCounts}/>}
+        isAvailable={isAvailable}
+        prerequisiteName={this.props.category.name}
+        prerequisiteLevel={this.props.level - 1}
+      >
+        <pre>{item.description}</pre>
+      </UpgradeTooltip>
+    );
 
     return (
       <div>
-        <TooltipArea
-          onClick={onClick}
-          classStyle={[styles.step, dynStyle]}
-          tip={(
-            <UpgradeTooltip
-              cost={<Heirlooms counts={item.cost} compare={this.activeProfile.heirloomCounts}/>}
-              isAvailable={isAvailable}
-              prerequisiteName={this.props.category.name}
-              prerequisiteLevel={this.props.level - 1}
-            >
-              <pre>{item.description}</pre>
-            </UpgradeTooltip>
-          )}
-        />
+        <TooltipArea tip={tooltip}>
+          <Icon
+            classStyle={[styles.step, canBuy && styles.canInteract]}
+            src={this.getIconUrl(isUpgraded, isAvailable)}
+            onClick={canBuy ? () => this.promptUnlock() : undefined}
+          />
+        </TooltipArea>
       </div>
     );
   }
@@ -77,23 +89,12 @@ const styles = StyleSheet.create({
     height: stepSize,
     border: commonStyleFn.outline("black"),
     backgroundSize: "contain",
-    backgroundPosition: "50% 50%",
+    backgroundPosition: "50% 50%"
+  },
 
+  canInteract: {
     ":hover": {
       boxShadow: commonStyleFn.outerShadow("white")
     }
-  },
-
-  stepOwned: {
-    backgroundImage: `url(${upgradeIconUrls.owned})`,
-    border: commonStyleFn.outline(commonColors.gold)
-  },
-
-  stepAvailable: {
-    backgroundImage: `url(${upgradeIconUrls.available})`
-  },
-
-  stepLocked: {
-    backgroundImage: `url(${upgradeIconUrls.locked})`
   }
 });

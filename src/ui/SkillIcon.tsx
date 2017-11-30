@@ -6,6 +6,7 @@ import {Skill} from "../state/types/Skill";
 import {observer} from "mobx-react";
 import {commonColors, commonStyleFn} from "../config/styles";
 import {grid} from "../config/Grid";
+import {Icon} from "./Icon";
 
 @observer
 export class SkillIcon extends React.Component<{
@@ -43,15 +44,16 @@ export class SkillIcon extends React.Component<{
     );
 
     return (
-      <TooltipArea
-        onClick={this.props.isEnabled ? this.props.onClick : undefined}
-        tip={<SkillBreakdown skill={this.props.skill}/>}
-        classStyle={[styles.container, this.props.classStyle]}
-        style={{background: `url(${this.props.skill.info.iconUrl})`}}>
-        {lockSymbol}
-        {levelIndicator}
-        {selectionIndicator}
-        {disabledIndicator}
+      <TooltipArea tip={<SkillBreakdown skill={this.props.skill}/>}>
+        <Icon
+          src={this.props.skill.info.iconUrl}
+          classStyle={[styles.container, this.props.classStyle]}
+          onClick={this.props.isEnabled ? this.props.onClick : undefined}>
+          {lockSymbol}
+          {levelIndicator}
+          {selectionIndicator}
+          {disabledIndicator}
+        </Icon>
       </TooltipArea>
     );
   }
