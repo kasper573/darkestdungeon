@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyles} from "../config/styles";
+import {commonStyleFn} from "../config/styles";
 import {TooltipArea} from "../lib/TooltipArea";
 import {Item} from "../state/types/Item";
 import {grid} from "../config/Grid";
@@ -21,13 +21,11 @@ export class ItemIcon extends React.Component<{
 
   render () {
     const item = this.props.item;
-    const containerStyle = [commonStyles.boxBorder, this.props.classStyle];
+    const containerStyle = [styles.icon, this.props.classStyle];
 
     if (!item) {
       return (
-        <div className={css(containerStyle)}>
-          <div className={css(styles.icon)}/>
-        </div>
+        <div className={css(styles.icon)}/>
       );
     }
 
@@ -56,6 +54,7 @@ export const itemSize = {
 const styles = StyleSheet.create({
   icon: {
     ...itemSize,
+    border: commonStyleFn.border(),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     backgroundSize: "auto 120%", // Scale up to remove borders embedded in dd assets
     justifyContent: "center",

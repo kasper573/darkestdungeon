@@ -71,6 +71,7 @@ export class Icon extends React.Component<IconProps> {
         hoverState={this.hoverState}
         outlineScale={1 / this.props.scale}
         hoverColor={hoverLineColor}
+        textGlow={false}
         onClick={this.props.onClick}
         onRightClick={this.props.onRightClick}
         classStyle={[styles.icon, this.props.classStyle]}

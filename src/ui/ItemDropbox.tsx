@@ -6,6 +6,7 @@ import {Item} from "../state/types/Item";
 import {contains, count, removeItem} from "../lib/Helpers";
 import {grid} from "../config/Grid";
 import {css, StyleSheet} from "aphrodite";
+import {commonColors, commonStyleFn} from "../config/styles";
 
 @observer
 export class ItemDropbox extends React.Component<{
@@ -145,10 +146,11 @@ const styles = StyleSheet.create({
   },
 
   stackSize: {
-    position: "absolute",
-    bottom: 0, right: 0,
-    background: "blue",
-    padding: 2
+    ...commonStyleFn.dock("topLeft"),
+    color: commonColors.gold,
+    fontWeight: "bold",
+    marginTop: grid.gutter / 2,
+    marginLeft: grid.gutter / 2
   },
 
   lockedItem: {
