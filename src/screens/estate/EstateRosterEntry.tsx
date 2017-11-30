@@ -5,19 +5,20 @@ import {LevelIcon} from "../../ui/LevelIcon";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
-import {commonStyleFn, commonStyles, Row} from "../../config/styles";
+import {commonStyleFn, commonStyles} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Hero} from "../../state/types/Hero";
 import {DragDropSlot} from "../../lib/DragDropSlot";
 import {AppStateComponent} from "../../AppStateComponent";
-import {ModalState, PopupAlign} from "../../state/PopupState";
+import {ModalState, PopupAlign, PopupHandle} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {StaticState} from "../../state/StaticState";
 import {estateContentPosition} from "./EstateTemplate";
 import {grid} from "../../config/Grid";
 import {Icon} from "../../ui/Icon";
+import {Prompt} from "../../ui/Popups";
 
 const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
@@ -43,14 +44,30 @@ export class EstateRosterEntry extends AppStateComponent<{
     index: 0
   };
 
+  async promptDismissHero (popup: PopupHandle) {
+    const proceed = await this.appState.popups.prompt(
+      <Prompt query="This will delete this hero permanently. Are you sure you want to dismiss this hero?"/>
+    );
+
+    if (proceed) {
+      this.activeProfile.dismissHero(this.props.hero);
+      popup.close();
+    }
+  }
+
   showHeroOverview () {
-    this.appState.popups.show({
+    const handle: PopupHandle = this.appState.popups.show({
       align: PopupAlign.TopLeft,
       position: estateContentPosition,
       modalState: ModalState.Opaque,
       id: "heroOverview",
-      content: <HeroOverview hero={this.props.hero}/>,
-      onClose: this.props.onOverviewClosed
+      onClose: this.props.onOverviewClosed,
+      content: (
+        <HeroOverview
+          hero={this.props.hero}
+          onDismissRequested={() => this.promptDismissHero(handle)}
+        />
+      )
     });
 
     if (this.props.onOverviewOpened) {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
-import {commonStyleFn} from "../config/styles";
+import {commonColors, commonStyleFn} from "../config/styles";
 
 export class VerticalOutlineBox extends React.Component<{
   color?: string,
@@ -10,6 +10,7 @@ export class VerticalOutlineBox extends React.Component<{
   below?: boolean
 }> {
   static defaultProps = {
+    color: commonColors.brightGold,
     scale: 1,
     above: true,
     below: true

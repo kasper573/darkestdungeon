@@ -6,7 +6,8 @@ import {StatsTextList} from "./StatsText";
 import {StaticState} from "../state/StaticState";
 
 export class QuirkText extends React.Component<{
-  quirk: QuirkInfo
+  quirk: QuirkInfo,
+  classStyle?: any
 }> {
   render () {
     const classStyle = this.props.quirk.stats.isPositive ?
@@ -34,7 +35,7 @@ export class QuirkText extends React.Component<{
             )}
           </div>
         )}
-        classStyle={classStyle}>
+        classStyle={[classStyle, this.props.classStyle]}>
         {this.props.quirk.name}
       </TooltipArea>
     );

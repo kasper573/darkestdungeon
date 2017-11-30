@@ -336,6 +336,10 @@ export class Profile {
     }
   }
 
+  dismissHero (hero: Hero) {
+    removeItem(this.roster, hero);
+  }
+
   @action
   positionHeroInRoster (hero: Hero, newIndex: number) {
     const currentIndex = this.roster.indexOf(hero);

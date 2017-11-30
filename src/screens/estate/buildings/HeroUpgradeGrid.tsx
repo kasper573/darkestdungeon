@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Hero} from "../../../state/types/Hero";
-import {Column, commonStyleFn, commonStyles, Row} from "../../../config/styles";
+import {Column, commonStyleFn, Row} from "../../../config/styles";
 import {HeroUpgradeType} from "./HeroUpgradeShop";
 import {css, StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../../../AppStateComponent";
@@ -21,6 +21,7 @@ import {GoldIcon} from "../../../ui/GoldIcon";
 import {upgradeIconUrls} from "./BuildingUpgradeIcon";
 import {grid} from "../../../config/Grid";
 import {BuildingMessage} from "./BuildingMessage";
+import {CommonHeader} from "../../../ui/CommonHeader";
 
 @observer
 export class HeroUpgradeGrid extends AppStateComponent<{
@@ -98,12 +99,10 @@ export class HeroUpgradeGrid extends AppStateComponent<{
     }
 
     return (
-      <Row classStyle={styles.container}>
+      <Row>
         <Column classStyle={styles.description}>
-          <h1 className={css(commonStyles.commonName)}>
-            {this.props.hero.classInfo.name}
-          </h1>
-          <p>{this.upgradeDescription}</p>
+          <CommonHeader label={this.props.hero.classInfo.name}/>
+          <p className={css(styles.descriptionText)}>{this.upgradeDescription}</p>
         </Column>
         <Column classStyle={styles.grid}>
           {this.upgrades.map((row, rowIndex) => (
@@ -174,12 +173,12 @@ class HeroUpgradeCell extends React.Component<{
 
 const upgradeSize = grid.ySpan(0.9);
 const styles = StyleSheet.create({
-  container: {
-    marginTop: grid.gutter
+  description: {
+    paddingRight: grid.gutter
   },
 
-  description: {
-    paddingRight: grid.xSpan(0.5)
+  descriptionText: {
+    margin: grid.gutter
   },
 
   grid: {

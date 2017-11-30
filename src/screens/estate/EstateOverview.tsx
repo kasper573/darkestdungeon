@@ -44,13 +44,17 @@ export class EstateOverview extends AppStateComponent<{
             const buildingRoute = this.props.route.children[buildingKey] as Route;
             const building = StaticState.instance.buildings.get(buildingRoute.component.id);
             return (
-              <Avatar
-                classStyle={styles.buildingIcon}
+              <TooltipArea
                 key={building.id}
-                src={building.avatarUrl}
-                onClick={() => this.appState.router.goto(buildingPath)}>
-                <TooltipArea side={TooltipSide.Right} tip={building.name} classStyle={commonStyles.fill}/>
-              </Avatar>
+                classStyle={styles.buildingIcon}
+                side={TooltipSide.Right}
+                tip={building.name}>
+                <Avatar
+                  classStyle={commonStyles.fill}
+                  src={building.avatarUrl}
+                  onClick={() => this.appState.router.goto(buildingPath)}
+                />
+              </TooltipArea>
             );
           })}
         </div>

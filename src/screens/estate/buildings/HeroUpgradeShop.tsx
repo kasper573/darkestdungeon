@@ -7,6 +7,7 @@ import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {EstateRosterEntry} from "../EstateRosterEntry";
 import {DragDropSlot} from "../../../lib/DragDropSlot";
 import {BuildingMessage} from "./BuildingMessage";
+import {grid} from "../../../config/Grid";
 
 export enum HeroUpgradeType {
   Skills,
@@ -23,7 +24,9 @@ export class HeroUpgradeShop extends React.Component<{
   render () {
     return (
       <div>
-        <SlotOrHero hero={this.selectedHero} onChange={(hero) => this.selectedHero = hero}/>
+        <div style={{marginBottom: grid.gutter}}>
+          <SlotOrHero hero={this.selectedHero} onChange={(hero) => this.selectedHero = hero}/>
+        </div>
         {this.selectedHero && (
           <HeroUpgradeGrid
             type={this.props.type}
