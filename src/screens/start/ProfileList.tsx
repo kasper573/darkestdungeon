@@ -9,6 +9,7 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {Difficulty, Profile, ProfileId} from "../../state/types/Profile";
 import {enumMap, mapMap} from "../../lib/Helpers";
 import {grid} from "../../config/Grid";
+import {commonStyles} from "../../config/styles";
 
 @observer
 export class ProfileList extends AppStateComponent<{
@@ -72,7 +73,7 @@ export class ProfileList extends AppStateComponent<{
 
     return (
       <ul ref={(node) => this.listNode = node}
-          className={css(styles.list)}>
+          className={css(styles.list, commonStyles.customScrollbar)}>
         {entries}
       </ul>
     );
