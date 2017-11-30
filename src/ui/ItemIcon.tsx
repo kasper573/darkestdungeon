@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyles} from "../config/styles";
+import {commonStyleFn, commonStyles} from "../config/styles";
 import {TooltipArea} from "../lib/TooltipArea";
 import {Item} from "../state/types/Item";
 import {grid} from "../config/Grid";
@@ -30,7 +30,10 @@ export class ItemIcon extends React.Component<{
       <TooltipArea
         tip={<ItemBreakdown item={item}/>}
         classStyle={containerStyle}
-        style={this.props.style}>
+        style={{
+          backgroundImage: `url(${item.info.itemUrl})`,
+          ...this.props.style
+        }}>
         <div
           className={css(commonStyles.fill)}
           onClick={this.props.onClick.bind(this)}
@@ -39,7 +42,6 @@ export class ItemIcon extends React.Component<{
             this.props.onRightClick();
             return false;
           }}>
-          {this.props.item.info.name.substr(0, 3)}
           {this.props.children}
         </div>
       </TooltipArea>
@@ -56,7 +58,9 @@ const styles = StyleSheet.create({
   icon: {
     flex: 1,
     ...itemSize,
+    ...commonStyleFn.singleBackground(),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundSize: "auto 120%", // Scale up to remove borders embedded in dd assets
     justifyContent: "center",
     alignItems: "center"
   }

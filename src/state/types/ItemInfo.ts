@@ -24,6 +24,7 @@ export class ItemInfo {
   name: string = "[single name]";
   pluralName: string = "[plural name]";
   iconUrl?: string;
+  itemUrl?: string;
   description: string = "";
   type: ItemType = ItemType.Consumable;
   heirloomType?: HeirloomType;
@@ -53,6 +54,15 @@ export class ItemInfo {
     switch (this.type) {
       case ItemType.Consumable:
       case ItemType.Treasure:
+        return true;
+    }
+  }
+
+  get isReward () {
+    switch (this.type) {
+      case ItemType.Weapon:
+      case ItemType.Armor:
+      case ItemType.Trinket:
         return true;
     }
   }
