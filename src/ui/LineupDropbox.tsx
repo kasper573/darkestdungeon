@@ -1,7 +1,7 @@
 import * as React from "react";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {Avatar} from "./Avatar";
-import {commonStyleFn, commonStyles, Row} from "../config/styles";
+import {commonColors, commonStyleFn, commonStyles, Row} from "../config/styles";
 import {Profile} from "../state/types/Profile";
 import {observer} from "mobx-react";
 import {DragDropSlot} from "../lib/DragDropSlot";
@@ -9,6 +9,7 @@ import {Hero} from "../state/types/Hero";
 import {TooltipArea} from "../lib/TooltipArea";
 import {HeroBreakdown} from "./HeroBreakdown";
 import {grid} from "../config/Grid";
+import {rosterEntryAvatarSize} from "../screens/estate/EstateRosterEntry";
 
 @observer
 export class LineupDropbox extends React.Component<{
@@ -33,8 +34,8 @@ export class LineupDropbox extends React.Component<{
 }
 
 class LineupDropboxSlot extends React.Component<{
-  member?: Hero,
-  lock?: boolean,
+  member: Hero,
+  lock: boolean,
   onDragEnd: (hero: Hero) => void
   onDrop: (hero: Hero) => void
 }> {
@@ -42,7 +43,7 @@ class LineupDropboxSlot extends React.Component<{
   render () {
     const member = this.props.member;
     return (
-      <TooltipArea classStyle={commonStyles.fill} tip={member && <HeroBreakdown hero={member}/>}>
+      <TooltipArea classStyle={styles.slot} tip={member && <HeroBreakdown hero={member}/>}>
         <DragDropSlot
           type={Hero}
           item={member}
@@ -50,14 +51,9 @@ class LineupDropboxSlot extends React.Component<{
           allowDrop={(hero: Hero) => !(hero.residentInfo && hero.residentInfo.isLockedIn)}
           onDragEnd={this.props.onDragEnd}
           onDrop={this.props.onDrop}>
-          <div className={css(styles.slot)}>
-            {member && (
-              <Avatar
-                key={member.id}
-                src={member.classInfo.avatarUrl}
-              />
-            )}
-          </div>
+          {member && (
+            <Avatar key={member.id} classStyle={commonStyles.fill} src={member.classInfo.avatarUrl}/>
+          )}
         </DragDropSlot>
       </TooltipArea>
     );
@@ -66,19 +62,21 @@ class LineupDropboxSlot extends React.Component<{
 
 const styles = StyleSheet.create({
   lineup: {
-    minWidth: 200,
-    minHeight: 60,
     position: "absolute",
     bottom: 0,
-    left: "33%",
+    left: "50%",
+    transform: "translate(-25%, 0)",
     background: "black",
-    border: commonStyleFn.border(),
-    padding: 4
+    border: commonStyleFn.border(commonColors.gold),
+    padding: grid.gutter
   },
 
   slot: {
-    flex: 1,
-    border: commonStyleFn.border("black"),
+    width: rosterEntryAvatarSize,
+    height: rosterEntryAvatarSize,
+    backgroundImage: `url(${require("../../assets/dd/images/campaign/town/hero_slot/hero_slot.background.png")})`,
+    ...commonStyleFn.singleBackground(),
+
     ":not(:last-child)": {
       marginRight: grid.gutter
     }
