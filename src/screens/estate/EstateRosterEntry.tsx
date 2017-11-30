@@ -161,7 +161,7 @@ export const rosterEntryHoverOffset = grid.xSpan(0.5);
 const entryHeight = grid.ySpan(1.75);
 const entryBorderSize = grid.border;
 const entryPadding = grid.border;
-const entryAvatarSize = entryHeight - entryBorderSize * 2 - entryPadding * 2;
+export const rosterEntryAvatarSize = entryHeight - entryBorderSize * 2 - entryPadding * 2;
 const styles = StyleSheet.create({
   entry: {
     flexDirection: "row",
@@ -195,8 +195,8 @@ const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: entryAvatarSize,
-    height: entryAvatarSize
+    width: rosterEntryAvatarSize,
+    height: rosterEntryAvatarSize
   },
 
   avatarDimmed: {
@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
 
   overlayIcon: {
     ...commonStyleFn.dock("left"),
-    width: entryAvatarSize,
-    height: entryAvatarSize
+    width: rosterEntryAvatarSize,
+    height: rosterEntryAvatarSize
   },
 
   info: {

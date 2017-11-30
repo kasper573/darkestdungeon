@@ -1,5 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
+import Color = require("color");
+import {commonColors, commonStyleFn} from "../config/styles";
 const {DropTarget, DragSource} = require("react-dnd");
 
 const SourceSpec = {
@@ -96,9 +98,7 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
 
   render () {
     const {dragItem, isOver, isDragging, canDrag, canDrop} = this.props;
-    const colorStyle = canDrop ? {
-      background: isOver ? "green" : "yellow"
-    } : undefined;
+    const dragDropStyle = canDrop ? (isOver ? styles.isOver : styles.target) : undefined;
 
     // Normalize this.props.children into always being a ContentFunction
     const childrenFn = typeof this.props.children === "function" ?
@@ -108,8 +108,8 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div
-          className={css(styles.fill, this.props.classStyle)}
-          style={{...this.props.style, ...colorStyle}}
+          className={css(styles.fill, dragDropStyle, this.props.classStyle)}
+          style={this.props.style}
           onMouseDown={(e) => e.stopPropagation()}
           onClick={this.props.onClick}>
           {childrenFn(dragItem && dragItem.item, isOver, isDragging, canDrag, canDrop)}
@@ -119,8 +119,21 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
   }
 }
 
+function overlayStyle (color: string) {
+  return {
+    ":after": {
+      ...commonStyleFn.dock(),
+      content: "' '",
+      backgroundColor: new Color(color).alpha(0.5).toString()
+    }
+  };
+}
+
 const styles = StyleSheet.create({
   fill: {
     flex: 1
-  }
+  },
+
+  target: overlayStyle(commonColors.brightGreen),
+  isOver: overlayStyle(commonColors.brightGold)
 });
