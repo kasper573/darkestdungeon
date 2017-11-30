@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {entryHeight, entrySpacing, ProfileEntry} from "./ProfileEntry";
+import {profileEntryHeight, ProfileEntry} from "./ProfileEntry";
 import {PopupHandle} from "../../state/PopupState";
 import {observer} from "mobx-react";
 import {transaction} from "mobx";
@@ -8,6 +8,7 @@ import {Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Difficulty, Profile, ProfileId} from "../../state/types/Profile";
 import {enumMap, mapMap} from "../../lib/Helpers";
+import {grid} from "../../config/Grid";
 
 @observer
 export class ProfileList extends AppStateComponent<{
@@ -58,6 +59,7 @@ export class ProfileList extends AppStateComponent<{
           ref={(entry) => this.entryMap.set(profile.id, entry)}
           key={"profile-" + profile.id}
           profile={profile}
+          classStyle={styles.entry}
           onSelect={() => this.props.onProfileSelected(profile)}
           onDelete={() => this.promptDelete(profile)}
         />
@@ -65,7 +67,7 @@ export class ProfileList extends AppStateComponent<{
     }
 
     entries.push(
-      <ProfileEntry key="create" onSelect={() => this.promptCreate()} isLast/>
+      <ProfileEntry key="create" onSelect={() => this.promptCreate()}/>
     );
 
     return (
@@ -112,10 +114,19 @@ class CreatePrompt extends React.Component<{handle?: PopupHandle}> {
   }
 }
 
-const visibleEntries = 3;
+export const profileEntrySpacing = grid.gutter;
+export const visibleProfileEntries = 3;
 const styles = StyleSheet.create({
   list: {
-    height: entryHeight * visibleEntries + entrySpacing * 2,
-    overflowY: "scroll"
+    width: grid.vw(50),
+    height: profileEntryHeight * visibleProfileEntries + profileEntrySpacing * 2,
+    overflowY: "scroll",
+    marginTop: grid.border
+  },
+
+  entry: {
+    ":not(:last-child)": {
+      marginBottom: profileEntrySpacing
+    }
   }
 });

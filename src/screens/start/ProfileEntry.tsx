@@ -1,30 +1,47 @@
 import {css, StyleSheet} from "aphrodite";
 import * as React from "react";
 import {observer} from "mobx-react";
-import {Profile} from "../../state/types/Profile";
+import {Difficulty, Profile} from "../../state/types/Profile";
+import {Icon} from "../../ui/Icon";
+import {grid} from "../../config/Grid";
+import {commonColors, commonStyleFn, Row} from "../../config/styles";
+import {observable} from "mobx";
+import {LineButton} from "../../ui/LineButton";
+import {InputField} from "../../ui/InputField";
+import {fonts} from "../../../assets/fonts";
+
+const difficultyIcons = {
+  [Difficulty.Radiant]: require("../../../assets/dd/images/modes/radiant/fe_flow/save_icon.png"),
+  [Difficulty.Stygian]: require("../../../assets/dd/images/modes/base/fe_flow/save_icon.png"),
+  [Difficulty.Darkest]: require("../../../assets/dd/images/modes/new_game_plus/fe_flow/save_icon.png")
+};
+
+const deleteIcon = require("../../../assets/dd/images/fe_flow/nukesave_button.png");
 
 @observer
 export class ProfileEntry extends React.Component<{
   profile?: Profile,
-  isLast?: boolean,
   onDelete?: () => void,
-  onSelect: () => void
+  onSelect: () => void,
+  classStyle?: any
 }> {
-  private inputNode: HTMLInputElement;
+  private inputField: InputField;
+  @observable private isHovered: boolean;
 
   editName (): Promise<string> {
     return new Promise ((resolve) => {
-      this.inputNode.focus();
-      this.inputNode.selectionStart = this.inputNode.value.length;
+      const node = this.inputField.node;
+      node.focus();
+      node.selectionStart = node.value.length;
 
       const finish = () => {
-        this.inputNode.onblur = null;
-        this.inputNode.onkeydown = null;
-        resolve(this.inputNode.value);
+        node.onblur = null;
+        node.onkeydown = null;
+        resolve(node.value);
       };
 
-      this.inputNode.onblur = finish;
-      this.inputNode.onkeydown = (e) => {
+      node.onblur = finish;
+      node.onkeydown = (e) => {
         if (e.key === "Enter") {
           finish();
         }
@@ -52,86 +69,75 @@ export class ProfileEntry extends React.Component<{
       );
 
     return (
-      <li className={css(styles.entry, this.props.isLast && styles.lastEntry)}>
-        <div className={css(styles.letter)}>
-          [{isEmptySlot ? "AVAILABLE" : "TAKEN"}]
-        </div>
-        <div className={css(styles.selectArea)} onClick={() => this.props.onSelect()}>
-          <div className={css(styles.difficulty)}>
-            {hasProfile && `[${this.props.profile.difficulty}]`}
-          </div>
-          <div className={css(styles.inputFieldContainer)}
-               onClick={(e) => e.stopPropagation() || this.props.onSelect()}>
-            <input
-              ref={(node) => this.inputNode = node}
-              className={css(styles.inputField, isInputFieldDisabled && styles.inputFieldDisabled)}
-              defaultValue={isEmptySlot ? "" : this.props.profile.name}
-              placeholder="Click to begin..."
-              disabled={isInputFieldDisabled}
-              onChange={() => true}
-            />
-          </div>
+      <Row classStyle={[styles.entry, this.props.classStyle]} valign="center">
+        {hasProfile ?
+          <Icon classStyle={styles.icons} src={difficultyIcons[this.props.profile.difficulty]}/> :
+          <div className={css(styles.icons)}/>
+        }
+
+        <LineButton
+          textGlow={false}
+          defaultColor={commonColors.gray}
+          classStyle={styles.selectArea}
+          onClick={this.props.onSelect}>
+          <InputField
+            ref={(field) => this.inputField = field}
+            classStyle={styles.inputField}
+            defaultValue={isEmptySlot ? "" : this.props.profile.name}
+            placeholder="Click to begin..."
+            disabled={isInputFieldDisabled}
+          />
           <div className={css(styles.infoBox)}>
             {infoElements}
           </div>
-        </div>
-        <div className={css(styles.delete)}>
-          {canDelete && (
-            <span onClick={this.props.onDelete}>[Delete]</span>
-          )}
-        </div>
-      </li>
+        </LineButton>
+
+        {canDelete ?
+          <Icon classStyle={styles.icons} src={deleteIcon} onClick={this.props.onDelete}/> :
+          <div className={css(styles.icons)}/>
+        }
+      </Row>
     );
   }
 }
 
-export const entryHeight = 60;
-export const entrySpacing = 5;
-
+export const profileEntryHeight = grid.ySpan(2);
+const profileEntryPadding = grid.gutter * 2;
 const styles = StyleSheet.create({
   entry: {
-    flexDirection: "row",
-    height: entryHeight,
-    marginBottom: entrySpacing,
-  },
-
-  lastEntry: {
-    marginBottom: 0
-  },
-
-  letter: {
-
+    height: profileEntryHeight
   },
 
   selectArea: {
-    backgroundColor: "gray",
+    flex: 1,
     flexDirection: "row",
-    ":hover": {
-      boxShadow: "0px 0px 5vw red",
-    }
-  },
-
-  difficulty: {
-
-  },
-
-  inputFieldContainer: {
-    justifyContent: "center",
+    height: "100%",
+    padding: profileEntryPadding,
+    alignItems: "center",
+    background: commonStyleFn.shineGradient("#0d0d0d"),
+    boxShadow: commonStyleFn.innerShadow("black", grid.gutter * 2)
   },
 
   inputField: {
-
+    flex: 1,
+    height: "auto",
+    fontFamily: fonts.Darkest,
+    fontSize: grid.fontSize(1)
   },
 
-  inputFieldDisabled: {
-    pointerEvents: "none"
-  },
+  icons: {
+    width: profileEntryHeight / 3,
+    height: profileEntryHeight / 3,
 
-  delete: {
-
+    ":last-child": {
+      marginRight: profileEntryPadding
+    }
   },
 
   infoBox: {
-
+    width: grid.xSpan(1.5),
+    marginLeft: profileEntryPadding,
+    justifyContent: "center",
+    alignItems: "flex-start"
   }
 });

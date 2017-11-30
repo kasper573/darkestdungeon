@@ -1,6 +1,6 @@
 import * as React from "react";
 import {TitleHeader} from "../../ui/TitleHeader";
-import {ProfileList} from "./ProfileList";
+import {profileEntrySpacing, ProfileList, visibleProfileEntries} from "./ProfileList";
 import {css, StyleSheet} from "aphrodite";
 import {pauseIcon, PauseMenu} from "../../ui/PauseMenu";
 import {AppStateComponent} from "../../AppStateComponent";
@@ -13,6 +13,7 @@ import {Input} from "../../config/Input";
 import {observer} from "mobx-react";
 import {observable} from "mobx";
 import {CommonButton} from "../../ui/CommonButton";
+import {profileEntryHeight} from "./ProfileEntry";
 
 @observer
 export class Start extends AppStateComponent {
@@ -81,7 +82,10 @@ export class Start extends AppStateComponent {
   }
 }
 
-const contentBelowHeight = grid.ySpan(6);
+const contentBelowHeight = profileEntryHeight * visibleProfileEntries +
+  profileEntrySpacing * (visibleProfileEntries - 1);
+const contentBelowPadding = grid.ySpan(1);
+const contentBelowOffset = contentBelowHeight + contentBelowPadding;
 const styles = StyleSheet.create({
   start: {
     flex: 1
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
   },
 
   contentOffset: {
-    transform: `translate(0, -${contentBelowHeight}px)`
+    transform: `translate(0, -${contentBelowOffset}px)`
   },
 
   skybox: {
@@ -133,7 +137,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     height: contentBelowHeight,
-    padding: grid.gutter,
+    padding: contentBelowPadding,
+    paddingTop: 0,
 
     // HACK avoids red line glitch that probably happens due to scaling and sub pixel rendering
     top: -1,
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
 
   campaignButton: {
     position: "absolute",
-    top: -grid.ySpan(2)
+    top: -contentBelowPadding - grid.ySpan(1)
   },
 
   profiles: {
