@@ -110,6 +110,7 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
         <div
           className={css(styles.fill, this.props.classStyle)}
           style={{...this.props.style, ...colorStyle}}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={this.props.onClick}>
           {childrenFn(dragItem && dragItem.item, isOver, isDragging, canDrag, canDrop)}
         </div>
