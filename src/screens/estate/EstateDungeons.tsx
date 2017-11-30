@@ -8,6 +8,7 @@ import {QuestBreakdown} from "../../ui/QuestBreakdown";
 import {LineupDropbox} from "../../ui/LineupDropbox";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Quest} from "../../state/types/Quest";
+import {ItemType} from "../../state/types/ItemInfo";
 
 @observer
 export class EstateDungeons extends AppStateComponent<{path: Path}> {
@@ -39,14 +40,41 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
       );
     }
 
-    return this.appState.popups.prompt(
-      <Prompt
-        query={"Grave danger awaits the underprepared. " +
-        "Do you wish to continue without a full contingent?"}
-        yesLabel="Still Embark"
-        noLabel="Cancel Embark"
-      />
+    const availableHeroes = this.activeProfile.roster.filter((hero) =>
+      !(hero.residentInfo && hero.residentInfo.isLockedIn)
     );
+
+    let warningMessage;
+
+    const maxLineupSize = Math.min(4, availableHeroes.length);
+    if (this.activeProfile.lineup.length < maxLineupSize) {
+      warningMessage = "Do you wish to continue without a full contingent?";
+    }
+
+    const armorAvailable = this.activeProfile.items.find((i) => i.info.type === ItemType.Armor);
+    const weaponAvailable = this.activeProfile.items.find((i) => i.info.type === ItemType.Weapon);
+    const trinketAvailable = this.activeProfile.items.find((i) => i.info.type === ItemType.Trinket);
+    const underpreparedHero = this.activeProfile.lineup.find((m) =>
+      !!(
+        (!m.armor && armorAvailable) || (!m.weapon && weaponAvailable) || (!m.trinkets.length && trinketAvailable)
+      )
+    );
+
+    if (underpreparedHero) {
+      warningMessage = `${underpreparedHero.name} does not have a full set of equipment. Do you wish to continue?`;
+    }
+
+    if (warningMessage) {
+      return this.appState.popups.prompt(
+        <Prompt
+          query={"Grave danger awaits the underprepared. " + warningMessage}
+          yesLabel="Still Embark"
+          noLabel="Cancel Embark"
+        />
+      );
+    }
+
+    return Promise.resolve(true);
   }
 
   render () {
