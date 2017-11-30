@@ -1,10 +1,11 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyleFn, commonStyles} from "../config/styles";
+import {commonStyles} from "../config/styles";
 import {TooltipArea} from "../lib/TooltipArea";
 import {Item} from "../state/types/Item";
 import {grid} from "../config/Grid";
 import {ItemBreakdown} from "./ItemBreakdown";
+import {Icon} from "./Icon";
 
 export class ItemIcon extends React.Component<{
   item?: Item,
@@ -20,30 +21,28 @@ export class ItemIcon extends React.Component<{
 
   render () {
     const item = this.props.item;
-    const containerStyle = [styles.icon, commonStyles.boxBorder, this.props.classStyle];
+    const containerStyle = [commonStyles.boxBorder, this.props.classStyle];
 
     if (!item) {
-      return <div className={css(containerStyle)}/>;
+      return (
+        <div className={css(containerStyle)}>
+          <div className={css(styles.icon)}/>
+        </div>
+      );
     }
 
     return (
       <TooltipArea
         tip={<ItemBreakdown item={item}/>}
         classStyle={containerStyle}
-        style={{
-          backgroundImage: `url(${item.info.itemUrl})`,
-          ...this.props.style
-        }}>
-        <div
-          className={css(commonStyles.fill)}
+        style={this.props.style}>
+        <Icon
+          src={item.info.itemUrl}
+          classStyle={styles.icon}
           onClick={this.props.onClick.bind(this)}
-          onContextMenu={(e) => {
-            e.preventDefault();
-            this.props.onRightClick();
-            return false;
-          }}>
+          onRightClick={this.props.onRightClick}>
           {this.props.children}
-        </div>
+        </Icon>
       </TooltipArea>
     );
   }
@@ -56,9 +55,7 @@ export const itemSize = {
 
 const styles = StyleSheet.create({
   icon: {
-    flex: 1,
     ...itemSize,
-    ...commonStyleFn.singleBackground(),
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     backgroundSize: "auto 120%", // Scale up to remove borders embedded in dd assets
     justifyContent: "center",

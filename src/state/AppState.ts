@@ -10,6 +10,7 @@ import {AppBounds} from "../AppBounds";
 import {Difficulty, Profile} from "./types/Profile";
 import {Route} from "./types/Route";
 import {Path} from "./types/Path";
+import {SFXPlayer} from "./SFXPlayer";
 
 export class AppState {
   private reactionDisposers: IReactionDisposer[];
@@ -20,6 +21,7 @@ export class AppState {
   public music: MusicState = new MusicState();
   public popups: PopupState = new PopupState();
   public options: OptionsState = new OptionsState();
+  public sfx: SFXPlayer = new SFXPlayer();
   public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
