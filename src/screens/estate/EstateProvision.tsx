@@ -11,6 +11,7 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {Item} from "../../state/types/Item";
 import {QuestStatus} from "../../state/types/Quest";
 import {StaticState} from "../../state/StaticState";
+import {recommendedFoodCount} from "../../config/general";
 
 @observer
 export class EstateProvision extends AppStateComponent<{path: Path}> {
@@ -18,19 +19,28 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
   private initialStoreItems: Item[] = this.activeProfile.getStoreItems();
 
   checkItemsBeforeContinue () {
-    return this.appState.popups.prompt(
-      <Prompt
-        query={"You haven't purchased much food for your expedition. " +
-        "It's recommended to take at least 8 food for this quest. Still Embark?"}
-      />
-    ).then((willEmbark) => {
-      if (willEmbark) {
-        this.store.purchase();
-        this.selectedQuest.status = QuestStatus.Started;
-        this.activeProfile.sendLineupOnQuest(this.selectedQuest);
-        return true;
-      }
-    });
+    const foodInCart = this.store.cart.filter((i) => i.info.id === "Food");
+    if (foodInCart.length < recommendedFoodCount) {
+      return this.appState.popups.prompt(
+        <Prompt
+          query={"You haven't purchased much food for your expedition. " +
+          `It's recommended to take at least ${recommendedFoodCount} food for this quest. Still Embark?`}
+        />
+      ).then((proceed) => {
+        if (proceed) {
+          this.startQuest();
+        }
+        return proceed;
+      });
+    }
+
+    return Promise.resolve(true);
+  }
+
+  startQuest () {
+    this.store.purchase();
+    this.selectedQuest.status = QuestStatus.Started;
+    this.activeProfile.sendLineupOnQuest(this.selectedQuest);
   }
 
   render () {
