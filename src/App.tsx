@@ -123,7 +123,9 @@ export class App extends React.Component<{
         ref={(ir) => this.inputRoot = ir}
         className={css(styles.app)}>
         <div className={css(styles.arc)} style={this.arcStyle}>
-          <div className={css(styles.game)} style={this.gameStyle}>
+          <div
+            className={css(styles.game)} style={this.gameStyle}
+            onContextMenu={(e) => e.preventDefault()}>
             <Router router={this.props.state.router}/>
             <PopupList
               popups={this.props.state.popups}
