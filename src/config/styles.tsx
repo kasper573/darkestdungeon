@@ -6,6 +6,7 @@ import * as Color from "color";
 export const commonColors = {
   bloodRed: "rgba(38, 0, 0, 1)",
   brightRed: "rgba(246,46,17,1)",
+  darkGold: new Color("rgb(200, 180, 110)").darken(0.3).toString(),
   gold: "rgb(200, 180, 110)",
   brightGold: "rgb(196, 176, 108)",
   red: "rgb(177, 25, 0)",
@@ -143,6 +144,29 @@ export const commonStyles = StyleSheet.create({
   column: {
     flex: 1,
     flexDirection: "column"
+  },
+
+  customScrollbar: {
+    "::-webkit-scrollbar": {
+      width: grid.gutter + grid.border * 2,
+      backgroundColor: commonColors.darkGray,
+      borderLeft: commonStyleFn.border(),
+      borderRight: commonStyleFn.border(),
+      boxShadow: commonStyleFn.innerShadow(),
+      justifyContent: "center"
+    },
+
+    "::-webkit-scrollbar-thumb": {
+      width: grid.gutter,
+      height: grid.gutter,
+      borderRadius: grid.border,
+      border: commonStyleFn.border(commonColors.darkGold),
+      background: commonStyleFn.shineGradient(commonColors.red),
+      boxShadow: [
+        commonStyleFn.innerShadow("black", grid.border * 2),
+        commonStyleFn.outerShadow("black", grid.border * 2)
+      ].join(",")
+    }
   }
 });
 
