@@ -93,6 +93,10 @@ export class Character extends Experienced {
     return this.items.find((i) => i.info.type === ItemType.Weapon);
   }
 
+  @computed get trinkets () {
+    return this.items.filter((i) => i.info.type === ItemType.Trinket);
+  }
+
   @computed get stats () {
     const sum = new Stats();
     sum.add(this.classInfo);
