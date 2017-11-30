@@ -59,7 +59,7 @@ export class Start extends AppStateComponent {
         <TitleHeader classStyle={styles.title}/>
         <Icon
           src={pauseIcon}
-          scale={2}
+          size={grid.ySpan(1.5)}
           highlight={IconHighlightType.Lines}
           classStyle={styles.pauseMenuIcon}
           onClick={() => this.pause()}
