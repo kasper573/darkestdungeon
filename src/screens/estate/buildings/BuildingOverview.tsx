@@ -52,7 +52,7 @@ export class BuildingOverview extends React.Component<{
           />
           {shouldRenderUpgrades && <BuildingUpgradeShop upgrades={this.props.info} />}
         </Column>
-        <Column>
+        <Column classStyle={styles.content}>
           {this.props.children}
         </Column>
       </Row>
@@ -115,5 +115,10 @@ const styles = StyleSheet.create({
 
   upgradeSignShow: {
     backgroundColor: "green"
+  },
+
+  content: {
+    padding: `${grid.ySpan(1) + grid.gutter}px ${grid.xSpan(1)}px`,
+    paddingLeft: 0
   }
 });

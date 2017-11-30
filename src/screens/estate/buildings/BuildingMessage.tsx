@@ -13,7 +13,6 @@ export function BuildingMessage ({children}: any) {
 
 const styles = StyleSheet.create({
   buildingMessage: {
-    margin: grid.ySpan(1),
     padding: grid.gutter
   }
 });

@@ -60,6 +60,7 @@ export function addStaticState () {
 
   const crush = new SkillInfo();
   crush.id = crush.name = "Crush";
+  crush.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_abandon_hope.png");
   StaticState.instance.add((i) => i.skills, crush);
   crush.stats = new Stats();
   crush.stats.accuracy.value = 85;
@@ -71,6 +72,7 @@ export function addStaticState () {
 
   const rampart = new SkillInfo();
   rampart.id = rampart.name = "Rampart";
+  rampart.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_anger_management.png");
   StaticState.instance.add((i) => i.skills, rampart);
   rampart.movement = 1;
   rampart.stats = new Stats();
@@ -83,6 +85,7 @@ export function addStaticState () {
 
   const bellow = new SkillInfo();
   bellow.id = bellow.name = "Bellow";
+  bellow.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_guns.png");
   StaticState.instance.add((i) => i.skills, bellow);
   bellow.movement = 1;
   bellow.stats = new Stats();
@@ -101,6 +104,7 @@ export function addStaticState () {
 
   const defender = new SkillInfo();
   defender.id = defender.name = "Defender";
+  defender.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bear_traps.png");
   StaticState.instance.add((i) => i.skills, defender);
   defender.stats = new Stats();
   defender.stats.stress.value = -5;
@@ -110,6 +114,7 @@ export function addStaticState () {
   defender.buff.protect.value = 5;
 
   const heal = new SkillInfo();
+  heal.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandage.png");
   heal.id = heal.name = "Heal";
   StaticState.instance.add((i) => i.skills, heal);
   heal.stats = new Stats();

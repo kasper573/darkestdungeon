@@ -2,7 +2,7 @@ import * as React from "react";
 import {observer} from "mobx-react";
 import {Popup, PopupProps} from "./Popups";
 import {css, StyleSheet} from "aphrodite";
-import {Column, commonStyles, Row} from "../config/styles";
+import {Column, commonColors, commonStyleFn, commonStyles, Row} from "../config/styles";
 import {QuirkText} from "./QuirkText";
 import {CommonHeader} from "./CommonHeader";
 import {PositionDots} from "./PositionDots";
@@ -15,12 +15,19 @@ import {maxSelectedSkills} from "../config/general";
 import {EquipmentDropbox} from "./EquipmentDropbox";
 import {SkillIcon} from "./SkillIcon";
 import {grid} from "../config/Grid";
+import {Icon} from "./Icon";
+import {fonts} from "../../assets/fonts";
+import {TooltipArea} from "../lib/TooltipArea";
+import Color = require("color");
+
+const dismissIconUrl = require("../../assets/dd/images/shared/character/icon_dismiss.png");
 
 @observer
 export class HeroOverview extends React.Component<
   PopupProps & {
   hero: Hero,
   enableSkillSelection?: () => boolean,
+  onDismissRequested?: () => void,
   onSkillSelected?: (skill: Skill) => void,
   classStyle?: any
 }> {
@@ -45,32 +52,36 @@ export class HeroOverview extends React.Component<
   }
 
   render () {
-    const {hero, ...rest} = this.props;
+    const {hero, classStyle, ...rest} = this.props;
     const onSkillSelected = this.props.onSkillSelected || this.toggleSkillSelection.bind(this);
     return (
       <Popup {...rest}>
-        <Row classStyle={[styles.heroOverview, this.props.classStyle]}>
-          <Column>
-            <Row>
-              <button>EDIT</button>
-              <input defaultValue={hero.name} size={0} onChange={() => null}/>
+        <div className={css(styles.container, classStyle)}>
+          <div className={css(styles.left)}>
+            <div className={css(styles.name)}>
+              {hero.name}
+            </div>
+
+            <Row classStyle={styles.nameOfClass}>
+              {this.props.onDismissRequested && (
+                <TooltipArea tip="Dismiss Hero" classStyle={styles.dismissIcon}>
+                  <Icon src={dismissIconUrl} onClick={this.props.onDismissRequested}/>
+                </TooltipArea>
+              )}
+              <strong>{hero.level.name} {hero.classInfo.name}</strong>
             </Row>
 
-            <Row>
-              <button>DISMISS</button>
-              <span>{hero.classInfo.name}</span>
-            </Row>
+            <HeroFlag hero={hero}/>
 
-            <Row>
-              <Column classStyle={styles.modelColumn}>
-                <HeroFlag hero={hero}/>
-                <CharacterModel
-                  character={hero}
-                  classStyle={styles.model}
-                />
-              </Column>
-              <Column>
-                <CommonHeader label="Quirks"/>
+            <CharacterModel
+              character={hero}
+              classStyle={styles.model}
+            />
+          </div>
+
+          <Row classStyle={commonStyles.fill}>
+            <Column classStyle={styles.leftSections}>
+              <Section color={commonColors.lightGray} label="Quirks">
                 <Row>
                   <Column>
                     {hero.perks.map((q) => <QuirkText key={q.id} quirk={q}/>)}
@@ -79,76 +90,120 @@ export class HeroOverview extends React.Component<
                     {hero.flaws.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
                 </Row>
+              </Section>
 
-                <CommonHeader label="Base Stats"/>
-                <Row classStyle={styles.baseStats}>
-                  <StatsTextList stats={hero.stats.base}/>
+              <Section color={commonColors.lightGray} label="Base Stats">
+                <Row>
+                  <Column classStyle={styles.baseStatsLeft}>
+                    <StatsTextList stats={hero.stats.base.slice(0, Math.floor(hero.stats.base.length / 2))}/>
+                  </Column>
+                  <Column>
+                    <StatsTextList stats={hero.stats.base.slice(Math.floor(hero.stats.base.length / 2))}/>
+                  </Column>
                 </Row>
+              </Section>
 
-                <CommonHeader label="Equipment"/>
+              <Section color={commonColors.lightGray} label="Equipment" darken>
                 <EquipmentDropbox character={hero}/>
-              </Column>
-            </Row>
-          </Column>
+              </Section>
+            </Column>
 
-          <Column>
-            <CommonHeader label="Skills"/>
-            <Row>
-              <Column classStyle={styles.positionDots}>
-                <h1 className={css(commonStyles.nowrap)}>Positions</h1>
-                <PositionDots
-                  color="gold"
-                  innerValues={PositionDots.getPositionValues(hero.selectedSkills)}
-                  outerValues={PositionDots.getSupportValues(hero.selectedSkills)}
-                />
-              </Column>
-              <Column classStyle={styles.positionDots}>
-                <h1 className={css(commonStyles.nowrap)}>Targets</h1>
-                <PositionDots
-                  color="red"
-                  innerValues={PositionDots.getHostileValues(hero.selectedSkills).reverse()}
-                />
-              </Column>
-            </Row>
-            <Row>
-              {hero.skills.map((skill) => (
-                <SkillIcon
-                  key={skill.info.id}
-                  skill={skill}
-                  onClick={onSkillSelected.bind(this, skill)}
-                />
-              ))}
-            </Row>
+            <Column classStyle={styles.rightSections}>
+              <Section color={commonColors.brightRed} label="Skills">
+                <Row classStyle={styles.positions}>
+                  <Column classStyle={styles.positionContainer}>
+                    <strong>Positions</strong>
+                    <PositionDots
+                      color="gold"
+                      classStyle={styles.positionDots}
+                      innerValues={PositionDots.getPositionValues(hero.selectedSkills)}
+                      outerValues={PositionDots.getSupportValues(hero.selectedSkills)}
+                    />
+                  </Column>
+                  <Column classStyle={styles.positionContainer}>
+                    <strong>Targets</strong>
+                    <PositionDots
+                      color="red"
+                      classStyle={styles.positionDots}
+                      innerValues={PositionDots.getHostileValues(hero.selectedSkills).reverse()}
+                    />
+                  </Column>
+                </Row>
+                <Row classStyle={styles.skillIcons}>
+                  {hero.skills.map((skill) => (
+                    <SkillIcon
+                      key={skill.info.id}
+                      skill={skill}
+                      classStyle={styles.skillIcon}
+                      onClick={onSkillSelected.bind(this, skill)}
+                    />
+                  ))}
+                </Row>
+              </Section>
 
-            <CommonHeader label="Resistances"/>
-            <Row classStyle={styles.baseStats}>
-              <StatsTextList stats={Array.from(hero.stats.resistances.values())}/>
-            </Row>
+              <Section color={commonColors.brightBlue} label="Resistances">
+                <StatsTextList stats={Array.from(hero.stats.resistances.values())}/>
+              </Section>
 
-            <CommonHeader label="Diseases"/>
-            {hero.diseases.map((q) => (
-              <QuirkText key={q.id} quirk={q}/>
-            ))}
-          </Column>
-        </Row>
+              <Section color={commonColors.brightGreen} label="Diseases" darken>
+                {hero.diseases.map((q) => (
+                  <QuirkText key={q.id} quirk={q}/>
+                ))}
+              </Section>
+            </Column>
+          </Row>
+        </div>
       </Popup>
     );
   }
 }
 
+const Section = ({label, color, darken, children}: any) => {
+  const darkColor = new Color(color).darken(0.8).alpha(0.4);
+  const style = {background: commonStyleFn.shineGradient(darkColor.toString())};
+  return (
+    <div className={css(styles.section)}>
+      <CommonHeader label={label} color={color}/>
+      <div className={css(styles.sectionContent, darken && styles.darken)} style={style}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const leftWidth = grid.xSpan(2);
 const styles = StyleSheet.create({
-  heroOverview: {
+  container: {
     width: grid.xSpan(12),
-    height: grid.ySpan(13)
-
+    height: grid.ySpan(13),
+    padding: `${grid.ySpan(1) + grid.gutter}px ${grid.xSpan(1)}px`,
+    paddingBottom: 0,
+    paddingLeft: leftWidth,
+    backgroundImage: `url(${require("../../assets/dd/images/dungeons/town/town.room_wall.start.png")})`,
+    ...commonStyleFn.singleBackground()
   },
 
-  flaws: {
-    textAlign: "right"
-  },
-
-  positionDots: {
+  left: {
+    ...commonStyleFn.dock("left"),
+    width: leftWidth,
     alignItems: "center"
+  },
+
+  name: {
+    alignSelf: "flex-start",
+    fontSize: grid.fontSize(1),
+    fontFamily: fonts.Darkest,
+    color: commonColors.gold
+  },
+
+  nameOfClass: {
+    alignSelf: "flex-start",
+    marginBottom: grid.gutter * 2
+  },
+
+  dismissIcon: {
+    marginRight: grid.gutter,
+    bottom: -grid.border
   },
 
   model: {
@@ -156,13 +211,66 @@ const styles = StyleSheet.create({
     bottom: 0
   },
 
-  modelColumn: {
-    width: 50,
-    flex: "inherit 1"
+  leftSections: {
+    marginRight: grid.gutter
   },
 
-  baseStats: {
-    paddingLeft: "1em",
-    paddingRight: "1em"
+  rightSections: {
+    marginLeft: grid.gutter
+  },
+
+  section: {
+    flex: 1
+  },
+
+  sectionContent: {
+    flex: 1,
+    padding: `${grid.gutter}px ${grid.gutter * 2}px`
+  },
+
+  darken: {
+    ":before": {
+      ...commonStyleFn.dock(),
+      content: "' '",
+      background: commonStyleFn.gradient("bottom", [
+        [0, "transparent"],
+        [80, "rgba(0, 0, 0, 0.8)"],
+        [100, "black"]
+      ])
+    }
+  },
+
+  flaws: {
+    textAlign: "right"
+  },
+
+  baseStatsLeft: {
+    marginRight: grid.gutter * 4
+  },
+
+  positions: {
+    flex: 1
+  },
+
+  positionContainer: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  positionDots: {
+    margin: grid.gutter
+  },
+
+  skillIcons: {
+    flex: 1,
+    justifyContent: "center"
+  },
+
+  skillIcon: {
+    width: grid.ySpan(1),
+    height: grid.ySpan(1),
+    ":not(:last-child)": {
+      marginRight: grid.gutter
+    }
   }
 });

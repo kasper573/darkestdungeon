@@ -52,6 +52,7 @@ export type SkillId = string;
 export class SkillInfo implements IStatsSource {
   @serializable(identifier()) id: SkillId;
   name: string;
+  iconUrl: string;
   statsSourceName: string = "Skill";
   stats: Stats;
 

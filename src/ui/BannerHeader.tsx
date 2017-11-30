@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     padding: grid.gutter / 2,
     color: commonColors.gold,
     border: commonStyleFn.border(undefined, grid.border * 2),
-    backgroundColor: "black",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
     boxShadow: commonStyleFn.boxShadow()
   }
 });

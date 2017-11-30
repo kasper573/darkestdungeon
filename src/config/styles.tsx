@@ -7,10 +7,13 @@ export const commonColors = {
   bloodRed: "rgba(38, 0, 0, 1)",
   brightRed: "rgba(246,46,17,1)",
   gold: "rgb(200, 180, 110)",
+  brightGold: "rgb(196, 176, 108)",
   red: "rgb(177, 25, 0)",
   lightGray: "rgb(173, 171, 161)",
   gray: "#333",
-  darkGray: "#111"
+  darkGray: "#111",
+  brightBlue: "#2d5cb0",
+  brightGreen: "#389c5d"
 };
 
 export const commonStyleFn = {
@@ -86,10 +89,11 @@ export const commonStyleFn = {
     return style;
   },
 
-  shineGradient (color = "rgb(196, 176, 108)") {
+  shineGradient (color = commonColors.brightGold) {
     const parsedColor = new Color(color);
     const sideColor = parsedColor.darken(0.5);
-    return `linear-gradient(to right, ${sideColor} 0%, ${color} 50%, ${sideColor} 100%)`;
+    const t = "transparent";
+    return `linear-gradient(to right, ${t} 0%, ${sideColor} 5%, ${color} 50%, ${sideColor} 95%, ${t} 100%)`;
   },
 
   gradient (direction: string, steps: Array<[number, string | Color]>) {

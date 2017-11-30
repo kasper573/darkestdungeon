@@ -83,7 +83,7 @@ export class TreatmentFacility extends AppStateComponent<{
               <Row key={info.id} classStyle={styles.treatmentFacility}>
                 <Column classStyle={styles.description}>
                   <CommonHeader label={info.name}/>
-                  <p>{info.description}</p>
+                  <p className={css(styles.descriptionText)}>{info.description}</p>
                 </Column>
                 <Row>
                   {count(maximumSize).map((c, slotIndex) => {
@@ -123,7 +123,6 @@ export class TreatmentFacility extends AppStateComponent<{
 
 const styles = StyleSheet.create({
   treatmentFacilities: {
-    padding: grid.gutter,
     marginBottom: grid.gutter
   },
 
@@ -134,5 +133,9 @@ const styles = StyleSheet.create({
   description: {
     flex: 1,
     marginRight: grid.gutter
+  },
+
+  descriptionText: {
+    margin: grid.gutter
   }
 });

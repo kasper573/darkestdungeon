@@ -46,7 +46,8 @@ export class SkillIcon extends React.Component<{
       <TooltipArea
         onClick={this.props.isEnabled ? this.props.onClick : undefined}
         tip={<SkillBreakdown skill={this.props.skill}/>}
-        classStyle={[styles.container, this.props.classStyle]}>
+        classStyle={[styles.container, this.props.classStyle]}
+        style={{background: `url(${this.props.skill.info.iconUrl})`}}>
         {lockSymbol}
         {levelIndicator}
         {selectionIndicator}
@@ -58,6 +59,7 @@ export class SkillIcon extends React.Component<{
 
 const styles = StyleSheet.create({
   container: {
+    ...commonStyleFn.singleBackground(),
     background: "rgb(0, 0, 60)",
     opacity: 0.8,
     minWidth: 30,
@@ -85,10 +87,12 @@ const styles = StyleSheet.create({
 
   levelIndicator: {
     position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: "black",
-    padding: 2
+    bottom: -grid.ySpan(0.4) - grid.gutter,
+    textAlign: "center",
+    fontSize: grid.fontSize(0.4),
+    fontWeight: "normal",
+    textShadow: commonStyleFn.textShadow("black", grid.border),
+    color: commonColors.gold
   },
 
   disabledIndicator: {
