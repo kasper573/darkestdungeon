@@ -11,7 +11,6 @@ import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo, createId as createBuildingInfoId} from "../state/types/BuildingInfo";
-import {Quest} from "../state/types/Quest";
 import {StatItem} from "../state/types/StatItem";
 
 export const defaultAmbienceOSVolume = 0.25;
@@ -158,53 +157,14 @@ export function addStaticState () {
     info.monsters = StaticState.instance.monsters;
     StaticState.instance.add((i) => i.dungeons, info);
   });
-
-  ["Excalibur", "Teddy bear", "Unicorn", "Magic Wand", "Torn Wing", "Banana", "Happy Thoughts",
-    "Balloon", "Longsword", "Dagger", "Shield", "Helmet", "Furnace", "Cape", "Feather", "Pen", "Bow & Arrow"
-  ].forEach((name, index) => {
-    let damage = 0;
-    let accuracy = 0;
-    let protect = 0;
-    let maxHealth = 0;
-    let type;
-
-    switch (index % 3) {
-      case 0:
-        type = ItemType.Weapon;
-        damage = (index + 1) * 2;
-        accuracy = (index + 1);
-        break;
-      case 1:
-        type = ItemType.Armor;
-        maxHealth = (index + 1) * 2;
-        protect = (index + 1) * 2;
-        break;
-      case 2:
-        type = ItemType.Trinket;
-        maxHealth = (1 + index);
-        protect = (2 + index * 2);
-        damage = (3 + index * 3);
-        break;
-    }
-
-    addItem(name, {
-      value: 25 + 50 * index,
-      type,
-      stats: {
-        maxHealth,
-        protect,
-        damage,
-        accuracy
-      }
-    });
-  });
-
+  
   addItems({
     // Heirlooms
     "Bust": {
       name: "Bust",
       pluralName: "Busts",
       iconUrl: require("../../assets/dd/images/shared/estate/currency.bust.icon.png"),
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/heirloom/inv_heirloom+bust.png"),
       type: ItemType.Heirloom,
       heirloomType: HeirloomType.Bust,
       value: 1,
@@ -214,6 +174,7 @@ export function addStaticState () {
       name: "Portrait",
       pluralName: "Portraits",
       iconUrl: require("../../assets/dd/images/shared/estate/currency.portrait.icon.png"),
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/heirloom/inv_heirloom+portrait.png"),
       type: ItemType.Heirloom,
       heirloomType: HeirloomType.Portrait,
       value: 2,
@@ -223,6 +184,7 @@ export function addStaticState () {
       name: "Deed",
       pluralName: "Deeds",
       iconUrl: require("../../assets/dd/images/shared/estate/currency.deed.icon.png"),
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/heirloom/inv_heirloom+deed.png"),
       type: ItemType.Heirloom,
       heirloomType: HeirloomType.Deed,
       value: 3,
@@ -232,6 +194,7 @@ export function addStaticState () {
       name: "Crest",
       pluralName: "Crests",
       iconUrl: require("../../assets/dd/images/shared/estate/currency.crest.icon.png"),
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/heirloom/inv_heirloom+crest.png"),
       type: ItemType.Heirloom,
       heirloomType: HeirloomType.Crest,
       value: 4,
@@ -241,9 +204,10 @@ export function addStaticState () {
     // Store items
     "Food": {
       description: "Eat to restore health and starve off hunger.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/provision/inv_provision+_2.png"),
       value: 75,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 18,
+      getStoreCount: () => 18,
       resetHunger: true,
       stats: {
         health: 5
@@ -251,15 +215,17 @@ export function addStaticState () {
     },
     "Shovel": {
       description: "Use to clear obstacles and break into things.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+shovel.png"),
       value: 250,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 4
+      getStoreCount: () => 4
     },
     "Antivenom": {
       description: "Use to counter blights, poisons and toxins.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+antivenom.png"),
       value: 150,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 6,
+      getStoreCount: () => 6,
       stats: {
         statusChances: {
           [CharacterStatus.Blight]: -1
@@ -268,9 +234,10 @@ export function addStaticState () {
     },
     "Bandages": {
       description: "Use to stanch the flow of bleeding.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+bandage.png"),
       value: 150,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 6,
+      getStoreCount: () => 6,
       stats: {
         statusChances: {
           [CharacterStatus.Bleed]: -1
@@ -280,30 +247,34 @@ export function addStaticState () {
     "Herbs": {
       description: "Use to cleanse items and prevent maladies. " +
       "Can also be applied to a hero to eliminate combat debuffs.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+medicinal_herbs.png"),
       value: 200,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 6,
+      getStoreCount: () => 6,
       removeBuffs: true
     },
     "Torch": {
       description: "Increases the light level.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+torch.png"),
       value: 75,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 18,
+      getStoreCount: () => 18,
       offsetLight: 1
     },
     "Skeleton Key": {
       description: "Used to unlock strongboxes and doors.",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+skeleton_key.png"),
       value: 200,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 6,
+      getStoreCount: () => 6,
       offsetLight: 1
     },
     "Holy Water": {
       description: "Use to purge evil and restore purity. Can also be applied to a hero to increase resistances",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/supply/inv_supply+holy_water.png"),
       value: 150,
       sellValueScale: 0.25,
-      getStoreCount: (quest: Quest) => 6,
+      getStoreCount: () => 6,
       buff: {
         resistances: {
           [CharacterStatus.Bleed]: 0.1,
@@ -314,6 +285,74 @@ export function addStaticState () {
           [CharacterStatus.Stun]: 0.1,
           [CharacterStatus.Trap]: 0.1
         }
+      }
+    },
+
+    // Equipment
+
+    "Brutal Hairpin": {
+      description: "A ridiculously large hairpin once belonging to a giant",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+brutal_hairpin.png"),
+      value: 200,
+      type: ItemType.Weapon,
+      stats: {
+        accuracy: 5,
+        damage: 15
+      }
+    },
+
+    "Spiked Club": {
+      description: "A wooden club infused with metal spikes",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+cudgel_weight.png"),
+      value: 200,
+      type: ItemType.Weapon,
+      stats: {
+        accuracy: 10,
+        damage: 10
+      }
+    },
+
+    "Metal Shield": {
+      description: "A decorated shield made out of metal",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+rampart_shield.png"),
+      value: 200,
+      type: ItemType.Armor,
+      stats: {
+        maxHealth: 10,
+        protect: 10
+      }
+    },
+
+    "Cloak of Swiftness": {
+      description: "A cloak of mystical power that makes the wearer move with speed",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+swift_cloak.png"),
+      value: 200,
+      type: ItemType.Armor,
+      stats: {
+        speed: 10,
+        dodge: 10
+      }
+    },
+
+    "Book of Rage": {
+      description: "Feel the power of the dark side",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+book_of_rage.png"),
+      value: 400,
+      type: ItemType.Trinket,
+      stats: {
+        dodge: -5,
+        damage: 5
+      }
+    },
+
+    "Cursed Buckle": {
+      description: "Protects its wearer at the cost of speed",
+      itemUrl: require("../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+cursed_buckle.png"),
+      value: 400,
+      type: ItemType.Trinket,
+      stats: {
+        speed: -5,
+        protect: 5
       }
     }
   });
