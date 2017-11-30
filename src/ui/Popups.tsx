@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     background: `url(${require("../../assets/images/splash1.png")})`,
     backgroundSize: "contain",
     backgroundPosition: "50% 50%",
-    backgroundRepeat: "no-repeat"
+    backgroundRepeat: "no-repeat",
+    pointerEvents: "none"
   },
 
   content: {
