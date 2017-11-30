@@ -12,12 +12,14 @@ export enum CommonButtonSize {
 export class CommonButton extends React.Component<{
   label?: string,
   size?: CommonButtonSize,
+  color?: string,
   style?: any,
   classStyle?: any,
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }> {
   static defaultProps = {
-    size: CommonButtonSize.Medium
+    size: CommonButtonSize.Medium,
+    color: commonColors.brightRed
   };
 
   render () {
@@ -27,6 +29,7 @@ export class CommonButton extends React.Component<{
       fontSize: grid.fontSize(gridRows),
       height: grid.ySpan(gridRows),
       minWidth: grid.xSpan(gridColumns),
+      color: this.props.color,
       ...this.props.style
     };
 
@@ -39,7 +42,7 @@ export class CommonButton extends React.Component<{
         {this.props.label}
         {this.props.children}
 
-        <VerticalOutlineBox color={commonColors.brightRed}/>
+        <VerticalOutlineBox color={this.props.color}/>
       </div>
     );
   }
