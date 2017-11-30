@@ -5,10 +5,12 @@ import {Sprite} from "../lib/Sprite";
 import {smoke} from "../../assets/sprites";
 import {grid} from "../config/Grid";
 
-export class TitleHeader extends React.Component {
+export class TitleHeader extends React.Component<{
+  classStyle?: any
+}> {
   render () {
     return (
-      <div className={css(styles.container)}>
+      <div className={css(styles.container, this.props.classStyle)}>
         <span className={css(styles.textLeft, styles.text)}>Dankest</span>
         <Sprite {...smoke} classStyle={styles.torch}/>
         <span className={css(styles.textRight, styles.text)}>Dungeon</span>
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
 
   text: {
     textShadow: "0px 0px 1vw red",
-    transition: "text-shadow 0.5s",
+    transition: "text-shadow 0.5s"
   },
 
   textLeft: {
