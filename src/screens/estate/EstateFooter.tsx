@@ -11,9 +11,14 @@ import {grid} from "../../config/Grid";
 import {inventoryIcon} from "./EstateInventory";
 import {pauseIcon} from "../../ui/PauseMenu";
 import {observer} from "mobx-react";
-import {observable} from "mobx";
+import {IReactionDisposer, observable, reaction} from "mobx";
 import {Icon, IconHighlightType} from "../../ui/Icon";
 import {TooltipArea} from "../../lib/TooltipArea";
+
+const sounds = {
+  heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_gold.wav"), volume: 0.5},
+  goldChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_gold.wav"), volume: 0.7}
+};
 
 @observer
 export class EstateFooter extends AppStateComponent<{
@@ -23,9 +28,30 @@ export class EstateFooter extends AppStateComponent<{
   onContinueRequested: () => void,
   onPauseRequested: () => void
 }> {
+  private reactionDisposers: IReactionDisposer[];
   @observable private showHeirloomTrader: boolean;
+
   toggleHeirloomTrader () {
     this.showHeirloomTrader = !this.showHeirloomTrader;
+  }
+
+  componentWillMount () {
+    this.reactionDisposers = [
+      reaction(
+        () => this.activeProfile.goldAfterDebt,
+        () => this.appState.sfx.play(sounds.goldChanged)
+      ),
+      reaction(
+        () => this.activeProfile.heirloomCounts,
+        () => this.appState.sfx.play(sounds.heirloomsChanged)
+      )
+    ];
+  }
+
+  componentWillUnmount () {
+    while (this.reactionDisposers.length) {
+      this.reactionDisposers.pop()();
+    }
   }
 
   render () {
