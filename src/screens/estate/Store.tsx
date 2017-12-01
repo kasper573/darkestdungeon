@@ -6,7 +6,10 @@ import {Item} from "../../state/types/Item";
 import {Profile} from "../../state/types/Profile";
 import {moveItem} from "../../lib/Helpers";
 import {ItemDropbox} from "../../ui/ItemDropbox";
-import {GoldIcon} from "../../ui/GoldIcon";
+import {GoldIcon, smallGoldRows} from "../../ui/GoldIcon";
+import {css, StyleSheet} from "aphrodite";
+import {itemSize} from "../../ui/ItemIcon";
+import {grid} from "../../config/Grid";
 
 @observer
 export class Store extends React.Component<{
@@ -69,7 +72,7 @@ export class Store extends React.Component<{
           compare={Item.comparers.name}
           canInteractWith={this.canAffordItem.bind(this)}
           onItemClick={this.takeItem.bind(this)}
-          extraComponent={({item}) => item && <GoldIcon amount={item.info.value}/>}
+          extraComponent={({item}) => item && <ItemValue value={item.info.value}/>}
         />
 
         <CommonHeader label="Shopping cart"/>
@@ -82,3 +85,25 @@ export class Store extends React.Component<{
     );
   }
 }
+
+function ItemValue ({value}: any) {
+  return (
+    <div className={css(styles.itemValue)}>
+      <GoldIcon classStyle={styles.goldIcon} amount={value}/>
+    </div>
+  );
+}
+
+const styles = StyleSheet.create({
+  itemValue: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: itemSize.width,
+    height: grid.ySpan(smallGoldRows),
+    marginTop: grid.gutter / 2
+  },
+
+  goldIcon: {
+    position: "absolute"
+  }
+});
