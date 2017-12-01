@@ -38,7 +38,7 @@ export class GoldIcon extends React.Component<{
         side={amountString}
         classStyle={[
           isLarge ? styles.largeText : styles.smallText,
-          notEnough && commonStyles.negativeText,
+          notEnough ? commonStyles.negativeText : commonStyles.positiveText,
           this.props.classStyle
         ]}
       />
