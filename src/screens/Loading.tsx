@@ -10,7 +10,7 @@ import {grid} from "../config/Grid";
 import {commonColors, commonStyles} from "../config/styles";
 import {CommonHeader} from "../ui/CommonHeader";
 import {randomizeItem} from "../lib/Helpers";
-import {loadingMessages} from "../config/general";
+import {loadingMessages} from "../config/loadingMessages";
 
 @observer
 export class Loading extends AppStateComponent<{target: Path}> {
