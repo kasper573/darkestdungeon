@@ -9,15 +9,46 @@ import {commonColors, commonStyleFn} from "../config/styles";
 import {VerticalOutlineBox} from "./VerticalOutlineBox";
 import Color = require("color");
 import {Icon} from "./Icon";
+import {AppStateComponent} from "../AppStateComponent";
+import {when} from "mobx";
 
 export type PopupProps = {
   headerIcon?: string,
   handle?: PopupHandle,
   closeable?: boolean,
-  classStyle?: any
+  classStyle?: any,
+  openSound?: any,
+  closeSound?: any
 };
 
-export class Popup extends React.Component<PopupProps> {
+export class Popup extends AppStateComponent<PopupProps> {
+  private stopWaitingForClose: () => void;
+
+  componentWillMount () {
+    if (this.props.openSound) {
+      this.appState.sfx.play(this.props.openSound);
+    }
+
+    if (this.props.handle) {
+      this.stopWaitingForClose = when(
+        () => !this.appState.popups.map.has(this.props.handle.id),
+        () => this.handleClose()
+      );
+    }
+  }
+
+  componentWillUnmount () {
+    if (this.stopWaitingForClose) {
+      this.stopWaitingForClose();
+    }
+  }
+
+  handleClose () {
+    if (this.props.closeSound) {
+      this.appState.sfx.play(this.props.closeSound);
+    }
+  }
+
   render () {
     const isDismissable = this.props.handle && this.props.handle.modalState !== ModalState.Modal;
     const hasCloseButton = this.props.handle && (this.props.closeable || isDismissable);
