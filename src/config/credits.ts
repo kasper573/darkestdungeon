@@ -72,9 +72,6 @@ natsu130
 onixenic
 suplordo
 
-Successful Surgery
-My local hospital
-
 Original Concept, Design & Assets
 Red Hook Studios (please don't sue me <3)
 `;
