@@ -110,6 +110,10 @@ export const commonStyles = StyleSheet.create({
     height: "auto"
   },
 
+  dock: {
+    ...commonStyleFn.dock()
+  },
+
   nowrap: {
     whiteSpace: "nowrap"
   },
