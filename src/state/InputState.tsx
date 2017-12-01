@@ -33,12 +33,18 @@ export class InputHandler {
   onKeyDown (e: KeyboardEvent) {
     // Get current bindings since side effects may cause new bindings
     const bindingsAtKeypress = Array.from(this.bindings.values());
+    let didMatch = false;
 
     for (const binding of bindingsAtKeypress) {
       const isLayerMatch = binding.props.global || !this.layerId || this.layerId === binding.context.inputLayerId;
       if (isLayerMatch && binding.props.callback && e.key.toLowerCase() === binding.props.match.toLowerCase()) {
         binding.props.callback(e);
+        didMatch = true;
       }
+    }
+
+    if (didMatch) {
+      e.preventDefault();
     }
   }
 }
