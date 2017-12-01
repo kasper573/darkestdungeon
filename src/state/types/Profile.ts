@@ -377,10 +377,13 @@ export class Profile {
     this.week++;
 
     // Randomize estate event
+    // TODO re-enable this when implementing estate events
+    /*
     const eventIndex = Math.floor(100 * Math.random());
     const newEvent = new EstateEvent();
     newEvent.message = "Event " + eventIndex;
     this.estateEvent = newEvent;
+    */
 
     // Randomize quests each week
     this.quests = [this.newQuest(), this.newQuest(), this.newQuest()];
