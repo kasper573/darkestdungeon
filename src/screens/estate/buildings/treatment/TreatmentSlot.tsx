@@ -60,7 +60,8 @@ export class TreatmentSlot extends React.Component<{
             this.props.isAvailable;
         }}>
         {(draggedHero: Hero, isOver, isDragging, canDrag, canDrop) => {
-          const showCost = this.props.goldRequired !== undefined && (
+          const canLockIn = this.props.goldRequired !== undefined;
+          const showCost = canLockIn && (
             canDrop || (this.props.resident && !this.props.resident.residentInfo.isLockedIn)
           );
           const canAfford = this.props.goldAvailable >= this.props.goldRequired;
@@ -91,6 +92,10 @@ export class TreatmentSlot extends React.Component<{
                 <TooltipArea tip={actionTip} style={commonStyleFn.dock()}/>
               </Icon>
             );
+
+            if (!info.isLockedIn && !canLockIn) {
+              actionButton = null;
+            }
           }
 
           return (
