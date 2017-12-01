@@ -14,6 +14,7 @@ export class CommonButton extends React.Component<{
   size?: CommonButtonSize,
   color?: string,
   style?: any,
+  clickSound?: IHowlProperties,
   classStyle?: any,
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
 }> {
@@ -38,6 +39,7 @@ export class CommonButton extends React.Component<{
         defaultColor={this.props.color}
         hoverColor={this.props.color}
         textGlow={false}
+        clickSound={this.props.clickSound}
         classStyle={[styles.commonButton, this.props.classStyle]}
         style={dynamicStyle}
         onClick={this.props.onClick}>
