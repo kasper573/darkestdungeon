@@ -20,7 +20,9 @@ export class MusicState {
   }
 
   muffle (isMuffled: boolean) {
-    this.fader.muffle(isMuffled);
+    if (this.fader) {
+      this.fader.muffle(isMuffled);
+    }
   }
 
   stop () {
