@@ -48,7 +48,7 @@ export class Icon extends React.Component<IconProps> {
 
     const dynamicIconStyle = {
       backgroundImage: this.props.src ? `url(${this.props.src})` : undefined,
-      transform: `scale(${this.props.scale})`,
+      transform: this.props.scale !== 1 ? `scale(${this.props.scale})` : undefined,
       transformOrigin: "50% 100%",
       width: customWidth,
       height: customHeight
