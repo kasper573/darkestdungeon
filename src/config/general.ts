@@ -394,8 +394,9 @@ export function addStaticState () {
         "../../assets/dd/images/campaign/town/buildings/abbey/abbey.character_background.png"
       ),
       children: {
-        bar: {
+        cloister: {
           name: "Cloister",
+          useSound: {src: require("../../assets/dd/audio/town_abbey_meditation.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.meditation.icon.png"),
           description: "Peace through meditation",
           items: [
@@ -407,8 +408,9 @@ export function addStaticState () {
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
-        gambling: {
+        trancept: {
           name: "Trancept",
+          useSound: {src: require("../../assets/dd/audio/town_abbey_prayer.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.prayer.icon.png"),
           description: "Pray to a Higher Power",
           items: [
@@ -418,8 +420,9 @@ export function addStaticState () {
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
-        recruits: {
+        penance: {
           name: "Penance Hall",
+          useSound: {src: require("../../assets/dd/audio/town_abbey_flagellation.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.flagellation.icon.png"),
           description: "Flagellation brings absolution",
           items: [
@@ -524,6 +527,7 @@ export function addStaticState () {
       children: {
         quirks: {
           name: "Treatment Ward",
+          useSound: {src: require("../../assets/dd/audio/town_sanitarium_treatment.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.cost.icon.png"),
           description: "Treat Quirks and other problematic behaviors.",
           items: [
@@ -535,6 +539,7 @@ export function addStaticState () {
         },
         diseases: {
           name: "Medical Ward",
+          useSound: {src: require("../../assets/dd/audio/town_sanitarium_disease.wav")},
           avatarUrl: require(
             "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.disease_quirk_cost.icon.png"
           ),
@@ -611,6 +616,7 @@ export function addStaticState () {
       children: {
         bar: {
           name: "Bar",
+          useSound: {src: require("../../assets/dd/audio/town_tavern_bar.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.bar.icon.png"),
           description: "Improves the bar facilities",
           items: [
@@ -624,6 +630,7 @@ export function addStaticState () {
         },
         gambling: {
           name: "Gambling",
+          useSound: {src: require("../../assets/dd/audio/town_tavern_gambling.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.gambling.icon.png"),
           description: "Improves the gambling facilities",
           items: [
@@ -635,6 +642,7 @@ export function addStaticState () {
         },
         recruits: {
           name: "Brothel",
+          useSound: {src: require("../../assets/dd/audio/town_tavern_brothel_v1.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.brothel.icon.png"),
           description: "Improves the brothel facilities",
           items: [
