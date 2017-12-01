@@ -22,6 +22,10 @@ import {Prompt} from "../../ui/Popups";
 
 const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
+const sounds = {
+  dismiss: {src: require("../../../assets/dd/audio/ui_town_char_remove.wav")}
+};
+
 @observer
 export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
@@ -46,7 +50,10 @@ export class EstateRosterEntry extends AppStateComponent<{
 
   async promptDismissHero (popup: PopupHandle) {
     const proceed = await this.appState.popups.prompt(
-      <Prompt query="This will delete this hero permanently. Are you sure you want to dismiss this hero?"/>
+      <Prompt
+        query="This will delete this hero permanently. Are you sure you want to dismiss this hero?"
+        yesSound={sounds.dismiss}
+      />
     );
 
     if (proceed) {

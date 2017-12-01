@@ -61,7 +61,9 @@ export class Prompt extends React.Component<
   query?: any,
   responses?: PromptResponse[],
   yesLabel?: string,
-  noLabel?: string
+  noLabel?: string,
+  yesSound?: IHowlProperties,
+  noSound?: IHowlProperties
 }> {
   static defaultProps = {
     yesLabel: "Yes",
@@ -70,10 +72,11 @@ export class Prompt extends React.Component<
 
   getDefaultResponses () {
     return [
-      {label: this.props.yesLabel, value: true},
-      {label: this.props.noLabel, value: false}
+      {label: this.props.yesLabel, sound: this.props.yesSound, value: true},
+      {label: this.props.noLabel, sound: this.props.noSound, value: false}
     ];
   }
+
   render () {
     // noinspection TsLint
     let {query, responses, classStyle, ...rest} = this.props;
@@ -95,6 +98,7 @@ export class Prompt extends React.Component<
           <LineButton
             key={response.label}
             classStyle={styles.promptButton}
+            clickSound={response.sound}
             onClick={() => this.props.handle.close(response.value)}
             label={response.label}/>
         ))}
@@ -128,7 +132,8 @@ export class Alert extends React.Component<
 
 type PromptResponse = {
   label: string,
-  value: any
+  value: any,
+  sound?: IHowlProperties
 };
 
 const headerIconScale = 2;
