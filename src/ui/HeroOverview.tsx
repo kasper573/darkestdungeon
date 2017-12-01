@@ -18,7 +18,6 @@ import {grid} from "../config/Grid";
 import {Icon} from "./Icon";
 import {fonts} from "../../assets/fonts";
 import {TooltipArea} from "../lib/TooltipArea";
-import Color = require("color");
 import {BuildingMessage} from "../screens/estate/buildings/BuildingMessage";
 import {InputField} from "./InputField";
 
@@ -173,13 +172,11 @@ export class HeroOverview extends React.Component<
   }
 }
 
-const Section = ({label, color, darken, children}: any) => {
-  const darkColor = new Color(color).darken(0.8).alpha(0.4);
-  const style = {background: commonStyleFn.shineGradient(darkColor.toString())};
+const Section = ({label, color, children}: any) => {
   return (
     <div className={css(styles.section)}>
       <CommonHeader label={label} color={color}/>
-      <div className={css(styles.sectionContent, darken && styles.darken)} style={style}>
+      <div className={css(styles.sectionContent)}>
         {children}
       </div>
     </div>
