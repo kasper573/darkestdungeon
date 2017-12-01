@@ -14,7 +14,7 @@ export class DevTools extends AppStateComponent {
 
   render () {
     const inputBindings = (
-      <InputBinding match="§" callback={() => this.isVisible = !this.isVisible}/>
+      <InputBinding global match="§" callback={() => this.isVisible = !this.isVisible}/>
     );
 
     if (!this.isVisible) {
