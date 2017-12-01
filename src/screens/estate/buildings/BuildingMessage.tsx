@@ -3,9 +3,9 @@ import {StyleSheet} from "aphrodite";
 import {BannerHeader} from "../../../ui/BannerHeader";
 import {grid} from "../../../config/Grid";
 
-export function BuildingMessage ({children}: any) {
+export function BuildingMessage ({children, style}: any) {
   return (
-    <BannerHeader classStyle={styles.buildingMessage}>
+    <BannerHeader classStyle={styles.buildingMessage} style={style}>
       {children}
     </BannerHeader>
   );

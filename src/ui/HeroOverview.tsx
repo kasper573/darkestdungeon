@@ -19,6 +19,7 @@ import {Icon} from "./Icon";
 import {fonts} from "../../assets/fonts";
 import {TooltipArea} from "../lib/TooltipArea";
 import Color = require("color");
+import {BuildingMessage} from "../screens/estate/buildings/BuildingMessage";
 
 const dismissIconUrl = require("../../assets/dd/images/shared/character/icon_dismiss.png");
 
@@ -90,6 +91,11 @@ export class HeroOverview extends React.Component<
                     {hero.flaws.map((q) => <QuirkText key={q.id} quirk={q}/>)}
                   </Column>
                 </Row>
+                {!(hero.perks.length || hero.flaws.length) && (
+                  <BuildingMessage style={{margin: grid.ySpan(1)}}>
+                    Nothing abnormal
+                  </BuildingMessage>
+                )}
               </Section>
 
               <Section color={commonColors.lightGray} label="Base Stats">
@@ -146,9 +152,11 @@ export class HeroOverview extends React.Component<
               </Section>
 
               <Section color={commonColors.brightGreen} label="Diseases" darken>
-                {hero.diseases.map((q) => (
-                  <QuirkText key={q.id} quirk={q}/>
-                ))}
+                {hero.diseases.length && (
+                  <BuildingMessage style={{margin: grid.ySpan(0.75)}}>
+                    Still healthy
+                  </BuildingMessage>
+                )}
               </Section>
             </Column>
           </Row>
