@@ -180,7 +180,7 @@ class HeroUpgradeCell extends React.Component<{
 
         {!isAvailable && <div className={css(styles.upgradeOverlay, styles.unavailable)}/>}
         {isUpgraded && <div className={css(styles.upgradeOverlay, styles.upgraded)}/>}
-        {canUpgrade && canAfford && (<div className={css([styles.upgradeOverlay, styles.available])}/>)}
+        {canUpgrade && <div className={css([styles.upgradeOverlay, styles.available])}/>}
       </TooltipArea>
     );
   }
