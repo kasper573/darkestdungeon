@@ -18,15 +18,15 @@ const queryString = require("query-string");
 const state = new AppState();
 addStaticState();
 state.load();
-state.ensureProfile();
-state.initialize();
 
 let startPath = "start";
 
 // Developer features:
+// - Automates default profile if none exist
 // - Expose application state in global scope
 // - Allow custom start path
 if (process.env.NODE_ENV !== "production") {
+  state.ensureProfile();
   (global as any).appState = state;
   (global as any).staticState = StaticState.instance;
   if (typeof window !== "undefined") {
@@ -37,6 +37,7 @@ if (process.env.NODE_ENV !== "production") {
   }
 }
 
+state.initialize();
 state.router.goto(startPath);
 
 // Set up basic styling
