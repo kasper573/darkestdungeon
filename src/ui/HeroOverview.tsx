@@ -11,7 +11,7 @@ import {CharacterModel} from "./CharacterModel";
 import {Hero} from "../state/types/Hero";
 import {StatsTextList} from "./StatsText";
 import {Skill} from "../state/types/Skill";
-import {maxSelectedSkills} from "../config/general";
+import {heroNameMaxLength, heroNameMinLength, maxSelectedSkills} from "../config/general";
 import {EquipmentDropbox} from "./EquipmentDropbox";
 import {SkillIcon} from "./SkillIcon";
 import {grid} from "../config/Grid";
@@ -20,6 +20,7 @@ import {fonts} from "../../assets/fonts";
 import {TooltipArea} from "../lib/TooltipArea";
 import Color = require("color");
 import {BuildingMessage} from "../screens/estate/buildings/BuildingMessage";
+import {InputField} from "./InputField";
 
 const dismissIconUrl = require("../../assets/dd/images/shared/character/icon_dismiss.png");
 
@@ -59,9 +60,15 @@ export class HeroOverview extends React.Component<
       <Popup {...rest}>
         <div className={css(styles.container, classStyle)}>
           <div className={css(styles.left)}>
-            <div className={css(styles.name)}>
+            <InputField
+              minLength={heroNameMinLength}
+              maxLength={heroNameMaxLength}
+              placeholder="Hero name"
+              defaultValue={hero.name}
+              classStyle={styles.name}
+              onChange={(newName) => hero.changeName(newName)}>
               {hero.name}
-            </div>
+            </InputField>
 
             <Row classStyle={styles.nameOfClass}>
               {this.props.onDismissRequested && (
@@ -199,13 +206,15 @@ const styles = StyleSheet.create({
 
   name: {
     alignSelf: "flex-start",
-    fontSize: grid.fontSize(1),
+    fontSize: grid.fontSize(0.7),
     fontFamily: fonts.Darkest,
-    color: commonColors.gold
+    color: commonColors.gold,
+    width: grid.xSpan(4)
   },
 
   nameOfClass: {
     alignSelf: "flex-start",
+    marginTop: grid.gutter,
     marginBottom: grid.gutter * 2
   },
 
