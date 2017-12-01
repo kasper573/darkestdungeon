@@ -20,6 +20,10 @@ import {PopupAlign, PopupHandle} from "./state/PopupState";
 import {Popup} from "./ui/Popups";
 import {estateContentPosition} from "./screens/estate/EstateTemplate";
 
+const sounds = {
+  closeRoutePopup: {src: require("../assets/dd/audio/ui_town_building_zoomout.wav")}
+};
+
 @observer
 export class App extends React.Component<{
   state: AppState,
@@ -110,7 +114,7 @@ export class App extends React.Component<{
       position: estateContentPosition,
       onClose: () => this.props.state.router.goto(route.path.root),
       content: (
-        <Popup>
+        <Popup closeSound={sounds.closeRoutePopup}>
           {React.createElement(route.component, {path: route.path})}
         </Popup>
       )
