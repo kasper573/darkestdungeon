@@ -8,6 +8,7 @@ import {css, StyleSheet} from "aphrodite";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 import {BuildingMessage} from "./BuildingMessage";
 import {Hero} from "../../../state/types/Hero";
+import {grid} from "../../../config/Grid";
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -29,7 +30,7 @@ export class StageCoach extends AppStateComponent {
 
     if (this.activeProfile.isRosterFull) {
       return (
-        <BuildingMessage>
+        <BuildingMessage style={{marginBottom: grid.ySpan(1)}}>
           The Hero Barracks is full. <br/>
           You can upgrade the barracks at the Stage Coach.
         </BuildingMessage>
