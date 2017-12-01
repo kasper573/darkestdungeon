@@ -40,7 +40,8 @@ export class EstateOverview extends AppStateComponent<{
     return (
       <EstateTemplate
         path={this.props.path}
-        background={require("../../../assets/dd/images/campaign/town/town_bg.png")}
+        coverBackgroundBottom={true}
+        background={require("../../../assets/dd/images/loading_screen/loading_screen.town_visit.png")}
         continueSound={sounds.continueToMap}
         continueLabel="Embark"
         continuePath="estateDungeons">
