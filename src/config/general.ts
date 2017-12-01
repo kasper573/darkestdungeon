@@ -386,6 +386,7 @@ export function addStaticState () {
   addBuildings({
     abbey: {
       name: "Abbey",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_abbey.wav")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon.png"),
       slotImageUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.locked_hero_slot_overlay.png"),
@@ -432,6 +433,7 @@ export function addStaticState () {
     },
     blacksmith: {
       name: "Blacksmith",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_blacksmith.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character.png"),
       backgroundUrl: require(
@@ -466,6 +468,7 @@ export function addStaticState () {
     },
     graveyard: {
       name: "Graveyard",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_graveyard.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.icon.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.character_background.png"
@@ -473,6 +476,7 @@ export function addStaticState () {
     },
     guild: {
       name: "Guild",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_guild.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.character.png"),
       backgroundUrl: require(
@@ -507,6 +511,7 @@ export function addStaticState () {
     },
     sanitarium: {
       name: "Sanitarium",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_sanitarium.wav")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
@@ -545,6 +550,7 @@ export function addStaticState () {
     },
     coach: {
       name: "Stage Coach",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_coach.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character.png"),
       backgroundUrl: require(
@@ -593,6 +599,7 @@ export function addStaticState () {
     },
     tavern: {
       name: "Tavern",
+      enterSound: {src: require("../../assets/dd/audio/town_enter_tavern.wav")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
