@@ -8,7 +8,7 @@ import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
 import {grid} from "../../config/Grid";
 import {commonStyles} from "../../config/styles";
-import {observable} from "mobx";
+import {IReactionDisposer, observable, reaction} from "mobx";
 import {DragDropSlot} from "../../lib/DragDropSlot";
 import {BuildingMessage} from "./buildings/BuildingMessage";
 
@@ -19,17 +19,33 @@ const heroCompareIcons = {
   activity: require("../../../assets/dd/images/campaign/town/roster/roster_sort_building.png")
 };
 
+const sounds = {
+  activeHeroChanged: {src: require("../../../assets/dd/audio/ui_town_char_rollover_03.wav"), volume: 1.5}
+};
+
 @observer
 export class EstateRoster extends AppStateComponent<{
   lineupFeatures?: boolean,
   portalNode?: HTMLDivElement
 }> {
+  private stopReactingToEntries: IReactionDisposer;
   @observable heroShownInOverview: Hero;
 
   positionHero (droppedHero: Hero, slotHero: Hero) {
     this.activeProfile.positionHeroInRoster(droppedHero,
       this.activeProfile.roster.indexOf(slotHero)
     );
+  }
+
+  componentWillMount () {
+    this.stopReactingToEntries = reaction(
+      () => this.heroShownInOverview,
+      () => this.appState.sfx.play(sounds.activeHeroChanged)
+    );
+  }
+
+  componentWillUnmount () {
+    this.stopReactingToEntries();
   }
 
   render () {
