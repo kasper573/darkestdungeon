@@ -7,6 +7,11 @@ export const pauseIcon = require(
   "../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png"
 );
 
+const sounds = {
+  open: {src: require("../../assets/dd/audio/ui_shr_pause.wav"), volume: 0.75},
+  close: {src: require("../../assets/dd/audio/ui_shr_unpause.wav"), volume: 0.75}
+};
+
 export class PauseMenu extends AppStateComponent<
   PopupProps & {
   mainMenu?: boolean
@@ -26,7 +31,12 @@ export class PauseMenu extends AppStateComponent<
     );
 
     return (
-      <Popup headerIcon={pauseIcon} {...rest}>
+      <Popup
+        {...rest}
+        muffle={true}
+        openSound={sounds.open}
+        closeSound={sounds.close}
+        headerIcon={pauseIcon}>
         <LineButton label="Controls" onClick={() => popups.show(<Popup>Controls</Popup>)}/>
         <LineButton label="Credits" onClick={() => popups.show(<Popup>Credits</Popup>)}/>
         <LineButton label="Glossary" onClick={() => popups.show(<Popup>Glossary</Popup>)}/>

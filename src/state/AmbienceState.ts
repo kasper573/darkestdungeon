@@ -99,7 +99,7 @@ export class AmbiencePlayer {
   muffle (isMuffled: boolean): any {
     const baseVolume = definedOr(this.definition.base.volume, 1);
     this.isMuffled = isMuffled;
-    this.fadeTo(isMuffled ? baseVolume * 0.5 : undefined);
+    this.fadeTo(isMuffled ? baseVolume * 0.3 : undefined);
   }
 
   playNextOS () {
