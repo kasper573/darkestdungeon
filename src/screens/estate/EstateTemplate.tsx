@@ -23,6 +23,7 @@ export class EstateTemplate extends AppStateComponent<{
   path: Path,
   backPath?: PathTypes,
   continueCheck?: () => Promise<any>,
+  continueSound: IHowlProperties,
   continueLabel: string,
   continuePath: PathTypes,
   roster?: boolean,
@@ -55,6 +56,11 @@ export class EstateTemplate extends AppStateComponent<{
     });
   }
 
+  componentWillMount () {
+    // HACK preloading sounds should be done centrally
+    const throwAway = new Howl(this.props.continueSound);
+  }
+
   render () {
     const isShowingBuilding = this.appState.router.path.parts.length > 1;
     return (
@@ -74,7 +80,7 @@ export class EstateTemplate extends AppStateComponent<{
           continueLabel={this.props.continueLabel}
           inventory={this.props.inventory}
           onInventoryRequested={() => this.showInventory()}
-          onContinueRequested={() => this.continueToNextScreen()}
+          onContinueRequested={() => this.tryContinueToNextScreen()}
           onPauseRequested={() => this.pause()}
         />
 
@@ -101,10 +107,11 @@ export class EstateTemplate extends AppStateComponent<{
     );
   }
 
-  continueToNextScreen () {
+  tryContinueToNextScreen () {
     this.props.continueCheck()
       .then((okToContinue) => {
         if (okToContinue === undefined || okToContinue) {
+          this.appState.sfx.play(this.props.continueSound);
           this.appState.router.goto(this.props.continuePath);
         }
       });

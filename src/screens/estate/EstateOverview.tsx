@@ -36,6 +36,7 @@ export class EstateOverview extends AppStateComponent<{
       <EstateTemplate
         path={this.props.path}
         background={require("../../../assets/dd/images/campaign/town/town_bg.png")}
+        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_embark.wav"), volume: 0.7}}
         continueLabel="Embark"
         continuePath="estateDungeons">
         <div className={css(styles.buildingIcons)}>
