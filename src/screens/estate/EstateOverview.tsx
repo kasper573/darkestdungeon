@@ -13,6 +13,11 @@ import {Avatar} from "../../ui/Avatar";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {commonStyles} from "../../config/styles";
 
+const sounds = {
+  continueToMap: {src: require("../../../assets/dd/audio/ui_town_button_embark.wav"), volume: 0.7},
+  showBuilding: {src: require("../../../assets/dd/audio/ui_town_char_rollover_03.wav"), volume: 1.5}
+};
+
 export class EstateOverview extends AppStateComponent<{
   path: Path,
   route: Route
@@ -36,7 +41,7 @@ export class EstateOverview extends AppStateComponent<{
       <EstateTemplate
         path={this.props.path}
         background={require("../../../assets/dd/images/campaign/town/town_bg.png")}
-        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_embark.wav"), volume: 0.7}}
+        continueSound={sounds.continueToMap}
         continueLabel="Embark"
         continuePath="estateDungeons">
         <div className={css(styles.buildingIcons)}>
@@ -53,6 +58,7 @@ export class EstateOverview extends AppStateComponent<{
                 <Avatar
                   classStyle={commonStyles.fill}
                   src={building.avatarUrl}
+                  clickSound={sounds.showBuilding}
                   onClick={() => this.appState.router.goto(buildingPath)}
                 />
               </TooltipArea>
