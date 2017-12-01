@@ -61,6 +61,8 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateOverview: new Route({
+    title: () => "Hamlet",
+    image: () => require("../../assets/dd/images/loading_screen/loading_screen.town_visit.png"),
     rerouter: estateLoadingRerouter,
     component: EstateOverview,
     music: () => {
@@ -194,6 +196,8 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateDungeons: new Route({
+    title: () => "Hamlet (map)",
+    image: () => routes.estateOverview.image.apply(this, arguments),
     rerouter: estateLoadingRerouter,
     component: EstateDungeons,
     music: () => routes.estateOverview.music.apply(this, arguments),
@@ -225,6 +229,8 @@ export const routes: {[key: string]: Route} = {
   }),
 
   estateProvision: new Route({
+    title: () => "Hamlet (provision)",
+    image: () => routes.estateOverview.image.apply(this, arguments),
     rerouter: estateLoadingRerouter,
     component: EstateProvision,
     music: () => routes.estateDungeons.music.apply(this, arguments),
@@ -232,6 +238,16 @@ export const routes: {[key: string]: Route} = {
   }),
 
   dungeonOverview: new Route({
+    title: (state: AppState) => {
+      const dungeonId = state.profiles.activeProfile.selectedQuest.dungeonId;
+      const dungeon = state.profiles.activeProfile.dungeons.find((d) => d.id === dungeonId);
+      return dungeon.info.name;
+    },
+    image: (state: AppState) => {
+      const dungeonId = state.profiles.activeProfile.selectedQuest.dungeonId;
+      const dungeon = state.profiles.activeProfile.dungeons.find((d) => d.id === dungeonId);
+      return dungeon.info.imageUrl;
+    },
     rerouter: loadingRerouter,
     component: DungeonOverview,
     ambience: () => require("../../assets/dd/audio/amb_dun_weald_base.wav"),
