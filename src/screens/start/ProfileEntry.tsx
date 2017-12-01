@@ -4,7 +4,7 @@ import {observer} from "mobx-react";
 import {Difficulty, Profile} from "../../state/types/Profile";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
-import {commonColors, commonStyleFn, Row} from "../../config/styles";
+import {commonColors, commonStyleFn, commonStyles, Row} from "../../config/styles";
 import {observable} from "mobx";
 import {LineButton} from "../../ui/LineButton";
 import {InputField} from "../../ui/InputField";
@@ -67,7 +67,9 @@ export class ProfileEntry extends AppStateComponent<{
 
     const infoElements = hasProfile &&
       this.getProfileInfo(this.props.profile).map(
-        (str: string, index: number) => <span key={index}>{str}</span>
+        (str: string, index: number) => (
+          <span key={index} className={css(commonStyles.nowrap)}>{str}</span>
+        )
       );
 
     return (
