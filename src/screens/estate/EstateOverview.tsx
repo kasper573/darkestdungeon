@@ -49,10 +49,11 @@ export class EstateOverview extends AppStateComponent<{
             const buildingPath = this.props.path.value + Path.separator + buildingKey;
             const buildingRoute = this.props.route.children[buildingKey] as Route;
             const building = StaticState.instance.buildings.get(buildingRoute.component.id);
+            const isBuildingOpen = this.appState.router.path.equals(buildingPath);
             return (
               <TooltipArea
                 key={building.id}
-                classStyle={styles.buildingIcon}
+                classStyle={[styles.buildingIcon, isBuildingOpen && styles.buildingIconActive]}
                 side={TooltipSide.Right}
                 tip={building.name}>
                 <Avatar
@@ -96,6 +97,11 @@ const styles = StyleSheet.create({
   buildingIcon: {
     width: buildingIconSize,
     height: buildingIconSize,
-    marginBottom: grid.gutter
+    marginBottom: grid.gutter,
+    transition: "transform 0.3s ease-out"
+  },
+
+  buildingIconActive: {
+    transform: `translate(${grid.gutter * 2}px, 0)`
   }
 });
