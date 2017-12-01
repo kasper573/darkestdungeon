@@ -52,9 +52,7 @@ export const routes: {[key: string]: Route} = {
   start: new Route({
     component: Start,
     isMemorable: false,
-    music: () => {
-      return {src: require("../../assets/dd/audio/mus_theme_loop.wav"), volume: 0.7};
-    }
+    ambience: () => routes.estateDungeons.ambience.apply(this, arguments)
   }),
 
   loading: new Route({
@@ -81,7 +79,23 @@ export const routes: {[key: string]: Route} = {
           [
             {src: require("../../assets/dd/audio/amb_town_graveyard_os_01.wav")},
             {src: require("../../assets/dd/audio/amb_town_graveyard_os_02.wav")},
-            {src: require("../../assets/dd/audio/amb_town_graveyard_os_03.wav")}
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_04.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_05.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_06.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_07.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_09.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_10.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_11.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_12.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_13.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_14.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_15.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_16.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_17.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_18.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_19.wav")},
+            {src: require("../../assets/dd/audio/amb_town_graveyard_os_20.wav")}
           ]
         )
       }),
@@ -93,9 +107,23 @@ export const routes: {[key: string]: Route} = {
             {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_01.wav")},
             {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_02.wav")},
             {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_04.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_05.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_06.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_07.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_08.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_09.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_bar_10.wav")},
             {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_01.wav")},
             {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_02.wav")},
-            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_03.wav")}
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_04.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_05.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_06.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_07.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_08.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_09.wav")},
+            {src: require("../../assets/dd/audio/amb_town_tavern_os_chair_10.wav")}
           ]
         )
       }),
@@ -106,7 +134,18 @@ export const routes: {[key: string]: Route} = {
           [
             {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_01.wav")},
             {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_02.wav")},
-            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_03.wav")}
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_04.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_05.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_06.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_07.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_08.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_09.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_10.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_11.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_12.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_13.wav")},
+            {src: require("../../assets/dd/audio/amb_town_sanitarium_os_gen_14.wav")}
           ]
         )
       }),
@@ -133,7 +172,21 @@ export const routes: {[key: string]: Route} = {
           [
             {src: require("../../assets/dd/audio/amb_town_blacksmith_os_01.wav")},
             {src: require("../../assets/dd/audio/amb_town_blacksmith_os_02.wav")},
-            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")}
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_03.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_04.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_05.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_06.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_07.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_08.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_09.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_10.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_11.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_12.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_13.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_14.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_15.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_16.wav")},
+            {src: require("../../assets/dd/audio/amb_town_blacksmith_os_17.wav")}
           ]
         )
       })
@@ -149,7 +202,24 @@ export const routes: {[key: string]: Route} = {
       [
         {src: require("../../assets/dd/audio/amb_town2_gen_base_os_01.wav")},
         {src: require("../../assets/dd/audio/amb_town2_gen_base_os_02.wav")},
-        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_03.wav")}
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_03.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_04.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_05.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_06.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_07.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_08.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_09.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_10.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_11.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_12.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_13.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_14.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_15.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_16.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_17.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_18.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_19.wav")},
+        {src: require("../../assets/dd/audio/amb_town2_gen_base_os_20.wav")}
       ]
     )
   }),
