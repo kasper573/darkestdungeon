@@ -55,7 +55,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         continueSound={{src: require("../../../assets/dd/audio/ui_town_button_setoff.wav"), volume: 0.7}}
         continueLabel="Embark"
         continuePath="dungeonOverview">
-        <Popup classStyle={styles.fakePopup}>
+        <Popup classStyle={styles.fakePopup} sounds={false}>
           <BuildingOverview info={StaticState.instance.buildings.get("provision")}>
             <Store
               ref={(store) => this.store = store}

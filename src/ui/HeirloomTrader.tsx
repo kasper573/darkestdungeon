@@ -69,7 +69,7 @@ export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
     const canIncrease = (this.tradeAmount + 1) <= this.maxTradableHeirlooms;
     const canDecrease = (this.tradeAmount - 1) >= this.minTradableHeirlooms;
     return (
-      <Popup classStyle={[styles.container, this.props.isVisible && styles.visible]}>
+      <Popup classStyle={[styles.container, this.props.isVisible && styles.visible]} sounds={false}>
         <Row>
           <Column align="center" valign="center" style={{flex: 1}}>
             <Icon src={iconUrls.up} onClick={() => this.offsetSelectedHeirloom(1)}/>
