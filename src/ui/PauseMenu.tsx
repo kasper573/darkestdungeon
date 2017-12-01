@@ -2,6 +2,7 @@ import * as React from "react";
 import {Popup, PopupProps} from "./Popups";
 import {LineButton} from "./LineButton";
 import {AppStateComponent} from "../AppStateComponent";
+import {Credits} from "./Credits";
 
 export const pauseIcon = require(
   "../../assets/dd/images/panels/icons_equip/trinket/inv_trinket+ancestors_candle.png"
@@ -38,7 +39,7 @@ export class PauseMenu extends AppStateComponent<
         closeSound={sounds.close}
         headerIcon={pauseIcon}>
         <LineButton label="Controls" onClick={() => popups.show(<Popup>Controls</Popup>)}/>
-        <LineButton label="Credits" onClick={() => popups.show(<Popup>Credits</Popup>)}/>
+        <LineButton label="Credits" onClick={() => popups.show(<Popup fullScreen><Credits/></Popup>)}/>
         <LineButton label="Glossary" onClick={() => popups.show(<Popup>Glossary</Popup>)}/>
         <LineButton label="Help" onClick={() => popups.show(<Popup>Help</Popup>)}/>
         <LineButton
