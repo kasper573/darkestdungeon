@@ -14,10 +14,17 @@ import {observer} from "mobx-react";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {Icon, IconHighlightType} from "../../ui/Icon";
 import {TooltipArea} from "../../lib/TooltipArea";
+import {randomizeItem} from "../../lib/Helpers";
 
 const sounds = {
   heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_estsatecurrency.wav"), volume: 0.5},
-  goldChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_gold.wav"), volume: 0.7}
+  goldChanged: [
+    {src: require("../../../assets/dd/audio/ui_town_coins_ring_08.wav"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_ring_04.wav"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_05.wav"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_10.wav"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_08.wav"), volume: 1}
+  ]
 };
 
 @observer
@@ -39,7 +46,7 @@ export class EstateFooter extends AppStateComponent<{
     this.reactionDisposers = [
       reaction(
         () => this.activeProfile.goldAfterDebt,
-        () => this.appState.sfx.play(sounds.goldChanged)
+        () => this.appState.sfx.play(randomizeItem(sounds.goldChanged))
       ),
       reaction(
         () => Array.from(this.activeProfile.heirloomCounts.values()).reduce((sum, c) => sum + c, 0),
