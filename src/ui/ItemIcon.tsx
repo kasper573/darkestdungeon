@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {commonStyleFn} from "../config/styles";
+import {commonStyleFn, commonStyles} from "../config/styles";
 import {TooltipArea} from "../lib/TooltipArea";
 import {Item} from "../state/types/Item";
 import {grid} from "../config/Grid";
@@ -25,23 +25,23 @@ export class ItemIcon extends React.Component<{
 
     if (!item) {
       return (
-        <div className={css(styles.icon)}/>
+        <div className={css(containerStyle)}/>
       );
     }
 
     return (
-      <TooltipArea
-        tip={<ItemBreakdown item={item}/>}
+      <Icon
+        src={item.info.itemUrl}
         classStyle={containerStyle}
-        style={this.props.style}>
-        <Icon
-          src={item.info.itemUrl}
-          classStyle={styles.icon}
-          onClick={this.props.onClick.bind(this)}
-          onRightClick={this.props.onRightClick}>
+        onClick={this.props.onClick.bind(this)}
+        onRightClick={this.props.onRightClick}>
+        <TooltipArea
+          tip={<ItemBreakdown item={item}/>}
+          classStyle={commonStyles.dock}
+          style={this.props.style}>
           {this.props.children}
-        </Icon>
-      </TooltipArea>
+        </TooltipArea>
+      </Icon>
     );
   }
 }
