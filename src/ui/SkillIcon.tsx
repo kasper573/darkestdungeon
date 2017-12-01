@@ -23,7 +23,7 @@ export class SkillIcon extends React.Component<{
 
   render () {
     const lockSymbol = this.props.skill.level === 0 && (
-      <span>L</span>
+      <Icon size={grid.ySpan(1)} src={require("../../assets/dd/images/shared/character/lockedskill.png")}/>
     );
 
     const isSelected = this.props.isSelected !== undefined ?
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     ...commonStyleFn.singleBackground(),
     background: "rgb(0, 0, 60)",
     opacity: 0.8,
-    minWidth: 30,
-    minHeight: 30,
+    width: grid.ySpan(1),
+    height: grid.ySpan(1),
 
     justifyContent: "center",
     alignItems: "center",
