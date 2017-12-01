@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   },
 
   gold: {
-    marginRight: grid.xSpan(1)
+    marginRight: grid.xSpan(0.5),
+    minWidth: grid.xSpan(2)
   }
 });
