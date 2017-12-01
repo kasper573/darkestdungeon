@@ -16,7 +16,8 @@ import {CommonButton} from "../../ui/CommonButton";
 import {profileEntryHeight} from "./ProfileEntry";
 
 const sounds = {
-  profileSelected: {src: require("../../../assets/dd/audio/gen_title_startgame.wav")}
+  profileSelected: {src: require("../../../assets/dd/audio/gen_title_startgame.wav")},
+  campaignClicked: {src: require("../../../assets/dd/audio/gen_title_campaignbutton.wav")}
 };
 
 @observer
@@ -65,6 +66,7 @@ export class Start extends AppStateComponent {
               color={commonColors.gold}
               classStyle={styles.campaignButton}
               label="Campaign"
+              clickSound={sounds.campaignClicked}
               onClick={() => this.isContentOffset = true}
             />
             <ProfileList onProfileSelected={(profile) => this.onProfileSelected(profile)}/>

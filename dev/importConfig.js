@@ -28,6 +28,6 @@ module.exports = {
   ],
 
   audioQuery: {
-    secondary_banks: ["ambience", "town", "ui_shared", "ui_town", "music"]
+    secondary_banks: ["ambience", "town", "ui_shared", "ui_town", "music", "general", "title_screen",  "ui_dungeon"]
   }
 };
