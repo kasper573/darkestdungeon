@@ -37,6 +37,10 @@ time, mark, audio, video, input {
     min-width: 0;
 }
 
+pre {
+    font-family: inherit;
+}
+
 input {
     user-select: text;
     flex-shrink: 1;
