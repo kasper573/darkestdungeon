@@ -15,17 +15,26 @@ import {observable} from "mobx";
 import {CommonButton} from "../../ui/CommonButton";
 import {profileEntryHeight} from "./ProfileEntry";
 
+const sounds = {
+  profileSelected: {src: require("../../../assets/dd/audio/gen_title_startgame.wav")}
+};
+
 @observer
 export class Start extends AppStateComponent {
   @observable isContentOffset = false;
+  @observable isTransitioned = false;
 
   transitionOut () {
-    console.warn("Not implemented");
-    return Promise.resolve();
+    this.appState.sfx.play(sounds.profileSelected);
+    this.isTransitioned = true;
+    // Wait the transition time + linger time to show the logo before changing screen
+    return new Promise((resolve) => setTimeout(resolve, contentTransitionTime + 1000));
   }
 
   goBack () {
-    if (this.isContentOffset) {
+    if (this.isTransitioned) {
+      this.isTransitioned = false;
+    } else if (this.isContentOffset) {
       this.isContentOffset = false;
     } else {
       this.pause();
@@ -40,9 +49,14 @@ export class Start extends AppStateComponent {
   }
 
   render () {
+    const iconTransitionStyle = this.isTransitioned && styles.invisible;
+    const titleTransitionStyle = this.isTransitioned && styles.titleOffset;
+    const contentTransitionStyle = this.isTransitioned && [styles.screenOffset, styles.invisible] ||
+      this.isContentOffset && styles.contentOffset;
+
     return (
       <div className={css(styles.start)}>
-        <div className={css(styles.content, this.isContentOffset && styles.contentOffset)}>
+        <div className={css(styles.content, contentTransitionStyle)}>
           <div className={css(styles.skybox)}>
             <div className={css(styles.estate)}/>
           </div>
@@ -57,12 +71,12 @@ export class Start extends AppStateComponent {
           </div>
         </div>
 
-        <TitleHeader classStyle={styles.title}/>
+        <TitleHeader classStyle={[styles.title, titleTransitionStyle]}/>
         <Icon
           src={pauseIcon}
           size={grid.ySpan(1.5)}
           highlight={IconHighlightType.Lines}
-          classStyle={styles.pauseMenuIcon}
+          classStyle={[styles.pauseMenuIcon, iconTransitionStyle]}
           onClick={() => this.pause()}
         />
 
@@ -82,10 +96,19 @@ export class Start extends AppStateComponent {
   }
 }
 
+const contentTransitionTime = 1000;
 const contentBelowHeight = profileEntryHeight * visibleProfileEntries +
   profileEntrySpacing * (visibleProfileEntries - 1);
 const contentBelowPadding = grid.ySpan(1);
 const contentBelowOffset = contentBelowHeight + contentBelowPadding;
+
+const transitionableStyle = {
+  transition: [
+    `transform ${contentTransitionTime}ms ease-in-out`,
+    `opacity ${contentTransitionTime}ms ease-in-out`
+  ].join(",")
+};
+
 const styles = StyleSheet.create({
   start: {
     flex: 1
@@ -94,24 +117,22 @@ const styles = StyleSheet.create({
   // Static elements
 
   title: {
-    marginTop: grid.paddingTop
+    marginTop: grid.paddingTop,
+    ...transitionableStyle
   },
 
   pauseMenuIcon: {
     position: "absolute",
     bottom: grid.paddingBottom,
-    right: grid.paddingRight
+    right: grid.paddingRight,
+    ...transitionableStyle
   },
 
   // Content elements
 
   content: {
     ...commonStyleFn.dock(),
-    transition: "transform 1s ease-in-out"
-  },
-
-  contentOffset: {
-    transform: `translate(0, -${contentBelowOffset}px)`
+    ...transitionableStyle
   },
 
   skybox: {
@@ -150,7 +171,21 @@ const styles = StyleSheet.create({
     top: -contentBelowPadding - grid.ySpan(1)
   },
 
-  profiles: {
+  // Transition values
 
+  contentOffset: {
+    transform: `translate(0, -${contentBelowOffset}px)`
+  },
+
+  screenOffset: {
+    transform: `translate(0, -${grid.outerHeight}px)`
+  },
+
+  titleOffset: {
+    transform: `translate(0, ${grid.ySpan(6)}px)`
+  },
+
+  invisible: {
+    opacity: 0
   }
 });
