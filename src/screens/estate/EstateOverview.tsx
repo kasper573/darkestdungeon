@@ -12,6 +12,8 @@ import {css, StyleSheet} from "aphrodite";
 import {Avatar} from "../../ui/Avatar";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {commonStyles} from "../../config/styles";
+import {InputBinding} from "../../state/InputState";
+import {Input} from "../../config/Input";
 
 const sounds = {
   continueToMap: {src: require("../../../assets/dd/audio/ui_town_button_embark.wav"), volume: 0.7},
@@ -36,6 +38,23 @@ export class EstateOverview extends AppStateComponent<{
     this.stopWaitingForEstateEvents();
   }
 
+  gotoNextBuilding () {
+    const isABuildingOpen = this.appState.router.path.parts.length > 1;
+    if (!isABuildingOpen) {
+      return;
+    }
+
+    // HACK this is ugly and should be centralized
+    // (even though we only do this here)
+    const keys = Object.keys(this.props.route.children);
+    let nextIndex = keys.findIndex((key) => key === this.appState.router.path.parts[1]) + 1;
+    if (nextIndex >= keys.length) {
+      nextIndex = 0;
+    }
+    const nextPath = this.props.path.value + Path.separator + keys[nextIndex];
+    this.appState.router.goto(nextPath);
+  }
+
   render () {
     return (
       <EstateTemplate
@@ -45,8 +64,13 @@ export class EstateOverview extends AppStateComponent<{
         continueSound={sounds.continueToMap}
         continueLabel="Embark"
         continuePath="estateDungeons">
+
+        <InputBinding global match={Input.nextBuilding} callback={this.gotoNextBuilding.bind(this)}/>
+
         <div className={css(styles.buildingIcons)}>
           {Object.keys(this.props.route.children).map((buildingKey) => {
+            // HACK this is ugly and should be centralized
+            // (even though we only do this here)
             const buildingPath = this.props.path.value + Path.separator + buildingKey;
             const buildingRoute = this.props.route.children[buildingKey] as Route;
             const building = StaticState.instance.buildings.get(buildingRoute.component.id);
