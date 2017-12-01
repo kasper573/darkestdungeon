@@ -38,7 +38,7 @@ export class EstateOverview extends AppStateComponent<{
     this.stopWaitingForEstateEvents();
   }
 
-  gotoNextBuilding () {
+  changeActiveBuilding (offset: number) {
     const isABuildingOpen = this.appState.router.path.parts.length > 1;
     if (!isABuildingOpen) {
       return;
@@ -47,10 +47,14 @@ export class EstateOverview extends AppStateComponent<{
     // HACK this is ugly and should be centralized
     // (even though we only do this here)
     const keys = Object.keys(this.props.route.children);
-    let nextIndex = keys.findIndex((key) => key === this.appState.router.path.parts[1]) + 1;
+    let nextIndex = keys.findIndex((key) => key === this.appState.router.path.parts[1]) + offset;
+
     if (nextIndex >= keys.length) {
       nextIndex = 0;
+    } else if (nextIndex < 0) {
+      nextIndex = keys.length - 1;
     }
+
     const nextPath = this.props.path.value + Path.separator + keys[nextIndex];
     this.appState.router.goto(nextPath);
   }
@@ -65,7 +69,11 @@ export class EstateOverview extends AppStateComponent<{
         continueLabel="Embark"
         continuePath="estateDungeons">
 
-        <InputBinding global match={Input.nextBuilding} callback={this.gotoNextBuilding.bind(this)}/>
+        <InputBinding
+          global
+          match={Input.nextBuilding}
+          callback={(e) => this.changeActiveBuilding(e.shiftKey ? -1 : 1)}
+        />
 
         <div className={css(styles.buildingIcons)}>
           {Object.keys(this.props.route.children).map((buildingKey) => {
