@@ -7,6 +7,7 @@ import {Icon} from "./Icon";
 export class Avatar extends React.Component<{
   src: string,
   classStyle?: any,
+  clickSound?: IHowlProperties,
   onClick?: () => void
 }> {
   render () {
@@ -14,6 +15,7 @@ export class Avatar extends React.Component<{
       <Icon
         src={this.props.src}
         classStyle={[styles.avatar, this.props.classStyle]}
+        clickSound={this.props.clickSound}
         onClick={this.props.onClick}>
         {this.props.children}
       </Icon>
