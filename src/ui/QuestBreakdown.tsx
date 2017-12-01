@@ -1,6 +1,6 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {Row} from "../config/styles";
+import {commonColors, commonStyleFn, Row} from "../config/styles";
 import {CommonHeader} from "./CommonHeader";
 import {ItemIcon} from "./ItemIcon";
 import {Quest} from "../state/types/Quest";
@@ -17,49 +17,57 @@ export class QuestBreakdown extends React.Component<{
     return (
       <div className={css(styles.container)}>
         <LargeHeader
+          classStyle={styles.header}
           label="Estate Map"
           icon={require("../../assets/dd/images/campaign/town/quest_select/quest_select.icon.png")}
         />
-        <CommonHeader label={quest.info.type}/>
-        <p>
+
+        <Section label={quest.info.type} color={commonColors.bloodRed}>
           {quest.info.description}
-        </p>
-        <Row>
-          <span>Bonfires: {quest.bonfires}</span>
-          <span>{quest.map.size}</span>
-          <span>Level {this.props.dungeon.level.number}</span>
-        </Row>
+        </Section>
 
-        <CommonHeader label="Objective"/>
-        <p>
+        <Section label={`Level ${this.props.dungeon.level.number} | ${quest.map.size}`} color={commonColors.gray}>
           {quest.objective.description}
-        </p>
+        </Section>
 
-        <CommonHeader label="Rewards"/>
-        <Row>
-          {quest.rewards.map((item) =>
-            <ItemIcon key={item.id} item={item}/>
-          )}
-        </Row>
+        <Section label="Rewards" color={commonColors.darkGold}>
+          <Row>
+            {quest.rewards.map((item) =>
+              <ItemIcon classStyle={styles.reward} key={item.id} item={item}/>
+            )}
+          </Row>
+        </Section>
       </div>
     );
   }
 }
 
+function Section ({label, color, children}: any) {
+  return (
+    <div>
+      <CommonHeader label={label} color={color}/>
+      <div className={css(styles.sectionContent)}>{children}</div>
+    </div>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    top: 0, left: 0, bottom: 40,
+    ...commonStyleFn.dock("left"),
     background: "black",
-    padding: 10
+    width: grid.xSpan(3.5),
+    boxShadow: commonStyleFn.outerShadow(undefined, grid.gutter * 2)
   },
 
   header: {
-    marginBottom: 10
+    marginBottom: grid.gutter
   },
 
-  headerLabel: {
-    fontSize: grid.fontSize(1),
-    margin: 10
+  sectionContent: {
+    padding: grid.gutter * 2
+  },
+
+  reward: {
+    marginRight: grid.gutter
   }
 });

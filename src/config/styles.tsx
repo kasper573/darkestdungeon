@@ -4,7 +4,7 @@ import {grid} from "./Grid";
 import * as Color from "color";
 
 export const commonColors = {
-  bloodRed: "rgba(38, 0, 0, 1)",
+  bloodRed: "#401312",
   brightRed: "rgba(246,46,17,1)",
   darkGold: new Color("rgb(200, 180, 110)").darken(0.3).toString(),
   gold: "rgb(200, 180, 110)",
