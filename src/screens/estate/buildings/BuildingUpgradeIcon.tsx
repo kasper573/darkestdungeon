@@ -12,6 +12,11 @@ import {commonStyleFn} from "../../../config/styles";
 import {grid} from "../../../config/Grid";
 import {Icon} from "../../../ui/Icon";
 
+const upgradePurchaseSound: IHowlProperties = {
+  src: require("../../../../assets/dd/audio/town_gen_building_upgrade.wav"),
+  volume: 0.5
+};
+
 @observer
 export class BuildingUpgradeIcon extends AppStateComponent<{
   item: BuildingUpgradeInfo,
@@ -30,6 +35,7 @@ export class BuildingUpgradeIcon extends AppStateComponent<{
 
     if (proceed) {
       this.activeProfile.purchaseUpgrade(this.props.item);
+      this.appState.sfx.play(upgradePurchaseSound);
     }
   }
 
