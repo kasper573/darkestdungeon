@@ -48,6 +48,13 @@ const estateLoadingRerouter = (from: Path, to: Path) => {
   }
 };
 
+function getCurrentDungeon (state: AppState) {
+  const profile = state.profiles.activeProfile;
+  if (profile.selectedQuest) {
+    return profile.dungeons.find((d) => d.id === profile.selectedQuest.dungeonId);
+  }
+}
+
 export const routes: {[key: string]: Route} = {
   start: new Route({
     component: Start,
@@ -239,14 +246,12 @@ export const routes: {[key: string]: Route} = {
 
   dungeonOverview: new Route({
     title: (state: AppState) => {
-      const dungeonId = state.profiles.activeProfile.selectedQuest.dungeonId;
-      const dungeon = state.profiles.activeProfile.dungeons.find((d) => d.id === dungeonId);
-      return dungeon.info.name;
+      const dungeon = getCurrentDungeon(state);
+      return dungeon ? dungeon.info.name : "Dungeons";
     },
     image: (state: AppState) => {
-      const dungeonId = state.profiles.activeProfile.selectedQuest.dungeonId;
-      const dungeon = state.profiles.activeProfile.dungeons.find((d) => d.id === dungeonId);
-      return dungeon.info.imageUrl;
+      const dungeon = getCurrentDungeon(state);
+      return dungeon ? dungeon.info.imageUrl : "";
     },
     rerouter: loadingRerouter,
     component: DungeonOverview,
