@@ -16,7 +16,7 @@ import {Icon, IconHighlightType} from "../../ui/Icon";
 import {TooltipArea} from "../../lib/TooltipArea";
 
 const sounds = {
-  heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_gold.wav"), volume: 0.5},
+  heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_estsatecurrency.wav"), volume: 0.5},
   goldChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_gold.wav"), volume: 0.7}
 };
 
@@ -42,8 +42,10 @@ export class EstateFooter extends AppStateComponent<{
         () => this.appState.sfx.play(sounds.goldChanged)
       ),
       reaction(
-        () => this.activeProfile.heirloomCounts,
-        () => this.appState.sfx.play(sounds.heirloomsChanged)
+        () => Array.from(this.activeProfile.heirloomCounts.values()).reduce((sum, c) => sum + c, 0),
+        () => {
+          this.appState.sfx.play(sounds.heirloomsChanged);
+        }
       )
     ];
   }
