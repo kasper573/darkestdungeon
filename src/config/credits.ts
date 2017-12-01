@@ -72,6 +72,6 @@ natsu130
 onixenic
 suplordo
 
-Original Concept, Design & Assets
+Original Concept & Design
 Red Hook Studios (please don't sue me <3)
 `;
