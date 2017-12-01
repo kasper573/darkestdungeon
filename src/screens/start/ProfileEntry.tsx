@@ -9,6 +9,7 @@ import {observable} from "mobx";
 import {LineButton} from "../../ui/LineButton";
 import {InputField} from "../../ui/InputField";
 import {fonts} from "../../../assets/fonts";
+import {AppStateComponent} from "../../AppStateComponent";
 
 const difficultyIcons = {
   [Difficulty.Radiant]: require("../../../assets/dd/images/modes/radiant/fe_flow/save_icon.png"),
@@ -19,7 +20,7 @@ const difficultyIcons = {
 const deleteIcon = require("../../../assets/dd/images/fe_flow/nukesave_button.png");
 
 @observer
-export class ProfileEntry extends React.Component<{
+export class ProfileEntry extends AppStateComponent<{
   profile?: Profile,
   onDelete?: () => void,
   onSelect: () => void,
@@ -50,8 +51,9 @@ export class ProfileEntry extends React.Component<{
   }
 
   private getProfileInfo (profile: Profile) {
+    const route = this.appState.router.getRouteForPath(profile.path);
     return [
-      profile.path.toString(),
+      route.title(this.appState),
       "Week " + profile.week,
       profile.dateOfLastSave.toDateString()
     ];

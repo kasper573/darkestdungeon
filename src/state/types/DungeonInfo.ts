@@ -5,4 +5,5 @@ export class DungeonInfo {
   @serializable(identifier()) id: string;
   name: string;
   monsters: CharacterTemplate[] = [];
+  imageUrl: string;
 }

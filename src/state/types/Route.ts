@@ -8,6 +8,8 @@ export class RouteConstructionProps {
   isMemorable?: boolean;
   music?: (state?: any, path?: Path) => IHowlProperties;
   ambience?: (state?: any, path?: Path) => AmbienceDefinition;
+  image?: (state?: any) => string;
+  title?: (state?: any) => string;
   children?: { [key: string]: Route };
   rerouter?: (fromPath: Path, toPath: Path) => Path;
 }
@@ -29,6 +31,8 @@ export class Route extends RouteConstructionProps {
     this.isMemorable = props.isMemorable !== undefined ? props.isMemorable : true;
     this.children = props.children || {};
     this.rerouter = props.rerouter;
+    this.image = props.image || noop;
+    this.title = props.title || (() => this.path.value);
 
     this.ambience = props.ambience ?
       function () {
@@ -62,6 +66,12 @@ export class Route extends RouteConstructionProps {
     cascaded.path = new Path(
       parent.path.parts.concat(childPath).join(Path.separator)
     );
+    if (cascaded.title === noop) {
+      cascaded.title = parent.title;
+    }
+    if (cascaded.image === noop) {
+      cascaded.image = parent.image;
+    }
     if (cascaded.music === noop) {
       cascaded.music = parent.music;
     }

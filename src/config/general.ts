@@ -31,6 +31,10 @@ for (const count of equippableItems.values()) {
   maxEquippedItems += count;
 }
 
+export const loadingMessages = [
+  `"Death is but changing of our robes to wait\nIn wedding garments at the Eternal's gate"\n- Sri Aurobindo`
+];
+
 export function addStaticState () {
   let previousLevelInfo: LevelInfo;
   ["Seeker", "Apprentice", "Pretty Cool", "Kickass", "Badass", "Master", "Grand Master"]
@@ -158,6 +162,7 @@ export function addStaticState () {
     const info = new DungeonInfo();
     info.id = name;
     info.name = name;
+    info.imageUrl = require("../../assets/dd/images/loading_screen/loading_screen.cove_0.png");
     info.monsters = StaticState.instance.monsters;
     StaticState.instance.add((i) => i.dungeons, info);
   });
