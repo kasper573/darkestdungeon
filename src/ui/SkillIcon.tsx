@@ -14,6 +14,7 @@ export class SkillIcon extends React.Component<{
   isEnabled?: boolean,
   isSelected?: boolean,
   classStyle?: any,
+  clickSound?: IHowlProperties,
   onClick?: () => void
 }> {
   static defaultProps = {
@@ -48,6 +49,7 @@ export class SkillIcon extends React.Component<{
         <Icon
           src={this.props.skill.info.iconUrl}
           classStyle={[styles.container, this.props.classStyle]}
+          clickSound={this.props.clickSound}
           onClick={this.props.isEnabled ? this.props.onClick : undefined}>
           {lockSymbol}
           {levelIndicator}
