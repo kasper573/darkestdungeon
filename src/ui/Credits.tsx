@@ -100,6 +100,11 @@ const styles = StyleSheet.create({
     ":first-child": {
       marginTop: grid.ySpan(7.5),
       marginBottom: grid.ySpan(7.5)
+    },
+
+    ":last-child": {
+      marginTop: grid.ySpan(7.5),
+      marginBottom: grid.ySpan(7.5)
     }
   },
 
