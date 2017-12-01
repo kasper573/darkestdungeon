@@ -52,12 +52,18 @@ export class ItemDropbox extends AppStateComponent<{
       // Play item sound effects as they're added
       (this.props.items as any as ObservableArray<Item>).observe(
         (change: IArraySplice<Item>) => {
-          change.added.forEach((item) => {
+          // Determine which items to play (we won't play the same sfx twice)
+          const soundsToPlay = change.added.reduce((dict, item) => {
             const sound = itemSounds[item.info.type];
             if (sound) {
-              this.appState.sfx.play(sound);
+              dict[item.info.type] = sound;
             }
-          });
+            return dict;
+          }, {} as {[key: string]: IHowlProperties});
+
+          for (const sound of Object.values(soundsToPlay)) {
+            this.appState.sfx.play(sound);
+          }
         }
       )
     ];
