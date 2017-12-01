@@ -32,7 +32,8 @@ for (const count of equippableItems.values()) {
 }
 
 export const loadingMessages = [
-  `"Death is but changing of our robes to wait\nIn wedding garments at the Eternal's gate"\n- Sri Aurobindo`
+  `"Death is but changing of our robes to wait\nIn wedding garments at the Eternal's gate"\n- Sri Aurobindo`,
+  `"Control your kids, control your pixels, control your bladder"\n- Totttz`
 ];
 
 export function addStaticState () {
