@@ -22,19 +22,6 @@ import {upgradeIconUrls} from "./BuildingUpgradeIcon";
 import {grid} from "../../../config/Grid";
 import {BuildingMessage} from "./BuildingMessage";
 import {CommonHeader} from "../../../ui/CommonHeader";
-import {ItemType} from "../../../state/types/ItemInfo";
-
-const purchaseSounds = {
-  item: (type: ItemType) => {
-    switch (type) {
-      case ItemType.Armor:
-        return {src: require("../../../../assets/dd/audio/town_blacksmith_purchase_arm.wav"), volume: 0.7};
-      case ItemType.Weapon:
-        return {src: require("../../../../assets/dd/audio/town_blacksmith_purchase_wep.wav"), volume: 0.7};
-    }
-  },
-  skill: {src: require("../../../../assets/dd/audio/town_guild_purchase_skill.wav"), volume: 0.5}
-};
 
 @observer
 export class HeroUpgradeGrid extends AppStateComponent<{
@@ -95,10 +82,12 @@ export class HeroUpgradeGrid extends AppStateComponent<{
     if (proceed) {
       if (target instanceof Item) {
         this.activeProfile.purchaseItemLevelUp(target);
-        this.appState.sfx.play(purchaseSounds.item(target.info.type));
       } else {
         this.activeProfile.purchaseSkillLevelUp(target);
-        this.appState.sfx.play(purchaseSounds.skill);
+      }
+
+      if (this.buildingInfo.useSound) {
+        this.appState.sfx.play(this.buildingInfo.useSound);
       }
     }
   }

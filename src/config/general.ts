@@ -436,6 +436,7 @@ export function addStaticState () {
     },
     blacksmith: {
       name: "Blacksmith",
+      useSound: {src: require("../../assets/dd/audio/town_blacksmith_purchase_wep.wav"), volume: 0.7},
       enterSound: {src: require("../../assets/dd/audio/town_enter_blacksmith.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character.png"),
@@ -479,6 +480,7 @@ export function addStaticState () {
     },
     guild: {
       name: "Guild",
+      useSound: {src: require("../../assets/dd/audio/town_guild_purchase_skill.wav"), volume: 0.5},
       enterSound: {src: require("../../assets/dd/audio/town_enter_guild.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.character.png"),
@@ -555,6 +557,7 @@ export function addStaticState () {
     },
     coach: {
       name: "Stage Coach",
+      useSound: {src: require("../../assets/dd/audio/town_stagecoach_purchase.wav"), volume: 0.5},
       enterSound: {src: require("../../assets/dd/audio/town_enter_coach.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character.png"),
