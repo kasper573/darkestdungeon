@@ -72,7 +72,9 @@ export class Store extends React.Component<{
           compare={Item.comparers.name}
           canInteractWith={this.canAffordItem.bind(this)}
           onItemClick={this.takeItem.bind(this)}
-          extraComponent={({item}) => item && <ItemValue value={item.info.value}/>}
+          extraComponent={({item}) => (
+            item && <ItemValue value={item.info.value} compareWith={this.props.profile.goldAfterDebt}/>
+          )}
         />
 
         <CommonHeader label="Shopping cart"/>
@@ -86,10 +88,10 @@ export class Store extends React.Component<{
   }
 }
 
-function ItemValue ({value}: any) {
+function ItemValue ({value, compareWith}: any) {
   return (
     <div className={css(styles.itemValue)}>
-      <GoldIcon classStyle={styles.goldIcon} amount={value}/>
+      <GoldIcon classStyle={styles.goldIcon} amount={value} compareWith={compareWith}/>
     </div>
   );
 }
