@@ -6,8 +6,9 @@ export const Input = {
   // Town
   previousHero: "Q",
   nextHero: "E",
+  nextBuilding: "Tab",
 
-  // Questm
+  // Quest
   moveLeft: "A",
   moveRight: "D",
   useTorch: "T",
