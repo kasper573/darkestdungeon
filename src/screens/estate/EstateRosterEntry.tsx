@@ -5,7 +5,7 @@ import {LevelIcon} from "../../ui/LevelIcon";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
-import {commonStyleFn, commonStyles} from "../../config/styles";
+import {commonColors, commonStyleFn, commonStyles} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
@@ -19,6 +19,7 @@ import {estateContentPosition} from "./EstateTemplate";
 import {grid} from "../../config/Grid";
 import {Icon} from "../../ui/Icon";
 import {Prompt} from "../../ui/Popups";
+import {fonts} from "../../../assets/fonts";
 
 const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
@@ -133,7 +134,7 @@ export class EstateRosterEntry extends AppStateComponent<{
             />
           )}
           <div className={css(styles.info)}>
-            <span className={css(commonStyles.commonName)}>
+            <span className={css(styles.name)}>
               {hero.name}
             </span>
             <StressMeter
@@ -214,6 +215,11 @@ const styles = StyleSheet.create({
     ...commonStyleFn.dock("left"),
     width: rosterEntryAvatarSize,
     height: rosterEntryAvatarSize
+  },
+
+  name: {
+    color: commonColors.gold,
+    fontFamily: fonts.Darkest
   },
 
   info: {
