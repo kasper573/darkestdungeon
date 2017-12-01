@@ -19,6 +19,7 @@ export type IconProps = {
   height?: number,
   scale?: number,
 
+  clickSound?: IHowlProperties,
   classStyle?: any,
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void,
   onRightClick?: (e: React.MouseEvent<HTMLDivElement>) => void
@@ -74,6 +75,7 @@ export class Icon extends React.Component<IconProps> {
         textGlow={false}
         onClick={this.props.onClick}
         onRightClick={this.props.onRightClick}
+        clickSound={this.props.clickSound}
         classStyle={[styles.icon, this.props.classStyle]}
         style={dynamicIconStyle}>
         {this.props.children}

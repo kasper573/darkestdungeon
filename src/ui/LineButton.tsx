@@ -7,6 +7,11 @@ import {VerticalOutlineBox} from "./VerticalOutlineBox";
 import {commonColors} from "../config/styles";
 import {AppStateComponent} from "../AppStateComponent";
 
+const sounds = {
+  hover: {src: require("../../assets/dd/audio/ui_shr_button_mouse_over.wav"), volume: 0.7},
+  click: {src: require("../../assets/dd/audio/ui_shr_button_click.wav"), volume: 0.5}
+};
+
 @observer
 export class LineButton extends AppStateComponent<{
   label?: string,
@@ -14,13 +19,13 @@ export class LineButton extends AppStateComponent<{
   hoverColor?: string,
   outlineScale?: number,
   textGlow?: boolean,
+  clickSound?: IHowlProperties,
   hoverState?: IObservableValue<boolean>,
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void,
   onRightClick?: (e: React.MouseEvent<HTMLDivElement>) => void
   classStyle?: any,
   style?: any
 }> {
-  static hoverSound: IHowlProperties = {src: require("../../assets/dd/audio/ui_shr_button_mouse_over.wav")};
   static defaultProps = {
     defaultColor: "transparent",
     hoverColor: commonColors.gold,
@@ -39,7 +44,7 @@ export class LineButton extends AppStateComponent<{
       () => this.hoverState.get(),
       (isOver) =>  {
         if (isOver && this.props.onClick) {
-          this.appState.sfx.play(LineButton.hoverSound);
+          this.appState.sfx.play(sounds.hover);
         }
       }
     );
@@ -57,7 +62,7 @@ export class LineButton extends AppStateComponent<{
         className={css(styles.lineButton, this.props.textGlow && styles.textGlow, this.props.classStyle)}
         onMouseEnter={() => this.hoverState.set(true)}
         onMouseLeave={() => this.hoverState.set(false)}
-        onClick={this.props.onClick}
+        onClick={this.onClick.bind(this)}
         onContextMenu={(e) => {
           e.preventDefault();
           if (this.props.onRightClick) {
@@ -70,6 +75,13 @@ export class LineButton extends AppStateComponent<{
         <VerticalOutlineBox color={outlineColor} scale={this.props.outlineScale}/>
       </div>
     );
+  }
+
+  onClick (e: React.MouseEvent<HTMLDivElement>) {
+    if (this.props.onClick) {
+      this.appState.sfx.play(sounds.click);
+      this.props.onClick(e);
+    }
   }
 }
 
