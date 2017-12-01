@@ -27,6 +27,7 @@ export class LineButton extends AppStateComponent<{
   style?: any
 }> {
   static defaultProps = {
+    clickSound: sounds.click,
     defaultColor: "transparent",
     hoverColor: commonColors.gold,
     textGlow: true
@@ -79,7 +80,7 @@ export class LineButton extends AppStateComponent<{
 
   onClick (e: React.MouseEvent<HTMLDivElement>) {
     if (this.props.onClick) {
-      this.appState.sfx.play(sounds.click);
+      this.appState.sfx.play(this.props.clickSound);
       this.props.onClick(e);
     }
   }
