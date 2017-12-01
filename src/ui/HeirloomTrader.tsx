@@ -19,6 +19,10 @@ const iconUrls = {
   down: require("../../assets/dd/images/campaign/town/heirloom_exchange/heirloom_exchange.arrow_down.png")
 };
 
+const sounds = {
+  confirmTrade: {src: require("../../assets/dd/audio/ui_town_heirloomconfirm.wav"), volume: 0.5}
+};
+
 @observer
 export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
   heirloomList = StaticState.instance.heirlooms;
@@ -91,6 +95,7 @@ export class HeirloomTrader extends AppStateComponent<{isVisible?: boolean}> {
                   <Icon
                     classStyle={[styles.acceptIcon, canTrade && styles.acceptIconEnabled]}
                     src={confirmIconUrl}
+                    clickSound={sounds.confirmTrade}
                     onClick={canTrade ? () => this.tradeSelectedHeirlooms(targetHeirloom) : undefined}
                   />
                 </Row>
