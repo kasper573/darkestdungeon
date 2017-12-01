@@ -13,7 +13,7 @@ import {grid} from "../../config/Grid";
 import {EstateInventory} from "./EstateInventory";
 import {fonts} from "../../../assets/fonts";
 import {screenFooterHeight} from "../ScreenFooter";
-import {Row} from "../../config/styles";
+import {commonStyleFn, Row} from "../../config/styles";
 import {popupOffset} from "../../ui/Popups";
 import {Icon} from "../../ui/Icon";
 
@@ -28,7 +28,8 @@ export class EstateTemplate extends AppStateComponent<{
   continuePath: PathTypes,
   roster?: boolean,
   inventory?: boolean,
-  lineupFeaturesInRoster?: boolean
+  lineupFeaturesInRoster?: boolean,
+  coverBackgroundBottom?: boolean
 }> {
   static defaultProps = {
     roster: true,
@@ -71,6 +72,10 @@ export class EstateTemplate extends AppStateComponent<{
         <InputBindings list={[
           [Input.back, () => this.mayGoBack ? this.goBack() : this.pause()]
         ]}/>
+
+        {this.props.coverBackgroundBottom && (
+          <div className={css(styles.backgroundCover)}/>
+        )}
 
         <div className={css(styles.content, this.appState.showGridOverlay && styles.contentOverlay)}>
           {this.props.children}
@@ -126,6 +131,16 @@ export const estateContentPosition = {
 const headerOffset = grid.gutter * 2.5;
 const backButtonSize = grid.ySpan(0.66);
 const styles = StyleSheet.create({
+  backgroundCover: {
+    ...commonStyleFn.dock("bottom"),
+    bottom: grid.paddingBottom + screenFooterHeight - grid.gutter,
+    height: grid.ySpan(3),
+    background: commonStyleFn.gradient("bottom", [
+      [0, "transparent"],
+      [25, "black"]
+    ])
+  },
+
   header: {
     position: "absolute",
     top: -headerOffset, left: 0,
