@@ -46,6 +46,7 @@ export class GoldIcon extends React.Component<{
   }
 }
 
+export const smallGoldRows = 0.5;
 const styles = StyleSheet.create({
   largeText: {
     fontSize: grid.fontSize(1),
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
 
   smallText: {
-    fontSize: grid.fontSize(0.5),
+    fontSize: grid.fontSize(smallGoldRows),
     fontFamily: fonts.Darkest,
     fontWeight: "normal",
     textShadow: commonStyleFn.textShadow("black")

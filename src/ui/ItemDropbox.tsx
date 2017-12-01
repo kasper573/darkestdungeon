@@ -174,7 +174,7 @@ export class ItemDropbox extends AppStateComponent<{
 }
 
 const itemMargin = grid.gutter / 2;
-const maxItemsInRow = 10;
+const maxItemsInRow = 9;
 const styles = StyleSheet.create({
   dropbox: {
     flexWrap: "wrap",
@@ -184,8 +184,7 @@ const styles = StyleSheet.create({
 
   slot: {
     flex: "auto",
-    margin: itemMargin,
-    ...itemSize
+    margin: itemMargin
   },
 
   stackSize: {
