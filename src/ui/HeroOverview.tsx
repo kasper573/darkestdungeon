@@ -20,11 +20,18 @@ import {fonts} from "../../assets/fonts";
 import {TooltipArea} from "../lib/TooltipArea";
 import {BuildingMessage} from "../screens/estate/buildings/BuildingMessage";
 import {InputField} from "./InputField";
+import {AppStateComponent} from "../AppStateComponent";
 
 const dismissIconUrl = require("../../assets/dd/images/shared/character/icon_dismiss.png");
 
+const sounds = {
+  equipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_equip.wav"), volume: 0.6},
+  unequipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_unequip.wav"), volume: 0.6},
+  skillLocked: {src: require("../../assets/dd/audio/ui_town_button_click_locked.wav"), volume: 0.6}
+};
+
 @observer
-export class HeroOverview extends React.Component<
+export class HeroOverview extends AppStateComponent<
   PopupProps & {
   hero: Hero,
   enableSkillSelection?: () => boolean,
@@ -37,7 +44,12 @@ export class HeroOverview extends React.Component<
   };
 
   toggleSkillSelection (skill: Skill) {
-    if (skill.level === 0 || !this.props.enableSkillSelection()) {
+    if (!this.props.enableSkillSelection()) {
+      return;
+    }
+
+    if (skill.level === 0) {
+      this.appState.sfx.play(sounds.skillLocked);
       return;
     }
 
@@ -46,9 +58,11 @@ export class HeroOverview extends React.Component<
     if (isSelecting) {
       if (numSelected < maxSelectedSkills) {
         skill.isSelected = true;
+        this.appState.sfx.play(sounds.equipSkill);
       }
     } else {
       skill.isSelected = false;
+      this.appState.sfx.play(sounds.unequipSkill);
     }
   }
 
@@ -147,6 +161,7 @@ export class HeroOverview extends React.Component<
                       key={skill.info.id}
                       skill={skill}
                       classStyle={styles.skillIcon}
+                      clickSound={null}
                       onClick={onSkillSelected.bind(this, skill)}
                     />
                   ))}

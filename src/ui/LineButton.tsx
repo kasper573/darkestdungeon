@@ -80,7 +80,9 @@ export class LineButton extends AppStateComponent<{
 
   onClick (e: React.MouseEvent<HTMLDivElement>) {
     if (this.props.onClick) {
-      this.appState.sfx.play(this.props.clickSound);
+      if (this.props.clickSound) {
+        this.appState.sfx.play(this.props.clickSound);
+      }
       this.props.onClick(e);
     }
   }
