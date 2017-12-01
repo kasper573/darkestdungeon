@@ -20,7 +20,8 @@ export type PopupProps = {
   sounds?: boolean,
   muffle?: boolean,
   openSound?: any,
-  closeSound?: any
+  closeSound?: any,
+  fullScreen?: boolean
 };
 
 export class Popup extends AppStateComponent<PopupProps> {
@@ -96,7 +97,7 @@ export class Popup extends AppStateComponent<PopupProps> {
     );
 
     return (
-      <div className={css(styles.popup, this.props.classStyle)}>
+      <div className={css(styles.popup, this.props.fullScreen && styles.fullScreen, this.props.classStyle)}>
         <div className={css(styles.splash)}/>
         <div className={css(styles.content)}>
           {headerIcon}
@@ -202,6 +203,12 @@ const styles = StyleSheet.create({
     boxShadow: commonStyleFn.outerShadow(),
     minWidth: grid.vw(25),
     maxWidth: grid.vw(85)
+  },
+
+  fullScreen: {
+    width: grid.outerWidth,
+    height: grid.outerHeight,
+    maxWidth: grid.outerWidth
   },
 
   splash: {
