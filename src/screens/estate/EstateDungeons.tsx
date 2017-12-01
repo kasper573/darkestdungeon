@@ -4,11 +4,14 @@ import {Path} from "../../state/types/Path";
 import {Alert, Prompt} from "../../ui/Popups";
 import {observer} from "mobx-react";
 import {DungeonBreakdown} from "../../ui/DungeonBreakdown";
-import {QuestBreakdown} from "../../ui/QuestBreakdown";
+import {QuestBreakdown, questBreakdownWidth} from "../../ui/QuestBreakdown";
 import {LineupDropbox} from "../../ui/LineupDropbox";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Quest} from "../../state/types/Quest";
 import {ItemType} from "../../state/types/ItemInfo";
+import {css, StyleSheet} from "aphrodite";
+import {commonStyleFn} from "../../config/styles";
+import {grid} from "../../config/Grid";
 
 @observer
 export class EstateDungeons extends AppStateComponent<{path: Path}> {
@@ -89,17 +92,22 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
         continueSound={{src: require("../../../assets/dd/audio/ui_town_button_provision.wav"), volume: 0.7}}
         continueLabel="Provision"
         continuePath="estateProvision">
-        {this.activeProfile.dungeons.map((d) =>
-          <DungeonBreakdown
-            key={d.id}
-            name={d.info.name}
-            level={d.level.number}
-            progress={d.levelProgress}
-            quests={questLookup[d.id]}
-            selectedQuestId={this.activeProfile.selectedQuestId}
-            onQuestSelected={(quest) => this.activeProfile.selectedQuestId = quest.id}
-          />
-        )}
+        <div className={css(styles.content)}>
+          <div className={css(styles.dungeons)}>
+            {this.activeProfile.dungeons.map((d) =>
+              <DungeonBreakdown
+                key={d.id}
+                classStyle={styles.dungeon}
+                name={d.info.name}
+                level={d.level.number}
+                progress={d.levelProgress}
+                quests={questLookup[d.id]}
+                selectedQuestId={this.activeProfile.selectedQuestId}
+                onQuestSelected={(quest) => this.activeProfile.selectedQuestId = quest.id}
+              />
+            )}
+          </div>
+        </div>
         {this.selectedQuest && (
           <QuestBreakdown
             quest={this.selectedQuest}
@@ -111,3 +119,21 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  content: {
+    ...commonStyleFn.dock(),
+    marginLeft: questBreakdownWidth + grid.xSpan(0.5),
+    justifyContent: "center"
+  },
+
+  dungeons: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center"
+  },
+
+  dungeon: {
+    marginBottom: grid.ySpan(1)
+  }
+});

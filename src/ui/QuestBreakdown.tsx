@@ -51,11 +51,12 @@ function Section ({label, color, children}: any) {
   );
 }
 
+export const questBreakdownWidth = grid.xSpan(3.5);
 const styles = StyleSheet.create({
   container: {
     ...commonStyleFn.dock("left"),
     background: "black",
-    width: grid.xSpan(3.5),
+    width: questBreakdownWidth,
     boxShadow: commonStyleFn.outerShadow(undefined, grid.gutter * 2)
   },
 
