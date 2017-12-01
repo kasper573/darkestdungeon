@@ -19,7 +19,7 @@ import {grid} from "../../../../config/Grid";
 export class TreatmentFacility extends AppStateComponent<{
   info: BuildingInfo
 }> {
-  async promptLockInFor (resident: Hero, residencyEffects: BuildingUpgradeEffects) {
+  async promptLockInFor (resident: Hero, buildingInfo: BuildingInfo, residencyEffects: BuildingUpgradeEffects) {
     // If the residency treats quirks/diseases you need to have one selected
     if (residencyEffects.hasTreatments && !resident.residentInfo.treatmentId) {
       this.appState.popups.show(
@@ -40,6 +40,9 @@ export class TreatmentFacility extends AppStateComponent<{
 
     if (proceed) {
       this.activeProfile.purchaseResidency(resident);
+      if (buildingInfo.useSound) {
+        this.appState.sfx.play(buildingInfo.useSound);
+      }
     }
   }
 
@@ -102,7 +105,7 @@ export class TreatmentFacility extends AppStateComponent<{
                         goldRequired={slotCost}
                         onRemove={() => resident.leaveResidence()}
                         onInsert={(hero) => hero.enterResidence(info.id, slotIndex)}
-                        onLockIn={() => this.promptLockInFor(resident, unlockedEffects)}
+                        onLockIn={() => this.promptLockInFor(resident, info, unlockedEffects)}
                         onRelease={() => this.promptReleaseFor(resident)}
                         canHelp={(hero: Hero) => this.canHelp(hero, info.id, unlockedEffects)}
                         resident={resident}

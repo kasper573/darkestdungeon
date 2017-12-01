@@ -14,6 +14,7 @@ export class BuildingInfo {
   slotImageUrl: string;
   backgroundUrl: string;
   enterSound: IHowlProperties;
+  useSound: IHowlProperties;
 
   children = new Map<string, BuildingInfo>();
   items: BuildingUpgradeInfo[] = [];
