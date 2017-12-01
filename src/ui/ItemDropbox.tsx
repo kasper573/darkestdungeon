@@ -7,9 +7,22 @@ import {contains, count, removeItem} from "../lib/Helpers";
 import {grid} from "../config/Grid";
 import {css, StyleSheet} from "aphrodite";
 import {commonColors, commonStyleFn} from "../config/styles";
+import {IArraySplice} from "mobx";
+import {AppStateComponent} from "../AppStateComponent";
+import {ItemType} from "../state/types/ItemInfo";
+import {ObservableArray} from "mobx/lib/types/observablearray";
+
+const itemSounds: {[key: string]: IHowlProperties} = {
+  [ItemType.Heirloom]: {src: require("../../assets/dd/audio/ui_dun_loot_take_heirloom.wav"), volume: 0.2},
+  [ItemType.Treasure]: {src: require("../../assets/dd/audio/ui_dun_loot_take_jewelry.wav"), volume: 0.2},
+  [ItemType.Consumable]: {src: require("../../assets/dd/audio/ui_dun_loot_take_provisions.wav"), volume: 0.2},
+  [ItemType.Armor]: {src: require("../../assets/dd/audio/ui_dun_loot_take_all.wav"), volume: 0.4},
+  [ItemType.Weapon]: {src: require("../../assets/dd/audio/ui_dun_loot_take_all.wav"), volume: 0.4},
+  [ItemType.Trinket]: {src: require("../../assets/dd/audio/ui_dun_trink_equip.wav"), volume: 0.4}
+};
 
 @observer
-export class ItemDropbox extends React.Component<{
+export class ItemDropbox extends AppStateComponent<{
   items: Item[],
   extraComponent?: React.SFC<{item: Item}> | React.ComponentClass<{item: Item}>,
 
@@ -31,6 +44,30 @@ export class ItemDropbox extends React.Component<{
     onItemClick: (): null => null,
     onItemRightClick: (): null => null
   };
+
+  private reactionDisposers: Array<() => void>;
+
+  componentWillMount () {
+    this.reactionDisposers = [
+      // Play item sound effects as they're added
+      (this.props.items as any as ObservableArray<Item>).observe(
+        (change: IArraySplice<Item>) => {
+          change.added.forEach((item) => {
+            const sound = itemSounds[item.info.type];
+            if (sound) {
+              this.appState.sfx.play(sound);
+            }
+          });
+        }
+      )
+    ];
+  }
+
+  componentWillUnmount () {
+    while (this.reactionDisposers.length) {
+      this.reactionDisposers.pop()();
+    }
+  }
 
   releaseItem (item: Item, monitor: any) {
     if (monitor.didDrop()) {
