@@ -5,9 +5,12 @@ import {commonColors, commonStyleFn} from "../config/styles";
 
 export class InputField extends React.Component<{
   defaultValue: string,
-  placeholder: string,
+  placeholder?: string,
   disabled?: boolean,
-  classStyle?: any
+  classStyle?: any,
+  minLength?: number,
+  maxLength?: number,
+  onChange?: (newValue: string) => void
 }> {
   node: HTMLInputElement;
 
@@ -20,8 +23,15 @@ export class InputField extends React.Component<{
             className={css(styles.input, this.props.disabled && styles.disabled)}
             defaultValue={this.props.defaultValue}
             placeholder={this.props.placeholder}
+            maxLength={this.props.maxLength}
+            minLength={this.props.minLength}
             disabled={this.props.disabled}
-            onChange={() => true}
+            onChange={() => {
+              if (this.props.onChange) {
+                this.props.onChange(this.node.value);
+              }
+              return true;
+            }}
           />
         </div>
       </div>

@@ -14,6 +14,10 @@ export class Hero extends Character {
   @observable
   residentInfo: HeroResidentInfo = null;
 
+  changeName (newName: string) {
+    this.name = newName;
+  }
+
   leaveLineup () {
     this.inLineup = false;
     this.lineupIndex = -1;

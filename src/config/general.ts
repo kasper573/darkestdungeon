@@ -17,9 +17,11 @@ export const defaultAmbienceOSVolume = 0.25;
 
 export const todo = "?todo?";
 
+export const heroNameMinLength = 1;
+export const heroNameMaxLength = 13;
 export const recommendedFoodCount = 8;
-
 export const maxSelectedSkills = 4;
+
 export const equippableItems = new Map<ItemType, number>();
 equippableItems.set(ItemType.Weapon, 1);
 equippableItems.set(ItemType.Armor, 1);
