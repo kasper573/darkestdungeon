@@ -7,6 +7,12 @@ import {StaticState} from "../../../state/StaticState";
 import {css, StyleSheet} from "aphrodite";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 import {BuildingMessage} from "./BuildingMessage";
+import {Hero} from "../../../state/types/Hero";
+
+const recruitPurchaseSound: IHowlProperties = {
+  src: require("../../../../assets/dd/audio/town_stagecoach_purchase.wav"),
+  volume: 0.5
+};
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -32,6 +38,11 @@ export class StageCoach extends AppStateComponent {
     }
   }
 
+  recruitHero (newHero: Hero) {
+    this.activeProfile.recruitHero(newHero);
+    this.appState.sfx.play(recruitPurchaseSound);
+  }
+
   render () {
     const lastIndex = this.activeProfile.coach.length - 1;
     const elements: React.ReactNode[] = [];
@@ -42,7 +53,7 @@ export class StageCoach extends AppStateComponent {
           key={hero.id}
           hero={hero}
           transparent={true}
-          onDragEnd={(draggedHero, monitor) => monitor.didDrop() && this.activeProfile.recruitHero(draggedHero)}
+          onDragEnd={(draggedHero, monitor) => monitor.didDrop() && this.recruitHero(draggedHero)}
           allowDrag={() => !this.activeProfile.isRosterFull}
           allowDrop={() => false}
           classStyle={styles.coachEntry}
