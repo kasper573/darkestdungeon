@@ -2,17 +2,26 @@ import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import Color = require("color");
 import {commonColors, commonStyleFn} from "../config/styles";
+import {AppStateComponent} from "../AppStateComponent";
 const {DropTarget, DragSource} = require("react-dnd");
 
+const genericSounds = {
+  drag: {src: require("../../assets/dd/audio/ui_town_button_mouseover_2.wav"), volume: 1.2},
+  drop: {src: require("../../assets/dd/audio/ui_shr_button_mouse_over_alt.wav"), volume: 0.5},
+  cancel: {src: require("../../assets/dd/audio/ui_town_infest_mouseover_none.wav"), volume: 0.2}
+};
+
 const SourceSpec = {
-  beginDrag (props: DragDropSlotProps<{}>, monitor: any) {
+  beginDrag (props: DragDropSlotProps<{}>, monitor: any, source: DragDropSlot<{}>) {
+    source.onDragBegin(monitor);
     if (props.onDragBegin) {
       props.onDragBegin(props.item, monitor);
     }
     return {item: props.item};
   },
 
-  endDrag (props: DragDropSlotProps<{}>, monitor: any) {
+  endDrag (props: DragDropSlotProps<{}>, monitor: any, target: DragDropSlot<{}>) {
+    target.onDragEnd(monitor);
     if (props.onDragEnd) {
       props.onDragEnd(monitor.getItem().item, monitor);
     }
@@ -24,7 +33,7 @@ const SourceSpec = {
 };
 
 const TargetSpec = {
-  drop (props: DragDropSlotProps<{}>, monitor: any, target: DragDropSlot<{}>) {
+  drop (props: DragDropSlotProps<{}>, monitor: any, target: any) {
     if (target.props.onDrop) {
       // HACK make onDrop always get called after onDragEnd
       const item = monitor.getItem().item;
@@ -85,7 +94,7 @@ export type DragDropSlotProps<T> = {
   canDrag: monitor.canDrag(),
   isDragging: monitor.isDragging()
 }))
-export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
+export class DragDropSlot<T> extends AppStateComponent<DragDropSlotProps<T>> {
   componentDidMount () {
     if (this.props.preview) {
       this.props.connectDragPreview(this.props.preview);
@@ -116,6 +125,14 @@ export class DragDropSlot<T> extends React.Component<DragDropSlotProps<T>> {
         </div>
       )
     );
+  }
+
+  onDragBegin (monitor: any) {
+    this.appState.sfx.play(genericSounds.drag);
+  }
+
+  onDragEnd (monitor: any) {
+    this.appState.sfx.play(monitor.didDrop() ? genericSounds.drop : genericSounds.cancel);
   }
 }
 
