@@ -141,7 +141,9 @@ export class App extends React.Component<{
             onSizeChanged={(size) => this.props.state.bounds.realSize = size}
           />
         </div>
-        <DevTools />
+        {process.env.NODE_ENV !== "production" && (
+          <DevTools />
+        )}
       </InputRoot>
     );
   }
