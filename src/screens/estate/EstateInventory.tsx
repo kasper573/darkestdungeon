@@ -2,7 +2,7 @@ import * as React from "react";
 import {ItemType} from "../../state/types/ItemInfo";
 import {Inventory} from "../../ui/Inventory";
 import {StyleSheet} from "aphrodite";
-import {observable, transaction} from "mobx";
+import {action, observable} from "mobx";
 import {observer} from "mobx-react";
 import {CompareFunction, SortOptions} from "../../ui/SortOptions";
 import {Item} from "../../state/types/Item";
@@ -38,14 +38,14 @@ export class EstateInventory extends AppStateComponent {
     }
   }
 
+  @action
   unequipAllItems () {
-    transaction(() => {
-      this.activeProfile.roster.forEach((hero) => {
-        while (hero.items.length) {
-          this.activeProfile.items.push(hero.items.pop());
-        }
-      });
-    });
+    const unequippedItems = this.activeProfile.roster.reduce((unequipped, hero) => {
+      unequipped.push(...hero.items.slice(0, hero.items.length));
+      return unequipped;
+    }, [] as Item[]);
+
+    this.activeProfile.items.push(...unequippedItems);
   }
 
   render () {
