@@ -13,6 +13,7 @@ export class BuildingInfo {
   npcImageUrl: string;
   slotImageUrl: string;
   backgroundUrl: string;
+  enterSound: IHowlProperties;
 
   children = new Map<string, BuildingInfo>();
   items: BuildingUpgradeInfo[] = [];

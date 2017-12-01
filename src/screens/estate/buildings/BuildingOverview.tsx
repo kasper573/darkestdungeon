@@ -8,12 +8,13 @@ import {BuildingInfo} from "../../../state/types/BuildingInfo";
 import {grid} from "../../../config/Grid";
 import {LargeHeader} from "../../../ui/LargeHeader";
 import {Icon} from "../../../ui/Icon";
+import {AppStateComponent} from "../../../AppStateComponent";
 
 const moreInfoIconUrl = require("../../../../assets/dd/images/shared/progression/more_info_icon.png");
 const lessInfoIconUrl = require("../../../../assets/dd/images/shared/progression/less_info_icon.png");
 
 @observer
-export class BuildingOverview extends React.Component<{
+export class BuildingOverview extends AppStateComponent<{
   info: BuildingInfo,
   classStyle?: any,
   coverupRight?: boolean,
@@ -25,6 +26,12 @@ export class BuildingOverview extends React.Component<{
   };
 
   @observable areUpgradesVisible = false;
+
+  componentWillMount () {
+    if (this.props.info.enterSound) {
+      this.appState.sfx.play(this.props.info.enterSound);
+    }
+  }
 
   render () {
     const areUpgradesEnabled = this.props.info.children.size > 0;
