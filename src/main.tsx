@@ -8,6 +8,7 @@ import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";
 import {StaticState} from "./state/StaticState";
+import {barks} from "./config/barks";
 const HTML5Backend = require("react-dnd-html5-backend");
 const {DragDropContext} = require("react-dnd");
 const HotLoaderContainer = require("react-hot-loader").AppContainer;
@@ -16,6 +17,7 @@ const queryString = require("query-string");
 
 // Initialize application state
 const state = new AppState();
+state.barker.barks = barks;
 addStaticState();
 state.load();
 

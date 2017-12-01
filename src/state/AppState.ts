@@ -2,7 +2,7 @@ import {RouterState} from "./RouterState";
 import {AmbienceState} from "./AmbienceState";
 import {MusicState} from "./MusicState";
 import {PopupState} from "./PopupState";
-import {IReactionDisposer, observable, reaction} from "mobx";
+import {observable, reaction} from "mobx";
 import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {deserialize, serialize} from "serializr";
@@ -11,9 +11,10 @@ import {Difficulty, Profile} from "./types/Profile";
 import {Route} from "./types/Route";
 import {Path} from "./types/Path";
 import {SFXPlayer} from "./SFXPlayer";
+import {BarkDistributor} from "./BarkDistributor";
 
 export class AppState {
-  private reactionDisposers: IReactionDisposer[];
+  private reactionDisposers: Array<() => void>;
 
   public bounds: AppBounds = new AppBounds();
   public router: RouterState = new RouterState();
@@ -22,6 +23,7 @@ export class AppState {
   public popups: PopupState = new PopupState();
   public options: OptionsState = new OptionsState();
   public sfx: SFXPlayer = new SFXPlayer();
+  public barker: BarkDistributor = new BarkDistributor();
   public profiles: ProfileState = new ProfileState();
 
   public isRunningJest: boolean; // HACK ugly workaround
@@ -88,8 +90,13 @@ export class AppState {
           };
         },
         () => this.save()
-      )
+      ),
+      // Add disposer to stop bark distribution
+      () => this.barker.stop()
     ];
+
+    // Start bark distribution
+    this.barker.start();
   }
 
   ensureProfile () {

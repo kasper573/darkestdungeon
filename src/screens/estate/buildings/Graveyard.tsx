@@ -33,6 +33,7 @@ export class Graveyard extends AppStateComponent {
           key={hero.id} hero={hero}
           classStyle={styles.heroEntry}
           transparent={true}
+          enableBarks={false}
           allowDrop={() => false}
           allowDrag={() => false}
         />

@@ -20,6 +20,7 @@ import {grid} from "../../config/Grid";
 import {Icon} from "../../ui/Icon";
 import {Prompt} from "../../ui/Popups";
 import {fonts} from "../../../assets/fonts";
+import {BarkTooltipArea} from "../../ui/BarkTooltipArea";
 
 const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
@@ -31,6 +32,7 @@ const sounds = {
 export class EstateRosterEntry extends AppStateComponent<{
   hero: Hero,
   index?: number,
+  enableBarks?: boolean,
   lineupFeatures?: boolean,
   transparent?: boolean,
   allowDrop?: (item: Hero) => boolean,
@@ -46,7 +48,8 @@ export class EstateRosterEntry extends AppStateComponent<{
   onOverviewClosed?: () => void
 }> {
   static defaultProps = {
-    index: 0
+    index: 0,
+    enableBarks: true
   };
 
   async promptDismissHero (popup: PopupHandle) {
@@ -123,10 +126,12 @@ export class EstateRosterEntry extends AppStateComponent<{
             this.showHeroOverview();
             return false;
           }}>
-          <Avatar
-            classStyle={[styles.avatar, overlayIconUrl ? styles.avatarDimmed : false]}
-            src={hero.classInfo.avatarUrl}
-          />
+          <BarkTooltipArea>
+            <Avatar
+              classStyle={[styles.avatar, overlayIconUrl ? styles.avatarDimmed : false]}
+              src={hero.classInfo.avatarUrl}
+            />
+          </BarkTooltipArea>
           {overlayIconUrl && (
             <Icon
               src={overlayIconUrl}

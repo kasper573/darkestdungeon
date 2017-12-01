@@ -17,7 +17,7 @@ export enum TooltipSide {
   Left
 }
 
-type TooltipAreaProps = {
+export type TooltipAreaProps = {
   tip?: any,
   side?: TooltipSide,
   classStyle?: any,
@@ -78,7 +78,8 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
       position: "absolute",
       left: x,
       top: y,
-      pointerEvents: "none"
+      pointerEvents: "none",
+      opacity: this.isTooltipVisible ? 1 : 0
     };
   }
 
@@ -116,8 +117,6 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   }
 
   render () {
-    const tip = this.isTooltipVisible && this.wrapTooltip(this.props.tip);
-
     return (
       <div
         className={css(this.props.classStyle)}
@@ -130,7 +129,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
         <BoundsObserver onBoundsChanged={(bounds) => this.areaBounds = bounds}/>
 
         <div style={this.tooltipStyle}>
-          {tip}
+          {this.wrapTooltip(this.props.tip)}
           <SizeObserver onSizeChanged={(size) => this.tooltipSize = size}/>
         </div>
       </div>
