@@ -25,6 +25,11 @@ const itemCompareIcons = {
   type: require("../../../assets/dd/images/campaign/town/realm_inventory/realm_inventory_sort_class.png")
 };
 
+const sounds = {
+  inventoryOpened: {src: require("../../../assets/dd/audio/ui_town_trinket_open.wav"), volume: 0.7},
+  inventoryClosed: {src: require("../../../assets/dd/audio/ui_town_trinket_close.wav"), volume: 0.7}
+};
+
 @observer
 export class EstateInventory extends AppStateComponent {
   @observable compareFn: CompareFunction<Item>;
@@ -50,7 +55,10 @@ export class EstateInventory extends AppStateComponent {
 
   render () {
     return (
-      <Popup {...this.props}>
+      <Popup
+        {...this.props}
+        openSound={sounds.inventoryOpened}
+        closeSound={sounds.inventoryClosed}>
         <LargeHeader
           icon={inventoryIcon}
           label="Inventory"
