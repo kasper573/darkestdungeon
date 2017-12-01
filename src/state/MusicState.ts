@@ -19,6 +19,10 @@ export class MusicState {
     this.fader.play();
   }
 
+  muffle (isMuffled: boolean) {
+    this.fader.muffle(isMuffled);
+  }
+
   stop () {
     if (this.fader) {
       this.fader.stop();
@@ -49,6 +53,11 @@ class Fader {
     this.howl.off("fade"); // Cancels any pending stop calls
     this.howl.play();
     this.howl.fade(0, this.initialVolume, Fader.fadeTime);
+  }
+
+  muffle (isMuffled: boolean) {
+    const toVolume = isMuffled ? this.initialVolume * 0.3 : this.initialVolume;
+    this.howl.fade(this.howl.volume(), toVolume, Fader.fadeTime / 2);
   }
 
   stop () {

@@ -18,6 +18,7 @@ export type PopupProps = {
   closeable?: boolean,
   classStyle?: any,
   sounds?: boolean,
+  muffle?: boolean,
   openSound?: any,
   closeSound?: any
 };
@@ -25,8 +26,8 @@ export type PopupProps = {
 export class Popup extends AppStateComponent<PopupProps> {
   static defaultProps = {
     sounds: true,
-    openSound: {src: require("../../assets/dd/audio/ui_town_button_page_open.wav")},
-    closeSound: {src: require("../../assets/dd/audio/ui_town_button_page_close.wav")}
+    openSound: {src: require("../../assets/dd/audio/ui_town_button_page_open.wav"), volume: 0.8},
+    closeSound: {src: require("../../assets/dd/audio/ui_town_button_page_close.wav"), volume: 0.8}
   };
 
   private stopWaitingForClose: () => void;
@@ -49,6 +50,10 @@ export class Popup extends AppStateComponent<PopupProps> {
     }
 
     if (this.props.handle) {
+      if (this.props.muffle) {
+        this.appState.music.muffle(true);
+        this.appState.ambience.muffle(true);
+      }
       this.stopWaitingForClose = when(
         () => !this.appState.popups.map.has(this.props.handle.id),
         () => this.handleClose()
@@ -57,6 +62,10 @@ export class Popup extends AppStateComponent<PopupProps> {
   }
 
   handleClose () {
+    if (this.props.muffle) {
+      this.appState.music.muffle(false);
+      this.appState.ambience.muffle(false);
+    }
     if (this.props.closeSound) {
       this.appState.sfx.play(this.props.closeSound);
     }
