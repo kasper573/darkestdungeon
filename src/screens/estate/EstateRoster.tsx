@@ -9,6 +9,8 @@ import {Hero} from "../../state/types/Hero";
 import {grid} from "../../config/Grid";
 import {commonStyles} from "../../config/styles";
 import {observable} from "mobx";
+import {DragDropSlot} from "../../lib/DragDropSlot";
+import {BuildingMessage} from "./buildings/BuildingMessage";
 
 const heroCompareIcons = {
   level: require("../../../assets/dd/images/campaign/town/roster/roster_sort_level.png"),
@@ -32,6 +34,17 @@ export class EstateRoster extends AppStateComponent<{
 
   render () {
     const sortedHeroes = this.activeProfile.roster.slice().sort(Hero.comparers.rosterIndex);
+
+    const emptyDropSlot = sortedHeroes.length === 0 && (
+      <DragDropSlot
+        type={Hero}
+        allowDrag={() => false}
+      >
+        <BuildingMessage>
+          Recruit new heroes in the Stage Coach
+        </BuildingMessage>
+      </DragDropSlot>
+    );
 
     const roster = (
       <div className={css(styles.roster)}>
@@ -60,6 +73,7 @@ export class EstateRoster extends AppStateComponent<{
               onOverviewClosed={() => this.heroShownInOverview = null}
             />
           ))}
+          {emptyDropSlot}
         </ul>
       </div>
     );
