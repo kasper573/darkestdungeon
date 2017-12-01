@@ -11,7 +11,8 @@ export class LargeHeader extends React.Component<{
   label: string,
   icon?: string,
   iconChildren?: any,
-  onClick?: () => void
+  onClick?: () => void,
+  classStyle?: any
 }> {
   render () {
     const icon = this.props.icon && (
@@ -20,7 +21,7 @@ export class LargeHeader extends React.Component<{
       </Avatar>
     );
     return (
-      <Row valign="center">
+      <Row valign="center" classStyle={this.props.classStyle}>
         {icon}
         <h1 className={css(styles.headerLabel, commonStyles.commonName)}>
           {this.props.label}
