@@ -11,7 +11,7 @@ import {generateHero, generateQuest} from "../Generators";
 import {cap, contains, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
-import {HeirloomType} from "./ItemInfo";
+import {HeirloomType, ItemType} from "./ItemInfo";
 import {BuildingInfoId} from "./BuildingInfo";
 import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
@@ -226,6 +226,7 @@ export class Profile {
     this.offsetHeirlooms(deal);
   }
 
+  @action
   offsetHeirlooms (offset: Map<HeirloomType, number>, multiplier: number = 1) {
     offset.forEach((amount, type) => {
       amount *= multiplier;
