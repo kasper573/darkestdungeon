@@ -52,7 +52,9 @@ export const routes: {[key: string]: Route} = {
   start: new Route({
     component: Start,
     isMemorable: false,
-    music: () => require("../../assets/dd/audio/mus_theme_loop.wav")
+    music: () => {
+      return {src: require("../../assets/dd/audio/mus_theme_loop.wav"), volume: 0.7};
+    }
   }),
 
   loading: new Route({
