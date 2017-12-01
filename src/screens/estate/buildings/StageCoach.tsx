@@ -9,14 +9,13 @@ import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 import {BuildingMessage} from "./BuildingMessage";
 import {Hero} from "../../../state/types/Hero";
 
-const recruitPurchaseSound: IHowlProperties = {
-  src: require("../../../../assets/dd/audio/town_stagecoach_purchase.wav"),
-  volume: 0.5
-};
-
 @observer
 export class StageCoach extends AppStateComponent {
   static id = "coach";
+
+  get buildingInfo () {
+    return StaticState.instance.buildings.get(StageCoach.id);
+  }
 
   renderMessage () {
     if (this.activeProfile.coach.length === 0) {
@@ -40,7 +39,9 @@ export class StageCoach extends AppStateComponent {
 
   recruitHero (newHero: Hero) {
     this.activeProfile.recruitHero(newHero);
-    this.appState.sfx.play(recruitPurchaseSound);
+    if (this.buildingInfo.useSound) {
+      this.appState.sfx.play(this.buildingInfo.useSound);
+    }
   }
 
   render () {
@@ -68,7 +69,7 @@ export class StageCoach extends AppStateComponent {
     });
 
     return (
-      <BuildingOverview coverupRight={false} info={StaticState.instance.buildings.get(StageCoach.id)}>
+      <BuildingOverview coverupRight={false} info={this.buildingInfo}>
         <div className={css(styles.coachList)}>
           {this.renderMessage()}
           {elements}
