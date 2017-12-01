@@ -24,11 +24,13 @@ export class Heirlooms extends React.Component<{
     return (
       <Row>
         {visibleHeirlooms.map((heirloom) => {
-          let compareStyle;
+          let compareStyle = commonStyles.positiveText;
           const amount = this.props.counts.get(heirloom.heirloomType) || 0;
           if (this.props.compare) {
             const compareAmount = this.props.compare.get(heirloom.heirloomType) || 0;
-            compareStyle = amount > compareAmount ? commonStyles.negativeText : undefined;
+            if (amount > compareAmount) {
+              compareStyle = commonStyles.negativeText;
+            }
           }
           return (
             <HeirloomIcon

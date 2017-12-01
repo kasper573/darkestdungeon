@@ -1,7 +1,7 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
-import {commonStyles, Row} from "../config/styles";
+import {Row} from "../config/styles";
 import {observer} from "mobx-react";
 import {Icon, IconProps} from "./Icon";
 
@@ -21,7 +21,7 @@ export class IconWithSide extends React.Component<
     };
 
     return (
-      <Row valign="center" classStyle={[commonStyles.commonName, classStyle]} style={style}>
+      <Row valign="center" classStyle={classStyle} style={style}>
         <Icon classStyle={iconStyle} {...rest}>
           {this.props.children}
         </Icon>
