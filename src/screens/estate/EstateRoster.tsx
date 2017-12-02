@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {css, StyleSheet} from "aphrodite";
 import {EstateRosterEntry, rosterEntryHoverOffset, rosterEntryWidth} from "./EstateRosterEntry";
 import {observer} from "mobx-react";
@@ -12,6 +11,7 @@ import {IReactionDisposer, observable, reaction} from "mobx";
 import {DragDropSlot} from "../../lib/DragDropSlot";
 import {BuildingMessage} from "./buildings/BuildingMessage";
 import {screenFooterHeight} from "../ScreenFooter";
+import {Layer} from "../../ui/Layer";
 
 const heroCompareIcons = {
   level: require("../../../assets/dd/images/campaign/town/roster/roster_sort_level.png"),
@@ -26,8 +26,7 @@ const sounds = {
 
 @observer
 export class EstateRoster extends AppStateComponent<{
-  lineupFeatures?: boolean,
-  portalNode?: HTMLDivElement
+  lineupFeatures?: boolean
 }> {
   private stopReactingToEntries: IReactionDisposer;
   @observable heroShownInOverview: Hero;
@@ -94,14 +93,14 @@ export class EstateRoster extends AppStateComponent<{
       </div>
     );
 
-    // The roster sometimes needs to be rendered through the
-    // portal to avoid being covered by the building modals
-    return ReactDOM.createPortal(roster, this.appState.portalNode);
+    return roster;
+    //return ReactDOM.createPortal(roster, this.appState.portalNode);
   }
 }
 
 const styles = StyleSheet.create({
   roster: {
+    zIndex: Layer.Roster,
     pointerEvents: "all", // For portal
     position: "absolute",
     top: grid.paddingTop,

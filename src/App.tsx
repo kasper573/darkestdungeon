@@ -112,6 +112,7 @@ export class App extends React.Component<{
     this.routePopup = this.props.state.popups.show({
       id: "routePopup",
       align: PopupAlign.TopLeft,
+      layer: Layer.Buildings,
       position: estateContentPosition,
       onClose: () => this.props.state.router.goto(route.path.root),
       content: (
@@ -173,7 +174,6 @@ const styles = StyleSheet.create({
 
   portal: {
     ...commonStyleFn.dock(),
-    pointerEvents: "none",
-    zIndex: Layer.Portal
+    pointerEvents: "none"
   }
 });

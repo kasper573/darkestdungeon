@@ -77,6 +77,7 @@ export class PopupEntry extends React.Component<{
         onMouseDown={() => handle.bringToFront()}
         className={css(styles.popup, styles.animator)}
         style={{
+          zIndex: handle.layer,
           left: this.alignedPosition.x,
           top: this.alignedPosition.y,
           ...transformStyle,
@@ -102,7 +103,7 @@ export class PopupEntry extends React.Component<{
       <InputLayer
         id={handle.id}
         className={css(styles.modalContainer, styles.animator)}
-        style={opacityStyle}>
+        style={{zIndex: handle.layer, ...opacityStyle}}>
         <div className={css(styles.modalBackground)}
              onClick={onBackgroundClicked}/>
         {popup}
