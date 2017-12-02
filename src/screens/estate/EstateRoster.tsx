@@ -94,13 +94,9 @@ export class EstateRoster extends AppStateComponent<{
       </div>
     );
 
-    // The roster sometimes needs to be rendered through the portal
-    // to avoid being covered by the building modals
-    if (this.props.portalNode) {
-      return ReactDOM.createPortal(roster, this.appState.portalNode);
-    }
-
-    return roster;
+    // The roster sometimes needs to be rendered through the
+    // portal to avoid being covered by the building modals
+    return ReactDOM.createPortal(roster, this.appState.portalNode);
   }
 }
 
