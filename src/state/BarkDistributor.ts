@@ -1,17 +1,19 @@
-import {randomizeItem} from "../lib/Helpers";
+import {randomizeItem, wait} from "../lib/Helpers";
+import {TokenOwner} from "./TokenOwner";
+import {action, observable} from "mobx";
 
 export type BarkCallback = (bark: string) => Promise<any>;
 
 export class BarkDistributor {
-  private isActive: boolean;
-  private timeoutId: any;
+  @observable public isActive: boolean;
   private subscriptions: BarkSubscription[] = [];
+  private tokens = new TokenOwner();
 
   public barks: string[] = [];
 
   constructor (
-    public timeoutMin: number = 5 * 1000,
-    public timeoutMax: number = 60 * 2 * 1000
+    public timeoutMin: number = 1000,
+    public timeoutMax: number = 1005
   ) {}
 
   subscribe (callback: BarkCallback) {
@@ -27,31 +29,44 @@ export class BarkDistributor {
     }
   }
 
+  @action
   start () {
-    this.stop();
+    if (this.isActive) {
+      return;
+    }
     this.isActive = true;
-    this.queueBark();
+    this.nextBark();
   }
 
+  @action
   stop () {
-    clearTimeout(this.timeoutId);
     this.isActive = false;
   }
 
-  private queueBark () {
-    if (!this.isActive) {
+  private async nextBark () {
+    if (this.tokens.lent.length > 0) {
       return;
     }
 
     const timeout = this.timeoutMin + (this.timeoutMax - this.timeoutMin) * Math.random();
-    this.timeoutId = setTimeout(() => this.publishBark(), timeout);
-  }
 
-  private publishBark () {
-    if (this.subscriptions.length && this.barks.length) {
-      const sub = randomizeItem(this.subscriptions);
-      const bark = randomizeItem(this.barks);
-      sub.callback(bark).then(() => this.queueBark());
+    let token = this.tokens.borrow();
+    await wait(timeout);
+    token.return();
+
+    if (!this.isActive) {
+      return;
+    }
+
+    const sub = randomizeItem(this.subscriptions);
+    const bark = randomizeItem(this.barks);
+
+    token = this.tokens.borrow();
+    await sub.callback(bark);
+    token.return();
+
+    if (this.isActive) {
+      this.nextBark();
     }
   }
 }

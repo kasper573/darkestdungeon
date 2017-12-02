@@ -55,6 +55,7 @@ export class Popup extends AppStateComponent<PopupProps> {
         this.appState.music.muffle(true);
         this.appState.ambience.muffle(true);
         this.appState.sfx.muffle(true);
+        this.appState.barker.stop();
       }
       this.stopWaitingForClose = when(
         () => !this.appState.popups.map.has(this.props.handle.id),
@@ -68,6 +69,7 @@ export class Popup extends AppStateComponent<PopupProps> {
       this.appState.music.muffle(false);
       this.appState.ambience.muffle(false);
       this.appState.sfx.muffle(false);
+      this.appState.barker.start();
     }
     if (this.props.closeSound) {
       this.appState.sfx.play(this.props.closeSound);

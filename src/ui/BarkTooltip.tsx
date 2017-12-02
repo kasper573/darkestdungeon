@@ -5,7 +5,7 @@ import {StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {grid} from "../config/Grid";
 import {Tooltip} from "./Tooltip";
-import {removeItem} from "../lib/Helpers";
+import {removeItem, wait} from "../lib/Helpers";
 
 // We can track these globally since the audio player is a global system anyway
 const tooltipsPlayingLetterSounds: BarkTooltip[] = [];
@@ -59,7 +59,7 @@ export class BarkTooltip extends AppStateComponent<{
     await this.showNextLetterAndContinue();
     removeItem(tooltipsPlayingLetterSounds, this);
 
-    await this.wait(readTime);
+    await wait(readTime);
 
     this.isBarking = false;
     this.displayedText = "";
@@ -86,11 +86,7 @@ export class BarkTooltip extends AppStateComponent<{
     }
 
     this.displayedText = this.originalText.slice(0, this.displayedText.length + 1);
-    return this.wait(BarkTooltip.letterInterval);
-  }
-
-  private wait (time: number) {
-    return new Promise((resolve) => setTimeout(resolve, time));
+    return wait(BarkTooltip.letterInterval);
   }
 
   render () {
