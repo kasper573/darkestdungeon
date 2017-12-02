@@ -12,8 +12,8 @@ export class BarkDistributor {
   public barks: string[] = [];
 
   constructor (
-    public timeoutMin: number = 1000,
-    public timeoutMax: number = 1005
+    public timeoutMin: number = 5 * 1000,
+    public timeoutMax: number = 60 * 2 * 1000
   ) {}
 
   subscribe (callback: BarkCallback) {
