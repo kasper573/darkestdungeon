@@ -8,6 +8,10 @@ export class BoundsObserver {
   private lastBounds: ClientRect;
   private publishBounds: (bounds: Bounds) => void;
 
+  get isObserving () {
+    return !!this.domNode;
+  }
+
   constructor (
     private appState: AppState
   ) {}
@@ -25,6 +29,7 @@ export class BoundsObserver {
 
   stopObserving () {
     delete this.domNode;
+    delete this.lastBounds;
     clearInterval(this.pollIntervalId);
   }
 
