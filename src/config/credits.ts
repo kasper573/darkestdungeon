@@ -74,6 +74,7 @@ liuting1014
 natsu130
 onixenic
 suplordo
+99_To_Life
 
 Original Concept & Design
 Red Hook Studios (please don't sue me <3)
