@@ -93,7 +93,8 @@ const styles = StyleSheet.create({
     paddingTop: grid.gutter,
     paddingBottom: grid.gutter,
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
+    alignItems: "center"
   },
 
   textGlow: {

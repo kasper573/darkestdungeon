@@ -4,6 +4,7 @@ import {commonColors, commonStyleFn, commonStyles} from "../config/styles";
 import {grid} from "../config/Grid";
 import {fonts} from "../../assets/fonts";
 import {credits} from "../config/credits";
+import {RainbowText} from "./RainbowText";
 
 const sectionTexts = credits.trim().split(/\n\n+/);
 const sections = sectionTexts.map((text) => text.split(/\n/));
@@ -50,20 +51,14 @@ export class Credits extends React.Component {
           ref={(node) => this.scrollbarNode = node}
           className={css(styles.clipper, commonStyles.customScrollbar)}>
           {sections.map(([title, ...entries], sectionIndex) => {
-            const isBigTitle = title[0] === "#";
-            if (isBigTitle) {
-              title = title.substr(1);
-            }
             return (
               <div key={sectionIndex} className={css(styles.section)}>
-                <h1 className={css(styles.title, isBigTitle && styles.bigTitle)}>
-                  {title}
-                </h1>
+                {parseTitle(title)}
                 {entries.length > 0 && (
                   <ul>
                     {entries.map((entry, entryIndex) => (
-                      <li key={entryIndex}>
-                        {entry}
+                      <li key={entryIndex} className={css(styles.entry)}>
+                        {parseEntry(entry)}
                       </li>
                     ))}
                   </ul>
@@ -75,6 +70,29 @@ export class Credits extends React.Component {
       </div>
     );
   }
+}
+
+function parseTitle (title: string) {
+  const isBigTitle = title[0] === "#";
+  if (isBigTitle) {
+    title = title.substr(1);
+  }
+  return (
+    <h1 className={css(styles.title, isBigTitle && styles.bigTitle)}>
+      {parseEntry(title)}
+    </h1>
+  );
+}
+
+function parseEntry (entry: string) {
+  if (entry[0] === "$") {
+    return (
+      <RainbowText>
+        {entry.substr(1)}
+      </RainbowText>
+    );
+  }
+  return entry;
 }
 
 const styles = StyleSheet.create({
@@ -96,6 +114,7 @@ const styles = StyleSheet.create({
 
   section: {
     marginBottom: grid.ySpan(1),
+    alignItems: "center",
 
     ":first-child": {
       marginTop: grid.ySpan(7.5),
@@ -116,6 +135,11 @@ const styles = StyleSheet.create({
   },
 
   bigTitle: {
-    fontSize: grid.fontSize(1.25)
+    fontSize: grid.fontSize(1.25),
+    alignItems: "center"
+  },
+
+  entry: {
+    alignItems: "center"
   }
 });
