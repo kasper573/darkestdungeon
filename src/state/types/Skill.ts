@@ -2,6 +2,7 @@ import {SkillId, SkillInfo} from "./SkillInfo";
 import {computed} from "mobx";
 import {Stats, TurnStats} from "./Stats";
 import {StaticState} from "../StaticState";
+import {addArrays, cmp, permutations} from "../../lib/Helpers";
 
 export class Skill {
   @computed get level () {
@@ -61,4 +62,32 @@ export class Skill {
     item.level = level;
     return item;
   }
+}
+
+/**
+ * Select the set of skills that most evenly spread out on all positions.
+ */
+export function getBestSkillSet (lotsOfSkills: Skill[], count: number) {
+  if (lotsOfSkills.length < count) {
+    count = lotsOfSkills.length;
+  }
+
+  const bestSkillSet = permutations(lotsOfSkills, count)
+    .sort((a, b) => cmp(getSkillSetScore(a), getSkillSetScore(b)))
+    .reverse()[0];
+
+  return bestSkillSet;
+}
+
+function getSkillSetScore (skills: Skill[]) {
+  let positionSum = [0, 0, 0, 0];
+  let targetSum = [0, 0, 0, 0];
+  for (const skill of skills) {
+    positionSum = addArrays(positionSum, skill.info.position);
+    targetSum = addArrays(targetSum, skill.info.target.spots);
+  }
+
+  const positionScore = Math.pow(positionSum.filter((filled) => filled).length, 2);
+  const targetScore = targetSum.filter((filled) => filled).length * 2;
+  return positionScore + targetScore;
 }

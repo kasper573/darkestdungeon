@@ -12,6 +12,7 @@ import {maxSelectedSkills} from "../config/general";
 import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
 import {TurnStats} from "./types/Stats";
+import {getBestSkillSet} from "./types/Skill";
 
 export function generateMonster (dungeon: Dungeon, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeon.info.monsters, activeMonsters);
@@ -49,7 +50,8 @@ export function decorateCharacter<T extends Character> (
     Item.fromInfo(randomizeItem(armors))
   ];
 
-  randomizeItems(c.skills, maxSelectedSkills, maxSelectedSkills).forEach((skill) => {
+  const selectedSkills = getBestSkillSet(c.skills, maxSelectedSkills);
+  selectedSkills.forEach((skill) => {
     skill.level++;
     skill.isSelected = true;
   });
