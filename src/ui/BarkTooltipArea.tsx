@@ -1,7 +1,7 @@
 import * as React from "react";
 import {AppStateComponent} from "../AppStateComponent";
 import {TooltipArea, TooltipAreaProps, TooltipSide} from "../lib/TooltipArea";
-import {observable} from "mobx";
+import {observable, when} from "mobx";
 import {observer} from "mobx-react";
 import {BarkSubscription} from "../state/BarkDistributor";
 import {BarkTooltip} from "./BarkTooltip";
@@ -33,7 +33,10 @@ export class BarkTooltipArea extends AppStateComponent<
   }
 
   receiveBark (bark: string) {
-    return this.barkText = bark;
+    return new Promise((resolve) => {
+      this.barkText = bark;
+      when(() => !this.barkText, resolve);
+    });
   }
 
   render () {
