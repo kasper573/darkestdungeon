@@ -53,19 +53,12 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   componentDidMount () {
     this.tooltipState.setDesiredSide(this.props.side);
 
-    let previousVisibility = this.shouldRenderTooltip;
     this.stopWatchingVisibility = reaction(
       () => this.shouldRenderTooltip,
-      (isVisible) => {
-        if (isVisible === previousVisibility) {
-          return;
-        }
-        previousVisibility = isVisible;
-        if (isVisible) {
-          console.log("Observing", this.node);
+      (shouldObserve) => {
+        if (shouldObserve) {
           this.boundsObserver.observe(this.node, (bounds: Bounds) => this.tooltipState.setAreaBounds(bounds));
-        } else {
-          console.log("Stopped observing", this.node);
+        } else if (this.boundsObserver.isObserving) {
           this.boundsObserver.stopObserving();
           this.tooltipState.resetBounds();
         }
