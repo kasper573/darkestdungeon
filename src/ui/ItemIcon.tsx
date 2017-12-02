@@ -47,7 +47,7 @@ export class ItemIcon extends React.Component<{
 }
 
 export const itemSize = {
-  width: grid.xSpan(0.6),
+  width: grid.xSpan(0.59),
   height: grid.ySpan(2)
 };
 
