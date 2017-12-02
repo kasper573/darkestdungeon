@@ -78,6 +78,7 @@ export class BarkTooltip extends AppStateComponent<{
 
 const styles = StyleSheet.create({
   barkTooltip: {
+    minWidth: grid.xSpan(2),
     maxWidth: grid.xSpan(3.5),
     padding: grid.ySpan(0.5),
     textAlign: "center",

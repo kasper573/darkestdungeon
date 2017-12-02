@@ -7,9 +7,13 @@ import {BarkSubscription} from "../state/BarkDistributor";
 import {BarkTooltip} from "./BarkTooltip";
 
 @observer
-export class BarkTooltipArea extends AppStateComponent<TooltipAreaProps> {
+export class BarkTooltipArea extends AppStateComponent<
+  TooltipAreaProps & {
+  subscribe?: boolean
+}> {
   static defaultProps = {
-    side: TooltipSide.Left
+    side: TooltipSide.Left,
+    subscribe: true
   };
 
   private barkState = observable(false);
@@ -17,7 +21,9 @@ export class BarkTooltipArea extends AppStateComponent<TooltipAreaProps> {
   private subscription: BarkSubscription;
 
   componentDidMount () {
-    this.subscription = this.appState.barker.subscribe(this.receiveBark.bind(this));
+    if (this.props.subscribe) {
+      this.subscription = this.appState.barker.subscribe(this.receiveBark.bind(this));
+    }
   }
 
   componentWillUnmount () {
@@ -31,9 +37,10 @@ export class BarkTooltipArea extends AppStateComponent<TooltipAreaProps> {
   }
 
   render () {
+    const {subscribe, ...rest} = this.props;
     return (
       <TooltipArea
-        {...this.props}
+        {...rest}
         show={this.barkState.get()}
         tip={
           <BarkTooltip

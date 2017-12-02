@@ -443,6 +443,11 @@ export function addStaticState () {
       enterSound: {src: require("../../assets/dd/audio/town_enter_blacksmith.wav")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character.png"),
+      npcBarks: [
+        "Didn't expect you to come out of there again.",
+        "This is shoddy equipment, but I can help with that. For a price that is.",
+        "My equipment is top notch. At least no one ever came back to complain."
+      ],
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character_background.png")
       ,
@@ -523,6 +528,11 @@ export function addStaticState () {
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
+      npcBarks: [
+        "I really don't know what to say. This is my first time here...",
+        "Hi! I'm from a mysterious country...Have you ever been there?",
+        "I can tell you one of my secrets."
+      ],
       slotImageUrl: require(
         "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.locked_hero_slot_overlay.png"
       ),
@@ -614,6 +624,11 @@ export function addStaticState () {
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
+      npcBarks: [
+        "I Herd U Liek Mudkips",
+        "I used to be a hero like you, then I took an arrow in the knee.",
+        "Welcome to the Internet. I will be your guide."
+      ],
       slotImageUrl: require(
         "../../assets/dd/images/campaign/town/buildings/tavern/tavern.locked_hero_slot_overlay.png"
       ),
@@ -664,6 +679,11 @@ export function addStaticState () {
       name: "Provision",
       avatarUrl: require("../../assets/dd/images/campaign/town/provision/provision.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/provision/provision.character.png"),
+      npcBarks: [
+        "What do you want now?",
+        "Oh god, it's you again...",
+        "Go away, I'm busy!"
+      ],
       backgroundUrl: require("../../assets/dd/images/campaign/town/provision/provision.character_background.png")
     }
   });

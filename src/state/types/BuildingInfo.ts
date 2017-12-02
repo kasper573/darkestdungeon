@@ -11,6 +11,7 @@ export class BuildingInfo {
   iconUrl: string;
   avatarUrl: string;
   npcImageUrl: string;
+  npcBarks: string[] = [];
   slotImageUrl: string;
   backgroundUrl: string;
   enterSound: IHowlProperties;
