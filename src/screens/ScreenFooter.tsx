@@ -2,6 +2,7 @@ import * as React from "react";
 import {StyleSheet} from "aphrodite";
 import {grid} from "../config/Grid";
 import {commonColors, commonStyleFn, Row} from "../config/styles";
+import {Layer} from "../ui/Layer";
 
 export class ScreenFooter extends React.Component<{
   behind?: any,
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     left: 0, right: 0,
     bottom: grid.paddingBottom - borderSpacing - borderSize,
     height: screenFooterHeight,
-    zIndex: 1,
+    zIndex: Layer.Footer,
 
     ":after": {
       ...commonStyleFn.dock("bottom"),

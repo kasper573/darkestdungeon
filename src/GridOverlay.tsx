@@ -4,6 +4,7 @@ import {observer} from "mobx-react";
 import {grid} from "./config/Grid";
 import {count} from "./lib/Helpers";
 import {Column, Row} from "./config/styles";
+import {Layer} from "./ui/Layer";
 
 @observer
 export class GridOverlay extends React.Component {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
 
     opacity: 0.4,
     background: "red",
-    zIndex: 3,
+    zIndex: Layer.GridOverlay,
     pointerEvents: "none"
   },
 
