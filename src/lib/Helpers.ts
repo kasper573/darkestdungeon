@@ -110,3 +110,7 @@ export function randomizeItems<T> (items: T[], min: number = 1, max: number = it
   }
   return selectedItems;
 }
+
+export function wait (time: number) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}

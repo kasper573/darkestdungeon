@@ -51,7 +51,7 @@ export class BarkTooltipArea extends AppStateComponent<
     return (
       <TooltipArea
         {...rest}
-        show={!!this.barkText}
+        show={this.barkText && this.appState.barker.isActive}
         wrap={false}
         tip={
           <BarkTooltip
