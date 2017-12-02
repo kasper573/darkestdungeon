@@ -2,7 +2,6 @@ import {computed, observable} from "mobx";
 import {StaticState} from "../StaticState";
 import {identifier, list, map, object, primitive, reference, serializable} from "serializr";
 import {Experienced} from "./Experienced";
-import {AfflictionInfo} from "./AfflictionInfo";
 import {CharacterClassInfo} from "./CharacterClassInfo";
 import {Item} from "./Item";
 import {QuirkInfo} from "./QuirkInfo";
@@ -26,8 +25,8 @@ export class Character extends Experienced {
   @serializable(reference(CharacterClassInfo, StaticState.lookup((i) => i.classes)))
   classInfo: CharacterClassInfo;
 
-  @serializable(reference(AfflictionInfo, StaticState.lookup((i) => i.afflictions)))
-  affliction: AfflictionInfo = null;
+  @serializable(reference(QuirkInfo, StaticState.lookup((i) => i.quirks)))
+  affliction: QuirkInfo = null;
 
   @serializable(list(reference(QuirkInfo, StaticState.lookup((i) => i.quirks))))
   quirks: QuirkInfo[] = [];
