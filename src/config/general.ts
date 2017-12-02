@@ -6,7 +6,7 @@ import {CharacterClassInfo} from "../state/types/CharacterClassInfo";
 import {HeirloomType, ItemInfo, ItemType} from "../state/types/ItemInfo";
 import {QuirkInfo} from "../state/types/QuirkInfo";
 import {CharacterStatus} from "../state/types/CharacterStatus";
-import {SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInfo";
+import {SkillId, SkillInfo, SkillTarget, SkillTargetObject} from "../state/types/SkillInfo";
 import {Stats, TurnStats} from "../state/types/Stats";
 import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
@@ -30,6 +30,10 @@ export let maxEquippedItems = 0;
 for (const count of equippableItems.values()) {
   maxEquippedItems += count;
 }
+
+const commonHeroNames = [
+  "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev", "Kfirba2"
+];
 
 export function addStaticState () {
   let previousLevelInfo: LevelInfo;
@@ -126,33 +130,60 @@ export function addStaticState () {
   heal.target = SkillTarget.anyOne(SkillTargetObject.Ally);
   heal.damageScale = 0;
 
-  const commonHeroNames = [
-    "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev", "Kfirba2"
-  ];
+  addCharacterTemplates((i) => i.heroes, commonHeroNames, {
+    "Ninja": {
+      classInfo: {
+        avatarUrl: require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png")
+      }
+    },
+    "Superhero": {
+      classInfo: {
+        avatarUrl: require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png")
+      }
+    },
+    "Magician": {
+      classInfo: {
+        avatarUrl: require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png")
+      }
+    },
+    "Baller": {
+      classInfo: {
+        avatarUrl: require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png")
+      }
+    },
+    "Chad": {
+      classInfo: {
+        avatarUrl: require(
+          "../../assets/dd/images/heroes/bounty_hunter/bounty_hunter_A/bounty_hunter_portrait_roster.png"
+        )
+      }
+    },
+    "Master of Everything": {
+      characterNames: ["Noob"],
+      rarity: 0.1,
+      unique: true,
+      classInfo: {
+        avatarUrl: require(
+          "../../assets/dd/images/heroes/crusader/crusader_A/crusader_portrait_roster.png"
+        )
+      }
+    }
+  });
 
-  const ninja = addHero("Ninja", commonHeroNames);
-  ninja.classInfo.avatarUrl = require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png");
-  const superHero = addHero("Superhero", commonHeroNames);
-  superHero.classInfo.avatarUrl = require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png");
-  const magician = addHero("Magician", commonHeroNames);
-  magician.classInfo.avatarUrl = require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png");
-  const baller = addHero("Baller", commonHeroNames);
-  baller.classInfo.avatarUrl = require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png");
-  const chad = addHero("Chad", commonHeroNames);
-  chad.classInfo.avatarUrl = require(
-    "../../assets/dd/images/heroes/bounty_hunter/bounty_hunter_A/bounty_hunter_portrait_roster.png"
-  );
-
-  const noob = addHero("Master of Everything", ["Noob"], 0.1, true);
-  noob.classInfo.avatarUrl = require("../../assets/dd/images/heroes/crusader/crusader_A/crusader_portrait_roster.png");
-
-  addMonster("Skeleton");
-  addMonster("Demon");
-  addMonster("Devil");
-  addMonster("Snake");
-
-  const jQuery = addMonster("Destruction of Everything", ["jQuery"], 0.1, true);
-  jQuery.classInfo.avatarUrl = require("../../assets/images/unicorn.jpg");
+  addCharacterTemplates((i) => i.monsters, undefined, {
+    "Skeleton": {},
+    "Demon": {},
+    "Devil": {},
+    "Snake": {},
+    "Destruction of Everything": {
+      characterNames: ["jQuery"],
+      rarity: 0.1,
+      unique: true,
+      classInfo: {
+        avatarUrl: require("../../assets/images/unicorn.jpg")
+      }
+    }
+  });
 
   addDungeons({
     "The Old Road": {
@@ -716,7 +747,6 @@ function createStandardCharacterClass (className: string) {
   info.stats.accuracy.value = 10;
   info.stats.speed.value = 10;
   info.stats.criticalChance.value = 0.05;
-  info.skills = StaticState.instance.skills;
 
   for (const stat of info.stats.statuses.values()) {
     stat.value = 0.5;
@@ -728,28 +758,24 @@ function createStandardCharacterClass (className: string) {
   return info;
 }
 
-function createStandardHeroClass (className: string) {
-  return createStandardCharacterClass(className);
-}
+function addCharacterTemplates (getList: (i: StaticState) => CharacterTemplate[], names?: string[], rawInfo?: any) {
+  for (const name in rawInfo) {
+    // Define CharacterTemplate
+    const {classInfo, ...templateProps} = rawInfo[name];
+    const template = new CharacterTemplate(createStandardCharacterClass(name), names);
+    Object.assign(template, templateProps);
 
-function createStandardMonsterClass (className: string) {
-  return createStandardCharacterClass(className);
-}
+    // Define ClassInfo
+    const {skills, stats, ...classInfoProps}: any = (classInfo || {});
+    Object.assign(template.classInfo, classInfoProps);
+    addStats(stats, template.classInfo.stats);
+    template.classInfo.skills = (skills || []).map((skillId: SkillId) =>
+      StaticState.instance.skills.find((skill) => skill.id === skillId)
+    );
 
-function addHero (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
-  const classInfo = createStandardHeroClass(className);
-  const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
-  StaticState.instance.add((i) => i.heroes, template);
-  StaticState.instance.add((i) => i.classes, classInfo);
-  return template;
-}
-
-function addMonster (className: string, characterNames?: string [], rarity?: number, unique?: boolean) {
-  const classInfo = createStandardMonsterClass(className);
-  const template = new CharacterTemplate(classInfo, characterNames, rarity, unique);
-  StaticState.instance.add((i) => i.monsters, template);
-  StaticState.instance.add((i) => i.classes, classInfo);
-  return template;
+    StaticState.instance.add(getList, template);
+    StaticState.instance.add((i) => i.classes, template.classInfo);
+  }
 }
 
 function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoRoot) {
