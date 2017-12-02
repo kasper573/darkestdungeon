@@ -1,7 +1,6 @@
 import {StaticState} from "../state/StaticState";
 import {DungeonInfo} from "../state/types/DungeonInfo";
 import {LevelInfo} from "../state/types/LevelInfo";
-import {AfflictionInfo} from "../state/types/AfflictionInfo";
 import {CharacterClassInfo} from "../state/types/CharacterClassInfo";
 import {HeirloomType, ItemInfo, ItemType} from "../state/types/ItemInfo";
 import {QuirkInfo} from "../state/types/QuirkInfo";
@@ -52,18 +51,6 @@ export function addStaticState () {
       info.previous = previousLevelInfo;
       previousLevelInfo = info;
     });
-
-  ["Hopeless", "Paranoid", "Gullible", "Ignorant"].forEach((name, index) => {
-    const info = new AfflictionInfo();
-    info.id = name;
-    info.name = name;
-
-    const stats = new Stats();
-    stats.speed.value = -index;
-    info.stats = stats;
-
-    StaticState.instance.add((i) => i.afflictions, info);
-  });
 
   addSkills({
     // Backline support
@@ -305,6 +292,15 @@ export function addStaticState () {
       isDisease: true,
       stats: {maxHealth: -10},
       forcedTreatmentIds: ["sanitarium.diseases"]
+    },
+
+    "Happy": {
+      isAffliction: true,
+      stats: {maxHealth: 10}
+    },
+    "Sad": {
+      isAffliction: true,
+      stats: {maxHealth: -10}
     },
 
     "Known Cheat": {bannedTreatmentIds: ["tavern.gambling"]},

@@ -38,7 +38,7 @@ export function decorateCharacter<T extends Character> (
 
   c.name = randomizeItem(availableNames);
   c.classInfo = template.classInfo;
-  c.affliction = randomizeItem(StaticState.instance.afflictions);
+  c.affliction = Math.random() > 0.5 ? randomizeItem(StaticState.instance.afflictions) : undefined;
   c.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
 
   const allItems = StaticState.instance.items;

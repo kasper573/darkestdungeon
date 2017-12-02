@@ -1,6 +1,5 @@
 import {DungeonInfo} from "./types/DungeonInfo";
 import {LevelInfo} from "./types/LevelInfo";
-import {AfflictionInfo} from "./types/AfflictionInfo";
 import {CharacterClassInfo} from "./types/CharacterClassInfo";
 import {ItemInfo, ItemType} from "./types/ItemInfo";
 import {QuirkInfo} from "./types/QuirkInfo";
@@ -24,7 +23,6 @@ export class StaticState  {
   private constructor () {}
 
   items: ItemInfo[] = [];
-  afflictions: AfflictionInfo[] = [];
   levels: LevelInfo[] = [];
   dungeons: DungeonInfo[] = [];
   quirks: QuirkInfo[] = [];
@@ -39,6 +37,10 @@ export class StaticState  {
 
   get heirlooms () {
     return this.items.filter((info) => info.type === ItemType.Heirloom);
+  }
+
+  get afflictions () {
+    return this.quirks.filter((info) => info.isAffliction);
   }
 
   getUpgradeEffects (keys: string[], upgrades = this.buildingUpgrades) {
