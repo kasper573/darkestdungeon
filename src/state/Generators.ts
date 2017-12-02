@@ -69,7 +69,7 @@ export function generateCurio (): Curio {
 
     // Quirks
     case 2:
-      const quirkPool = StaticState.instance.quirks.filter((q) => q.stats.isPositive === isPositive);
+      const quirkPool = StaticState.instance.quirks.filter((q) => q.isPositive === isPositive);
       curio.quirk = randomizeItem(quirkPool);
       break;
   }

@@ -162,7 +162,27 @@ export function addStaticState () {
     info.monsters = StaticState.instance.monsters;
     StaticState.instance.add((i) => i.dungeons, info);
   });
-  
+
+  addQuirks({
+    "Speedster": {stats: {speed: 5, damage: -2}},
+    "Blood Thirsty": {stats: {damage: 5, accuracy: -2}},
+    "Quick Reflexes": {stats: {dodge: 5, speed: -2}},
+
+    "Short Sighted": {stats: {accuracy: -5}},
+    "Fatigue": {stats: {damage: -5}},
+    "Exhausted": {stats: {speed: -5}},
+
+    "The Plague": {
+      isDisease: true,
+      stats: {maxHealth: -10},
+      forcedTreatmentIds: ["sanitarium.diseases"]
+    },
+
+    "Known Cheat": {bannedTreatmentIds: ["tavern.gambling"]},
+    "Nymphomania": {forcedTreatmentIds: ["tavern.brothel"]},
+    "Recovering Alcoholic": {bannedTreatmentIds: ["tavern.bar"]}
+  });
+
   addItems({
     // Heirlooms
     "Bust": {
@@ -362,30 +382,6 @@ export function addStaticState () {
     }
   });
 
-  ["Hard Noggin", "Balanced", "Nymphomania", "Quick Reflexes", "Quickdraw",
-    "Known Cheat", "Night Blindness", "Thanatophobia", "Witness"].forEach((name, index) => {
-    const info = new QuirkInfo();
-    info.id = name;
-    info.name = name;
-
-    const isPositive = index % 2 === 0;
-    const stats = new Stats();
-    const stat = stats.base[index % stats.base.length];
-    stat.value =
-      (isPositive ? 1 : -1) * (
-        stat.info.isPercentage ? 0.1 : (1 + index)
-      );
-
-    info.stats = stats;
-
-    if (index % 4 === 0) {
-      info.isDisease = true;
-      info.bannedTreatmentIds.push("tavern.bar");
-    }
-
-    StaticState.instance.add((i) => i.quirks, info);
-  });
-
   addBuildings({
     abbey: {
       name: "Abbey",
@@ -411,8 +407,8 @@ export function addStaticState () {
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
-        trancept: {
-          name: "Trancept",
+        transept: {
+          name: "Transept",
           useSound: {src: require("../../assets/dd/audio/town_abbey_prayer.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.prayer.icon.png"),
           description: "Pray to a Higher Power",
@@ -661,7 +657,7 @@ export function addStaticState () {
             {cost: {[HeirloomType.Deed]: 12, [HeirloomType.Crest]: 16}, effects: {recovery: 0.2}}
           ]
         },
-        recruits: {
+        brothel: {
           name: "Brothel",
           useSound: {src: require("../../assets/dd/audio/town_tavern_brothel_v1.wav")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.brothel.icon.png"),
@@ -770,6 +766,20 @@ function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoR
     if (children) {
       addBuildings(children, info);
     }
+  }
+}
+
+function addQuirks (rawInfo: any) {
+  for (const name in rawInfo) {
+    const info = new QuirkInfo();
+    info.id = name;
+    info.name = name;
+
+    const {stats, ...props} = rawInfo[name];
+    addStats(stats, info.stats);
+    Object.assign(info, props);
+
+    StaticState.instance.add((i) => i.quirks, info);
   }
 }
 

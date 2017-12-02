@@ -10,9 +10,12 @@ export class QuirkText extends React.Component<{
   classStyle?: any
 }> {
   render () {
-    const classStyle = this.props.quirk.stats.isPositive ?
-      commonStyles.positiveText :
-      commonStyles.negativeText;
+    let classStyle;
+    if (this.props.quirk.isPositive) {
+      classStyle = commonStyles.positiveText;
+    } else if (this.props.quirk.isNegative) {
+      classStyle = commonStyles.negativeText;
+    }
 
     const banned = this.props.quirk.bannedTreatmentIds.map((buildingId) =>
       StaticState.instance.buildingInfoRoot.get(buildingId)
