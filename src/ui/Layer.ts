@@ -1,9 +1,9 @@
 export enum Layer {
   Default,
-  Extra,
+  Buildings,
+  Roster,
   Footer,
   Popups,
-  Portal,
   Tooltips,
   GridOverlay
 }

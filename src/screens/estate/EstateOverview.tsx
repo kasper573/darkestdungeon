@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: grid.ySpan(3) + grid.gutter,
     left: -grid.xSpan(1) - grid.gutter,
-    zIndex: Layer.Extra
+    zIndex: Layer.Roster
   },
 
   buildingIcon: {

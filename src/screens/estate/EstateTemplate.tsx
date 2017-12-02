@@ -92,7 +92,6 @@ export class EstateTemplate extends AppStateComponent<{
         {this.props.roster && (
           <EstateRoster
             lineupFeatures={this.props.lineupFeaturesInRoster}
-            portalNode={isShowingBuilding && this.appState.portalNode}
           />
         )}
 

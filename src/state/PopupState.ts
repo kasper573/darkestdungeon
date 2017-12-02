@@ -3,6 +3,7 @@ import {ReactElement} from "react";
 import {computed, observable, reaction, transaction} from "mobx";
 import {Point} from "../Bounds";
 import uuid = require("uuid");
+import {Layer} from "../ui/Layer";
 
 export type PopupId = string;
 export type PopupContent<P = {}> = ReactElement<P> | string;
@@ -13,6 +14,7 @@ type PopupHandleProps<P> = {
   position?: Point,
   modalState?: ModalState,
   animate?: boolean,
+  layer?: Layer,
   id?: PopupId,
   onClose?: () => void
 };
@@ -97,6 +99,7 @@ export class PopupHandle<P = {}> implements PopupHandleProps<P> {
   public modalState: ModalState = ModalState.ModalDismiss;
   public animate: boolean = true;
   public resolution: any;
+  public layer?: Layer = Layer.Popups;
   public onClose?: () => void;
 
   @observable public position?: Point;

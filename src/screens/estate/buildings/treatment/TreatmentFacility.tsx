@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
 
   treatmentFacility: {
-    marginBottom: grid.gutter
+    marginBottom: grid.gutter * 2
   },
 
   description: {
