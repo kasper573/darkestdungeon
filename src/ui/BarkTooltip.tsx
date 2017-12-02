@@ -5,6 +5,10 @@ import {StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {grid} from "../config/Grid";
 import {Tooltip} from "./Tooltip";
+import {removeItem} from "../lib/Helpers";
+
+// We can track these globally since the audio player is a global system anyway
+const tooltipsPlayingLetterSounds: BarkTooltip[] = [];
 
 @observer
 export class BarkTooltip extends AppStateComponent<{
@@ -32,6 +36,7 @@ export class BarkTooltip extends AppStateComponent<{
   }
 
   componentWillUnmount () {
+    removeItem(tooltipsPlayingLetterSounds, this);
     this.isBarking = false;
   }
 
@@ -47,8 +52,13 @@ export class BarkTooltip extends AppStateComponent<{
     const wordCount = text.split(/[\s:,.;]+/).length;
     const readTime = Math.max(BarkTooltip.finishWaitTimePerWord * wordCount, BarkTooltip.finishWaitTimeMin);
 
+    // Keep track of which tooltips are playing letter sounds
+    // (This is so we can avoid playing duplicate sounds)
+    tooltipsPlayingLetterSounds.push(this);
     this.appState.sfx.play(BarkTooltip.popupSound);
     await this.showNextLetterAndContinue();
+    removeItem(tooltipsPlayingLetterSounds, this);
+
     await this.wait(readTime);
 
     this.isBarking = false;
@@ -69,7 +79,12 @@ export class BarkTooltip extends AppStateComponent<{
   }
 
   private showNextLetter () {
-    requestAnimationFrame(() => this.appState.sfx.play(BarkTooltip.letterSound));
+    // Never play overlapping letter sounds
+    const isPrimaryBarker = this === tooltipsPlayingLetterSounds[0];
+    if (isPrimaryBarker) {
+      requestAnimationFrame(() => this.appState.sfx.play(BarkTooltip.letterSound));
+    }
+
     this.displayedText = this.originalText.slice(0, this.displayedText.length + 1);
     return this.wait(BarkTooltip.letterInterval);
   }
