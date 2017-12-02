@@ -7,7 +7,7 @@ import {MapSize, QuestMap} from "./types/QuestMap";
 import {QuestObjective} from "./types/QuestObjective";
 import {Character} from "./types/Character";
 import {CharacterTemplate} from "./types/CharacterTemplate";
-import {enumMap, randomizeItem, randomizeItems} from "../lib/Helpers";
+import {enumMap, randomizeItem, randomizeItems, without} from "../lib/Helpers";
 import {maxSelectedSkills} from "../config/general";
 import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
@@ -15,18 +15,27 @@ import {TurnStats} from "./types/Stats";
 
 export function generateMonster (dungeon: Dungeon, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeon.info.monsters, activeMonsters);
-  return decorateCharacter(new Character(), template, dungeon.level.number);
+  return decorateCharacter(new Character(), activeMonsters, template, dungeon.level.number);
 }
 
 export function generateHero (activeHeroes: Hero[], level = 0): Hero {
   const allTemplates = StaticState.instance.heroes;
   const template = randomizeTemplate(allTemplates, activeHeroes);
 
-  return decorateCharacter(new Hero(), template, level);
+  return decorateCharacter(new Hero(), activeHeroes, template, level);
 }
 
-export function decorateCharacter<T extends Character> (c: T, template: CharacterTemplate, level: number): T {
-  c.name = randomizeItem(template.characterNames);
+export function decorateCharacter<T extends Character> (
+  c: T, activeCharacters: T[], template: CharacterTemplate, level: number
+): T {
+  // Determine available names
+  const takenNames = activeCharacters.map((a) => a.name);
+  let availableNames = without(template.characterNames, takenNames);
+  if (availableNames.length === 0) {
+    availableNames = template.characterNames;
+  }
+
+  c.name = randomizeItem(availableNames);
   c.classInfo = template.classInfo;
   c.affliction = randomizeItem(StaticState.instance.afflictions);
   c.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
