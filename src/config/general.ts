@@ -626,7 +626,7 @@ export function addStaticState () {
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
       npcBarks: [
         "I Herd U Liek Mudkips",
-        "I used to be a hero like you, then I took an arrow in the knee.",
+        "I used to be a hero like you, then I took an arrow to the knee.",
         "Welcome to the Internet. I will be your guide."
       ],
       slotImageUrl: require(
