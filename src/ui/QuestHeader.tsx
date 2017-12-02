@@ -17,13 +17,21 @@ export class QuestHeader extends React.Component<{
       );
     }
 
-    const leaveStatus = this.props.quest.isObjectiveMet ? QuestStatus.Victory : QuestStatus.Escape;
-    const leaveLabel = this.props.quest.isObjectiveMet ? "Return to Town" : "Escape";
-    return (
-      <button onClick={() => this.props.onLeaveRequested(leaveStatus)}>
-        {leaveLabel}
-      </button>
-    );
+    if (this.props.quest.isObjectiveMet) {
+      return (
+        <button onClick={() => this.props.onLeaveRequested(QuestStatus.Victory)}>
+          Return to Town
+        </button>
+      );
+    }
+
+    if (this.props.quest.isEscapable) {
+      return (
+        <button onClick={() => this.props.onLeaveRequested(QuestStatus.Escape)}>
+          Escape
+        </button>
+      );
+    }
   }
 
   render () {

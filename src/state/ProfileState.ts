@@ -44,6 +44,7 @@ export class ProfileState {
 
     // Set starting quest
     const startQuest = profile.newQuest();
+    startQuest.isEscapable = false;
     profile.quests = [startQuest];
     profile.selectedQuestId = startQuest.id;
     profile.sendLineupOnQuest(startQuest);

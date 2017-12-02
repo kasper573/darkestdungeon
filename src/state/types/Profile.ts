@@ -329,6 +329,11 @@ export class Profile {
     quest.items.forEach(
       (item) => moveItem(item, quest.items, this.items)
     );
+
+    // Rest quest status after escaping
+    if (quest.status === QuestStatus.Escape) {
+      quest.status = QuestStatus.Idle;
+    }
   }
 
   recruitHero (hero: Hero) {
