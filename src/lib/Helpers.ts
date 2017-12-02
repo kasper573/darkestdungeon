@@ -114,3 +114,35 @@ export function randomizeItems<T> (items: T[], min: number = 1, max: number = it
 export function wait (time: number) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
+
+export function addArrays (a: Array<number | boolean>, b: Array<number | boolean>) {
+  const sum: number[] = [];
+  for (let i = 0; i < a.length; i++) {
+    sum.push(a[i] as any + b[i]);
+  }
+  return sum;
+}
+
+export function permutations <T> (a: T[], min: number, max: number = min): T[][] {
+  const all: T[][] = [];
+  for (let i = min; i <= max; i++) {
+    permutationFn(i, a, [], all);
+  }
+  if (a.length >= min && a.length <= max) {
+    all.push(a);
+  }
+  return all;
+}
+
+function permutationFn <T> (n: number, src: T[], got: T[], all: T[][]) {
+  if (n === 0) {
+    if (got.length > 0) {
+      all[all.length] = got;
+    }
+    return;
+  }
+  for (let j = 0; j < src.length; j++) {
+    permutationFn(n - 1, src.slice(j + 1), got.concat([src[j]]), all);
+  }
+  return;
+}

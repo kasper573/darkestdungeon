@@ -45,6 +45,10 @@ export class SkillTarget {
   static anyOne (type: SkillTargetObject) {
     return SkillTarget.oneOf([true, true, true, true], type);
   }
+
+  static backline = [true, true, false, false];
+  static frontline = [false, false, true, true];
+  static midline = [false, true, true, false];
 }
 
 export type SkillId = string;
@@ -54,7 +58,7 @@ export class SkillInfo implements IStatsSource {
   name: string;
   iconUrl: string;
   statsSourceName: string = "Skill";
-  stats: Stats;
+  stats: Stats = new Stats();
 
   position: [boolean, boolean, boolean, boolean] = [true, true, true, true];
   damageScale: number = 1;

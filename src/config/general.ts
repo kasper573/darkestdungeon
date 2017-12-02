@@ -65,111 +65,185 @@ export function addStaticState () {
     StaticState.instance.add((i) => i.afflictions, info);
   });
 
-  const crush = new SkillInfo();
-  crush.id = crush.name = "Crush";
-  crush.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_abandon_hope.png");
-  StaticState.instance.add((i) => i.skills, crush);
-  crush.stats = new Stats();
-  crush.stats.accuracy.value = 85;
-  crush.stats.criticalChance.value = 0.05;
-  crush.stats.statuses.get(CharacterStatus.Bleed).value = 0.5;
-  crush.stats.statusDamageScales.get(CharacterStatus.Bleed).value = 0.5;
-  crush.position = [false, false, true, true];
-  crush.target = SkillTarget.oneOf([false, true, false, true]);
+  addSkills({
+    // Backline support
+    "Heal": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_abandon_hope.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      stats: {health: 5}
+    },
+    "Soothe": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_anger_management.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      stats: {stress: -5}
+    },
+    "Toughen": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandage.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      buff: {protect: 5}
+    },
+    "Empower": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandits_sense.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      buff: {damage: 5}
+    },
+    "Smite": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bloody_shroud.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.oneOf([true, true, true, true]),
+      stats: {
+        statuses: {[CharacterStatus.Stun]: 0.5}
+      }
+    },
 
-  const rampart = new SkillInfo();
-  rampart.id = rampart.name = "Rampart";
-  rampart.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_anger_management.png");
-  StaticState.instance.add((i) => i.skills, rampart);
-  rampart.movement = 1;
-  rampart.stats = new Stats();
-  rampart.stats.accuracy.value = 90;
-  rampart.stats.criticalChance.value = 0.05;
-  rampart.stats.statuses.get(CharacterStatus.Move).value = 1;
-  rampart.stats.statuses.get(CharacterStatus.Stun).value = 1;
-  rampart.position = [false, true, true, true];
-  rampart.target = SkillTarget.oneOf([true, false, true, false]);
+    // Midline support
+    "Break": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_battle_trance.png"),
+      position: SkillTarget.midline,
+      target: SkillTarget.anyOne(SkillTargetObject.Enemy),
+      damageScale: 0,
+      statusTurns: 1,
+      buff: {protect: -5},
+      stats: {
+        statuses: {
+          [CharacterStatus.Buff]: 0.8
+        }
+      }
+    },
+    "Protect": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bear_traps.png"),
+      position: SkillTarget.midline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      buff: {protect: 5}
+    },
+    "Bolster": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bless.png"),
+      position: SkillTarget.midline,
+      target: SkillTarget.anyOne(SkillTargetObject.Ally),
+      damageScale: 0,
+      buff: {protect: 5}
+    },
 
-  const bellow = new SkillInfo();
-  bellow.id = bellow.name = "Bellow";
-  bellow.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_guns.png");
-  StaticState.instance.add((i) => i.skills, bellow);
-  bellow.movement = 1;
-  bellow.stats = new Stats();
-  bellow.stats.accuracy.value = 90;
-  bellow.stats.stress.value = 10;
-  bellow.stats.criticalChance.value = 0.05;
-  bellow.statusTurns = 1;
-  bellow.stats.statuses.get(CharacterStatus.Move).value = 1;
-  bellow.stats.statuses.get(CharacterStatus.Stun).value = 1;
-  bellow.position = [false, true, true, false];
-  bellow.target = SkillTarget.anyOne(SkillTargetObject.Enemy);
-  bellow.stats.statuses.get(CharacterStatus.Buff).value = 0.8;
-  bellow.buff = new TurnStats();
-  bellow.buff.dodge.value = -5;
-  bellow.buff.speed.value = -5;
+    // Backline offensive
+    "Holy Light": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_dark_strength.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.oneOf([true, true, true, true]),
+      stats: {
+        accuracy: 5,
+        damage: 5
+      }
+    },
+    "Poison Bomb": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_chant.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.oneOf([true, true, true, true]),
+      stats: {
+        statuses: {[CharacterStatus.Blight]: 0.5},
+        statusDamageScales: {[CharacterStatus.Blight]: 0.5}
+      }
+    },
+    "Glass Bomb": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_dark_ritual.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.oneOf([true, true, true, true]),
+      stats: {
+        statuses: {[CharacterStatus.Bleed]: 0.5},
+        statusDamageScales: {[CharacterStatus.Bleed]: 0.5}
+      }
+    },
+    "Artillery": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_experimental_vapours.png"),
+      position: SkillTarget.backline,
+      target: SkillTarget.oneOf([true, true, true, true]),
+      stats: {
+        accuracy: 5,
+        damage: 5
+      }
+    },
 
-  const defender = new SkillInfo();
-  defender.id = defender.name = "Defender";
-  defender.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bear_traps.png");
-  StaticState.instance.add((i) => i.skills, defender);
-  defender.stats = new Stats();
-  defender.stats.stress.value = -5;
-  defender.position = [false, true, true, true];
-  defender.target = SkillTarget.anyOne(SkillTargetObject.Ally);
-  defender.buff = new TurnStats();
-  defender.buff.protect.value = 5;
-
-  const heal = new SkillInfo();
-  heal.iconUrl = require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandage.png");
-  heal.id = heal.name = "Heal";
-  StaticState.instance.add((i) => i.skills, heal);
-  heal.stats = new Stats();
-  heal.stats.health.value = 5;
-  heal.position = [true, true, false, false];
-  heal.target = SkillTarget.anyOne(SkillTargetObject.Ally);
-  heal.damageScale = 0;
+    // Frontline offensive
+    "Slash": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_guns.png"),
+      position: SkillTarget.frontline,
+      target: SkillTarget.oneOf([false, false, true, true]),
+      stats: {
+        accuracy: 5,
+        damage: 5
+      }
+    },
+    "Swing": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_musket.png"),
+      position: SkillTarget.frontline,
+      target: SkillTarget.oneOf([true, true, false, false]),
+      stats: {
+        accuracy: 2,
+        damage: 7
+      }
+    },
+    "Heave": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_musket.png"),
+      position: SkillTarget.frontline,
+      target: SkillTarget.oneOf([true, false, false, false]),
+      stats: {
+        damage: 10
+      }
+    },
+    "Slam": {
+      iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_clean_musket.png"),
+      position: [false, false, false, true],
+      target: SkillTarget.oneOf([true, false, false, false]),
+      stats: {
+        accuracy: -5,
+        damage: 15
+      }
+    }
+  });
 
   addCharacterTemplates((i) => i.heroes, commonHeroNames, {
-    "Ninja": {
-      classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png"),
-        skills: ["Rampart"]
-      }
-    },
-    "Superhero": {
+    "White Mage": {
       classInfo: {
         avatarUrl: require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png"),
-        skills: ["Defender"]
+        skills: ["Heal", "Soothe", "Toughen", "Empower", "Smite", "Holy Light", "Slash"]
       }
     },
-    "Magician": {
+    "Witch Doctor": {
       classInfo: {
         avatarUrl: require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png"),
-        skills: ["Heal"]
+        skills: ["Heal", "Poison Bomb", "Glass Bomb", "Break", "Bolster", "Slash", "Swing"]
       }
     },
-    "Baller": {
-      classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png"),
-        skills: ["Bellow"]
-      }
-    },
-    "Chad": {
+    "Hunter": {
       classInfo: {
         avatarUrl: require(
           "../../assets/dd/images/heroes/bounty_hunter/bounty_hunter_A/bounty_hunter_portrait_roster.png"
         ),
-        skills: ["Bellow"]
+        skills: ["Artillery", "Toughen", "Break", "Protect", "Bolster", "Slash", "Swing"]
       }
     },
+    "Crusader": {
+      classInfo: {
+        avatarUrl: require("../../assets/dd/images/heroes/crusader/crusader_A/crusader_portrait_roster.png"),
+        skills: ["Artillery", "Toughen", "Break", "Slash", "Swing", "Heave", "Slam"]
+      }
+    },
+
     "Master of Everything": {
       characterNames: ["Noob"],
       rarity: 0.1,
       unique: true,
       classInfo: {
         avatarUrl: require(
-          "../../assets/dd/images/heroes/crusader/crusader_A/crusader_portrait_roster.png"
+          "../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png"
         )
       }
     }
@@ -307,7 +381,7 @@ export function addStaticState () {
       sellValueScale: 0.25,
       getStoreCount: () => 6,
       stats: {
-        statusChances: {
+        statuses: {
           [CharacterStatus.Blight]: -1
         }
       }
@@ -319,7 +393,7 @@ export function addStaticState () {
       sellValueScale: 0.25,
       getStoreCount: () => 6,
       stats: {
-        statusChances: {
+        statuses: {
           [CharacterStatus.Bleed]: -1
         }
       }
@@ -774,13 +848,14 @@ function addCharacterTemplates (getList: (i: StaticState) => CharacterTemplate[]
     const {skills, stats, ...classInfoProps}: any = (classInfo || {});
     Object.assign(template.classInfo, classInfoProps);
     addStats(stats, template.classInfo.stats);
-    template.classInfo.skills = (skills || []).map((skillId: SkillId) => {
-      const skill = StaticState.instance.skills.find((s) => s.id === skillId);
-      if (!skill) {
-        throw new Error("No skill registered by id: " + skillId);
-      }
-      return skill;
-    });
+    template.classInfo.skills = !skills ? StaticState.instance.skills :
+      skills.map((skillId: SkillId) => {
+        const skill = StaticState.instance.skills.find((s) => s.id === skillId);
+        if (!skill) {
+          throw new Error("No skill registered by id: " + skillId);
+        }
+        return skill;
+      });
 
     StaticState.instance.add(getList, template);
     StaticState.instance.add((i) => i.classes, template.classInfo);
@@ -849,6 +924,24 @@ function addQuirks (rawInfo: any) {
   }
 }
 
+function addSkills (rawInfo: any) {
+  for (const name in rawInfo) {
+    const info = new SkillInfo();
+    info.id = name;
+    info.name = name;
+
+    const {stats, buff, ...props} = rawInfo[name];
+    addStats(stats, info.stats);
+    Object.assign(info, props);
+
+    if (buff) {
+      addStats(buff, info.buff = new TurnStats());
+    }
+
+    StaticState.instance.add((i) => i.skills, info);
+  }
+}
+
 function addItems (rawInfo: any, defaultType = ItemType.Consumable) {
   for (const itemId in rawInfo) {
     const info = addItem(itemId, rawInfo[itemId]);
@@ -881,8 +974,14 @@ function addStats (rawStats: any, stats: Stats) {
       realStat.value = rawStat;
     } else if (realStat instanceof Map) {
       realStat.forEach((stat: StatItem, key) => {
-        stat.value = rawStat[key];
+        if (rawStat.hasOwnProperty(key)) {
+          stat.value = rawStat[key];
+        }
       });
+    } else if (stats.hasOwnProperty(statKey)) {
+      (stats as any)[statKey] = rawStats[statKey];
+    } else {
+      throw new Error("Unknown Stats property: " + statKey);
     }
   }
 }
