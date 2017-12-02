@@ -40,9 +40,7 @@ export class BuildingOverview extends AppStateComponent<{
   }
 
   componentDidMount () {
-    if (this.npcBarker) {
-      this.npcBarkTimeoutId = setTimeout(() => this.makeNpcBark(), npcBarkWaitTime);
-    }
+    this.npcBarkTimeoutId = setTimeout(() => this.makeNpcBark(), npcBarkWaitTime);
   }
 
   componentWillUnmount () {
@@ -50,7 +48,9 @@ export class BuildingOverview extends AppStateComponent<{
   }
 
   makeNpcBark () {
-    this.npcBarker.receiveBark(randomizeItem(this.props.info.npcBarks));
+    if (this.npcBarker) {
+      this.npcBarker.receiveBark(randomizeItem(this.props.info.npcBarks));
+    }
   }
 
   render () {
