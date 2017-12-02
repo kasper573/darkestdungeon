@@ -173,11 +173,15 @@ export class HeroOverview extends AppStateComponent<
               </Section>
 
               <Section color={commonColors.brightGreen} label="Diseases" darken>
-                {!!hero.diseases.length && (
+                {!hero.diseases.length && (
                   <BuildingMessage style={{margin: grid.ySpan(0.75)}}>
                     Still healthy
                   </BuildingMessage>
                 )}
+
+                {hero.diseases.map((q) => (
+                  <QuirkText key={q.id} quirk={q}/>
+                ))}
               </Section>
             </Column>
           </Row>
