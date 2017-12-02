@@ -133,14 +133,20 @@ export class Character extends Experienced {
 
   acceptsTreatmentFrom (treatmentId: BuildingInfoId) {
     for (const quirk of this.quirks) {
-      if (quirk.forcedTreatmentIds.length > 0 &&
-        !contains(quirk.forcedTreatmentIds, treatmentId)) {
-        return false;
-      }
       if (contains(quirk.bannedTreatmentIds, treatmentId)) {
         return false;
       }
     }
+
+    const allForcedTreatmentIds = this.quirks.reduce((all, q) => {
+      all.push(...q.forcedTreatmentIds);
+      return all;
+    }, []);
+
+    if (allForcedTreatmentIds.length > 0) {
+      return contains(allForcedTreatmentIds, treatmentId);
+    }
+
     return true;
   }
 
