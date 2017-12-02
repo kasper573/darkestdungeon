@@ -1,5 +1,6 @@
 import * as React from "react";
-import {computed, observable} from "mobx";
+import * as ReactDOM from "react-dom";
+import {action, computed, IReactionDisposer, observable, reaction} from "mobx";
 import {Tooltip} from "../ui/Tooltip";
 import {BoundsObserver} from "./BoundsObserver";
 import {css} from "aphrodite";
@@ -9,6 +10,7 @@ import {grid} from "../config/Grid";
 import {observer} from "mobx-react";
 import {SizeObserver} from "./SizeObserver";
 import {commonStyles} from "../config/styles";
+import {StyleSheet} from "aphrodite";
 
 export enum TooltipSide {
   Above,
@@ -42,18 +44,102 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
     wrap: true
   };
 
+  private stopWatchingVisibility: IReactionDisposer;
+  private tooltipState = new TooltipState();
+  private boundsObserver = new BoundsObserver(this.appState);
+  private node: HTMLDivElement;
   @observable private isHovered = false;
-  @observable private areaBounds: Bounds = new Bounds();
-  @observable private tooltipSize: Size = {width: 0, height: 0};
 
-  @computed get isTooltipVisible () {
+  componentDidMount () {
+    this.tooltipState.setDesiredSide(this.props.side);
+
+    let previousVisibility = this.shouldRenderTooltip;
+    this.stopWatchingVisibility = reaction(
+      () => this.shouldRenderTooltip,
+      (isVisible) => {
+        if (isVisible === previousVisibility) {
+          return;
+        }
+        previousVisibility = isVisible;
+        if (isVisible) {
+          console.log("Observing", this.node);
+          this.boundsObserver.observe(this.node, (bounds: Bounds) => this.tooltipState.setAreaBounds(bounds));
+        } else {
+          console.log("Stopped observing", this.node);
+          this.boundsObserver.stopObserving();
+          this.tooltipState.resetBounds();
+        }
+      },
+      true
+    );
+  }
+
+  componentWillUpdate () {
+    this.tooltipState.setDesiredSide(this.props.side);
+  }
+
+  componentWillUnmount () {
+    this.boundsObserver.stopObserving();
+    this.stopWatchingVisibility();
+  }
+
+  @computed get shouldRenderTooltip () {
     return !!(this.props.tip && (
       this.props.show !== undefined ? this.props.show : this.isHovered
     ));
   }
 
+  wrap (tip: any) {
+    if (this.props.wrap) {
+      tip = (
+        <StyledTooltip>
+          {tip}
+        </StyledTooltip>
+      );
+    }
+
+    return (
+      <PositionedTooltip state={this.tooltipState}>
+        {tip}
+      </PositionedTooltip>
+    );
+  }
+
+  render () {
+    const tip = this.shouldRenderTooltip ?
+      this.wrap(this.props.tip) :
+      undefined;
+
+    return (
+      <div
+        ref={(node) => this.node = node}
+        className={css(this.props.classStyle)}
+        style={this.props.style}
+        onClick={this.props.onClick}
+        onMouseEnter={() => this.isHovered = true}
+        onMouseLeave={() => this.isHovered = false}>
+
+        {this.props.children}
+
+        {tip && (
+          ReactDOM.createPortal(tip, this.appState.portalNode)
+        )}
+      </div>
+    );
+  }
+}
+
+class TooltipState {
+  @observable private areaBounds: Bounds = null;
+  @observable private tooltipSize: Size = null;
+  @observable private desiredSide: TooltipSide = TooltipSide.Below;
+
+  @computed get hasBounds () {
+    return this.areaBounds && this.tooltipSize;
+  }
+
   @computed get adjustedSide () {
-    const offset = this.getTooltipOffset(this.props.side);
+    const offset = this.getOffset(this.desiredSide);
     const projectedBounds = new Bounds(
       this.areaBounds.x + offset.x,
       this.areaBounds.y + offset.y,
@@ -70,21 +156,43 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
     } else if (projectedBounds.bottom > grid.outerHeight) {
       return TooltipSide.Above;
     }
-    return this.props.side;
+    return this.desiredSide;
   }
 
-  @computed get tooltipStyle (): any {
-    const {x, y} = this.getTooltipOffset(this.adjustedSide);
+  @computed get offset () {
+    return this.getOffset(this.adjustedSide);
+  }
+
+  @computed get position () {
+    const {x, y} = this.offset;
     return {
-      zIndex: 2,
-      position: "absolute",
-      left: x,
-      top: y,
-      pointerEvents: "none"
+      x: this.areaBounds.x + x,
+      y: this.areaBounds.y + y
     };
   }
 
-  getTooltipOffset (side: TooltipSide): Point {
+  @action
+  resetBounds () {
+    this.areaBounds = null;
+    this.tooltipSize = null;
+  }
+
+  @action
+  setTooltipSize (size: Size) {
+    this.tooltipSize = size;
+  }
+
+  @action
+  setAreaBounds (bounds: Bounds) {
+    this.areaBounds = bounds;
+  }
+
+  @action
+  setDesiredSide (side: TooltipSide) {
+    this.desiredSide = side;
+  }
+
+  getOffset (side: TooltipSide): Point {
     switch (side) {
       case TooltipSide.Above:
         return {
@@ -108,38 +216,44 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
         };
     }
   }
+}
 
-  wrapTooltip (tip: any) {
-    if (!this.props.wrap) {
-      return tip;
+@observer
+class PositionedTooltip extends React.Component<{state: TooltipState}> {
+  @computed get style () {
+    if (!this.props.state.hasBounds) {
+      return {opacity: 0};
     }
 
-    if (typeof tip === "string") {
-      tip = <span className={css(commonStyles.nowrap)}>{tip}</span>;
-    }
-
-    return <Tooltip>{tip}</Tooltip>;
+    const {x, y} = this.props.state.position;
+    return {
+      left: x,
+      top: y
+    };
   }
 
   render () {
-    const tip = this.isTooltipVisible && this.wrapTooltip(this.props.tip);
-
     return (
-      <div
-        className={css(this.props.classStyle)}
-        style={this.props.style}
-        onClick={this.props.onClick}
-        onMouseEnter={() => this.isHovered = true}
-        onMouseLeave={() => this.isHovered = false}>
-
+      <div className={css(styles.tooltip)} style={this.style}>
+        <SizeObserver onSizeChanged={(size) => this.props.state.setTooltipSize(size)}/>
         {this.props.children}
-        <BoundsObserver onBoundsChanged={(bounds) => this.areaBounds = bounds}/>
-
-        <div style={this.tooltipStyle}>
-          {tip}
-          <SizeObserver onSizeChanged={(size) => this.tooltipSize = size}/>
-        </div>
       </div>
     );
   }
 }
+
+function StyledTooltip ({children}: any) {
+  if (typeof children === "string") {
+    children = <span className={css(commonStyles.nowrap)}>{children}</span>;
+  }
+
+  return <Tooltip>{children}</Tooltip>;
+}
+
+const styles = StyleSheet.create({
+  tooltip: {
+    position: "absolute",
+    pointerEvents: "none",
+    zIndex: 3
+  }
+});
