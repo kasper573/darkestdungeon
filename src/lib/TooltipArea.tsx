@@ -11,6 +11,7 @@ import {observer} from "mobx-react";
 import {SizeObserver} from "./SizeObserver";
 import {commonStyles} from "../config/styles";
 import {StyleSheet} from "aphrodite";
+import {Layer} from "../ui/Layer";
 
 export enum TooltipSide {
   Above,
@@ -247,6 +248,6 @@ const styles = StyleSheet.create({
   tooltip: {
     position: "absolute",
     pointerEvents: "none",
-    zIndex: 2
+    zIndex: Layer.Tooltips
   }
 });

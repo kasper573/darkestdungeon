@@ -19,6 +19,7 @@ import {Route} from "./state/types/Route";
 import {PopupAlign, PopupHandle} from "./state/PopupState";
 import {Popup} from "./ui/Popups";
 import {estateContentPosition} from "./screens/estate/EstateTemplate";
+import {Layer} from "./ui/Layer";
 
 const sounds = {
   closeRoutePopup: {src: require("../assets/dd/audio/ui_town_building_zoomout.wav")}
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
 
   portal: {
     ...commonStyleFn.dock(),
-    pointerEvents: "none"
+    pointerEvents: "none",
+    zIndex: Layer.Portal
   }
 });

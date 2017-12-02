@@ -14,6 +14,7 @@ import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {commonStyles} from "../../config/styles";
 import {InputBinding} from "../../state/InputState";
 import {Input} from "../../config/Input";
+import {Layer} from "../../ui/Layer";
 
 const sounds = {
   continueToMap: {src: require("../../../assets/dd/audio/ui_town_button_embark.wav"), volume: 0.7},
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: grid.ySpan(3) + grid.gutter,
     left: -grid.xSpan(1) - grid.gutter,
-    zIndex: 1
+    zIndex: Layer.Extra
   },
 
   buildingIcon: {

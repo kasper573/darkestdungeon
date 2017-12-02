@@ -9,6 +9,7 @@ import {grid} from "../../../../config/Grid";
 import {GoldIcon} from "../../../../ui/GoldIcon";
 import {BuildingInfo} from "../../../../state/types/BuildingInfo";
 import {cancelIconUrl, confirmIconUrl, Icon} from "../../../../ui/Icon";
+import {Layer} from "../../../../ui/Layer";
 
 export class TreatmentSlot extends React.Component<{
   buildingInfo: BuildingInfo,
@@ -190,6 +191,6 @@ const styles = StyleSheet.create({
     height: grid.ySpan(0.5),
     bottom: -grid.ySpan(0.5),
     left: (slotSize - grid.ySpan(1)) / 2,
-    zIndex: 1
+    zIndex: Layer.Extra
   }
 });
