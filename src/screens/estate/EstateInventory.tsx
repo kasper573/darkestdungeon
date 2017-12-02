@@ -46,7 +46,7 @@ export class EstateInventory extends AppStateComponent {
   @action
   unequipAllItems () {
     const unequippedItems = this.activeProfile.roster.reduce((unequipped, hero) => {
-      unequipped.push(...hero.items.slice(0, hero.items.length));
+      unequipped.push(...hero.items.splice(0, hero.items.length));
       return unequipped;
     }, [] as Item[]);
 
