@@ -3,13 +3,14 @@ import {observer} from "mobx-react";
 import {AppStateComponent} from "../AppStateComponent";
 import {BarkTooltip} from "../ui/BarkTooltip";
 import {randomizeItem} from "../lib/Helpers";
+import {observable} from "mobx";
 
 @observer
 export class BarkTester extends AppStateComponent {
-  private barkBubble: BarkTooltip;
+  @observable barkText: string;
 
   playRandomBark () {
-    this.barkBubble.bark(randomizeItem(this.appState.barker.barks));
+    this.barkText = randomizeItem(this.appState.barker.barks);
   }
 
   render () {
@@ -18,7 +19,9 @@ export class BarkTester extends AppStateComponent {
         <button onClick={() => this.playRandomBark()}>
           Play bark
         </button>
-        <BarkTooltip ref={(b: BarkTooltip) => this.barkBubble = b}/>
+        <div style={{margin: "12% 25%", justifyContent: "center", alignItems: "center"}}>
+          <BarkTooltip text={this.barkText} />
+        </div>
       </div>
     );
   }

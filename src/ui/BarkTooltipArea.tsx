@@ -16,7 +16,7 @@ export class BarkTooltipArea extends AppStateComponent<
     subscribe: true
   };
 
-  private barkState = observable(false);
+  @observable private barkText: string;
   private barkTooltip: BarkTooltip;
   private subscription: BarkSubscription;
 
@@ -33,7 +33,7 @@ export class BarkTooltipArea extends AppStateComponent<
   }
 
   receiveBark (bark: string) {
-    return this.barkTooltip.bark(bark);
+    return this.barkText = bark;
   }
 
   render () {
@@ -41,10 +41,12 @@ export class BarkTooltipArea extends AppStateComponent<
     return (
       <TooltipArea
         {...rest}
-        show={this.barkState.get()}
+        show={!!this.barkText}
+        wrap={false}
         tip={
           <BarkTooltip
-            barkState={this.barkState}
+            text={this.barkText}
+            onFinished={() => this.barkText = null}
             ref={(tooltip) => this.barkTooltip = tooltip}
           />
         }>

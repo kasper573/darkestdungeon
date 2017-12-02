@@ -4,11 +4,17 @@ import {commonColors, commonStyleFn} from "../config/styles";
 import {grid} from "../config/Grid";
 import {fonts} from "../../assets/fonts";
 
-export const Tooltip = ({children}: any) => (
-  <div className={css(styles.tooltip)}>
-    {children}
-  </div>
-);
+export class Tooltip extends React.Component <{
+  classStyle?: any
+}> {
+  render () {
+    return (
+      <div className={css(styles.tooltip, this.props.classStyle)}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   tooltip: {

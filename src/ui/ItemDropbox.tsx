@@ -6,7 +6,7 @@ import {Item} from "../state/types/Item";
 import {contains, count, removeItem} from "../lib/Helpers";
 import {grid} from "../config/Grid";
 import {css, StyleSheet} from "aphrodite";
-import {commonColors, commonStyleFn} from "../config/styles";
+import {commonColors, commonStyleFn, commonStyles, customScrollbarSize} from "../config/styles";
 import {IArraySplice} from "mobx";
 import {AppStateComponent} from "../AppStateComponent";
 import {ItemType} from "../state/types/ItemInfo";
@@ -126,7 +126,7 @@ export class ItemDropbox extends AppStateComponent<{
     count(freeSlots).forEach(() => stacks.push(null));
 
     return (
-      <div className={css(styles.dropbox, this.props.classStyle)}>
+      <div className={css(styles.dropbox, commonStyles.customScrollbar, this.props.classStyle)}>
         {stacks.map((stack, index) => {
           const item = stack && stack[0];
           return (
@@ -179,7 +179,9 @@ const styles = StyleSheet.create({
   dropbox: {
     flexWrap: "wrap",
     flexDirection: "row",
-    maxWidth: (itemSize.width + (itemMargin * 2)) * maxItemsInRow
+    maxWidth: (itemSize.width + (itemMargin * 2)) * maxItemsInRow + customScrollbarSize,
+    overflowY: "scroll",
+    overflowX: "hidden"
   },
 
   slot: {

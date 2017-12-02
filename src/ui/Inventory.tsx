@@ -3,6 +3,9 @@ import {AppStateComponent} from "../AppStateComponent";
 import {Item} from "../state/types/Item";
 import {ItemDropbox} from "./ItemDropbox";
 import {Hero} from "../state/types/Hero";
+import {itemSize} from "./ItemIcon";
+import {grid} from "../config/Grid";
+import {StyleSheet} from "aphrodite";
 
 export class Inventory extends AppStateComponent<{
   heroes: Hero[],
@@ -19,6 +22,7 @@ export class Inventory extends AppStateComponent<{
   render () {
     return (
       <ItemDropbox
+        classStyle={styles.inventory}
         items={this.props.items}
         filter={this.props.filter}
         compare={this.props.compare}
@@ -28,3 +32,9 @@ export class Inventory extends AppStateComponent<{
     );
   }
 }
+
+const styles = StyleSheet.create({
+  inventory: {
+    maxHeight: itemSize.height * 2 + grid.gutter
+  }
+});

@@ -1,23 +1,19 @@
-import {IObservableValue, observable} from "mobx";
+import {observable} from "mobx";
 import * as React from "react";
 import {observer} from "mobx-react";
-import {css, StyleSheet} from "aphrodite";
+import {StyleSheet} from "aphrodite";
 import {AppStateComponent} from "../AppStateComponent";
 import {grid} from "../config/Grid";
+import {Tooltip} from "./Tooltip";
 
 @observer
 export class BarkTooltip extends AppStateComponent<{
-  barkState?: IObservableValue<boolean>
+  text: string,
+  onFinished?: () => void
 }> {
   @observable displayedText: string = "";
   originalText: string;
-  isCanceled: boolean;
-
-  // Make it possible to initialize bark state externally
-  defaultBarkState = observable(false);
-  get barkState () {
-    return this.props.barkState || this.defaultBarkState;
-  }
+  isBarking: boolean;
 
   static finishWaitTimePerWord = 250;
   static finishWaitTimeMin = 3000;
@@ -25,39 +21,54 @@ export class BarkTooltip extends AppStateComponent<{
   static letterSound = {src: [require("../../assets/dd/audio/ui_shr_text_loop.wav")], volume: 0.4};
   static popupSound = {src: [require("../../assets/dd/audio/ui_shr_text_popup.wav")]};
 
-  componentWillUnmount () {
-    this.isCanceled = true;
+  componentWillMount () {
+    this.bark(this.props.text);
   }
 
-  bark (text: string) {
-    if (this.barkState.get()) {
+  componentDidUpdate ({text}: {text: string}) {
+    if (text !== this.props.text) {
+      this.bark(this.props.text);
+    }
+  }
+
+  componentWillUnmount () {
+    this.isBarking = false;
+  }
+
+  private async bark (text: string) {
+    if (text === undefined || this.isBarking) {
       return;
     }
 
-    this.barkState.set(true);
     this.originalText = text;
     this.displayedText = "";
+    this.isBarking = true;
+
     const wordCount = text.split(/[\s:,.;]+/).length;
-
-    this.appState.sfx.play(BarkTooltip.popupSound);
-
     const readTime = Math.max(BarkTooltip.finishWaitTimePerWord * wordCount, BarkTooltip.finishWaitTimeMin);
 
-    return this.showNextLetterAndContinue()
-      .then(() => this.wait(readTime))
-      .then(() => this.barkState.set(false));
+    this.appState.sfx.play(BarkTooltip.popupSound);
+    await this.showNextLetterAndContinue();
+    await this.wait(readTime);
+
+    this.isBarking = false;
+    this.displayedText = "";
+    this.originalText = "";
+
+    if (this.props.onFinished) {
+      this.props.onFinished();
+    }
   }
 
-  showNextLetterAndContinue (): Promise<any> {
-    return this.showNextLetter().then(() => {
-      const weAreDone = this.originalText === this.displayedText || this.isCanceled;
-      return weAreDone ?
-        Promise.resolve() :
-        this.showNextLetterAndContinue();
-    });
+  private async showNextLetterAndContinue (): Promise<any> {
+    await this.showNextLetter();
+    const weAreDone = this.originalText === this.displayedText || !this.isBarking;
+    return weAreDone ?
+      Promise.resolve() :
+      this.showNextLetterAndContinue();
   }
 
-  showNextLetter () {
+  private showNextLetter () {
     requestAnimationFrame(() => this.appState.sfx.play(BarkTooltip.letterSound));
     this.displayedText = this.originalText.slice(0, this.displayedText.length + 1);
     return this.wait(BarkTooltip.letterInterval);
@@ -69,15 +80,16 @@ export class BarkTooltip extends AppStateComponent<{
 
   render () {
     return (
-      <div className={css(styles.barkTooltip)}>
+      <Tooltip classStyle={styles.barkTooltip}>
         {this.displayedText}
-      </div>
+      </Tooltip>
     );
   }
 }
 
 const styles = StyleSheet.create({
   barkTooltip: {
+    flex: 1,
     minWidth: grid.xSpan(2),
     maxWidth: grid.xSpan(3.5),
     padding: grid.ySpan(0.5),

@@ -8,8 +8,7 @@ import Transition from "react-transition-group/Transition";
 
 @observer
 export class PopupList extends React.Component<{
-  popups: PopupState,
-  portalNodeRef: (node: HTMLDivElement) => void
+  popups: PopupState
 }> {
   renderPopups () {
     const elements: JSX.Element[] = [];
@@ -32,19 +31,10 @@ export class PopupList extends React.Component<{
   }
 
   render () {
-    const popups = this.renderPopups();
-
-    // Expose a react portal node above the first layer of popups
-    popups.push((
-      <Transition key="portal" timeout={0}>
-        <div style={{pointerEvents: "all"}} ref={this.props.portalNodeRef}/>
-      </Transition>
-    ));
-
     return (
       <div className={css(styles.container, styles.container)}>
         <TransitionGroup className={css(styles.container)}>
-          {popups}
+          {this.renderPopups()}
         </TransitionGroup>
       </div>
     );

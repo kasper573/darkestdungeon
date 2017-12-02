@@ -5,7 +5,7 @@ import {LevelIcon} from "../../ui/LevelIcon";
 import {ItemLevel} from "../../ui/ItemLevel";
 import {StressMeter} from "../../ui/StressMeter";
 import {Avatar} from "../../ui/Avatar";
-import {commonColors, commonStyleFn, commonStyles} from "../../config/styles";
+import {commonColors, commonStyleFn, commonStyles, customScrollbarSize} from "../../config/styles";
 import {TooltipArea, TooltipSide} from "../../lib/TooltipArea";
 import {HeroBreakdown} from "../../ui/HeroBreakdown";
 import {ItemType} from "../../state/types/ItemInfo";
@@ -120,7 +120,7 @@ export class EstateRosterEntry extends AppStateComponent<{
         onDragEnd={this.props.onDragEnd}
         onDrop={this.props.onDrop}>
         <div
-          className={css(commonStyles.row)}
+          className={css(commonStyles.row, commonStyles.fill)}
           onContextMenu={(e) => {
             e.preventDefault();
             this.showHeroOverview();
@@ -170,19 +170,27 @@ const borderColors = [
   "rgb(68, 72, 79)"
 ];
 
-export const rosterEntryHoverOffset = grid.xSpan(0.5);
+export const rosterEntryHoverOffset = grid.paddingRight; //grid.xSpan(0);
+export const rosterEntryWidth = grid.xSpan(3) - customScrollbarSize;
 const entryHeight = grid.ySpan(1.75);
 const entryBorderSize = grid.border;
 const entryPadding = grid.border;
 export const rosterEntryAvatarSize = entryHeight - entryBorderSize * 2 - entryPadding * 2;
 const styles = StyleSheet.create({
   entry: {
+    flex: "none",
     flexDirection: "row",
     border: commonStyleFn.border(undefined, entryBorderSize),
-    borderRight: 0,
     backgroundColor: "black",
     padding: entryPadding,
-    height: entryHeight
+    height: entryHeight,
+
+    // Add extra hidden padding to the right to create
+    // hover zone to cover emptiness created by hover offset
+    width: rosterEntryWidth + rosterEntryHoverOffset,
+    paddingRight: entryPadding + rosterEntryHoverOffset,
+    marginRight: -rosterEntryHoverOffset,
+    borderRight: 0
   },
 
   entryTransparent: {
@@ -191,20 +199,14 @@ const styles = StyleSheet.create({
   },
 
   entryOffsetable: {
-    transition: "margin-left 0.2s ease-out",
+    transition: "transform 0.2s ease-out",
     ":hover": {
-      marginLeft: -rosterEntryHoverOffset
+      transform: `translateX(${-rosterEntryHoverOffset}px)`
     }
   },
 
   entryOffsetForced: {
-    marginLeft: -rosterEntryHoverOffset
-  },
-
-  lineupIcon: {
-    width: 10,
-    height: 20,
-    background: "red"
+    transform: `translateX(${-rosterEntryHoverOffset}px)`
   },
 
   avatar: {
@@ -244,8 +246,7 @@ const styles = StyleSheet.create({
   levelIconContainer: {
     margin: grid.gutter,
     marginLeft: 0,
-    paddingRight: rosterEntryHoverOffset,
-    marginRight: grid.gutter - rosterEntryHoverOffset,
+    marginRight: grid.gutter,
     justifyContent: "flex-end"
   }
 });

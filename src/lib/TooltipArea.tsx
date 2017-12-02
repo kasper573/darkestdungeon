@@ -23,7 +23,8 @@ export type TooltipAreaProps = {
   classStyle?: any,
   onClick?: () => void,
   style?: any,
-  show?: boolean
+  show?: boolean,
+  wrap?: boolean
 };
 
 /**
@@ -37,7 +38,8 @@ export type TooltipAreaProps = {
 @observer
 export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   static defaultProps = {
-    side: TooltipSide.Below
+    side: TooltipSide.Below,
+    wrap: true
   };
 
   @observable private isHovered = false;
@@ -78,8 +80,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
       position: "absolute",
       left: x,
       top: y,
-      pointerEvents: "none",
-      opacity: this.isTooltipVisible ? 1 : 0
+      pointerEvents: "none"
     };
   }
 
@@ -109,6 +110,10 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   }
 
   wrapTooltip (tip: any) {
+    if (!this.props.wrap) {
+      return tip;
+    }
+
     if (typeof tip === "string") {
       tip = <span className={css(commonStyles.nowrap)}>{tip}</span>;
     }
@@ -117,6 +122,8 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
   }
 
   render () {
+    const tip = this.isTooltipVisible && this.wrapTooltip(this.props.tip);
+
     return (
       <div
         className={css(this.props.classStyle)}
@@ -129,7 +136,7 @@ export class TooltipArea extends AppStateComponent<TooltipAreaProps> {
         <BoundsObserver onBoundsChanged={(bounds) => this.areaBounds = bounds}/>
 
         <div style={this.tooltipStyle}>
-          {this.wrapTooltip(this.props.tip)}
+          {tip}
           <SizeObserver onSizeChanged={(size) => this.tooltipSize = size}/>
         </div>
       </div>

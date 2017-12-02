@@ -1,16 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {css, StyleSheet} from "aphrodite";
-import {EstateRosterEntry, rosterEntryHoverOffset} from "./EstateRosterEntry";
+import {EstateRosterEntry, rosterEntryHoverOffset, rosterEntryWidth} from "./EstateRosterEntry";
 import {observer} from "mobx-react";
 import {SortOptions} from "../../ui/SortOptions";
 import {AppStateComponent} from "../../AppStateComponent";
 import {Hero} from "../../state/types/Hero";
 import {grid} from "../../config/Grid";
-import {commonStyles} from "../../config/styles";
+import {commonStyles, customScrollbarSize} from "../../config/styles";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {DragDropSlot} from "../../lib/DragDropSlot";
 import {BuildingMessage} from "./buildings/BuildingMessage";
+import {screenFooterHeight} from "../ScreenFooter";
 
 const heroCompareIcons = {
   level: require("../../../assets/dd/images/campaign/town/roster/roster_sort_level.png"),
@@ -63,7 +64,7 @@ export class EstateRoster extends AppStateComponent<{
     );
 
     const roster = (
-      <div className={css(styles.roster)}>
+      <div className={css(styles.roster, this.appState.showGridOverlay && styles.gridOverlay)}>
         <div className={css(styles.header)}>
           <span className={css(styles.rosterSize, commonStyles.commonName)}>
             {this.activeProfile.roster.length} / {this.activeProfile.rosterSize}
@@ -74,11 +75,10 @@ export class EstateRoster extends AppStateComponent<{
             onChange={(fn) => this.activeProfile.sortHeroes(fn)}
           />
         </div>
-        <ul>
+        <ul className={css(styles.list, commonStyles.customScrollbar)}>
           {sortedHeroes.map((hero, index) => (
             <EstateRosterEntry
               key={hero.id + "-" + index}
-              classStyle={styles.entry}
               index={index}
               hero={hero}
               enableHoverOffset={true}
@@ -106,10 +106,16 @@ export class EstateRoster extends AppStateComponent<{
 
 const styles = StyleSheet.create({
   roster: {
+    pointerEvents: "all", // For portal
     position: "absolute",
     top: grid.paddingTop,
-    width: grid.paddingRight + grid.xSpan(3) - rosterEntryHoverOffset,
-    right: 0
+    width: rosterEntryWidth + rosterEntryHoverOffset + customScrollbarSize,
+    right: 0,
+    bottom: grid.paddingBottom + screenFooterHeight
+  },
+
+  gridOverlay: {
+    background: "rgba(246, 41, 255, 0.75)"
   },
 
   header: {
@@ -118,10 +124,9 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     height: grid.ySpan(1),
 
-    marginBottom: grid.gutter / 2,
-    paddingLeft: grid.xSpan(0.3),
+    paddingLeft: grid.xSpan(0.4),
     paddingRight: grid.paddingRight,
-    paddingBottom: grid.gutter * 1.5 + grid.border,
+    paddingBottom: grid.gutter * 2 + grid.border,
 
     backgroundImage: `url(${require("../../../assets/images/stick.png")})`,
     backgroundSize: "contain",
@@ -133,7 +138,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  entry: {
-
+  list: {
+    flex: 1,
+    overflowY: "auto",
+    overflowX: "hidden",
+    alignItems: "flex-end"
   }
 });

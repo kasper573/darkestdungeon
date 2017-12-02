@@ -8,6 +8,7 @@ import {css, StyleSheet} from "aphrodite";
 import {grid} from "../../../config/Grid";
 import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 import {BuildingMessage} from "./BuildingMessage";
+import {commonStyles} from "../../../config/styles";
 
 @observer
 export class Graveyard extends AppStateComponent {
@@ -31,7 +32,6 @@ export class Graveyard extends AppStateComponent {
       elements.push(
         <EstateRosterEntry
           key={hero.id} hero={hero}
-          classStyle={styles.heroEntry}
           transparent={true}
           enableBarks={false}
           allowDrop={() => false}
@@ -48,7 +48,7 @@ export class Graveyard extends AppStateComponent {
 
     return (
       <BuildingOverview coverupRight={false} info={StaticState.instance.buildings.get(Graveyard.id)}>
-        <div className={css(styles.heroList)}>
+        <div className={css(styles.heroList, commonStyles.customScrollbar)}>
           {this.renderMessage()}
           {elements}
         </div>
@@ -59,11 +59,10 @@ export class Graveyard extends AppStateComponent {
 
 const styles = StyleSheet.create({
   heroList: {
-    alignItems: "flex-end"
-  },
-
-  heroEntry: {
-    flex: "none"
+    flex: 1,
+    alignItems: "flex-end",
+    overflowY: "auto",
+    overflowX: "hidden"
   },
 
   graveyardMessage: {

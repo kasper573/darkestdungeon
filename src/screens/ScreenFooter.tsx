@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     left: 0, right: 0,
     bottom: grid.paddingBottom - borderSpacing - borderSize,
     height: screenFooterHeight,
+    zIndex: 3,
 
     ":after": {
       ...commonStyleFn.dock("bottom"),
