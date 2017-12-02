@@ -34,13 +34,13 @@ export class Character extends Experienced {
 
   @computed get perks () {
     return Object.freeze(
-      this.quirks.filter((q) => !q.isDisease && q.stats.isPositive)
+      this.quirks.filter((q) => !q.isDisease && q.isPositive)
     );
   }
 
   @computed get flaws () {
     return Object.freeze(
-      this.quirks.filter((q) => !q.isDisease && !q.stats.isPositive)
+      this.quirks.filter((q) => !q.isDisease && q.isNegative)
     );
   }
 

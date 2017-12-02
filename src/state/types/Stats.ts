@@ -88,8 +88,20 @@ export class Stats {
     return this.all.filter((s) => !s.isNeutral);
   }
 
+  get isNeutral () {
+    return this.sum === 0;
+  }
+
   get isPositive () {
-    return !this.all.find((s) => s.isNegative);
+    return this.sum > 0;
+  }
+
+  get isNegative () {
+    return this.sum < 0;
+  }
+
+  get sum () {
+    return this.nonNeutral.reduce((sum, stat) => sum + stat.value, 0);
   }
 
   get stressPercentage () {
