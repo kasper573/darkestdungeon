@@ -39,7 +39,7 @@ export function decorateCharacter<T extends Character> (
   c.name = randomizeItem(availableNames);
   c.classInfo = template.classInfo;
   c.affliction = Math.random() > 0.5 ? randomizeItem(StaticState.instance.afflictions) : null;
-  c.quirks = randomizeItems(StaticState.instance.quirks, 1, 8);
+  c.quirks = randomizeItems(StaticState.instance.quirks, 1, 4);
 
   const allItems = StaticState.instance.items;
   const weapons = allItems.filter((item) => item.type === ItemType.Weapon);
@@ -127,16 +127,25 @@ export function randomizeTemplate (allTemplates: CharacterTemplate[], activeChar
   );
 
   // Filter out any templates marked as unique that already is active
-  const templatePool = allTemplates.filter((t) => {
+  let templatePool = allTemplates.filter((t) => {
     return !activeTemplates.find(
       (active) => active.id === t.id && active.unique
     );
   });
+
+  if (templatePool.length === 0) {
+    console.warn("All templates taken, can't produce a fulfilling template. Falling back to any template.");
+    templatePool = allTemplates;
+  }
 
   // Randomize order so we can pick the first rarity match and still have randomness
   templatePool.sort(() => Math.random () > 0.5 ? -1 : 1);
 
   // Find rarity match
   const rarityScore = Math.random();
-  return templatePool.find((t) => rarityScore <= t.rarity);
+  const rareMatch = templatePool.find((t) => rarityScore <= t.rarity);
+  if (rareMatch) {
+    return rareMatch;
+  }
+  return templatePool.find((t) => rarityScore >= t.rarity);
 }
