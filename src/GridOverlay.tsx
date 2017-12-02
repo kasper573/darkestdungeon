@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 
     opacity: 0.4,
     background: "red",
-    zIndex: 4,
+    zIndex: 2,
     pointerEvents: "none"
   },
 
