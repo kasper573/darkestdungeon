@@ -88,6 +88,6 @@ function getSkillSetScore (skills: Skill[]) {
   }
 
   const positionScore = Math.pow(positionSum.filter((filled) => filled).length, 2);
-  const targetScore = targetSum.filter((filled) => filled).length * 2;
+  const targetScore = targetSum.reduce((score, filled, index) => score + (filled ? index : 0), 0) * 2;
   return positionScore + targetScore;
 }

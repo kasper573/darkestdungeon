@@ -6,7 +6,7 @@ import {fonts} from "../../assets/fonts";
 import {credits} from "../config/credits";
 import {RainbowText} from "./RainbowText";
 
-const sectionTexts = credits.trim().split(/\n\n+/);
+const sectionTexts = credits.split(/\n\n+/);
 const sections = sectionTexts.map((text) => text.split(/\n/));
 const startScrollWaitTime = 2000;
 const scrollFrequency = 32;

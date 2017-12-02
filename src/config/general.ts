@@ -11,6 +11,7 @@ import {CharacterTemplate} from "../state/types/CharacterTemplate";
 import {BuildingUpgradeInfo} from "../state/types/BuildingUpgradeInfo";
 import {BuildingInfo, createId as createBuildingInfoId} from "../state/types/BuildingInfo";
 import {StatItem} from "../state/types/StatItem";
+import {gorillas, monkeys} from "./credits";
 
 export const defaultAmbienceOSVolume = 0.25;
 
@@ -30,9 +31,38 @@ for (const count of equippableItems.values()) {
   maxEquippedItems += count;
 }
 
-const commonHeroNames = [
-  "CoffeeDetective", "Gr4nnysith", "Koob0", "Kvilex", "PuzzleDev", "Kfirba2"
-];
+const baseStatValue = 5;
+const baseStatusChance = 0.4;
+const baseStatusDamageScale = 0.2;
+const baseResistance = 0.2;
+
+const commonHeroNames = [...gorillas, ...monkeys];
+
+function createStandardCharacterClass (className: string, statsScale = 1) {
+  const info = new CharacterClassInfo();
+  info.id = info.name = className;
+  info.stats = new Stats();
+  info.stats.maxHealth.value = 15 * baseStatValue;
+  info.stats.maxStress.value = 200;
+  info.stats.protect.value = 2 * baseStatValue;
+  info.stats.damage.value = 2 * baseStatValue;
+  info.stats.dodge.value = 2 * baseStatValue;
+  info.stats.accuracy.value = 2 * baseStatValue;
+  info.stats.speed.value = 2 * baseStatValue;
+  info.stats.criticalChance.value = 0.05;
+
+  for (const stat of info.stats.statuses.values()) {
+    stat.value = baseStatusChance;
+  }
+
+  for (const stat of info.stats.resistances.values()) {
+    stat.value = baseResistance;
+  }
+
+  info.stats.all.forEach((stat) => stat.value *= statsScale);
+
+  return info;
+}
 
 export function addStaticState () {
   let previousLevelInfo: LevelInfo;
@@ -59,35 +89,35 @@ export function addStaticState () {
       position: SkillTarget.backline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      stats: {health: 5}
+      stats: {health: 2 * baseStatValue}
     },
     "Soothe": {
       iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_anger_management.png"),
       position: SkillTarget.backline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      stats: {stress: -5}
+      stats: {stress: -2 * baseStatValue}
     },
     "Toughen": {
       iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandage.png"),
       position: SkillTarget.backline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      buff: {protect: 5}
+      buff: {protect: 2 * baseStatValue}
     },
     "Empower": {
       iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bandits_sense.png"),
       position: SkillTarget.backline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      buff: {damage: 5}
+      buff: {damage: 2 * baseStatValue}
     },
     "Smite": {
       iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bloody_shroud.png"),
       position: SkillTarget.backline,
       target: SkillTarget.oneOf([true, true, true, true]),
       stats: {
-        statuses: {[CharacterStatus.Stun]: 0.5}
+        statuses: {[CharacterStatus.Stun]: baseStatusChance}
       }
     },
 
@@ -98,10 +128,10 @@ export function addStaticState () {
       target: SkillTarget.anyOne(SkillTargetObject.Enemy),
       damageScale: 0,
       statusTurns: 1,
-      buff: {protect: -5},
+      buff: {protect: -2 * baseStatValue},
       stats: {
         statuses: {
-          [CharacterStatus.Buff]: 0.8
+          [CharacterStatus.Buff]: baseStatusChance
         }
       }
     },
@@ -110,14 +140,14 @@ export function addStaticState () {
       position: SkillTarget.midline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      buff: {protect: 5}
+      buff: {protect: 2 * baseStatValue}
     },
     "Bolster": {
       iconUrl: require("../../assets/dd/images/raid/camping/skill_icons/camp_skill_bless.png"),
       position: SkillTarget.midline,
       target: SkillTarget.anyOne(SkillTargetObject.Ally),
       damageScale: 0,
-      buff: {protect: 5}
+      buff: {protect: 2 * baseStatValue}
     },
 
     // Backline offensive
@@ -126,8 +156,8 @@ export function addStaticState () {
       position: SkillTarget.backline,
       target: SkillTarget.oneOf([true, true, true, true]),
       stats: {
-        accuracy: 5,
-        damage: 5
+        accuracy: baseStatValue,
+        damage: baseStatValue
       }
     },
     "Poison Bomb": {
@@ -135,8 +165,8 @@ export function addStaticState () {
       position: SkillTarget.backline,
       target: SkillTarget.oneOf([true, true, true, true]),
       stats: {
-        statuses: {[CharacterStatus.Blight]: 0.5},
-        statusDamageScales: {[CharacterStatus.Blight]: 0.5}
+        statuses: {[CharacterStatus.Blight]: baseStatusChance},
+        statusDamageScales: {[CharacterStatus.Blight]: baseStatusDamageScale}
       }
     },
     "Glass Bomb": {
@@ -144,8 +174,8 @@ export function addStaticState () {
       position: SkillTarget.backline,
       target: SkillTarget.oneOf([true, true, true, true]),
       stats: {
-        statuses: {[CharacterStatus.Bleed]: 0.5},
-        statusDamageScales: {[CharacterStatus.Bleed]: 0.5}
+        statuses: {[CharacterStatus.Bleed]: baseStatusChance},
+        statusDamageScales: {[CharacterStatus.Bleed]: baseStatusDamageScale}
       }
     },
     "Artillery": {
@@ -153,8 +183,8 @@ export function addStaticState () {
       position: SkillTarget.backline,
       target: SkillTarget.oneOf([true, true, true, true]),
       stats: {
-        accuracy: 5,
-        damage: 5
+        accuracy: baseStatValue,
+        damage: baseStatValue
       }
     },
 
@@ -164,8 +194,8 @@ export function addStaticState () {
       position: SkillTarget.frontline,
       target: SkillTarget.oneOf([false, false, true, true]),
       stats: {
-        accuracy: 5,
-        damage: 5
+        accuracy: baseStatValue,
+        damage: baseStatValue
       }
     },
     "Swing": {
@@ -173,8 +203,8 @@ export function addStaticState () {
       position: SkillTarget.frontline,
       target: SkillTarget.oneOf([true, true, false, false]),
       stats: {
-        accuracy: 2,
-        damage: 7
+        accuracy: Math.round(baseStatValue / 3),
+        damage: Math.round(baseStatValue * 2 / 3)
       }
     },
     "Heave": {
@@ -182,7 +212,7 @@ export function addStaticState () {
       position: SkillTarget.frontline,
       target: SkillTarget.oneOf([true, false, false, false]),
       stats: {
-        damage: 10
+        damage: 2 * baseStatValue
       }
     },
     "Slam": {
@@ -190,13 +220,13 @@ export function addStaticState () {
       position: [false, false, false, true],
       target: SkillTarget.oneOf([true, false, false, false]),
       stats: {
-        accuracy: -5,
-        damage: 15
+        accuracy: -baseStatValue,
+        damage: 3 * baseStatValue
       }
     }
   });
 
-  addCharacterTemplates((i) => i.heroes, commonHeroNames, {
+  addCharacterTemplates((i) => i.heroes, 1, commonHeroNames, {
     "White Mage": {
       classInfo: {
         avatarUrl: require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png"),
@@ -236,11 +266,12 @@ export function addStaticState () {
     }
   });
 
-  addCharacterTemplates((i) => i.monsters, undefined, {
+  addCharacterTemplates((i) => i.monsters, 0.8, undefined, {
     "Skeleton": {},
-    "Demon": {},
-    "Devil": {},
+    "Bat": {},
+    "Ghost": {},
     "Snake": {},
+    "Rat": {},
     "Destruction of Everything": {
       characterNames: ["jQuery"],
       rarity: 0.1,
@@ -255,52 +286,52 @@ export function addStaticState () {
     "The Old Road": {
       isStartingDungeon: true,
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.old_road.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Rat"]
     },
     "Ruins": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.crypts_0.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Snake"]
     },
     "Warrens": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.warrens_0.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Skeleton"]
     },
     "Weald": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.weald_0.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Ghost"]
     },
     "Cove": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.cove_0.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Bat"]
     },
     "Dankest Dungeon": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.plot_darkest_dungeon_1.png"),
-      monsters: StaticState.instance.monsters
+      monsters: ["Destruction of Everything"]
     }
   });
 
   addQuirks({
-    "Speedster": {stats: {speed: 5, damage: -2}},
-    "Blood Thirsty": {stats: {damage: 5, accuracy: -2}},
-    "Quick Reflexes": {stats: {dodge: 5, speed: -2}},
+    "Speedster": {stats: {speed: 2 * baseStatValue, damage: -baseStatValue}},
+    "Blood Thirsty": {stats: {damage: 2 * baseStatValue, accuracy: -baseStatValue}},
+    "Quick Reflexes": {stats: {dodge: 2 * baseStatValue, speed: -baseStatValue}},
 
-    "Short Sighted": {stats: {accuracy: -5}},
-    "Fatigue": {stats: {damage: -5}},
-    "Exhausted": {stats: {speed: -5}},
+    "Short Sighted": {stats: {accuracy: -baseStatValue}},
+    "Fatigue": {stats: {damage: -baseStatValue}},
+    "Exhausted": {stats: {speed: -baseStatValue}},
 
     "The Plague": {
       isDisease: true,
-      stats: {maxHealth: -10},
+      stats: {maxHealth: -2 * baseStatValue},
       forcedTreatmentIds: ["sanitarium.diseases"]
     },
 
     "Happy": {
       isAffliction: true,
-      stats: {maxHealth: 10}
+      stats: {maxHealth: baseStatValue}
     },
     "Sad": {
       isAffliction: true,
-      stats: {maxHealth: -10}
+      stats: {maxHealth: -baseStatValue}
     },
 
     "Known Cheat": {bannedTreatmentIds: ["tavern.gambling"]},
@@ -427,13 +458,13 @@ export function addStaticState () {
       getStoreCount: () => 6,
       buff: {
         resistances: {
-          [CharacterStatus.Bleed]: 0.1,
-          [CharacterStatus.Blight]: 0.1,
-          [CharacterStatus.Buff]: 0.1,
-          [CharacterStatus.Disease]: 0.1,
-          [CharacterStatus.Move]: 0.1,
-          [CharacterStatus.Stun]: 0.1,
-          [CharacterStatus.Trap]: 0.1
+          [CharacterStatus.Bleed]: baseResistance,
+          [CharacterStatus.Blight]: baseResistance,
+          [CharacterStatus.Buff]: baseResistance,
+          [CharacterStatus.Disease]: baseResistance,
+          [CharacterStatus.Move]: baseResistance,
+          [CharacterStatus.Stun]: baseResistance,
+          [CharacterStatus.Trap]: baseResistance
         }
       }
     },
@@ -446,8 +477,8 @@ export function addStaticState () {
       value: 200,
       type: ItemType.Weapon,
       stats: {
-        accuracy: 5,
-        damage: 15
+        accuracy: baseStatValue,
+        damage: 3 * baseStatValue
       }
     },
 
@@ -457,8 +488,8 @@ export function addStaticState () {
       value: 200,
       type: ItemType.Weapon,
       stats: {
-        accuracy: 10,
-        damage: 10
+        accuracy: 2 * baseStatValue,
+        damage: 2 * baseStatValue
       }
     },
 
@@ -468,8 +499,8 @@ export function addStaticState () {
       value: 200,
       type: ItemType.Armor,
       stats: {
-        maxHealth: 10,
-        protect: 10
+        maxHealth: 2 * baseStatValue,
+        protect: 2 * baseStatValue
       }
     },
 
@@ -479,8 +510,8 @@ export function addStaticState () {
       value: 200,
       type: ItemType.Armor,
       stats: {
-        speed: 10,
-        dodge: 10
+        speed: 2 * baseStatValue,
+        dodge: 2 * baseStatValue
       }
     },
 
@@ -490,8 +521,8 @@ export function addStaticState () {
       value: 400,
       type: ItemType.Trinket,
       stats: {
-        dodge: -5,
-        damage: 5
+        dodge: -baseStatValue,
+        damage: baseStatValue
       }
     },
 
@@ -501,8 +532,8 @@ export function addStaticState () {
       value: 400,
       type: ItemType.Trinket,
       stats: {
-        speed: -5,
-        protect: 5
+        speed: -baseStatValue,
+        protect: baseStatValue
       }
     }
   });
@@ -810,34 +841,14 @@ export function addStaticState () {
   });
 }
 
-function createStandardCharacterClass (className: string) {
-  const info = new CharacterClassInfo();
-  info.id = info.name = className;
-  info.stats = new Stats();
-  info.stats.maxHealth.value = 50;
-  info.stats.maxStress.value = 200;
-  info.stats.protect.value = 10;
-  info.stats.damage.value = 10;
-  info.stats.dodge.value = 10;
-  info.stats.accuracy.value = 10;
-  info.stats.speed.value = 10;
-  info.stats.criticalChance.value = 0.05;
-
-  for (const stat of info.stats.statuses.values()) {
-    stat.value = 0.5;
-  }
-
-  for (const stat of info.stats.resistances.values()) {
-    stat.value = 0.2;
-  }
-  return info;
-}
-
-function addCharacterTemplates (getList: (i: StaticState) => CharacterTemplate[], names?: string[], rawInfo?: any) {
+function addCharacterTemplates (
+  getList: (i: StaticState) => CharacterTemplate[],
+  statsScale?: number, names?: string[], rawInfo?: any
+) {
   for (const name in rawInfo) {
     // Define CharacterTemplate
     const {classInfo, ...templateProps} = rawInfo[name];
-    const template = new CharacterTemplate(createStandardCharacterClass(name), names);
+    const template = new CharacterTemplate(createStandardCharacterClass(name, statsScale), names);
     Object.assign(template, templateProps);
 
     // Define ClassInfo
@@ -900,7 +911,17 @@ function addDungeons (rawInfo: any) {
     info.id = name;
     info.name = name;
 
-    Object.assign(info, rawInfo[name]);
+    const {monsters, ...props} = rawInfo[name];
+    info.monsters = !monsters ? StaticState.instance.monsters :
+      monsters.map((monsterId: SkillId) => {
+        const monster = StaticState.instance.monsters.find((s) => s.id === monsterId);
+        if (!monster) {
+          throw new Error("No monster registered by id: " + monsterId);
+        }
+        return monster;
+      });
+
+    Object.assign(info, props);
 
     StaticState.instance.add((i) => i.dungeons, info);
   }

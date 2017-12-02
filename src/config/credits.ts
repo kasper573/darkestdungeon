@@ -1,5 +1,37 @@
 const me = "Kasper Sandin";
 
+export const gorillas = `
+BTM_pl
+DJShinter
+gene9
+Gr4nnySith
+Kronrat
+SurfSpaniel
+$Totttz
+totallybship
+`.trim().split(/\n+/);
+
+export const monkeys = `
+anthropomorphic_armagedon
+bajerovsky
+coffeedetective
+dav_c
+emerycik
+FantasyVI
+feelgood12
+graceleslife
+HuntingBlade
+kfirba2
+K3nt0456
+LaynePavoggi
+Lithzie
+liuting1014
+natsu130
+onixenic
+suplordo
+99_To_Life
+`.trim().split(/\n+/);
+
 export const credits = `
 #Dankest Dungeon
 The intent is to provide consumers with a sense of pride and
@@ -59,35 +91,11 @@ ${me}
 #Special Thanks
 
 Twitch Gorillas
-BTM_pl
-DJShinter
-gene9
-Gr4nnySith
-Kronrat
-SurfSpaniel
-$Totttz
-totallybship
+${gorillas.join("\n")}
 
 Twitch Monkeys
-anthropomorphic_armagedon
-bajerovsky
-coffeedetective
-dav_c
-emerycik
-FantasyVI
-feelgood12
-graceleslife
-HuntingBlade
-kfirba2
-K3nt0456
-LaynePavoggi
-Lithzie
-liuting1014
-natsu130
-onixenic
-suplordo
-99_To_Life
+${monkeys.join("\n")}
 
 Original Concept & Design
 Red Hook Studios (please don't sue me <3)
-`;
+`.trim();
