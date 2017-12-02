@@ -17,6 +17,7 @@ export class Quest extends Battler<Hero> {
   @serializable(identifier()) id: QuestId = uuid();
   @serializable bonfires: number = 0;
   @serializable dungeonId: DungeonId;
+  @serializable isEscapable?: boolean = true;
 
   @serializable(object(QuestMap))
   map: QuestMap;
