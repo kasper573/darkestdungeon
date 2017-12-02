@@ -133,29 +133,34 @@ export function addStaticState () {
   addCharacterTemplates((i) => i.heroes, commonHeroNames, {
     "Ninja": {
       classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png")
+        avatarUrl: require("../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png"),
+        skills: ["Rampart"]
       }
     },
     "Superhero": {
       classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png")
+        avatarUrl: require("../../assets/dd/images/heroes/leper/leper_A/leper_portrait_roster.png"),
+        skills: ["Defender"]
       }
     },
     "Magician": {
       classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png")
+        avatarUrl: require("../../assets/dd/images/heroes/vestal/vestal_A/vestal_portrait_roster.png"),
+        skills: ["Heal"]
       }
     },
     "Baller": {
       classInfo: {
-        avatarUrl: require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png")
+        avatarUrl: require("../../assets/dd/images/heroes/hellion/hellion_A/hellion_portrait_roster.png"),
+        skills: ["Bellow"]
       }
     },
     "Chad": {
       classInfo: {
         avatarUrl: require(
           "../../assets/dd/images/heroes/bounty_hunter/bounty_hunter_A/bounty_hunter_portrait_roster.png"
-        )
+        ),
+        skills: ["Bellow"]
       }
     },
     "Master of Everything": {
@@ -769,9 +774,13 @@ function addCharacterTemplates (getList: (i: StaticState) => CharacterTemplate[]
     const {skills, stats, ...classInfoProps}: any = (classInfo || {});
     Object.assign(template.classInfo, classInfoProps);
     addStats(stats, template.classInfo.stats);
-    template.classInfo.skills = (skills || []).map((skillId: SkillId) =>
-      StaticState.instance.skills.find((skill) => skill.id === skillId)
-    );
+    template.classInfo.skills = (skills || []).map((skillId: SkillId) => {
+      const skill = StaticState.instance.skills.find((s) => s.id === skillId);
+      if (!skill) {
+        throw new Error("No skill registered by id: " + skillId);
+      }
+      return skill;
+    });
 
     StaticState.instance.add(getList, template);
     StaticState.instance.add((i) => i.classes, template.classInfo);
