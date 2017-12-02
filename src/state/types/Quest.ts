@@ -149,7 +149,7 @@ export class Quest extends Battler<Hero> {
   }
 
   whenPartyWipes (callback: () => void) {
-    return when(() => this.party.length === 0, callback);
+    return when(() => this.party.length === 0 && this.deceased.length > 0, callback);
   }
 }
 
