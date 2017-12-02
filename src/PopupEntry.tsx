@@ -61,6 +61,7 @@ export class PopupEntry extends React.Component<{
 
     const transformStyle = handle.animate && transformStyles[this.props.transitionState];
     const opacityStyle = handle.animate && opacityStyles[this.props.transitionState];
+    const filterStyle = handle.animate && filterStyles[this.props.transitionState];
 
     // Pass on handle to popup content
     let content = handle.content;
@@ -92,8 +93,8 @@ export class PopupEntry extends React.Component<{
     if (handle.modalState === ModalState.Opaque) {
       return popup;
     }
-    
-    const onBackgroundClicked = 
+
+    const onBackgroundClicked =
       handle.modalState === ModalState.ModalDismiss ?
         () => handle.close() :
         undefined;
@@ -103,7 +104,7 @@ export class PopupEntry extends React.Component<{
       <InputLayer
         id={handle.id}
         className={css(styles.modalContainer, styles.animator)}
-        style={{zIndex: handle.layer, ...opacityStyle}}>
+        style={{zIndex: handle.layer, ...opacityStyle, ...filterStyle}}>
         <div className={css(styles.modalBackground)}
              onClick={onBackgroundClicked}/>
         {popup}
@@ -131,6 +132,13 @@ const opacityStyles: {[key: string]: any} = {
   entered: {opacity: 1},
   exiting: {opacity: 0},
   exited: {opacity: 0}
+};
+
+const filterStyles: {[key: string]: any} = {
+  entering: {backdropFilter: "blur(0)"},
+  entered: {backdropFilter: "blur(5px)"},
+  exiting: {backdropFilter: "blur(0)"},
+  exited: {backdropFilter: "blur(0)"}
 };
 
 const styles = StyleSheet.create({
