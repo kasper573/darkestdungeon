@@ -403,7 +403,10 @@ export class Profile {
     this.selectedQuestId = this.quests[0].id;
 
     // Randomize coach each week
-    this.coach = count(this.coachSize).map(() => this.newHero());
+    this.coach = [];
+    count(this.coachSize).forEach(() =>
+      this.coach.push(this.newHero())
+    );
 
     this.processResidencyEffects();
   }
