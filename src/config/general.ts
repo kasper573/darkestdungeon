@@ -154,13 +154,32 @@ export function addStaticState () {
   const jQuery = addMonster("Destruction of Everything", ["jQuery"], 0.1, true);
   jQuery.classInfo.avatarUrl = require("../../assets/images/unicorn.jpg");
 
-  ["Ruins", "Warrens", "Weald", "Cove", "Dankest Dungeon"].forEach((name) => {
-    const info = new DungeonInfo();
-    info.id = name;
-    info.name = name;
-    info.imageUrl = require("../../assets/dd/images/loading_screen/loading_screen.cove_0.png");
-    info.monsters = StaticState.instance.monsters;
-    StaticState.instance.add((i) => i.dungeons, info);
+  addDungeons({
+    "The Old Road": {
+      isStartingDungeon: true,
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.old_road.png"),
+      monsters: StaticState.instance.monsters
+    },
+    "Ruins": {
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.crypts_0.png"),
+      monsters: StaticState.instance.monsters
+    },
+    "Warrens": {
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.warrens_0.png"),
+      monsters: StaticState.instance.monsters
+    },
+    "Weald": {
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.weald_0.png"),
+      monsters: StaticState.instance.monsters
+    },
+    "Cove": {
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.cove_0.png"),
+      monsters: StaticState.instance.monsters
+    },
+    "Dankest Dungeon": {
+      imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.plot_darkest_dungeon_1.png"),
+      monsters: StaticState.instance.monsters
+    }
   });
 
   addQuirks({
@@ -766,6 +785,18 @@ function addBuildings (rawInfo: any, parent = StaticState.instance.buildingInfoR
     if (children) {
       addBuildings(children, info);
     }
+  }
+}
+
+function addDungeons (rawInfo: any) {
+  for (const name in rawInfo) {
+    const info = new DungeonInfo();
+    info.id = name;
+    info.name = name;
+
+    Object.assign(info, rawInfo[name]);
+
+    StaticState.instance.add((i) => i.dungeons, info);
   }
 }
 

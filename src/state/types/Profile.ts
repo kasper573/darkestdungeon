@@ -11,7 +11,7 @@ import {generateHero, generateQuest} from "../Generators";
 import {cap, contains, count, moveItem, removeItem, removeItems} from "../../lib/Helpers";
 import {StaticState} from "../StaticState";
 import {BuildingUpgradeInfo} from "./BuildingUpgradeInfo";
-import {HeirloomType, ItemType} from "./ItemInfo";
+import {HeirloomType} from "./ItemInfo";
 import {BuildingInfoId} from "./BuildingInfo";
 import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
@@ -62,11 +62,19 @@ export class Profile {
 
   @serializable(list(object(Dungeon)))
   @observable
-  dungeons: Dungeon[] = [];
+  allDungeons: Dungeon[] = [];
 
   @serializable(list(reference(BuildingUpgradeInfo, StaticState.lookup((i) => i.buildingUpgrades))))
   @observable
   buildingUpgrades: BuildingUpgradeInfo[] = [];
+
+  @computed get selectableDungeons () {
+    return this.allDungeons.filter((d) => !d.info.isStartingDungeon);
+  }
+
+  @computed get startingDungeons () {
+    return this.allDungeons.filter((d) => d.info.isStartingDungeon);
+  }
 
   get heirloomConversionRate () {
     return 1.5;
@@ -103,7 +111,7 @@ export class Profile {
 
   @computed get selectedDungeon () {
     if (this.selectedQuest) {
-      return this.dungeons.find((d) => d.id === this.selectedQuest.dungeonId);
+      return this.allDungeons.find((d) => d.id === this.selectedQuest.dungeonId);
     }
   }
 
@@ -290,7 +298,7 @@ export class Profile {
   }
 
   returnPartyFromQuest (quest: Quest) {
-    const dungeon = this.dungeons.find((d) => d.id === quest.dungeonId);
+    const dungeon = this.allDungeons.find((d) => d.id === quest.dungeonId);
 
     // For successful journeys we hand out experience and rewards
     if (quest.status === QuestStatus.Victory) {
@@ -405,8 +413,8 @@ export class Profile {
     return generateHero([...this.roster, ...this.coach], startingLevel);
   }
 
-  newQuest () {
-    return generateQuest(this.dungeons);
+  newQuest (dungeonPool = this.selectableDungeons) {
+    return generateQuest(dungeonPool);
   }
 }
 

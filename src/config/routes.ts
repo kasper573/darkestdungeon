@@ -50,9 +50,7 @@ const estateLoadingRerouter = (from: Path, to: Path) => {
 
 function getCurrentDungeon (state: AppState) {
   const profile = state.profiles.activeProfile;
-  if (profile && profile.selectedQuest) {
-    return profile.dungeons.find((d) => d.id === profile.selectedQuest.dungeonId);
-  }
+  return profile && profile.selectedDungeon;
 }
 
 export const routes: {[key: string]: Route} = {
