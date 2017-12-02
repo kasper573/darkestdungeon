@@ -1,32 +1,31 @@
 import * as React from "react";
 import {Bounds} from "../Bounds";
-import {css, StyleSheet} from "aphrodite";
-import {AppStateComponent} from "../AppStateComponent";
+import {AppState} from "../state/AppState";
 
-// HACK this implementation is quite CPU intensive
-export class BoundsObserver extends AppStateComponent<{
-  onBoundsChanged: (size: Bounds) => void
-}> {
+export class BoundsObserver {
   private domNode: Element;
   private pollIntervalId: any;
   private lastBounds: ClientRect;
+  private publishBounds: (bounds: Bounds) => void;
 
-  componentDidMount () {
-    this.pollIntervalId = setInterval(() => this.pollBounds(), 125);
+  constructor (
+    private appState: AppState
+  ) {}
+
+  observe (domNode: Element, boundsCollector: (bounds: Bounds) => void) {
+    if (this.domNode) {
+      throw new Error("Already observing a node");
+    }
+
+    this.domNode = domNode;
+    this.publishBounds = boundsCollector;
+    this.pollIntervalId = setInterval(() => this.pollBounds(), 32);
     this.pollBounds();
   }
 
-  componentWillUnmount () {
+  stopObserving () {
+    delete this.domNode;
     clearInterval(this.pollIntervalId);
-  }
-
-  render () {
-    return (
-      <div
-        ref={(node) => this.domNode = node}
-        className={css(styles.container)}
-      />
-    );
   }
 
   pollBounds () {
@@ -51,14 +50,6 @@ export class BoundsObserver extends AppStateComponent<{
       absRect.height / this.appState.bounds.scale
     );
 
-    this.props.onBoundsChanged(newBounds);
+    this.publishBounds(newBounds);
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    top: 0, right: 0, bottom: 0, left: 0,
-    pointerEvents: "none"
-  }
-});
