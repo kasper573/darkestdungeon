@@ -9,6 +9,7 @@ import {HorizontalDivider} from "../../../ui/HorizontalDivider";
 import {BuildingMessage} from "./BuildingMessage";
 import {Hero} from "../../../state/types/Hero";
 import {grid} from "../../../config/Grid";
+import {commonStyles} from "../../../config/styles";
 
 @observer
 export class StageCoach extends AppStateComponent {
@@ -58,7 +59,6 @@ export class StageCoach extends AppStateComponent {
           onDragEnd={(draggedHero, monitor) => monitor.didDrop() && this.recruitHero(draggedHero)}
           allowDrag={() => !this.activeProfile.isRosterFull}
           allowDrop={() => false}
-          classStyle={styles.coachEntry}
         />
       );
 
@@ -71,7 +71,7 @@ export class StageCoach extends AppStateComponent {
 
     return (
       <BuildingOverview coverupRight={false} info={this.buildingInfo}>
-        <div className={css(styles.coachList)}>
+        <div className={css(styles.coachList, commonStyles.customScrollbar)}>
           {this.renderMessage()}
           {elements}
         </div>
@@ -82,10 +82,9 @@ export class StageCoach extends AppStateComponent {
 
 const styles = StyleSheet.create({
   coachList: {
-    alignItems: "flex-end"
-  },
-
-  coachEntry: {
-    flex: "none"
+    alignItems: "flex-end",
+    overflowY: "auto",
+    overflowX: "hidden",
+    flex: 1
   }
 });

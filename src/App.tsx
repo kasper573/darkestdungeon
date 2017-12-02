@@ -13,7 +13,7 @@ import {fonts} from "../assets/fonts";
 import {grid} from "./config/Grid";
 import {InputRoot} from "./state/InputState";
 import {GridOverlay} from "./GridOverlay";
-import {commonColors} from "./config/styles";
+import {commonColors, commonStyleFn} from "./config/styles";
 import {Path} from "./state/types/Path";
 import {Route} from "./state/types/Route";
 import {PopupAlign, PopupHandle} from "./state/PopupState";
@@ -131,10 +131,8 @@ export class App extends React.Component<{
             className={css(styles.game)} style={this.gameStyle}
             onContextMenu={(e) => e.preventDefault()}>
             <Router router={this.props.state.router}/>
-            <PopupList
-              popups={this.props.state.popups}
-              portalNodeRef={(node) => this.props.state.portalNode = node}
-            />
+            <PopupList popups={this.props.state.popups}/>
+            <div className={css(styles.portal)} ref={(node) => this.props.state.portalNode = node}/>
             {this.props.state.showGridOverlay && <GridOverlay/>}
           </div>
           <SizeObserver
@@ -170,5 +168,10 @@ const styles = StyleSheet.create({
     background: "black",
     color: commonColors.lightGray,
     fontSize: grid.fontSize(0.5)
+  },
+
+  portal: {
+    ...commonStyleFn.dock(),
+    pointerEvents: "none"
   }
 });

@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
       marginTop: -grid.gutter,
       marginLeft: -grid.gutter,
       content: "' '",
-      backgroundImage: `url(${require("../../assets/images/splash2.png")})`
+      backgroundImage: `url(${require("../../assets/images/splash2.png")})`,
+      pointerEvents: "none"
     }
   },
 

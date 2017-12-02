@@ -103,6 +103,7 @@ export const commonStyleFn = {
   }
 };
 
+export const customScrollbarSize = grid.gutter + grid.border * 2;
 export const commonStyles = StyleSheet.create({
   fill: {
     flex: 1,
@@ -152,7 +153,8 @@ export const commonStyles = StyleSheet.create({
 
   customScrollbar: {
     "::-webkit-scrollbar": {
-      width: grid.gutter + grid.border * 2,
+      marginLeft: grid.gutter,
+      width: customScrollbarSize,
       backgroundColor: commonColors.darkGray,
       borderLeft: commonStyleFn.border(),
       borderRight: commonStyleFn.border(),
