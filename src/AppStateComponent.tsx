@@ -23,7 +23,7 @@ export abstract class AppStateComponent<P = {}> extends React.Component<P> {
     return this.activeProfile.selectedQuest;
   }
 
-  @computed get selectedDungeon () {
-    return this.activeProfile.dungeons.find((d) => d.id === this.selectedQuest.dungeonId);
+  get selectedDungeon () {
+    return this.activeProfile.selectedDungeon;
   }
 }

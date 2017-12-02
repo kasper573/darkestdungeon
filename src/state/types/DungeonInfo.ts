@@ -6,4 +6,5 @@ export class DungeonInfo {
   name: string;
   monsters: CharacterTemplate[] = [];
   imageUrl: string;
+  isStartingDungeon: boolean;
 }

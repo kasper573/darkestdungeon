@@ -94,7 +94,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
         continuePath="estateProvision">
         <div className={css(styles.content)}>
           <div className={css(styles.dungeons)}>
-            {this.activeProfile.dungeons.map((d) =>
+            {this.activeProfile.selectableDungeons.map((d) =>
               <DungeonBreakdown
                 key={d.id}
                 classStyle={styles.dungeon}

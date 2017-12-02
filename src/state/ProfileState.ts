@@ -36,14 +36,14 @@ export class ProfileState {
       .forEach((upgrade) => profile.purchaseUpgrade(upgrade));
 
     // Add all dungeons to profile
-    profile.dungeons = StaticState.instance.dungeons.map(Dungeon.fromInfo);
+    profile.allDungeons = StaticState.instance.dungeons.map(Dungeon.fromInfo);
 
     // Add two random heroes to the roster
     profile.roster = [profile.newHero(), profile.newHero()];
     profile.roster.forEach((hero) => profile.joinLineup(hero));
 
     // Set starting quest
-    const startQuest = profile.newQuest();
+    const startQuest = profile.newQuest(profile.startingDungeons);
     startQuest.isEscapable = false;
     profile.quests = [startQuest];
     profile.selectedQuestId = startQuest.id;
