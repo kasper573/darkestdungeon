@@ -4,7 +4,7 @@ import {TooltipArea} from "../lib/TooltipArea";
 import {SkillBreakdown} from "./SkillBreakdown";
 import {Skill} from "../state/types/Skill";
 import {observer} from "mobx-react";
-import {commonColors, commonStyleFn} from "../config/styles";
+import {commonColors, commonStyleFn, commonStyles} from "../config/styles";
 import {grid} from "../config/Grid";
 import {Icon} from "./Icon";
 
@@ -45,18 +45,20 @@ export class SkillIcon extends React.Component<{
     );
 
     return (
-      <TooltipArea tip={<SkillBreakdown skill={this.props.skill}/>}>
-        <Icon
-          src={this.props.skill.info.iconUrl}
-          classStyle={[styles.container, this.props.classStyle]}
-          clickSound={this.props.clickSound}
-          onClick={this.props.isEnabled ? this.props.onClick : undefined}>
+      <Icon
+        src={this.props.skill.info.iconUrl}
+        classStyle={[styles.container, this.props.classStyle]}
+        clickSound={this.props.clickSound}
+        onClick={this.props.isEnabled ? this.props.onClick : undefined}>
+        <TooltipArea
+          classStyle={commonStyles.dock}
+          tip={<SkillBreakdown skill={this.props.skill}/>}>
           {lockSymbol}
           {levelIndicator}
           {selectionIndicator}
           {disabledIndicator}
-        </Icon>
-      </TooltipArea>
+        </TooltipArea>
+      </Icon>
     );
   }
 }
@@ -71,11 +73,6 @@ const styles = StyleSheet.create({
 
     justifyContent: "center",
     alignItems: "center",
-
-    marginRight: grid.border,
-    ":last-child": {
-      marginRight: 0
-    },
 
     ":hover": {
       opacity: 1
