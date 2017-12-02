@@ -246,7 +246,6 @@ function StyledTooltip ({children}: any) {
 const styles = StyleSheet.create({
   tooltip: {
     position: "absolute",
-    pointerEvents: "none",
-    zIndex: 3
+    pointerEvents: "none"
   }
 });
