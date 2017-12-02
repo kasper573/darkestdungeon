@@ -267,7 +267,7 @@ export class Character extends Experienced {
 
     const isAllyTarget = skill.info.target.object === SkillTargetObject.Ally;
     const isCrit = Math.random() <= actionStats.criticalChance.value;
-    const willBasicHit = actionStats.accuracy.value > targetStats.dodge.value;
+    const willBasicHit = isCrit || actionStats.accuracy.value > targetStats.dodge.value;
     const willBuffHit = Math.random() <= Character.getStatusHitChance(
       CharacterStatus.Buff, actionStats, targetStats
     );
