@@ -61,9 +61,11 @@ export class BarkDistributor {
     const sub = randomizeItem(this.subscriptions);
     const bark = randomizeItem(this.barks);
 
-    token = this.tokens.borrow();
-    await sub.callback(bark);
-    token.return();
+    if (sub && bark) {
+      token = this.tokens.borrow();
+      await sub.callback(bark);
+      token.return();
+    }
 
     if (this.isActive) {
       this.nextBark();
