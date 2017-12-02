@@ -65,7 +65,7 @@ gene9
 Gr4nnySith
 Kronrat
 SurfSpaniel
-Totttz
+$Totttz
 totallybship
 
 Twitch Monkeys
