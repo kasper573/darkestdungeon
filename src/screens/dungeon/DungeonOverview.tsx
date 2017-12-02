@@ -26,7 +26,7 @@ export class DungeonOverview extends AppStateComponent {
         () => this.endQuestPopup(QuestStatus.Victory)
       ),
       this.selectedQuest.whenPartyWipes(
-        () => this.endQuest(QuestStatus.Defeat)
+        () => this.endQuestPopup(QuestStatus.Defeat)
       )
     ];
   }
