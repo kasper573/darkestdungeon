@@ -22,6 +22,18 @@ ${me}
 Frontend Engineers
 ${me}
 
+QA Lead
+${me}
+
+QA Engineers
+${me}
+
+QA Testers
+${me}
+
+Operations
+${me}
+
 Office Management
 ${me}
 
