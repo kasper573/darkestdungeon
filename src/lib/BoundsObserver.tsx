@@ -23,7 +23,7 @@ export class BoundsObserver {
 
     this.domNode = domNode;
     this.publishBounds = boundsCollector;
-    this.pollIntervalId = setInterval(() => this.pollBounds(), 32);
+    this.pollIntervalId = setInterval(() => this.pollBounds(), 16);
     this.pollBounds();
   }
 
