@@ -16,8 +16,8 @@ export class BarkTooltipArea extends AppStateComponent<
     subscribe: true
   };
 
+  private resolvePendingBark: () => void;
   @observable private barkText: string;
-  private barkTooltip: BarkTooltip;
   private subscription: BarkSubscription;
 
   componentDidMount () {
@@ -30,12 +30,19 @@ export class BarkTooltipArea extends AppStateComponent<
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.resolvePendingBark) {
+      this.resolvePendingBark();
+    }
   }
 
   receiveBark (bark: string) {
     return new Promise((resolve) => {
+      this.resolvePendingBark = resolve;
       this.barkText = bark;
-      when(() => !this.barkText, resolve);
+      when(() => !this.barkText, () => {
+        delete this.resolvePendingBark;
+        resolve();
+      });
     });
   }
 
@@ -50,7 +57,6 @@ export class BarkTooltipArea extends AppStateComponent<
           <BarkTooltip
             text={this.barkText}
             onFinished={() => this.barkText = null}
-            ref={(tooltip) => this.barkTooltip = tooltip}
           />
         }>
         {this.props.children}
