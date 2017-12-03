@@ -14,6 +14,7 @@ export type MapLocationId = string;
 export class QuestRoom {
   @serializable(identifier()) id: MapLocationId = uuid();
   @serializable(object(Vector)) coordinates: Vector;
+  @serializable roomImageIndex: number = 0;
 
   // Mutable
   @serializable(list(object(Character))) @observable monsters: Character[] = [];
@@ -34,9 +35,14 @@ export class QuestRoom {
     generatedMonsters: Character[] = []
   ) {
     const roomId = coordinates.id;
-    const room = memory.get(roomId) || new QuestRoom();
-    room.coordinates = coordinates;
-    memory.set(roomId, room);
+    let room = memory.get(roomId);
+
+    if (!room) {
+      room = new QuestRoom();
+      room.coordinates = coordinates;
+      room.roomImageIndex = Math.round(Math.random() * dungeon.info.roomImageUrls.length - 1);
+      memory.set(roomId, room);
+    }
 
     if (allowMonsters(room, coordinates)) {
       count(2).forEach(() => {

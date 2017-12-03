@@ -1,12 +1,14 @@
 import * as React from "react";
 import {Quest, QuestStatus} from "../state/types/Quest";
 import {observer} from "mobx-react";
+import {css} from "aphrodite";
 
 @observer
 export class QuestHeader extends React.Component<{
   quest: Quest,
   onRetreatRequested: () => void
-  onLeaveRequested: (status: QuestStatus) => void
+  onLeaveRequested: (status: QuestStatus) => void,
+  classStyle?: any
 }> {
   renderLeaveButton () {
     if (this.props.quest.inBattle) {
@@ -36,7 +38,7 @@ export class QuestHeader extends React.Component<{
 
   render () {
     return (
-      <div>
+      <div className={css(this.props.classStyle)}>
         <div>
           Quest: {this.props.quest.info.type} : {this.props.quest.objective.description}
         </div>

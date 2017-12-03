@@ -12,6 +12,7 @@ import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {Hero} from "../../state/types/Hero";
 import {DungeonSelections} from "./DungeonSelections";
+import {commonStyleFn} from "../../config/styles";
 
 @observer
 export class DungeonOverview extends AppStateComponent {
@@ -89,25 +90,27 @@ export class DungeonOverview extends AppStateComponent {
   render () {
     return (
       <div className={css(styles.container)}>
-        <div className={css(styles.scene)}>
-          <QuestHeader
-            quest={this.selectedQuest}
-            onRetreatRequested={this.battleRetreatPopup.bind(this)}
-            onLeaveRequested={this.endQuestPopup.bind(this)}
-          />
-
-          <Torch quest={this.selectedQuest}/>
-          <DungeonScene
-            quest={this.selectedQuest}
-            selections={this.selections}
-            onHeroOverviewRequested={this.showHeroOverview.bind(this)}
-          />
-        </div>
+        <DungeonScene
+          classStyle={styles.scene}
+          quest={this.selectedQuest}
+          dungeon={this.selectedDungeon}
+          selections={this.selections}
+          onHeroOverviewRequested={this.showHeroOverview.bind(this)}
+        />
 
         <DungeonControlPanel
           quest={this.selectedQuest}
           selections={this.selections}
         />
+
+        <QuestHeader
+          classStyle={styles.questHeader}
+          quest={this.selectedQuest}
+          onRetreatRequested={this.battleRetreatPopup.bind(this)}
+          onLeaveRequested={this.endQuestPopup.bind(this)}
+        />
+
+        <Torch classStyle={styles.torch} quest={this.selectedQuest}/>
       </div>
     );
   }
@@ -121,6 +124,15 @@ export class DungeonOverview extends AppStateComponent {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+
+  questHeader: {
+    ...commonStyleFn.dock("topLeft")
+  },
+
+  torch: {
+    position: "absolute",
+    alignSelf: "center"
   },
 
   scene: {

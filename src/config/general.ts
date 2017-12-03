@@ -308,26 +308,80 @@ export function addStaticState () {
     "The Old Road": {
       isStartingDungeon: true,
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.old_road.png"),
+      entranceImageUrl: require("../../assets/dd/images/dungeons/weald/weald.tutorial.room_wall.effigy_0.png"),
+      roomImageUrls: [require("../../assets/dd/images/dungeons/weald/weald.tutorial.room_wall.effigy_1.png")],
       monsters: ["Rat"]
     },
     "Ruins": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.crypts_0.png"),
+      entranceImageUrl: require("../../assets/dd/images/dungeons/crypts/crypts.entrance_room_wall.png"),
+      roomImageUrls: [
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.altar.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.arch.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.barrels.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.drain.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.empty.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.entrance.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.library.png"),
+        require("../../assets/dd/images/dungeons/crypts/crypts.room_wall.torture.png")
+      ],
       monsters: ["Snake"]
     },
     "Warrens": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.warrens_0.png"),
+      entranceImageUrl: require("../../assets/dd/images/dungeons/warrens/warrens.entrance_room_wall.png"),
+      roomImageUrls: [
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.brickton.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.duct.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.effigy.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.ghetto.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.grate.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.meatlocker.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.shrine.png"),
+        require("../../assets/dd/images/dungeons/warrens/warrens.room_wall.sluice.png")
+      ],
       monsters: ["Skeleton"]
     },
     "Weald": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.weald_0.png"),
+      entranceImageUrl: require("../../assets/dd/images/dungeons/weald/weald.entrance_room_wall.png"),
+      roomImageUrls: [
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.clearing.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.corruptedcabin.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.crypt.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.gate.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.handtree.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.poisonriver.png"),
+        require("../../assets/dd/images/dungeons/weald/weald.room_wall.shroomland.png")
+      ],
       monsters: ["Ghost"]
     },
     "Cove": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.cove_0.png"),
+      entranceImageUrl: require("../../assets/dd/images/dungeons/cove/cove.entrance_room_wall.png"),
+      roomImageUrls: [
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.city.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.coral.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.grotto.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.handtree.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.shipwreck.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.temple.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.wallcrack.png"),
+        require("../../assets/dd/images/dungeons/cove/cove.room_wall.whale.png")
+      ],
       monsters: ["Bat"]
     },
-    "Dankest Dungeon": {
+    "BTM's Dank Dungeon": {
       imageUrl: require("../../assets/dd/images/loading_screen/loading_screen.plot_darkest_dungeon_1.png"),
+      entranceImageUrl: require(
+"../../assets/dd/images/dungeons/darkestdungeon/quest_1/darkestdungeon.entrance_room_wall.plot_darkest_dungeon_1.png"
+      ),
+      roomImageUrls: [
+        require("../../assets/dd/images/dungeons/darkestdungeon/quest_1/darkestdungeon.room_wall.random01.png"),
+        require("../../assets/dd/images/dungeons/darkestdungeon/quest_1/darkestdungeon.room_wall.random02.png"),
+        require("../../assets/dd/images/dungeons/darkestdungeon/quest_1/darkestdungeon.room_wall.random03.png"),
+        require("../../assets/dd/images/dungeons/darkestdungeon/quest_1/darkestdungeon.room_wall.random04.png")
+      ],
       monsters: ["Destruction of Everything"]
     }
   });

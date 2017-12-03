@@ -7,12 +7,13 @@ import {observer} from "mobx-react";
 
 @observer
 export class Torch extends React.Component<{
-  quest: Quest
+  quest: Quest,
+  classStyle?: any
 }> {
   render () {
     const quest = this.props.quest;
     return (
-      <Row>
+      <Row classStyle={this.props.classStyle}>
         <TooltipArea
           tip={todo} >
           Light: {quest.light}
