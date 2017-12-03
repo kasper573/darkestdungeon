@@ -16,7 +16,7 @@ export class QuestMap {
     const memory = new Map<string, QuestRoom>();
     const m = new QuestMap();
     m.size = size;
-    m.entrance = QuestRoom.walk(dungeon, memory, 1,
+    m.entrance = QuestRoom.walk(dungeon, memory, size,
       (room, coords) => !(coords.x === 0 && coords.y === 0) // No monsters in the entrance
     );
     m.rooms = Array.from(memory.values());
@@ -39,7 +39,8 @@ export class QuestMap {
 }
 
 export enum MapSize {
-  Short = "Short",
-  Medium = "Medium",
-  Long = "Long"
+  Intro = 4,
+  Short = 8,
+  Medium = 16,
+  Long = 24
 }

@@ -16,6 +16,7 @@ import {BuildingInfoId} from "./BuildingInfo";
 import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
 import {Skill} from "./Skill";
+import {MapSize} from "./QuestMap";
 
 export type ProfileId = string;
 
@@ -416,8 +417,8 @@ export class Profile {
     return generateHero([...this.roster, ...this.coach], startingLevel);
   }
 
-  newQuest (dungeonPool = this.selectableDungeons) {
-    return generateQuest(dungeonPool);
+  newQuest (dungeonPool = this.selectableDungeons, size?: MapSize) {
+    return generateQuest(dungeonPool, size);
   }
 }
 
