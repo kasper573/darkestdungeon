@@ -7,7 +7,7 @@ import {autorun, computed, intercept, observable, reaction, when} from "mobx";
 import {QuestInfo} from "./QuestInfo";
 import {DungeonId} from "./Dungeon";
 import {MapLocationId} from "./QuestRoom";
-import {moveItem, removeItem} from "../../lib/Helpers";
+import {cap, moveItem, removeItem} from "../../lib/Helpers";
 import {Hero} from "./Hero";
 import {Battler} from "./Battler";
 
@@ -38,10 +38,14 @@ export class Quest extends Battler<Hero> {
 
   // Data that changes throughout a quest
   @serializable @observable status: QuestStatus = QuestStatus.Idle;
-  @serializable @observable light: number = 1;
+  @serializable @observable light: number = 100;
   @serializable(list(object(Item))) @observable items: Item[] = [];
   @serializable @observable previousRoomId: MapLocationId = null;
   @serializable @observable currentRoomId: MapLocationId = null;
+
+  @computed get lightPercentage () {
+    return cap(this.light / 100, 0, 1);
+  }
 
   @computed get previousRoom () {
     return this.map.rooms.find((room) => room.id === this.previousRoomId);
