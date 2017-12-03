@@ -63,14 +63,14 @@ export class CurioModel extends AppStateComponent<{
       curio.hasBeenInteractedWith = true;
     }
 
-    if (curio.quirk) {
-      const replacedQuirk = hero.replaceQuirk(curio.quirk);
+    if (curio.replaceQuirk) {
+      const {replacedQuirk, newQuirk} = hero.replaceQuirk();
       await this.appState.popups.prompt({
         id: "curio" + curio.id,
         content: (
           <Alert message={hero.name + " received new quirk"}>
             <Row>
-              <QuirkText quirk={curio.quirk}/>
+              <QuirkText quirk={newQuirk}/>
               {replacedQuirk && (
                 <Row>
                   <span>replaced</span>
