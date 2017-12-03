@@ -13,6 +13,7 @@ import {HeroOverview} from "../../ui/HeroOverview";
 import {Hero} from "../../state/types/Hero";
 import {DungeonSelections} from "./DungeonSelections";
 import {commonStyleFn} from "../../config/styles";
+import {grid} from "../../config/Grid";
 
 @observer
 export class DungeonOverview extends AppStateComponent {
@@ -99,6 +100,7 @@ export class DungeonOverview extends AppStateComponent {
         />
 
         <DungeonControlPanel
+          classStyle={styles.controlPanel}
           quest={this.selectedQuest}
           selections={this.selections}
         />
@@ -137,5 +139,9 @@ const styles = StyleSheet.create({
 
   scene: {
     flex: 1
+  },
+
+  controlPanel: {
+    height: grid.ySpan(5)
   }
 });

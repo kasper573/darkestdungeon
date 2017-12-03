@@ -15,7 +15,8 @@ import {Icon} from "../../ui/Icon";
 @observer
 export class DungeonControlPanel extends React.Component<{
   quest: Quest,
-  selections: DungeonSelections
+  selections: DungeonSelections,
+  classStyle?: any
 }> {
   @observable isMapVisible = false;
 
@@ -46,7 +47,7 @@ export class DungeonControlPanel extends React.Component<{
     const quest = this.props.quest;
     const selections = this.props.selections;
     return (
-      <div className={css(styles.controlPanel)}>
+      <div className={css(styles.controlPanel, this.props.classStyle)}>
         <Row>
           <Column classStyle={styles.controlPanelBox}>
             {selections.hero && (
@@ -97,8 +98,7 @@ export class DungeonControlPanel extends React.Component<{
 
 const styles = StyleSheet.create({
   controlPanel: {
-    background: "black",
-    maxHeight: "50%"
+    background: "black"
   },
 
   controlPanelBox: {
