@@ -12,7 +12,6 @@ import {ModalState, PopupAlign} from "../../state/PopupState";
 import {HeroOverview} from "../../ui/HeroOverview";
 import {Hero} from "../../state/types/Hero";
 import {DungeonSelections} from "./DungeonSelections";
-import {commonStyleFn} from "../../config/styles";
 import {grid} from "../../config/Grid";
 
 @observer
@@ -129,7 +128,9 @@ const styles = StyleSheet.create({
   },
 
   questHeader: {
-    ...commonStyleFn.dock("topLeft")
+    position: "absolute",
+    top: grid.paddingTop,
+    left: grid.paddingLeft
   },
 
   torch: {

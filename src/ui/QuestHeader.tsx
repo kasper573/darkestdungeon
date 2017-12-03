@@ -1,7 +1,12 @@
 import * as React from "react";
 import {Quest, QuestStatus} from "../state/types/Quest";
 import {observer} from "mobx-react";
-import {css} from "aphrodite";
+import {TooltipArea} from "../lib/TooltipArea";
+import {LargeHeader} from "./LargeHeader";
+import {Icon} from "./Icon";
+import {Row} from "../config/styles";
+import {grid} from "../config/Grid";
+import {css, StyleSheet} from "aphrodite";
 
 @observer
 export class QuestHeader extends React.Component<{
@@ -39,17 +44,31 @@ export class QuestHeader extends React.Component<{
   render () {
     return (
       <div className={css(this.props.classStyle)}>
-        <div>
-          Quest: {this.props.quest.info.type} : {this.props.quest.objective.description}
-        </div>
-        <div>
-          Progress:
-          {Math.round(this.props.quest.monsterPercentage * 100)}% monsters,
-          {Math.round(this.props.quest.explorePercentage * 100)}% explored
-        </div>
-
+        <LargeHeader classStyle={styles.header}>
+          <Row>
+            <Icon
+              classStyle={styles.headerIcon}
+              src={require("../../assets/dd/images/overlays/quest_log.png")}
+            />
+            <TooltipArea tip={this.props.quest.objective.description}>
+              {this.props.quest.info.type}
+            </TooltipArea>
+          </Row>
+        </LargeHeader>
         {this.renderLeaveButton()}
       </div>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: {
+    fontSize: grid.fontSize(0.75)
+  },
+
+  headerIcon: {
+    width: grid.ySpan(0.75),
+    height: grid.ySpan(0.75),
+    marginRight: grid.gutter
+  }
+});
