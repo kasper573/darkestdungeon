@@ -5,6 +5,7 @@ import {Dungeon} from "./types/Dungeon";
 import {Path} from "./types/Path";
 import {Item} from "./types/Item";
 import {count} from "../lib/Helpers";
+import {MapSize} from "./types/QuestMap";
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;
@@ -43,7 +44,7 @@ export class ProfileState {
     profile.roster.forEach((hero) => profile.joinLineup(hero));
 
     // Set starting quest
-    const startQuest = profile.newQuest(profile.startingDungeons);
+    const startQuest = profile.newQuest(profile.startingDungeons, MapSize.Intro);
     startQuest.isEscapable = false;
     profile.quests = [startQuest];
     profile.selectedQuestId = startQuest.id;

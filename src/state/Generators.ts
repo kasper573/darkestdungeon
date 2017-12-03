@@ -7,7 +7,7 @@ import {MapSize, QuestMap} from "./types/QuestMap";
 import {QuestObjective} from "./types/QuestObjective";
 import {Character} from "./types/Character";
 import {CharacterTemplate} from "./types/CharacterTemplate";
-import {enumMap, randomizeItem, randomizeItems, without} from "../lib/Helpers";
+import {randomizeItem, randomizeItems, without} from "../lib/Helpers";
 import {maxSelectedSkills} from "../config/general";
 import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
@@ -95,15 +95,16 @@ export function generateBuff (multiplier: number) {
   return buff;
 }
 
-export function generateQuest (dungeons: Dungeon[]): Quest {
+export function generateQuest (dungeons: Dungeon[], size?: MapSize): Quest {
+  if (size === undefined) {
+    size = randomizeItem([MapSize.Short, MapSize.Medium, MapSize.Long]);
+  }
+
   const q = new Quest();
   const dungeon = randomizeItem(dungeons);
   q.dungeonId = dungeon.id;
   q.bonfires = Math.round(Math.random() * 2);
-  q.map = QuestMap.generate(
-    dungeon,
-    randomizeItem(Array.from(enumMap<MapSize>(MapSize).values()))
-  );
+  q.map = QuestMap.generate(dungeon, size);
   q.changeRoom(q.map.entrance.id);
 
   const allRewards = StaticState.instance.items.filter((info) => info.isReward);

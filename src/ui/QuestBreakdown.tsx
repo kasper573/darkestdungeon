@@ -7,6 +7,7 @@ import {Quest} from "../state/types/Quest";
 import {Dungeon} from "../state/types/Dungeon";
 import {grid} from "../config/Grid";
 import {LargeHeader} from "./LargeHeader";
+import {MapSize} from "../state/types/QuestMap";
 
 export class QuestBreakdown extends React.Component<{
   quest: Quest,
@@ -26,7 +27,9 @@ export class QuestBreakdown extends React.Component<{
           {quest.info.description}
         </Section>
 
-        <Section label={`Level ${this.props.dungeon.level.number} | ${quest.map.size}`} color={commonColors.gray}>
+        <Section
+          label={`Level ${this.props.dungeon.level.number} | ${MapSize[quest.map.size]}`}
+          color={commonColors.gray}>
           {quest.objective.description}
         </Section>
 
