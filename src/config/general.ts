@@ -259,6 +259,7 @@ export function addStaticState () {
       rarity: 0.1,
       unique: true,
       classInfo: {
+        skills: ["Artillery", "Toughen", "Break", "Slash", "Swing", "Heave", "Slam"],
         avatarUrl: require(
           "../../assets/dd/images/heroes/jester/jester_A/jester_portrait_roster.png"
         )
@@ -267,17 +268,38 @@ export function addStaticState () {
   });
 
   addCharacterTemplates((i) => i.monsters, 0.8, undefined, {
-    "Skeleton": {},
-    "Bat": {},
-    "Ghost": {},
-    "Snake": {},
-    "Rat": {},
+    "Skeleton": {
+      classInfo: {
+        skills: ["Slash", "Swing"]
+      }
+    },
+    "Bat": {
+      classInfo: {
+        skills: ["Slash", "Swing"]
+      }
+    },
+    "Ghost": {
+      classInfo: {
+        skills: ["Slash", "Swing"]
+      }
+    },
+    "Snake": {
+      classInfo: {
+        skills: ["Slash", "Swing"]
+      }
+    },
+    "Rat": {
+      classInfo: {
+        skills: ["Slash", "Swing"]
+      }
+    },
     "Destruction of Everything": {
       characterNames: ["jQuery"],
       rarity: 0.1,
       unique: true,
       classInfo: {
-        avatarUrl: require("../../assets/images/unicorn.jpg")
+        avatarUrl: require("../../assets/images/unicorn.jpg"),
+        skills: ["Artillery", "Toughen", "Break", "Slash", "Swing", "Heave", "Slam"]
       }
     }
   });
@@ -855,14 +877,13 @@ function addCharacterTemplates (
     const {skills, stats, ...classInfoProps}: any = (classInfo || {});
     Object.assign(template.classInfo, classInfoProps);
     addStats(stats, template.classInfo.stats);
-    template.classInfo.skills = !skills ? StaticState.instance.skills :
-      skills.map((skillId: SkillId) => {
-        const skill = StaticState.instance.skills.find((s) => s.id === skillId);
-        if (!skill) {
-          throw new Error("No skill registered by id: " + skillId);
-        }
-        return skill;
-      });
+    template.classInfo.skills = (skills || []).map((skillId: SkillId) => {
+      const skill = StaticState.instance.skills.find((s) => s.id === skillId);
+      if (!skill) {
+        throw new Error("No skill registered by id: " + skillId);
+      }
+      return skill;
+    });
 
     StaticState.instance.add(getList, template);
     StaticState.instance.add((i) => i.classes, template.classInfo);
