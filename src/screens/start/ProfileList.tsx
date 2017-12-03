@@ -6,10 +6,11 @@ import {observer} from "mobx-react";
 import {transaction} from "mobx";
 import {Prompt} from "../../ui/Popups";
 import {AppStateComponent} from "../../AppStateComponent";
-import {Difficulty, Profile, ProfileId} from "../../state/types/Profile";
+import {Profile, ProfileId} from "../../state/types/Profile";
 import {enumMap, mapMap} from "../../lib/Helpers";
 import {grid} from "../../config/Grid";
 import {commonStyles} from "../../config/styles";
+import {Difficulty} from "../../state/types/Difficulty";
 
 @observer
 export class ProfileList extends AppStateComponent<{

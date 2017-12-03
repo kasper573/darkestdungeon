@@ -2,6 +2,7 @@ import {list, object, serializable} from "serializr";
 import {QuestRoom} from "./QuestRoom";
 import {Bounds} from "../../Bounds";
 import {Dungeon} from "./Dungeon";
+import {Difficulty} from "./Difficulty";
 
 export class QuestMap {
   @serializable(list(object(QuestRoom))) rooms: QuestRoom[];
@@ -12,11 +13,11 @@ export class QuestMap {
     return QuestMap.findBoundingBox(this.rooms);
   }
 
-  static generate (dungeon: Dungeon, size: MapSize) {
+  static generate (dungeon: Dungeon, difficulty: Difficulty, size: MapSize) {
     const memory = new Map<string, QuestRoom>();
     const m = new QuestMap();
     m.size = size;
-    m.entrance = QuestRoom.walk(dungeon, memory, size,
+    m.entrance = QuestRoom.walk(dungeon, memory, difficulty, size,
       (room, coords) => !(coords.x === 0 && coords.y === 0) // No monsters in the entrance
     );
     m.rooms = Array.from(memory.values());

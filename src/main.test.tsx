@@ -6,7 +6,7 @@ import {App} from "./app";
 import {addStaticState} from "./config/general";
 import {routes} from "./config/routes";
 import {StaticState} from "./state/StaticState";
-import {Difficulty} from "./state/types/Profile";
+import {Difficulty} from "./state/types/Difficulty";
 const {DragDropContext} = require("react-dnd");
 const TestBackend = require("react-dnd-test-backend");
 
