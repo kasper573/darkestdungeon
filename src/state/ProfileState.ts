@@ -1,11 +1,12 @@
 import {action, computed, observable} from "mobx";
 import {StaticState} from "./StaticState";
-import {Difficulty, Profile, ProfileId} from "./types/Profile";
+import {Profile, ProfileId} from "./types/Profile";
 import {Dungeon} from "./types/Dungeon";
 import {Path} from "./types/Path";
 import {Item} from "./types/Item";
 import {count} from "../lib/Helpers";
 import {MapSize} from "./types/QuestMap";
+import {Difficulty} from "./types/Difficulty";
 
 export class ProfileState {
   @observable private activeProfileId: ProfileId;

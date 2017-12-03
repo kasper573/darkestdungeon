@@ -55,6 +55,8 @@ export class Character extends Experienced {
 
   @serializable @observable hunger: number = 0;
 
+  @serializable @observable classInfoStatsScale = 1;
+
   @serializable @observable buffSourceName: string;
 
   @serializable(object(TurnStats))
@@ -84,6 +86,14 @@ export class Character extends Experienced {
     return this.skills.filter((skill) => skill.isSelected);
   }
 
+  @computed get scaledClassInfo () {
+    const scaled = {...this.classInfo}; // Clone to avoid mutating static instance
+    scaled.stats = new Stats();
+    scaled.stats.add(this.classInfo.stats);
+    scaled.stats.scale(this.classInfoStatsScale);
+    return scaled;
+  }
+
   @computed get armor () {
     return this.items.find((i) => i.info.type === ItemType.Armor);
   }
@@ -98,7 +108,7 @@ export class Character extends Experienced {
 
   @computed get stats () {
     const sum = new Stats();
-    sum.add(this.classInfo);
+    sum.add(this.scaledClassInfo);
     sum.add(this.mutableStats);
 
     if (this.buff) {

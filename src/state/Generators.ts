@@ -13,6 +13,7 @@ import {ItemType} from "./types/ItemInfo";
 import {Curio} from "./types/Curio";
 import {TurnStats} from "./types/Stats";
 import {getBestSkillSet} from "./types/Skill";
+import {Difficulty} from "./types/Difficulty";
 
 export function generateMonster (dungeon: Dungeon, activeMonsters: Character[]): Character {
   const template = randomizeTemplate(dungeon.info.monsters, activeMonsters);
@@ -95,7 +96,7 @@ export function generateBuff (multiplier: number) {
   return buff;
 }
 
-export function generateQuest (dungeons: Dungeon[], size?: MapSize): Quest {
+export function generateQuest (dungeons: Dungeon[], difficulty: Difficulty, size?: MapSize): Quest {
   if (size === undefined) {
     size = randomizeItem([MapSize.Short, MapSize.Medium, MapSize.Long]);
   }
@@ -104,7 +105,7 @@ export function generateQuest (dungeons: Dungeon[], size?: MapSize): Quest {
   const dungeon = randomizeItem(dungeons);
   q.dungeonId = dungeon.id;
   q.bonfires = Math.round(Math.random() * 2);
-  q.map = QuestMap.generate(dungeon, size);
+  q.map = QuestMap.generate(dungeon, difficulty, size);
   q.changeRoom(q.map.entrance.id);
 
   const allRewards = StaticState.instance.items.filter((info) => info.isReward);

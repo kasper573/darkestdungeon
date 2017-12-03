@@ -1,5 +1,4 @@
 import {date, identifier, list, object, reference, serializable} from "serializr";
-import uuid = require("uuid");
 import {action, computed, observable, transaction} from "mobx";
 import {Path} from "./Path";
 import {EstateEvent} from "./EstateEvent";
@@ -17,6 +16,8 @@ import {Stats} from "./Stats";
 import {HeroResidentInfo} from "./HeroResidentInfo";
 import {Skill} from "./Skill";
 import {MapSize} from "./QuestMap";
+import {Difficulty} from "./Difficulty";
+import uuid = require("uuid");
 
 export type ProfileId = string;
 
@@ -418,12 +419,6 @@ export class Profile {
   }
 
   newQuest (dungeonPool = this.selectableDungeons, size?: MapSize) {
-    return generateQuest(dungeonPool, size);
+    return generateQuest(dungeonPool, this.difficulty, size);
   }
-}
-
-export enum Difficulty {
-  Radiant = "Radiant",
-  Darkest = "Darkest",
-  Stygian = "Stygian"
 }

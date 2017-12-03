@@ -7,11 +7,12 @@ import {ProfileState} from "./ProfileState";
 import {OptionsState} from "./OptionsState";
 import {deserialize, serialize} from "serializr";
 import {AppBounds} from "../AppBounds";
-import {Difficulty, Profile} from "./types/Profile";
+import {Profile} from "./types/Profile";
 import {Route} from "./types/Route";
 import {Path} from "./types/Path";
 import {SFXPlayer} from "./SFXPlayer";
 import {BarkDistributor} from "./BarkDistributor";
+import {Difficulty} from "./types/Difficulty";
 
 export class AppState {
   private reactionDisposers: Array<() => void>;

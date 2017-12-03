@@ -7,6 +7,7 @@ import {observable} from "mobx";
 import {count} from "../../lib/Helpers";
 import {Curio} from "./Curio";
 import {Dungeon} from "./Dungeon";
+import {Difficulty} from "./Difficulty";
 
 export type MapLocationId = string;
 
@@ -26,6 +27,7 @@ export class QuestRoom {
   static walk (
     dungeon: Dungeon,
     memory: Map<string, QuestRoom> = new Map<string, QuestRoom>(),
+    difficulty: Difficulty,
     stepsLeft: number = 10,
     allowMonsters: (room: QuestRoom, coords: Vector) => boolean = () => true,
     coordinates: Vector = new Vector(),
@@ -39,6 +41,8 @@ export class QuestRoom {
     if (allowMonsters(room, coordinates)) {
       count(2).forEach(() => {
         const newMonster = generateMonster(dungeon, generatedMonsters);
+        newMonster.classInfoStatsScale = difficultyStatsScales[difficulty];
+        newMonster.resetMutableStats();
         generatedMonsters.push(newMonster);
         room.monsters.push(newMonster);
       });
@@ -58,8 +62,14 @@ export class QuestRoom {
 
     const nextCoordinate = coordinates.add(direction);
 
-    QuestRoom.walk(dungeon, memory, stepsLeft - 1, allowMonsters, nextCoordinate, generatedMonsters);
+    QuestRoom.walk(dungeon, memory, difficulty, stepsLeft - 1, allowMonsters, nextCoordinate, generatedMonsters);
 
     return room;
   }
 }
+
+const difficultyStatsScales = {
+  [Difficulty.Radiant]: 0.8,
+  [Difficulty.Darkest]: 1,
+  [Difficulty.Stygian]: 1.2
+};

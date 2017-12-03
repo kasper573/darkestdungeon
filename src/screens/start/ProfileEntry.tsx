@@ -1,7 +1,7 @@
 import {css, StyleSheet} from "aphrodite";
 import * as React from "react";
 import {observer} from "mobx-react";
-import {Difficulty, Profile} from "../../state/types/Profile";
+import {Profile} from "../../state/types/Profile";
 import {Icon} from "../../ui/Icon";
 import {grid} from "../../config/Grid";
 import {commonColors, commonStyleFn, commonStyles, Row} from "../../config/styles";
@@ -10,11 +10,12 @@ import {LineButton} from "../../ui/LineButton";
 import {InputField} from "../../ui/InputField";
 import {fonts} from "../../../assets/fonts";
 import {AppStateComponent} from "../../AppStateComponent";
+import {Difficulty} from "../../state/types/Difficulty";
 
 const difficultyIcons = {
   [Difficulty.Radiant]: require("../../../assets/dd/images/modes/radiant/fe_flow/save_icon.png"),
-  [Difficulty.Stygian]: require("../../../assets/dd/images/modes/base/fe_flow/save_icon.png"),
-  [Difficulty.Darkest]: require("../../../assets/dd/images/modes/new_game_plus/fe_flow/save_icon.png")
+  [Difficulty.Stygian]: require("../../../assets/dd/images/modes/new_game_plus/fe_flow/save_icon.png"),
+  [Difficulty.Darkest]: require("../../../assets/dd/images/modes/base/fe_flow/save_icon.png")
 };
 
 const deleteIcon = require("../../../assets/dd/images/fe_flow/nukesave_button.png");
