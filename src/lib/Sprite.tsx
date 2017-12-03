@@ -107,7 +107,9 @@ export class Sprite extends React.Component<
         ...(this.props.debug && {backgroundColor: "rgba(0, 128, 0, 0.63)"}),
         ...this.props.style
       }}>
-        <div style={this.calculateStyle()}/>
+        <div style={this.calculateStyle()}>
+          {this.props.children}
+        </div>
         <SizeObserver onSizeChanged={(size) => this.updateBounds(size)} />
       </div>
     );
