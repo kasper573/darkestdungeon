@@ -8,7 +8,7 @@ import {QuirkInfo} from "./QuirkInfo";
 import {CharacterStatus} from "./CharacterStatus";
 import {SkillId, SkillTargetObject} from "./SkillInfo";
 import {Stats, TurnStats} from "./Stats";
-import {cap, contains, removeItem} from "../../lib/Helpers";
+import {cap, contains, removeItem, without} from "../../lib/Helpers";
 import uuid = require("uuid");
 import {BuildingInfoId} from "./BuildingInfo";
 import {Skill} from "./Skill";
@@ -224,14 +224,23 @@ export class Character extends Experienced {
     return deltaStats;
   }
 
-  replaceQuirk (newQuirk: QuirkInfo) {
+  replaceQuirk (newQuirk?: QuirkInfo) {
+    if (newQuirk === undefined) {
+      const newQuirksForHero = without(StaticState.instance.quirks, this.quirks);
+      newQuirk = randomizeItem(newQuirksForHero);
+    }
+
     let replacedQuirk;
     if (this.quirks.length) {
       replacedQuirk = randomizeItem(this.quirks);
       removeItem(this.quirks, replacedQuirk);
     }
     this.quirks.push(newQuirk);
-    return replacedQuirk;
+
+    return {
+      replacedQuirk,
+      newQuirk
+    };
   }
 
   applyBuff (buff: TurnStats, sourceName: string) {
