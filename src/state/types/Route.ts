@@ -1,5 +1,6 @@
 import {Path} from "./Path";
 import {AmbienceDefinition} from "../AmbienceState";
+import {Profile} from "./Profile";
 
 const noop: () => null = () => null;
 
@@ -8,8 +9,8 @@ export class RouteConstructionProps {
   isMemorable?: boolean;
   music?: (state?: any, path?: Path) => IHowlProperties;
   ambience?: (state?: any, path?: Path) => AmbienceDefinition;
-  image?: (state?: any) => string;
-  title?: (state?: any) => string;
+  image?: (profile: Profile) => string;
+  title?: (profile: Profile) => string;
   children?: { [key: string]: Route };
   rerouter?: (fromPath: Path, toPath: Path) => Path;
 }

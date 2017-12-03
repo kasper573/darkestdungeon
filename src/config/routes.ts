@@ -19,6 +19,7 @@ import {Guild} from "../screens/estate/buildings/Guild";
 import {Blacksmith} from "../screens/estate/buildings/Blacksmith";
 import {BattleTester} from "../screens/BattleTester";
 import {Route} from "../state/types/Route";
+import {Profile} from "../state/types/Profile";
 
 export const defaultEstateAmbience = new AmbienceDefinition(
   {src: require("../../assets/dd/audio/amb_town_gen_base.wav")},
@@ -47,11 +48,6 @@ const estateLoadingRerouter = (from: Path, to: Path) => {
     return loadingRerouter(from, to);
   }
 };
-
-function getCurrentDungeon (state: AppState) {
-  const profile = state.profiles.activeProfile;
-  return profile && profile.selectedDungeon;
-}
 
 export const routes: {[key: string]: Route} = {
   start: new Route({
@@ -243,13 +239,11 @@ export const routes: {[key: string]: Route} = {
   }),
 
   dungeonOverview: new Route({
-    title: (state: AppState) => {
-      const dungeon = getCurrentDungeon(state);
-      return dungeon ? dungeon.info.name : "Dungeons";
+    title: (profile: Profile) => {
+      return profile.selectedDungeon ? profile.selectedDungeon.info.name : "Dungeons";
     },
-    image: (state: AppState) => {
-      const dungeon = getCurrentDungeon(state);
-      return dungeon ? dungeon.info.imageUrl : "";
+    image: (profile: Profile) => {
+      return profile.selectedDungeon ? profile.selectedDungeon.info.imageUrl : "";
     },
     rerouter: loadingRerouter,
     component: DungeonOverview,
