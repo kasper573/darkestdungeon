@@ -53,7 +53,7 @@ export class ProfileEntry extends AppStateComponent<{
   private getProfileInfo (profile: Profile) {
     const route = this.appState.router.getRouteForPath(profile.path);
     return [
-      route.title(this.appState),
+      route.title(profile),
       "Week " + profile.week,
       profile.dateOfLastSave.toDateString()
     ];

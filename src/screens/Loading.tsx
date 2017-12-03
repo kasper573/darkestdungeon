@@ -39,8 +39,8 @@ export class Loading extends AppStateComponent<{target: Path}> {
 
   render () {
     const targetRoute = this.props.target && this.appState.router.getRouteForPath(this.props.target);
-    const targetBackgroundUrl = targetRoute && targetRoute.image(this.appState);
-    const targetTitle = targetRoute && targetRoute.title(this.appState);
+    const targetBackgroundUrl = targetRoute && targetRoute.image(this.activeProfile);
+    const targetTitle = targetRoute && targetRoute.title(this.activeProfile);
 
     const dynamicStyle = {
       background: targetBackgroundUrl ? `url(${targetBackgroundUrl})` : undefined
