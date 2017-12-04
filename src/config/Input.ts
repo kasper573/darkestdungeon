@@ -19,5 +19,5 @@ export const Input = {
 
   tab: "Tab",
   takeAll: "Space",
-  heroInfo: "C",
+  heroInfo: "C"
 };

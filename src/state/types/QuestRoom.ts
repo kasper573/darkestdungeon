@@ -40,7 +40,7 @@ export class QuestRoom {
     if (!room) {
       room = new QuestRoom();
       room.coordinates = coordinates;
-      room.roomImageIndex = Math.round(Math.random() * dungeon.info.roomImageUrls.length - 1);
+      room.roomImageIndex = Math.abs(Math.round(Math.random() * dungeon.info.roomImageUrls.length - 1));
       memory.set(roomId, room);
     }
 

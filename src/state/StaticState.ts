@@ -15,9 +15,9 @@ export type StaticItem = {
 
 export class StaticState  {
   // noinspection TsLint
-  private static _instance: StaticState;
+  private static internalInstance: StaticState;
   public static get instance () {
-    return StaticState._instance || (StaticState._instance = new StaticState());
+    return StaticState.internalInstance || (StaticState.internalInstance = new StaticState());
   }
 
   private constructor () {}

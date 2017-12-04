@@ -136,11 +136,7 @@ export class Prompt extends React.Component<
   }
 
   render () {
-    // noinspection TsLint
-    let {query, responses, classStyle, ...rest} = this.props;
-    if (!responses) {
-      responses = this.getDefaultResponses();
-    }
+    const {query, responses, classStyle, ...rest} = this.props;
 
     return (
       <Popup headerIcon={promptIcon} classStyle={[styles.prompt, classStyle]} {...rest}>
@@ -152,7 +148,7 @@ export class Prompt extends React.Component<
 
         {this.props.children}
 
-        {responses.map((response) => (
+        {(responses || this.getDefaultResponses()).map((response) => (
           <LineButton
             key={response.label}
             classStyle={styles.promptButton}
