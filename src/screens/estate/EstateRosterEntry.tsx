@@ -25,7 +25,7 @@ import {BarkTooltipArea} from "../../ui/BarkTooltipArea";
 const inLineupIconUrl = require("../../../assets/dd/images/campaign/town/roster/party.icon_roster.png");
 
 const sounds = {
-  dismiss: {src: require("../../../assets/dd/audio/ui_town_char_remove.wav")}
+  dismiss: {src: require("../../../assets/dd/audio/ui_town_char_remove.ogg")}
 };
 
 @observer

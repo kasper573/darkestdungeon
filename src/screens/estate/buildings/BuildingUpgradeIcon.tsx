@@ -13,7 +13,7 @@ import {grid} from "../../../config/Grid";
 import {Icon} from "../../../ui/Icon";
 
 const upgradePurchaseSound: IHowlProperties = {
-  src: require("../../../../assets/dd/audio/town_gen_building_upgrade.wav"),
+  src: require("../../../../assets/dd/audio/town_gen_building_upgrade.ogg"),
   volume: 0.5
 };
 

@@ -9,8 +9,8 @@ export const pauseIcon = require(
 );
 
 const sounds = {
-  open: {src: require("../../assets/dd/audio/ui_shr_pause.wav"), volume: 0.75},
-  close: {src: require("../../assets/dd/audio/ui_shr_unpause.wav"), volume: 0.75}
+  open: {src: require("../../assets/dd/audio/ui_shr_pause.ogg"), volume: 0.75},
+  close: {src: require("../../assets/dd/audio/ui_shr_unpause.ogg"), volume: 0.75}
 };
 
 export class PauseMenu extends AppStateComponent<

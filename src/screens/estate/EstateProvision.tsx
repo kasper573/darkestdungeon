@@ -52,7 +52,7 @@ export class EstateProvision extends AppStateComponent<{path: Path}> {
         roster={false}
         inventory={false}
         continueCheck={() => this.checkItemsBeforeContinue()}
-        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_setoff.wav"), volume: 0.7}}
+        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_setoff.ogg"), volume: 0.7}}
         continueLabel="Embark"
         continuePath="dungeonOverview">
         <Popup classStyle={styles.fakePopup} sounds={false}>

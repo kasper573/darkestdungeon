@@ -10,7 +10,7 @@ import {observable} from "mobx";
 export class DevTools extends AppStateComponent {
   pathSelect: HTMLSelectElement;
 
-  @observable isVisible = true;
+  @observable isVisible = false;
 
   render () {
     const inputBindings = (

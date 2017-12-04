@@ -26,8 +26,8 @@ const itemCompareIcons = {
 };
 
 const sounds = {
-  inventoryOpened: {src: require("../../../assets/dd/audio/ui_town_trinket_open.wav"), volume: 0.7},
-  inventoryClosed: {src: require("../../../assets/dd/audio/ui_town_trinket_close.wav"), volume: 0.7}
+  inventoryOpened: {src: require("../../../assets/dd/audio/ui_town_trinket_open.ogg"), volume: 0.7},
+  inventoryClosed: {src: require("../../../assets/dd/audio/ui_town_trinket_close.ogg"), volume: 0.7}
 };
 
 @observer
