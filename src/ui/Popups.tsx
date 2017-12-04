@@ -27,8 +27,8 @@ export type PopupProps = {
 export class Popup extends AppStateComponent<PopupProps> {
   static defaultProps = {
     sounds: true,
-    openSound: {src: require("../../assets/dd/audio/ui_town_button_page_open.wav"), volume: 0.8},
-    closeSound: {src: require("../../assets/dd/audio/ui_town_button_page_close.wav"), volume: 0.8}
+    openSound: {src: require("../../assets/dd/audio/ui_town_button_page_open.ogg"), volume: 0.8},
+    closeSound: {src: require("../../assets/dd/audio/ui_town_button_page_close.ogg"), volume: 0.8}
   };
 
   private stopWaitingForClose: () => void;

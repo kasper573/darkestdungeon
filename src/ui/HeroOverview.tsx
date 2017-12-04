@@ -25,9 +25,9 @@ import {AppStateComponent} from "../AppStateComponent";
 const dismissIconUrl = require("../../assets/dd/images/shared/character/icon_dismiss.png");
 
 const sounds = {
-  equipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_equip.wav"), volume: 0.6},
-  unequipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_unequip.wav"), volume: 0.6},
-  skillLocked: {src: require("../../assets/dd/audio/ui_town_button_click_locked.wav"), volume: 0.6}
+  equipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_equip.ogg"), volume: 0.6},
+  unequipSkill: {src: require("../../assets/dd/audio/ui_town_char_skill_unequip.ogg"), volume: 0.6},
+  skillLocked: {src: require("../../assets/dd/audio/ui_town_button_click_locked.ogg"), volume: 0.6}
 };
 
 @observer

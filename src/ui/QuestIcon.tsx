@@ -12,7 +12,7 @@ const questTypeIcons = {
   [QuestType.Free]: require("../../assets/dd/images/campaign/town/quest_select/quest_select_gather_1.png")
 };
 
-const clickSound = {src: require("../../assets/dd/audio/ui_town_dun_select.wav"), volume: 0.6};
+const clickSound = {src: require("../../assets/dd/audio/ui_town_dun_select.ogg"), volume: 0.6};
 
 export class QuestIcon extends React.Component<{
   quest: Quest,

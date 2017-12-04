@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const glob = require("glob");
+const sox = require("sox");
+const os = require("os");
 const {split_fsb, extract_fsb, clean_audio_names} = require("darkest_dungeon_tools");
 
 // Paths
@@ -12,6 +14,7 @@ const folders = {
 };
 
 folders.localDDAudio = path.join(folders.localDDAssets, "audio");
+folders.localDDAudioRaw = path.join(folders.localDDAssets, "audio_raw");
 folders.localDDImages = path.join(folders.localDDAssets, "images");
 folders.dd = path.join(folders.steam, "steamapps/common/DarkestDungeon");
 folders.ddAudio = path.join(folders.dd, "audio");
@@ -26,9 +29,20 @@ if (!fs.existsSync(folders.dd)) {
 
 function importAudio (audioToImport) {
   removeFolder(folders.localDDAudio);
+  removeFolder(folders.localDDAudioRaw);
   ensureFolderExists(folders.localDDAudio);
+  ensureFolderExists(folders.localDDAudioRaw);
+
   return extractAudioFromDD(audioToImport)
-    .then(() => clean_audio_names.clean_directory.sync(folders.localDDAudio));
+    .then(() => clean_audio_names.clean_directory.sync(folders.localDDAudioRaw))
+    .then(() => {
+      const cpuCount = os.cpus().length;
+      const conversions = getAudioConversions(folders.localDDAudioRaw, folders.localDDAudio);
+      console.log("Converting " + conversions.length + " files, " + cpuCount + " files at a time");
+      return new Promise((resolve) => {
+        convertAudioInBatch(resolve, conversions, cpuCount);
+      });
+    }).then(() => removeFolder(folders.localDDAudioRaw))
 }
 
 function getAudioBankNames (paths) {
@@ -54,7 +68,7 @@ function extractAudioFromDD (audioToImport) {
   for (const categoryName in audioToImport) {
     audioToImport[categoryName].forEach((bankFile) => {
       const bankPath = path.join(folders.ddAudio, categoryName, bankFile);
-      const fsbPath = path.join(folders.localDDAudio, bankFile);
+      const fsbPath = path.join(folders.localDDAudioRaw, bankFile);
       console.log("Importing", bankPath);
 
       // Wait for each extraction
@@ -65,7 +79,7 @@ function extractAudioFromDD (audioToImport) {
             // Extract audio files from bank
             const childProcess = extract_fsb.extract(
               fsbPath,
-              folders.localDDAudio,
+              folders.localDDAudioRaw,
               folders.fsbExtractBinaryPath
             );
 
@@ -84,6 +98,52 @@ function extractAudioFromDD (audioToImport) {
   // We're finished when all extractions are done
   return Promise.all(extractPromises);
 }
+
+function getAudioConversions (inputDir, outputDir) {
+  const inputFiles = fs.readdirSync(inputDir).filter(
+    (f) => fs.statSync(path.join(inputDir, f)).isFile()
+  );
+
+  return inputFiles.map((wave) => {
+    const name = path.basename(wave, ".wav");
+    const inputFile = path.join(inputDir, wave);
+    const outputFile = path.join(outputDir, name + ".ogg");
+    return {inputFile, outputFile};
+  });
+}
+
+function convertAudioInBatch (resolve, pool, batchSize, batch = []) {
+  while (batch.length < batchSize && pool.length > 0) {
+    const conversion = pool.pop();
+    batch.push(conversion);
+    convertAudio(conversion).then(() => {
+      batch.splice(batch.indexOf(conversion), 1);
+      convertAudioInBatch(resolve, pool, batchSize, batch);
+    });
+  }
+
+  if (pool.length === 0 && batch.length === 0) {
+    resolve();
+  }
+}
+
+function convertAudio ({inputFile, outputFile}) {
+  const job = sox.transcode(inputFile, outputFile, {
+    format: "ogg",
+    bitRate: 1,
+    compressionQuality: 5
+  });
+
+  return new Promise((resolve) => {
+    job.on('error', (e) => console.error(e));
+    job.on('end', () => {
+      console.log("Converted", outputFile);
+      resolve();
+    });
+    job.start();
+  });
+}
+
 
 // Image
 

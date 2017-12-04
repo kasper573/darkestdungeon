@@ -17,13 +17,13 @@ import {TooltipArea} from "../../lib/TooltipArea";
 import {randomizeItem} from "../../lib/Helpers";
 
 const sounds = {
-  heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_estsatecurrency.wav"), volume: 0.5},
+  heirloomsChanged: {src: require("../../../assets/dd/audio/ui_dun_loot_take_estsatecurrency.ogg"), volume: 0.5},
   goldChanged: [
-    {src: require("../../../assets/dd/audio/ui_town_coins_ring_08.wav"), volume: 1},
-    {src: require("../../../assets/dd/audio/ui_town_coins_ring_04.wav"), volume: 1},
-    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_05.wav"), volume: 1},
-    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_10.wav"), volume: 1},
-    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_08.wav"), volume: 1}
+    {src: require("../../../assets/dd/audio/ui_town_coins_ring_08.ogg"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_ring_04.ogg"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_05.ogg"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_10.ogg"), volume: 1},
+    {src: require("../../../assets/dd/audio/ui_town_coins_sprk_sml_08.ogg"), volume: 1}
   ]
 };
 

@@ -89,7 +89,7 @@ export class EstateDungeons extends AppStateComponent<{path: Path}> {
         path={this.props.path}
         backPath="estateOverview"
         continueCheck={() => this.checkLineupBeforeContinue()}
-        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_provision.wav"), volume: 0.7}}
+        continueSound={{src: require("../../../assets/dd/audio/ui_town_button_provision.ogg"), volume: 0.7}}
         continueLabel="Provision"
         continuePath="estateProvision">
         <div className={css(styles.content)}>

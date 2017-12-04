@@ -21,7 +21,7 @@ const heroCompareIcons = {
 };
 
 const sounds = {
-  activeHeroChanged: {src: require("../../../assets/dd/audio/ui_town_char_rollover_03.wav"), volume: 1.5}
+  activeHeroChanged: {src: require("../../../assets/dd/audio/ui_town_char_rollover_03.ogg"), volume: 1.5}
 };
 
 @observer

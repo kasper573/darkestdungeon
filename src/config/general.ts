@@ -617,7 +617,7 @@ export function addStaticState () {
   addBuildings({
     abbey: {
       name: "Abbey",
-      enterSound: {src: require("../../assets/dd/audio/town_enter_abbey.wav")},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_abbey.ogg")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.icon.png"),
       slotImageUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.locked_hero_slot_overlay.png"),
@@ -627,7 +627,7 @@ export function addStaticState () {
       children: {
         cloister: {
           name: "Cloister",
-          useSound: {src: require("../../assets/dd/audio/town_abbey_meditation.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_abbey_meditation.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.meditation.icon.png"),
           description: "Peace through meditation",
           items: [
@@ -641,7 +641,7 @@ export function addStaticState () {
         },
         transept: {
           name: "Transept",
-          useSound: {src: require("../../assets/dd/audio/town_abbey_prayer.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_abbey_prayer.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.prayer.icon.png"),
           description: "Pray to a Higher Power",
           items: [
@@ -653,7 +653,7 @@ export function addStaticState () {
         },
         penance: {
           name: "Penance Hall",
-          useSound: {src: require("../../assets/dd/audio/town_abbey_flagellation.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_abbey_flagellation.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/abbey/abbey.flagellation.icon.png"),
           description: "Flagellation brings absolution",
           items: [
@@ -667,8 +667,8 @@ export function addStaticState () {
     },
     blacksmith: {
       name: "Blacksmith",
-      useSound: {src: require("../../assets/dd/audio/town_blacksmith_purchase_wep.wav"), volume: 0.7},
-      enterSound: {src: require("../../assets/dd/audio/town_enter_blacksmith.wav")},
+      useSound: {src: require("../../assets/dd/audio/town_blacksmith_purchase_wep.ogg"), volume: 0.7},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_blacksmith.ogg")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/blacksmith/blacksmith.character.png"),
       npcBarks: [
@@ -708,7 +708,7 @@ export function addStaticState () {
     },
     graveyard: {
       name: "Graveyard",
-      enterSound: {src: require("../../assets/dd/audio/town_enter_graveyard.wav")},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_graveyard.ogg")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.icon.png"),
       backgroundUrl: require(
         "../../assets/dd/images/campaign/town/buildings/graveyard/graveyard.character_background.png"
@@ -716,8 +716,8 @@ export function addStaticState () {
     },
     guild: {
       name: "Guild",
-      useSound: {src: require("../../assets/dd/audio/town_guild_purchase_skill.wav"), volume: 0.5},
-      enterSound: {src: require("../../assets/dd/audio/town_enter_guild.wav")},
+      useSound: {src: require("../../assets/dd/audio/town_guild_purchase_skill.ogg"), volume: 0.5},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_guild.ogg")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/guild/guild.character.png"),
       backgroundUrl: require(
@@ -752,7 +752,7 @@ export function addStaticState () {
     },
     sanitarium: {
       name: "Sanitarium",
-      enterSound: {src: require("../../assets/dd/audio/town_enter_sanitarium.wav")},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_sanitarium.ogg")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.character.png"),
@@ -770,7 +770,7 @@ export function addStaticState () {
       children: {
         quirks: {
           name: "Treatment Ward",
-          useSound: {src: require("../../assets/dd/audio/town_sanitarium_treatment.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_sanitarium_treatment.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.cost.icon.png"),
           description: "Treat Quirks and other problematic behaviors.",
           items: [
@@ -782,7 +782,7 @@ export function addStaticState () {
         },
         diseases: {
           name: "Medical Ward",
-          useSound: {src: require("../../assets/dd/audio/town_sanitarium_disease.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_sanitarium_disease.ogg")},
           avatarUrl: require(
             "../../assets/dd/images/campaign/town/buildings/sanitarium/sanitarium.disease_quirk_cost.icon.png"
           ),
@@ -798,8 +798,8 @@ export function addStaticState () {
     },
     coach: {
       name: "Stage Coach",
-      useSound: {src: require("../../assets/dd/audio/town_stagecoach_purchase.wav"), volume: 0.5},
-      enterSound: {src: require("../../assets/dd/audio/town_enter_coach.wav")},
+      useSound: {src: require("../../assets/dd/audio/town_stagecoach_purchase.ogg"), volume: 0.5},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_coach.ogg")},
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/stage_coach/stage_coach.character.png"),
       backgroundUrl: require(
@@ -848,7 +848,7 @@ export function addStaticState () {
     },
     tavern: {
       name: "Tavern",
-      enterSound: {src: require("../../assets/dd/audio/town_enter_tavern.wav")},
+      enterSound: {src: require("../../assets/dd/audio/town_enter_tavern.ogg")},
       iconUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon_roster.png"),
       avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.icon.png"),
       npcImageUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.character.png"),
@@ -865,7 +865,7 @@ export function addStaticState () {
       children: {
         bar: {
           name: "Bar",
-          useSound: {src: require("../../assets/dd/audio/town_tavern_bar.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_tavern_bar.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.bar.icon.png"),
           description: "Improves the bar facilities",
           items: [
@@ -879,7 +879,7 @@ export function addStaticState () {
         },
         gambling: {
           name: "Gambling",
-          useSound: {src: require("../../assets/dd/audio/town_tavern_gambling.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_tavern_gambling.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.gambling.icon.png"),
           description: "Improves the gambling facilities",
           items: [
@@ -891,7 +891,7 @@ export function addStaticState () {
         },
         brothel: {
           name: "Brothel",
-          useSound: {src: require("../../assets/dd/audio/town_tavern_brothel_v1.wav")},
+          useSound: {src: require("../../assets/dd/audio/town_tavern_brothel_v1.ogg")},
           avatarUrl: require("../../assets/dd/images/campaign/town/buildings/tavern/tavern.brothel.icon.png"),
           description: "Improves the brothel facilities",
           items: [

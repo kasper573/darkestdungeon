@@ -48,12 +48,14 @@ module.exports = function (env = {}) {
           loaders: ["style-loader", "css-loader"]
         },
         {
-          test: /\.(png|jpe?g|wav)$/,
+          test: /\.(png|jpe?g|wav|ogg)$/,
           exclude: /node_modules/,
           use: [
             {
               loader: "file-loader",
-              options: {}
+              options: {
+                name: "assets/[hash].[ext]"
+              }
             }
           ]
         }

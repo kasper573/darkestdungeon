@@ -20,7 +20,7 @@ const iconUrls = {
 };
 
 const sounds = {
-  confirmTrade: {src: require("../../assets/dd/audio/ui_town_heirloomconfirm.wav"), volume: 0.5}
+  confirmTrade: {src: require("../../assets/dd/audio/ui_town_heirloomconfirm.ogg"), volume: 0.5}
 };
 
 @observer

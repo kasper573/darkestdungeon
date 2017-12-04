@@ -22,7 +22,7 @@ import {estateContentPosition} from "./screens/estate/EstateTemplate";
 import {Layer} from "./ui/Layer";
 
 const sounds = {
-  closeRoutePopup: {src: require("../assets/dd/audio/ui_town_building_zoomout.wav")}
+  closeRoutePopup: {src: require("../assets/dd/audio/ui_town_building_zoomout.ogg")}
 };
 
 @observer

@@ -16,8 +16,8 @@ import {CommonButton} from "../../ui/CommonButton";
 import {profileEntryHeight} from "./ProfileEntry";
 
 const sounds = {
-  profileSelected: {src: require("../../../assets/dd/audio/gen_title_startgame.wav")},
-  campaignClicked: {src: require("../../../assets/dd/audio/gen_title_campaignbutton.wav")}
+  profileSelected: {src: require("../../../assets/dd/audio/gen_title_startgame.ogg")},
+  campaignClicked: {src: require("../../../assets/dd/audio/gen_title_campaignbutton.ogg")}
 };
 
 @observer
