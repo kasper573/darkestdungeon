@@ -1,5 +1,5 @@
 const binaries = "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$";
-const audio = "\\.(mp4|webm|wav|mp3|m4a|aac|oga)$";
+const audio = "\\.(mp4|webm|wav|ogg|mp3|m4a|aac|oga)$";
 
 module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js"],
