@@ -3,6 +3,24 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const webpack = require("webpack");
 
+const fileLoader = {
+  loader: "file-loader",
+  options: {
+    name: "assets/[hash].[ext]"
+  }
+};
+
+const imageCompressionLoader = {
+  loader: "image-webpack-loader",
+  options: {
+    mozjpeg: {progressive: true, quality: 65},
+    optipng: {enabled: false},
+    pngquant: {quality: "65-90", speed: 4},
+    gifsicle: {interlaced: false},
+    webp: {quality: 75}
+  }
+};
+
 module.exports = function (env = {}) {
   return {
     entry: compact([
@@ -48,16 +66,17 @@ module.exports = function (env = {}) {
           loaders: ["style-loader", "css-loader"]
         },
         {
-          test: /\.(png|jpe?g|wav|ogg)$/,
+          test: /\.ogg$/,
           exclude: /node_modules/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                name: "assets/[hash].[ext]"
-              }
-            }
-          ]
+          use: [fileLoader]
+        },
+        {
+          test: /\.(png|jpe?g)$/,
+          exclude: /node_modules/,
+          use: compact([
+            fileLoader,
+            env.compress && imageCompressionLoader
+          ])
         }
       ]
     },
