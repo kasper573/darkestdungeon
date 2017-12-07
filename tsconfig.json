@@ -6,15 +6,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "experimentalDecorators": true,
-    "sourceMap": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
     "module": "commonjs",
     "target": "es2017",
-    "jsx": "react",
-    "types": [
-      "webpack-env",
-      "node"
-    ]
+    "jsx": "react"
   }
 }
