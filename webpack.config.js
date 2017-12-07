@@ -24,7 +24,7 @@ const imageCompressionLoader = {
 module.exports = function (env = {}) {
   return {
     entry: compact([
-      path.join(__dirname, "polyfills", "index.js"),
+      path.join(__dirname, "src", "polyfills", "index.js"),
       env.hmr && "react-hot-loader/patch",
       path.join(__dirname, "src", "main.tsx"),
     ]),
@@ -36,7 +36,8 @@ module.exports = function (env = {}) {
     resolve: {
       extensions: [".ts", ".tsx", ".js"],
       alias: {
-        "aphrodite": "aphrodite/no-important"
+        "aphrodite": "aphrodite/no-important",
+        "src": path.resolve(__dirname, "src")
       }
     },
     plugins: compact([
