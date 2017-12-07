@@ -60,14 +60,9 @@ const styles = StyleSheet.create({
   }
 });
 
-let rootEl = document.querySelector("#root");
-if (!rootEl) {
-  rootEl = document.createElement("div");
-  rootEl.id = "root";
-  document.body.appendChild(rootEl);
-}
-
+const rootEl = document.createElement("div");
 rootEl.className = css(styles.root);
+document.body.appendChild(rootEl);
 
 @DragDropContext(HTML5Backend)
 class AppContainer extends React.Component {
@@ -91,10 +86,34 @@ function render (Component: any) {
 
 render(App);
 
-// Set up HMR
-if ((module as any).hot) {
-  (module as any).hot.accept("./App", () => {
-    const NextApp = require<{App: typeof App}>("./App").App;
-    render(NextApp);
-  });
+declare const FuseBox: any;
+if (process.env.NODE_ENV !== "production") {
+  // Webpack HMR
+  if (module.hot) {
+    module.hot.accept("./App", () => {
+      const NextApp = require<{ App: typeof App }>("./App").App;
+      render(NextApp);
+    });
+  }
+
+  // FuseBox HMR
+  if (typeof FuseBox !== "undefined") {
+    const customizedHMRPlugin = {
+      hmrUpdate: ({type, path, content}: any) => {
+        if (type === "js") {
+          FuseBox.flush();
+          FuseBox.dynamic(path, content);
+          if (FuseBox.mainFile) {
+            FuseBox.import(FuseBox.mainFile);
+          }
+          return true;
+        }
+      }
+    };
+
+    if (!process.env.hmrRegistered) {
+      process.env.hmrRegistered = "yes";
+      FuseBox.addPlugin(customizedHMRPlugin);
+    }
+  }
 }
