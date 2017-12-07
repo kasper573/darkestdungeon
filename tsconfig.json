@@ -4,6 +4,7 @@
     "**/*.test.*"
   ],
   "compilerOptions": {
+    "baseUrl": ".",
     "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitAny": true,

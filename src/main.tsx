@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as WebFontLoader from "webfontloader";
 import {css, StyleSheet} from "aphrodite";
-import {fonts} from "../assets/fonts";
+import {fonts} from "src/assets/fonts";
 import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";
@@ -57,14 +57,16 @@ const styles = StyleSheet.create({
   root: {
     width: "100%",
     height: "100%"
-  },
-  stats: {
-    right: 0,
-    bottom: 0
   }
 });
 
-const rootEl = document.createElement("div");
+let rootEl = document.querySelector("#root");
+if (!rootEl) {
+  rootEl = document.createElement("div");
+  rootEl.id = "root";
+  document.body.appendChild(rootEl);
+}
+
 rootEl.className = css(styles.root);
 
 @DragDropContext(HTML5Backend)
@@ -88,8 +90,6 @@ function render (Component: any) {
 }
 
 render(App);
-
-document.body.appendChild(rootEl);
 
 // Set up HMR
 if ((module as any).hot) {

@@ -1,8 +1,8 @@
 import * as React from "react";
 import {css, StyleSheet} from "aphrodite";
-import {fonts} from "../../assets/fonts";
+import {fonts} from "src/assets/fonts";
 import {Sprite} from "../lib/Sprite";
-import {smoke} from "../../assets/sprites";
+import {smoke} from "src/assets/sprites";
 import {grid} from "../config/Grid";
 
 export class TitleHeader extends React.Component<{
