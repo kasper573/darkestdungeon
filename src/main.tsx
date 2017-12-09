@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as WebFontLoader from "webfontloader";
 import {css, StyleSheet} from "aphrodite";
-import {fonts} from "src/assets/fonts";
+import {fonts} from "./assets/fonts";
 import {AppState} from "./state/AppState";
 import {App} from "./App";
 import {addStaticState} from "./config/general";

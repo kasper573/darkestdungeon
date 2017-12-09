@@ -16,8 +16,8 @@ import {CommonButton} from "../../ui/CommonButton";
 import {profileEntryHeight} from "./ProfileEntry";
 
 const sounds = {
-  profileSelected: {src: require("src/assets/dd/audio/gen_title_startgame.ogg")},
-  campaignClicked: {src: require("src/assets/dd/audio/gen_title_campaignbutton.ogg")}
+  profileSelected: {src: require("../../assets/dd/audio/gen_title_startgame.ogg")},
+  campaignClicked: {src: require("../../assets/dd/audio/gen_title_campaignbutton.ogg")}
 };
 
 @observer
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
 
   skybox: {
-    backgroundImage: `url(${require("src/assets/dd/images/fe_flow/title_bg.png")})`,
+    backgroundImage: `url(${require("../../assets/dd/images/fe_flow/title_bg.png")})`,
     backgroundSize: "cover",
     backgroundPosition: "51% 100%",
     backgroundRepeat: "no-repeat",
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
 
   estate: {
-    backgroundImage: `url(${require("src/assets/dd/images/fe_flow/title_house.png")})`,
+    backgroundImage: `url(${require("../../assets/dd/images/fe_flow/title_house.png")})`,
     backgroundSize: "100% auto",
     backgroundPosition: "50% 0%",
     backgroundRepeat: "no-repeat",
