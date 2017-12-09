@@ -5,6 +5,8 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "allowJs": false,
+    "checkJs": false,
     "experimentalDecorators": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
