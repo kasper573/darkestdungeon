@@ -1,4 +1,4 @@
-const me = 'Kasper Sandin';
+const me = 'Kasper573';
 
 export const gorillas = `
 BTM_pl
