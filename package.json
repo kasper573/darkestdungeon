@@ -2,7 +2,6 @@
   "name": "darkestdungeon",
   "version": "0.1.0",
   "description": "A Darkest Dungeon clone built with web technology",
-  "author": "Kasper Sandin",
   "repository": "https://github.com/Kasu/twitterview",
   "dependencies": {
     "aphrodite": "1.2.5",
